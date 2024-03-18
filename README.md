@@ -36,13 +36,16 @@ As dores dos usuários que serão trabalhadas estão embasadas nas dificuldades:
 
 Quantidade de Tabelas, quais tabelas?
 
-A aplicação terá 5 tabelas. São elas:
+A aplicação terá 8 tabelas. São elas:
 
-1)	Tabela de mentores;
-2)	Tabela de empreendedores;
-3)	Tabela de mentores para empreendedores;
-4)	Tabela de mentorias;
-5)	Tabela de avaliações.
+1) Tabela de mentores
+2) Tabela de empreendedores
+3) Tabela de mentores para empreendedores
+4) Tabela de mentorias
+5) Tabela de avaliações
+6) Tabela de históricos de transações
+7) Tabela de pagamentos de mentores
+8) Tabela de portfólio de mentores
 
 Quantidade de dores (Casos de Uso). Quais dores?
 
@@ -112,7 +115,7 @@ BackEnd
 Serão utilizadas as seguintes tecnologias para a etapa de desenvolvimento BackEnd:
 
 1)	Java;
-2)	Django;
+2)	Spring;
 3)	VSCode;
 4)	GitHub;
 5)	Git cliente;
