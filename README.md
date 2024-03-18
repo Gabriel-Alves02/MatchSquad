@@ -1,9 +1,6 @@
-Alessandro Manrique Júnior
-Gabriel Alves Coelho 
+Alessandro Manrique Junior
+Gabriel Alves Coelho
 Guilherme de Freitas Diniz
-Nathan Siloe
-Pedro Henrique Aranha 
-Victor Akira Maejima
 
 Prof. Glauco Todesco
  
