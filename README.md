@@ -4,6 +4,12 @@ Gabriel Alves Coelho
       
 Guilherme de Freitas Diniz      
 
+Natã Siloe
+
+Pedro Henrique Aranha
+
+Victor Akira Maejima
+
 Prof. Glauco Todesco
  
 # Síntese do Projeto
