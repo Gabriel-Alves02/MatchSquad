@@ -17,6 +17,12 @@ As dores dos usuários que serão trabalhadas estão embasadas nas dificuldades:
     * Cross Sell dos conteúdos educativos moldados ao campo de atuação que o empreendedor esta interessado em investir;
 
 
+
+
+
+
+
+
       Nível de Dificuldade do Sistema Proposto
 
 Quantidade de Tabelas, quais tabelas?
