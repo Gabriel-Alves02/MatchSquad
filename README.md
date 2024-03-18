@@ -15,7 +15,8 @@ As dores dos usuários que serão trabalhadas estão embasadas nas dificuldades:
     * Oculto pela competitividade dos profissionais já estabelecidos no mercado;
     * Falta de informação de quais são os atuais projetos sendo trabalhados nas empresas;
     * Cross Sell dos conteúdos educativos moldados ao campo de atuação que o empreendedor esta interessado em investir;
- 
+
+
       Nível de Dificuldade do Sistema Proposto
 
 Quantidade de Tabelas, quais tabelas?
