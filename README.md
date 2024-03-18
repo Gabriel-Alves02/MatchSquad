@@ -1,6 +1,8 @@
 Alessandro Manrique Junior
+      
 Gabriel Alves Coelho
-Guilherme de Freitas Diniz
+      
+Guilherme de Freitas Diniz      
 
 Prof. Glauco Todesco
  
