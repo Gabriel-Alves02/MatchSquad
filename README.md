@@ -28,11 +28,10 @@ As dores dos usuários que serão trabalhadas estão embasadas nas dificuldades:
 
 
 
-
-
-
-
-
+             
+             
+             
+               
       Nível de Dificuldade do Sistema Proposto
 
 Quantidade de Tabelas, quais tabelas?
