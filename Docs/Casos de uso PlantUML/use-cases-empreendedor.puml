@@ -1,0 +1,24 @@
+@startuml "use-cases"
+left to right direction
+actor Empreendedor as E
+package MatchSquad {
+usecase "Comprar Plano" as UC1
+usecase "Agendar Mentoria" as UC2
+usecase "Assistir Mentoria" as UC3
+usecase "Avaliar Mentoria" as UC4
+usecase "Assistir Triagem" as UC5
+usecase "Agendar Triagem" as UC6
+usecase "Cancelar Agendamento" as UC7
+}
+E --> UC1
+E --> UC6
+E --> UC5
+E --> UC2
+E --> UC3
+E --> UC4
+E --> UC7
+
+(UC2) .up.> (UC5) <>
+(UC4) .up.> (UC3) <>
+
+@enduml
