@@ -142,3 +142,6 @@ Casos de Uso:
 
 ![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/5aac81f8-ad31-433c-8922-94c900d72c52)
 
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/47960a24-01fa-4d53-9e2d-6ac3238b2aba)
+
+
