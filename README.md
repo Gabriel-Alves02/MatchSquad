@@ -131,3 +131,14 @@ Prezando pela consistência e de maior integridade provida pelos bancos SQL, dad
 
 
 https://github.com/Gabriel-Alves02/Tabalho-ES-II/blob/89b09ab12f948261cc858a13610a07cd82ef3f1e/MatchSquad.docx
+
+
+
+
+
+Diagramas:
+
+Casos de Uso:
+
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/5aac81f8-ad31-433c-8922-94c900d72c52)
+
