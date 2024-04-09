@@ -1,0 +1,38 @@
+@startuml "Mentor use-cases"
+
+left to right direction
+
+actor Mentor as m
+package MatchSquad-System{
+usecase "Detalhar match" as UC1
+usecase "Dar match" as UC2
+usecase "Contatar plataforma" as UC3
+usecase "Receber da plataforma" as UC4
+usecase "Editar portifólio" as UC5
+usecase "Gerir Mentorias" as UC6
+usecase "Emitir relatorios" as UC7
+usecase "Checar contratos" as UC8
+usecase "Subir videos" as UC9
+usecase "Vizualizar avaliacao" as UC10
+usecase "Mentorar" as UC11
+usecase "Agendar mentoria" as UC12
+usecase "Cancelar agendamento" as UC13
+}
+
+m --> UC2
+m --> UC3
+m --> UC4
+m --> UC5
+m --> UC6
+m --> UC10
+m --> UC9
+
+(UC13) .up.> (UC12) : <>
+(UC7) ..up..> (UC6) : <>
+(UC8) ..up..> (UC6) : <>
+
+(UC1) .up.> (UC2) : <>
+(UC11) ..up..> (UC6) : <>
+(UC11) .up.> (UC12) : <>
+
+@enduml
