@@ -144,4 +144,6 @@ Casos de Uso:
 
 ![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/47960a24-01fa-4d53-9e2d-6ac3238b2aba)
 
+Protótipo baixa fidelidade:
+https://www.figma.com/file/2fs2UONimMNqprCcBRt3nG/FlowOverview?type=design&node-id=47-9&mode=design&t=Dx1ttdXXyyqo5iZ0-0
 
