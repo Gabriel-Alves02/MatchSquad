@@ -132,12 +132,13 @@ https://github.com/Gabriel-Alves02/Tabalho-ES-II/blob/89b09ab12f948261cc858a1361
 
 # Diagramas:
 
-Casos de Uso:
+# Casos de Uso:
 
-![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/5aac81f8-ad31-433c-8922-94c900d72c52)
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/f42a9ad2-9930-4a56-afec-2047015ba2ab)
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/d770fe77-4b75-4568-9629-97cbdd9d7520)
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/dc0d81d6-bb82-4003-b27b-9ef3e5bb5c07)
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/f5268054-b1c5-4a33-8aeb-0c48ffdf898c)
 
-![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/47960a24-01fa-4d53-9e2d-6ac3238b2aba)
-
-# Protótipo baixa fidelidade:
+# Protótipo em baixa fidelidade:
 https://www.figma.com/file/2fs2UONimMNqprCcBRt3nG/FlowOverview?type=design&node-id=47-9&mode=design&t=Dx1ttdXXyyqo5iZ0-0
 
