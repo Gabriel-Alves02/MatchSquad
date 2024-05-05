@@ -32,9 +32,9 @@ As dores dos usuários que serão trabalhadas estão embasadas nas dificuldades:
              
              
                
-      Nível de Dificuldade do Sistema Proposto
+# Nível de Dificuldade do Sistema Proposto
 
-Quantidade de Tabelas, quais tabelas?
+# Quantidade de Tabelas, quais tabelas?
 
 A aplicação terá 8 tabelas. São elas:
 
@@ -47,7 +47,7 @@ A aplicação terá 8 tabelas. São elas:
 7) Tabela de pagamentos de mentores
 8) Tabela de portfólio de mentores
 
-Quantidade de dores (Casos de Uso). Quais dores?
+# Quantidade de dores (Casos de Uso). Quais dores?
 
 As dores/casos de uso dos clientes da MatchSquad são:
 
@@ -57,7 +57,7 @@ As dores/casos de uso dos clientes da MatchSquad são:
 4) Assistir/ministrar uma mentoria à distância;
 5) Melhorar seu trabalho (mentoria) através da avaliação do cliente.
 
-Quantidade de Relatórios. Quais relatórios?
+# Quantidade de Relatórios. Quais relatórios?
 
 	Serão compostos em 4 relatórios: consultas de avaliação (reviews tanto empresa quanto mentor), o histórico de match de acordo com o perfil, o relatório de progressão, e o contrato de mentoria (metas).
 
@@ -80,7 +80,7 @@ Estima em função do escopo trabalhado, as metas, disclaimer da plataforma, dia
 
 
 
-Quantidade de Telas. Quais telas
+# Quantidade de Telas. Quais telas
 
 A aplicação terá 11 telas principais e outras telas informativas. São elas:
 
@@ -97,9 +97,9 @@ A aplicação terá 11 telas principais e outras telas informativas. São elas:
 11) Tela de Contrato de Mentoria;
 12) Telas informativas.
 
-Tecnologia Utilizadas
+# Tecnologia Utilizadas
 
-FrontEnd
+# FrontEnd
 
 	Serão utilizadas as seguintes tecnologias para a etapa de desenvolvimento FrontEnd:
 
@@ -110,7 +110,7 @@ FrontEnd
 5)	VSCode;
 6)	GitHub;
 7)	Git cliente.
-BackEnd
+# BackEnd
 
 Serão utilizadas as seguintes tecnologias para a etapa de desenvolvimento BackEnd:
 
@@ -120,23 +120,17 @@ Serão utilizadas as seguintes tecnologias para a etapa de desenvolvimento BackE
 4)	GitHub;
 5)	Git cliente;
 
-Mobile 
+# Mobile 
 
 No início do projeto não está previsto o desenvolvimento de aplicação mobile, tornando-se assim uma opção para o futuro.
 
-Banco de Dados
+# Banco de Dados
 
 Prezando pela consistência e de maior integridade provida pelos bancos SQL, dado o uso de operações financeiras, será utilizado o Oracle como base de dados. O que confere maior segurança no armazenamento de segurança e rollback necessários em eventual mau funcionamento.
 
-
-
 https://github.com/Gabriel-Alves02/Tabalho-ES-II/blob/89b09ab12f948261cc858a13610a07cd82ef3f1e/MatchSquad.docx
 
-
-
-
-
-Diagramas:
+# Diagramas:
 
 Casos de Uso:
 
@@ -144,6 +138,6 @@ Casos de Uso:
 
 ![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/47960a24-01fa-4d53-9e2d-6ac3238b2aba)
 
-Protótipo baixa fidelidade:
+# Protótipo baixa fidelidade:
 https://www.figma.com/file/2fs2UONimMNqprCcBRt3nG/FlowOverview?type=design&node-id=47-9&mode=design&t=Dx1ttdXXyyqo5iZ0-0
 
