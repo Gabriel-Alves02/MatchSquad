@@ -74,7 +74,7 @@ Este relatório tem como objetivo registrar as transações feitas na carteira d
 
 Logs de Sessão Mentorada:
 
-Relatório com a finalidade de documentar as sessãoes de mentoria já realizadas.
+Relatório com a finalidade de documentar as sessões de mentoria já realizadas.
 
 # Quantidade de Telas. Quais telas
 
