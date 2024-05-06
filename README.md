@@ -122,6 +122,8 @@ No início do projeto não está previsto o desenvolvimento de aplicação mobil
 
 Prezando pela consistência e de maior integridade provida pelos bancos SQL, dado o uso de operações financeiras, será utilizado o Oracle como base de dados. O que confere maior segurança no armazenamento de segurança e rollback necessários em eventual mau funcionamento.
 
+# Documento Principal
+
 https://github.com/Gabriel-Alves02/Tabalho-ES-II/blob/89b09ab12f948261cc858a13610a07cd82ef3f1e/MatchSquad.docx
 
 # Diagramas:
@@ -134,5 +136,5 @@ https://github.com/Gabriel-Alves02/Tabalho-ES-II/blob/89b09ab12f948261cc858a1361
 ![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/df90fed2-ce1d-4087-ba33-0b6010597d0d)
 
 # Protótipo em baixa fidelidade:
-https://www.figma.com/file/2fs2UONimMNqprCcBRt3nG/FlowOverview?type=design&node-id=47-9&mode=design&t=Dx1ttdXXyyqo5iZ0-0
+https://www.figma.com/proto/2fs2UONimMNqprCcBRt3nG/FlowOverview?type=design&node-id=1-161&t=EwlBaeo3j64sizZP-0&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=1%3A161&show-p
 
