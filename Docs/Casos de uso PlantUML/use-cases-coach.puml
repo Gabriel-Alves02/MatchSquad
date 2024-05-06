@@ -1,4 +1,4 @@
-@startuml "use-cases"
+@startuml "Coach use-cases"
 left to right direction
 actor Coach as C
 package MatchSquad {
