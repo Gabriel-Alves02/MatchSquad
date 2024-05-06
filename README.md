@@ -128,11 +128,10 @@ https://github.com/Gabriel-Alves02/Tabalho-ES-II/blob/89b09ab12f948261cc858a1361
 
 # Casos de Uso:
 
-![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/51ccbade-068c-4f05-a4e5-20e81a3d597d)
-![ima![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/0434aae5-b73f-41d8-875a-d644185425a9)
-![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/9e8c1dd7-1153-45fa-be2c-f92c1955998d)
-![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/dc0d81d6-bb82-4003-b27b-9ef3e5bb5c07)
-![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/f5268054-b1c5-4a33-8aeb-0c48ffdf898c)
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/bc2e7c44-3700-42c0-89fa-63aa22a37a21)
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/8914d0e3-78b6-4c0a-8329-e20bb46e2d83)
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/fd918ba9-0e8b-426a-a070-10216d766979)
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/df90fed2-ce1d-4087-ba33-0b6010597d0d)
 
 # Protótipo em baixa fidelidade:
 https://www.figma.com/file/2fs2UONimMNqprCcBRt3nG/FlowOverview?type=design&node-id=47-9&mode=design&t=Dx1ttdXXyyqo5iZ0-0
