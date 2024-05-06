@@ -4,35 +4,33 @@ left to right direction
 
 actor Mentor as m
 package MatchSquad-System{
-usecase "Detalhar match" as UC1
-usecase "Dar match" as UC2
+usecase "Cadastro" as UC1
+usecase "Cadastrar Mentoria" as UC2
 usecase "Contatar plataforma" as UC3
 usecase "Receber da plataforma" as UC4
-usecase "Editar portifólio" as UC5
-usecase "Gerir Mentorias" as UC6
+usecase "Ver Perfil" as UC5
+usecase "Editar Perfil" as UC6
 usecase "Emitir relatorios" as UC7
 usecase "Checar contratos" as UC8
-usecase "Subir videos" as UC9
-usecase "Vizualizar avaliacao" as UC10
-usecase "Mentorar" as UC11
-usecase "Agendar mentoria" as UC12
-usecase "Cancelar agendamento" as UC13
+usecase "Ver Avaliações" as UC9
+usecase "Mentorar" as UC10
+usecase "Confirmar Agendamento" as UC11
+usecase "Cancelar agendamento" as UC12
+usecase "Ver agendamentos" as UC13
 }
 
+m --> UC1
 m --> UC2
-m --> UC3
 m --> UC4
+m --> UC3
 m --> UC5
-m --> UC6
+m --> UC7
 m --> UC10
+m --> UC13
 m --> UC9
 
-(UC13) .up.> (UC12) : <>
-(UC7) ..up..> (UC6) : <>
-(UC8) ..up..> (UC6) : <>
-
-(UC1) .up.> (UC2) : <>
-(UC11) ..up..> (UC6) : <>
-(UC11) .up.> (UC12) : <>
+(UC12)..up..>(UC13) : <<extend>>
+(UC11)..up..>(UC13) : <<extend>>
+(UC6) .up.>(UC5) : <<includes>>
 
 @enduml
