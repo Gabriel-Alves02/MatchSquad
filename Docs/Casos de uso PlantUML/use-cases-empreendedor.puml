@@ -1,4 +1,4 @@
-@startuml "use-cases"
+@startuml "Empreendedor use-cases"
 left to right direction
 actor Empreendedor as E
 package MatchSquad {
