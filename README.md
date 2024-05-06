@@ -64,15 +64,17 @@ Histórico de Match:
 
 Este relatório tem um propósito de arquivar ao longo do tempo empresas ou mentores, conforme o perfil, que foram feito o contato durante o uso da aplicação, com detalhes em resumo de: datas, chamadas online, quantidade de mentorias feitas, assuntos trabalhados nas respectivas mentorias, quanto foi pago, comprovantes e certificados.
 
-Relatório de Progressão:
+Relatórios de Agendamentos:
 
-Em função da variabilidade das ideias que possam ser atendidas, há a necessidade de estabelecer indicadores importantes de acompanhamento, então é questionado sobre os parâmetros mais significativos aos mentores antes de iniciar a mentoria, solicitado para que a empresa registre um snapshot da situação atual embasado nestes parâmetros. E após ministrado a(s) mentoria(s), é avaliado o impacto que o conhecimento transferiu no negócio a partir destes indicadores, por plotagem em gráfico e comparações analíticas.
+O referido relatório tem o objetivo de documentar todos os agendamentos de mentorias para ciência do mentor.
 
-Contrato de Mentoria:
+Extrato de Pagamentos:
 
-Estima em função do escopo trabalhado, as metas, disclaimer da plataforma, dias e horários para ministrar a mentoria, custos, condições necessárias à implementação e trâmites legais.
+Este relatório tem como objetivo registrar as transações feitas na carteira do mentor para ciência e documentação deste.
 
+Logs de Sessão Mentorada:
 
+Relatório com a finalidade de documentar as sessãoes de mentoria já realizadas.
 
 # Quantidade de Telas. Quais telas
 
