@@ -132,11 +132,20 @@ https://github.com/Gabriel-Alves02/Tabalho-ES-II/blob/89b09ab12f948261cc858a1361
 
 # Casos de Uso:
 
-![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/bc2e7c44-3700-42c0-89fa-63aa22a37a21)
-![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/8914d0e3-78b6-4c0a-8329-e20bb46e2d83)
-![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/fd918ba9-0e8b-426a-a070-10216d766979)
-![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/df90fed2-ce1d-4087-ba33-0b6010597d0d)
+### Empreendedor
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/5949045/157eedee-d58e-4b02-96c6-58405ca7959a)
+
+### Mentor
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/5949045/344e52c4-c3ae-4364-a626-f592814f44f9)
+
+### Coach
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/5949045/d0aa629d-1f12-40c3-aad6-e14e7545141e)
+
+### Admin (Em fase de ajuste/modelagem provisoria)
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/5949045/b9f623df-694c-424f-a79a-044da85d45d5)
 
 # Protótipo em baixa fidelidade:
-https://www.figma.com/proto/2fs2UONimMNqprCcBRt3nG/FlowOverview?type=design&node-id=1-161&t=EwlBaeo3j64sizZP-0&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=1%3A161&show-p
 
+https://www.figma.com/file/duECfgkcSOjXFHZnNDrTCz/Untitled?type=design&node-id=0%3A1&mode=design&t=M5zaaqJTc3UVJnM2-1
+
+https://www.figma.com/file/2fs2UONimMNqprCcBRt3nG/FlowOverview?type=design&node-id=0-1&mode=design&t=TAtH0ZcOd7c5IVOH-0
