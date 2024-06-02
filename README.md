@@ -152,4 +152,4 @@ https://www.figma.com/file/2fs2UONimMNqprCcBRt3nG/FlowOverview?type=design&node-
 
 # Protótipo em alta fidelidade:
 
-O protótipo se encontra na pasta Alta_Fidelidade, a qual contêm pastas com os fluxos de cada ator do sistemas, separadamente.
+O protótipo se encontra na pasta Docs/Alta Fidelidade, a qual contêm pastas com os fluxos de cada ator do sistemas, separadamente.
