@@ -144,6 +144,12 @@ https://github.com/Gabriel-Alves02/Tabalho-ES-II/blob/89b09ab12f948261cc858a1361
 ### Admin (Em fase de ajuste/modelagem provisoria)
 ![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/5949045/b9f623df-694c-424f-a79a-044da85d45d5)
 
+### Diagrama E/R
+![Modelo_Entidade_Relacionamento_Trabalho](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/cf9911cd-e2d6-4996-9504-a48902edc9af)
+
+### Modelo Lógico
+![Modelo_Lógico_Atualizado_Trabalho](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/9fc0933a-ad57-497e-8ca0-ffa1d7839e23)
+
 # Protótipo em baixa fidelidade:
 
 https://www.figma.com/file/duECfgkcSOjXFHZnNDrTCz/Untitled?type=design&node-id=0%3A1&mode=design&t=M5zaaqJTc3UVJnM2-1
