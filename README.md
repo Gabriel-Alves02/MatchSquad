@@ -32,14 +32,16 @@ As dores dos usuários que serão trabalhadas estão embasadas nas dificuldades:
 
 A aplicação terá 8 tabelas. São elas:
 
-1) Tabela de mentores
+1) Tabela de instrutores
 2) Tabela de empreendedores
-3) Tabela de mentores para empreendedores
-4) Tabela de mentorias
-5) Tabela de avaliações
-6) Tabela de históricos de transações
-7) Tabela de pagamentos de mentores
-8) Tabela de portfólio de mentores
+3) Tabela de consultorias
+4) Tabela de reuniões
+5) Tabela de registros de reuniões
+6) Tabela de pagamentos
+7) Tabela de planos
+8) Tabela de planos para empreendedores (relacionamento n:n)
+9) Tabela de habilidades
+10) Tabela de habilidades para instrutores (relacionamento n:n)
 
 # Quantidade de dores (Casos de Uso). Quais dores?
 
