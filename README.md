@@ -104,10 +104,11 @@ A aplicação terá 11 telas principais e outras telas informativas. São elas:
 1)	HTML e CSS;
 2)	JavaScript;
 3)	Headroom.js;
-4)	React;
-5)	VSCode;
-6)	GitHub;
-7)	Git cliente.
+4)	BootStrap
+5)	React;
+6)	VSCode;
+7)	GitHub;
+8)	Git cliente.
 # BackEnd
 
 Serão utilizadas as seguintes tecnologias para a etapa de desenvolvimento BackEnd:
