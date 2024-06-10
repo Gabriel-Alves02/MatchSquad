@@ -47,11 +47,11 @@ A aplicação terá 10 tabelas. São elas:
 
 As dores/casos de uso dos clientes da MatchSquad são:
 
-1) Procurar/encontrar mentor;
-2) Analisar perfil do mentor (por parte do empreendedor);
-3) Analisar perfil do empreendedor (por parte do mentor, para direcionar melhor sua mentoria);
-4) Assistir/ministrar uma mentoria à distância;
-5) Melhorar seu trabalho (mentoria) através da avaliação do cliente.
+1) Procurar/encontrar consultor;
+2) Analisar perfil do consultor (por parte do empreendedor);
+3) Analisar perfil do empreendedor (por parte do consultor, para direcionar melhor sua consultoria);
+4) Assistir/ministrar uma consultoria à distância;
+5) Melhorar seu trabalho (consultoria) através da avaliação do cliente.
 
 # Quantidade de Relatórios. Quais relatórios?
 
