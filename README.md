@@ -30,7 +30,7 @@ As dores dos usuários que serão trabalhadas estão embasadas nas dificuldades:
 
 # Quantidade de Tabelas, quais tabelas?
 
-A aplicação terá 8 tabelas. São elas:
+A aplicação terá 10 tabelas. São elas:
 
 1) Tabela de instrutores
 2) Tabela de empreendedores
