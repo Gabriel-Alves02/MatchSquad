@@ -14,13 +14,13 @@ Prof. Glauco Todesco
  
 # Síntese do Projeto
 
-O projeto da MatchSquad, trabalha com ideias. Inicialmente tem como objetivo de fomentar o encontro de interessados dos mais variados nichos do empreendedorismo, buscando unir empresários com novas ideias de negócio, e experts do ramo. Complementarmente, disponibilizar a venda de conteúdos dos consultores e mentores previamente apurados, para a maturação e melhoria contínua das ideias, como uma incubadora ou dar propulsão a um negócio ja em curso, como aceleradora.
+O projeto da MatchSquad, trabalha com ideias. Inicialmente tem como objetivo de fomentar o encontro de interessados dos mais variados nichos do empreendedorismo, buscando unir empresários com novas ideias de negócio, e experts do ramo. Complementarmente, disponibilizar a venda de conteúdos dos consultores e coaches previamente apurados, para a maturação e melhoria contínua das ideias, como uma incubadora ou dar propulsão a um negócio ja em curso, como aceleradora.
 As dores dos usuários que serão trabalhadas estão embasadas nas dificuldades:
 * Perspectiva do Empreendedor
     * Dificuldade na procura de um profissinal qualificado;
     * Falta de visões chave/insights para por em prática as ideias;
     * Confiabilidade na seleção de um profissinal;
-* Perspectiva dos Consultores e Mentores
+* Perspectiva dos Consultores e Coaches
     * Falha de Marketing Pessoal;
     * Oculto pela competitividade dos profissionais já estabelecidos no mercado;
     * Falta de informação de quais são os atuais projetos sendo trabalhados nas empresas;
