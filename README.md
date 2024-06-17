@@ -152,6 +152,8 @@ https://github.com/Gabriel-Alves02/Tabalho-ES-II/blob/89b09ab12f948261cc858a1361
 
 ### Modelo Lógico
 ![Modelo_Lógico_Atualizado_Trabalho](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/9fc0933a-ad57-497e-8ca0-ffa1d7839e23)
+### Modelo Conceitual
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/a758474a-85cc-4f3f-a1d1-ea71dc693cd6)
 
 # Protótipo em baixa fidelidade:
 
