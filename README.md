@@ -138,8 +138,8 @@ https://github.com/Gabriel-Alves02/Tabalho-ES-II/blob/89b09ab12f948261cc858a1361
 ### Empreendedor
 ![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/5949045/157eedee-d58e-4b02-96c6-58405ca7959a)
 
-### Mentor
-![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/5949045/344e52c4-c3ae-4364-a626-f592814f44f9)
+### Consultor
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/0b58fe1e-40b4-4f50-beae-084fa400e002)
 
 ### Coach
 ![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/5949045/d0aa629d-1f12-40c3-aad6-e14e7545141e)
