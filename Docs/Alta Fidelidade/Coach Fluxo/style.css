@@ -1,18 +1,18 @@
-.col-1 {
+.col-a {
 
     width: 33.33%;
     padding: 0.6rem 1.2rem;
     color: #FFFFFF;
 }
 
-.col-2 {
+.col-b {
 
     width: 33.33%;
     padding: 0.6rem 1.2rem;
     color: #FFFFFF;
 }
 
-.col-3 {
+.col-c {
 
     width: 33.33%;
     padding: 0.6rem 1.2rem;
@@ -240,23 +240,27 @@
 
 .flex-container-menu {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .menu-col {
     width: 25%;
+    padding: 3.5rem;
 }
 
 .menu-col-2 {
     width: 25%;
+    padding: 3.5rem;
 }
 
 .menu-col-3 {
     width: 25%;
+    padding: 3.5rem;
 }
 
 .menu-col-4 {
     width: 25%;
+    padding: 3.5rem;
 }
 
 .title-pay {
@@ -360,4 +364,11 @@
     font-size: 2rem;
     font-weight: 700;
     margin-bottom:  1.2rem;
+}
+
+.profile-photo {
+    border-radius: 50%;
+    width: 180px;
+    height: 180px;
+    padding: 0.5%;
 }
