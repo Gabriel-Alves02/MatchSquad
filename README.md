@@ -129,7 +129,7 @@ Prezando pela consistência e de maior integridade provida pelos bancos SQL, dad
 
 # Documento Principal
 
-https://github.com/Gabriel-Alves02/Tabalho-ES-II/blob/89b09ab12f948261cc858a13610a07cd82ef3f1e/MatchSquad.docx
+https://github.com/Gabriel-Alves02/MatchSquad/blob/main/MatchSquad.docx
 
 # Diagramas:
 
