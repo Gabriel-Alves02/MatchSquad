@@ -55,44 +55,44 @@ As dores/casos de uso dos clientes da MatchSquad são:
 
 # Quantidade de Relatórios. Quais relatórios?
 
-	Serão compostos em 4 relatórios: consultas de avaliação (reviews tanto empresa quanto mentor), o histórico de match de acordo com o perfil, o relatório de progressão, e o contrato de mentoria (metas).
+	Serão compostos em 4 relatórios: consultas de avaliação, o histórico de match de acordo com o perfil, o relatório de progressão, e o contrato de consultoria (metas).
 
 Consulta de Avaliação:
 
-Os relatórios de avaliações de Mentores são só visíveis para Empresas, e a avaliação das Empresas são só visíveis aos Mentores, para evitar compra de boas avaliações com propósito de inflar score. Só são habilitados para avaliar os perfis que tenham tido contrato entre si, tendo informações da porcentagem de metas atingidas e classificação por estrelas.
+Os relatórios de avaliações de Consultores e Coaches são só visíveis para Empresas, para evitar compra de boas avaliações com propósito de inflar score. Só são habilitados para avaliar os perfis que tenham tido contrato entre si, tendo informações da porcentagem de metas atingidas e classificação por estrelas.
 Para abordar avaliações ruins, pode-se incrementar o anonimato do autor com o subsequente envio por e-mail do que foi relatado, estabelecendo um tempo hábil para réplica e resolução do problema. Caso não seja atendido, a avaliação é atrelada permanentemente ao perfil.
 
 Histórico de Match:
 
-Este relatório tem um propósito de arquivar ao longo do tempo empresas ou mentores, conforme o perfil, que foram feito o contato durante o uso da aplicação, com detalhes em resumo de: datas, chamadas online, quantidade de mentorias feitas, assuntos trabalhados nas respectivas mentorias, quanto foi pago, comprovantes e certificados.
+Este relatório tem um propósito de arquivar ao longo do tempo empresas ou consultores/coaches, conforme o perfil, que foram feito o contato durante o uso da aplicação, com detalhes em resumo de: datas, chamadas online, quantidade de consultorias/reuniões feitas, assuntos trabalhados nas respectivas consultorias/reuniões, quanto foi pago, comprovantes e certificados.
 
 Relatórios de Agendamentos:
 
-O referido relatório tem o objetivo de documentar todos os agendamentos de mentorias para ciência do mentor.
+O referido relatório tem o objetivo de documentar todos os agendamentos de consultorias/reuniões para ciência do consultor/coach.
 
 Extrato de Pagamentos:
 
-Este relatório tem como objetivo registrar as transações feitas na carteira do mentor para ciência e documentação deste.
+Este relatório tem como objetivo registrar as transações feitas na carteira do consultor/coach para ciência e documentação deste.
 
-Logs de Sessão Mentorada:
+Logs de Sessão Atendida:
 
-Relatório com a finalidade de documentar as sessões de mentoria já realizadas.
+Relatório com a finalidade de documentar as sessões de consultoria/reunião já realizadas.
 
 # Quantidade de Telas. Quais telas
 
 A aplicação terá 11 telas principais e outras telas informativas. São elas:
 
-1)   Tela de pesquisa de mentores;
-2)   Tela de perfil do mentor;
+1)   Tela de pesquisa de consultores/coaches;
+2)   Tela de perfil do consultor/coach;
 3)   Tela de perfil do empreendedor;
-4)   Tela de avaliação da mentoria;
-5)   Tela de agendamento de mentoria;
-6)   Tela de videochamada para realização da mentoria;
-7)   Tela de consulta de mentorias agendadas;
+4)   Tela de avaliação da consultoria/reunião;
+5)   Tela de agendamento de consultoria/reunião;
+6)   Tela para registro da reunião;
+7)   Tela de consulta de consultorias/reuniões agendadas;
 8)   Tela de consulta de relatórios de Avaliação;
 9)   Tela de consulta de relatório de Histórico de Match;
 10) Tela de consulta de Relatório de Progressão;
-11) Tela de Contrato de Mentoria;
+11) Tela de Contrato de Consultoria;
 12) Telas informativas.
 
 # Tecnologia Utilizadas
