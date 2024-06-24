@@ -159,11 +159,11 @@ https://github.com/Gabriel-Alves02/MatchSquad/blob/main/MatchSquad.docx
 
 https://www.figma.com/file/duECfgkcSOjXFHZnNDrTCz/Untitled?type=design&node-id=0%3A1&mode=design&t=M5zaaqJTc3UVJnM2-1
 
-# Apresentação final:
-https://www.youtube.com/watch?v=QVF9fPfuNxw
-
 https://www.figma.com/file/2fs2UONimMNqprCcBRt3nG/FlowOverview?type=design&node-id=0-1&mode=design&t=TAtH0ZcOd7c5IVOH-0
 
 # Protótipo em alta fidelidade:
 
 O protótipo se encontra na pasta Docs/Alta Fidelidade, a qual contêm pastas com os fluxos de cada ator do sistema, separadamente.
+
+# Apresentação final:
+https://www.youtube.com/watch?v=QVF9fPfuNxw
