@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento de Coach</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../style2.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css">
+    <style>
+        .form-control-inline {
+            display: inline-block;
+            width: auto;
+        }
+        .horarios-vagos {
+            margin-top: 20px;
+        }
+        .table-responsive {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a href="menu.html"><img class="navbar-brand" src="assets/Logo.png" height="54.73px"></a>
+        <div class="ml-auto">
+            <a href="configuracoes.html" class="btn btn-outline-primary mr-2">Configurações</a>
+            <a href="logout.html" class="btn btn-outline-danger">Deslogar</a>
+        </div>
+    </nav>
+    <br>
+
+    <div class="container mt-4">
+        <h2 class="mb-4">Agendamento de Coach</h2>
+
+        <h4 class="mb-3">Coach com habilidades em Marketing, Design gráfico</h4>
+        <p><strong>Coach:</strong> Manoela Ferreira</p>
+        <p><strong>Descrição:</strong> Formada pela PUC-Rio, lido com design há 13 anos.</p>
+        <!--<p><strong>Preço:</strong> R$ 250</p>-->
+
+        <form>
+            <div class="form-group">
+                <label for="data">Data</label>
+                <input type="date" class="form-control form-control-inline" id="data" name="data" required>
+            </div>
+            <div class="form-group">
+                <label for="hora">Horário</label>
+                <input type="time" class="form-control form-control-inline" id="hora" name="hora" required>
+            </div>
+                    <div class="horarios-vagos table-responsive">
+            <h5 class="mt-4">Horários vagos de Manoela Ferreira</h5>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Dia</th>
+                        <th>Horários</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Terça-feira</td>
+                        <td>10:00 - 12:00, 13:00 - 14:00</td>
+                    </tr>
+                    <tr>
+                        <td>Quarta-feira</td>
+                        <td>10:00 - 12:00, 13:00 - 14:00</td>
+                    </tr>
+                    <tr>
+                        <td>Quinta-feira</td>
+                        <td>10:00 - 12:00</td>
+                    </tr>
+                    <tr>
+                        <td>Sexta-feira</td>
+                        <td>09:00 - 11:00, 13:00 - 15:00</td>
+                    </tr>
+                    <tr>
+                        <td>Domingo</td>
+                        <td>08:00 - 10:00, 12:00 - 14:00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+            <div class="form-group">
+                <label for="informacoes_opcionais">Informações Opcionais</label>
+                <textarea class="form-control" id="informacoes_opcionais" name="informacoes_opcionais" rows="4"></textarea>
+            </div>
+            <!--<button type="submit" class="btn btn-primary float-right">Confirmar</button>-->
+            <a href="Adiantandoaocoach.html" class="btn btn-primary float float-right">Agendar</a>
+        </form>
+        <br>
+        <br>
+        <br>
+
+    </div>
+
+    <footer style="background-color: #cbe2f8;">
+        <div class="container-fluid text-center margin">
+            <div class="row">
+                <div class="col-lg-4">
+                    <br>
+                    <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Politicas de Privacidade
+                    </a>
+                    <br><br>
+                    <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Termos de Uso
+                    </a>
+                    <br><br>
+                    <a href="" data-bs-target="#exampleModal2" data-bs-toggle="modal">
+                        Ajuda
+                    </a>
+                    <br>
+                </div>
+                <div class="col-lg-4">
+                    <br>
+                    <h4>Contato</h4>
+                    <p>(15) 99170-7070 📱</p>
+                    <br>
+                    <h4>Endereço</h4>
+                    <a target="_blank" href="https://www.google.com/maps/@-23.4826573,-47.4260076,3a,75y,8.66h,90.1t/data=!3m6!1e1!3m4!1s0jnFsJazevJtZaqBOyuL5Q!2e0!7i13312!8i6656?entry=ttu">Av. Engenheiro Carlos Reinaldo Mendes, 2015<br>Alto da Boa Vista - Sorocaba/SP</a>
+                    <br><br>
+                </div>
+                <div class="col-lg-4" style="align-items: center;">
+                    <br>
+                    <table>
+                        <tr>
+                            <th>⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</th>
+                            <th style="text-align: center;"> <a href="https://www.facebook.com/fatecsorocaba/?locale=pt_BR" class="fa fa-facebook" target="_blank"></a></th>
+                            <th>⠀</th>
+                            <th style="text-align: center;"><a href="https://www.instagram.com/fatecsorocaba/?hl=en" class="fa fa-instagram" target="_blank"></a></a></th>
+                            <th>⠀</th>
+                            <th style="text-align: center;"><a href="https://www.linkedin.com/groups/2283743/" class="fa fa-linkedin" target="_blank"></a></th>
+                            <th>⠀</th>
+                            <th style="text-align: center;"><a href="" class="fa fa-twitter" target="_blank"></a></th>
+                            <th>⠀</th>
+                            <th style="text-align: center;"> <a href="https://www.facebook.com/fatecsorocaba/?locale=pt_BR" class="fa fa-tumblr" target="_blank"></a></th>
+                            <th>⠀</th>
+                        </tr>
+                    </table>
+                    <br><br>
+                    <p>
+                        <a target="_blank" href="https://github.com/Gabriel-Alves02/MatchSquad">Matchsquad</a> 2024 - Fatec (Sorocaba/Sao Paulo)
+                    </p>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
