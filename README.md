@@ -163,6 +163,9 @@ https://www.figma.com/file/2fs2UONimMNqprCcBRt3nG/FlowOverview?type=design&node-
 
 # Protótipo em alta fidelidade:
 
+### Fluxo do Coach
+https://gabriel-alves02.github.io/MatchSquad-Coach/
+
 O protótipo se encontra na pasta Docs/Alta Fidelidade, a qual contêm pastas com os fluxos de cada ator do sistema, separadamente.
 
 # Apresentação final:
