@@ -166,6 +166,9 @@ https://www.figma.com/file/2fs2UONimMNqprCcBRt3nG/FlowOverview?type=design&node-
 ### Fluxo do Coach
 https://gabriel-alves02.github.io/MatchSquad-Coach/
 
+### Fluxo do Administrador
+https://gabriel-alves02.github.io/MatchSquad-ADM/
+
 O protótipo se encontra na pasta Docs/Alta Fidelidade, a qual contêm pastas com os fluxos de cada ator do sistema, separadamente.
 
 # Apresentação final:
