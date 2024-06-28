@@ -151,9 +151,11 @@ https://github.com/Gabriel-Alves02/MatchSquad/blob/main/MatchSquad.docx
 ![Modelo_Entidade_Relacionamento_Trabalho](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/cf9911cd-e2d6-4996-9504-a48902edc9af)
 
 ### Modelo Lógico
-![Modelo_Lógico_Atualizado_Trabalho](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/9fc0933a-ad57-497e-8ca0-ffa1d7839e23)
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/5949045/b7ff18c8-28e5-49fc-b3e6-4651d00486cf)
+
 ### Modelo Conceitual
-![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/d178db18-6caf-40ef-a4e8-063330dc5e2e)
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/5949045/835095ff-15a1-4568-b8bb-b6f38e0ad02d)
+
 
 # Protótipo em baixa fidelidade:
 
