@@ -172,6 +172,9 @@ https://almanriquejr.github.io/Matchsquad_Homepage/
 ### Fluxo do Coach
 https://gabriel-alves02.github.io/MatchSquad-Coach/
 
+### Fluxo do Consultor
+https://almanriquejr.github.io/MatchSquad_Consultor/index.html
+
 ### Fluxo do Empreendedor
 https://gabriel-alves02.github.io/MatchSquad-Empreendedor/
 
