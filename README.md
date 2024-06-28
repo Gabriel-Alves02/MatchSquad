@@ -154,7 +154,8 @@ https://github.com/Gabriel-Alves02/MatchSquad/blob/main/MatchSquad.docx
 ![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/5949045/b7ff18c8-28e5-49fc-b3e6-4651d00486cf)
 
 ### Modelo Conceitual
-![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/5949045/835095ff-15a1-4568-b8bb-b6f38e0ad02d)
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/5949045/8d55ca5c-bb6f-4cb8-882c-38f2f9814841)
+
 
 
 # Protótipo em baixa fidelidade:
