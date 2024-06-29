@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matchsquad - Pedidos de Troca de Coaches</title>
+    <link rel="icon" href="assets/Icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            background-color: #007bff;
+        }
+
+        .navbar-brand {
+            color: #fff;
+            font-size: 1.5em;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            border-radius: 5px;
+            padding: 10px 20px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .pedido-troca {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .pedido-troca .assinante {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .pedido-troca .motivo {
+            margin-top: 5px;
+        }
+
+        .pedido-troca .controls {
+            margin-top: 10px;
+        }
+
+        .aprovado {
+            color: green;
+            font-weight: bold;
+        }
+
+        .reprovado {
+            color: red;
+            font-weight: bold;
+        }
+
+        footer {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Matchsquad</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="text-center mb-5">Pedidos de reembolso</h1>
+
+        <!-- Exemplo de pedido de troca -->
+        <div class="pedido-troca">
+            <div class="assinante">Eduardo Silva</div>
+            <div class="motivo">
+                <strong>Motivo:</strong> Consultor não compareceu à reunião.
+                <p>Valor: R$ 120,00</p>
+            </div>
+            <div class="controls">
+                <button class="btn btn-success mr-2" onclick="reembolsar('Eduardo Silva')">Reembolsar</button>
+            </div>
+        </div>
+
+        <!-- Exemplo de pedido de troca -->
+        <div class="pedido-troca">
+            <div class="assinante">RobotPlace</div>
+            <div class="motivo">
+                <strong>Motivo:</strong> O consultor não compareceu à reunião pela segunda vez.
+                <p>Valor: R$ 155,00</p>
+            </div>
+            <div class="controls">
+                <button class="btn btn-success mr-2" onclick="reembolsar('RobotPlace')">Reembolsar</button>
+            </div>
+        </div>
+
+        <!-- Mensagem de Confirmação -->
+        <div id="mensagemConfirmacao" class="alert alert-success mt-4" style="display: none;">
+            Reembolso feito com sucesso!
+        </div>
+    </div>
+
+    <footer>
+        Matchsquad &copy; 2024
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <script>
+        function reembolsar(assinante) {
+            // Exibir mensagem de confirmação na tela
+            document.getElementById('mensagemConfirmacao').innerHTML = `Reembolso para ${assinante} aprovado com sucesso!`;
+            document.getElementById('mensagemConfirmacao').className = 'alert alert-success mt-4';
+            document.getElementById('mensagemConfirmacao').style.display = 'block';
+
+            // Aqui você implementaria a lógica para aprovar a troca de coach
+            // Exemplo: uma requisição AJAX para o servidor para aprovar a troca
+
+            // Neste exemplo, apenas mostramos a mensagem
+            setTimeout(() => {
+                document.getElementById('mensagemConfirmacao').style.display = 'none';
+            }, 3000); // Esconder a mensagem após 3 segundos (3000 milissegundos)
+        }
+
+        function reprovarTroca(assinante) {
+            // Exibir mensagem de confirmação na tela
+            document.getElementById('mensagemConfirmacao').innerHTML = `Troca de coach para ${assinante} reprovada.`;
+            document.getElementById('mensagemConfirmacao').className = 'alert alert-danger mt-4';
+            document.getElementById('mensagemConfirmacao').style.display = 'block';
+
+            // Aqui você implementaria a lógica para reprovar a troca de coach
+            // Exemplo: uma requisição AJAX para o servidor para reprovar a troca
+
+            // Neste exemplo, apenas mostramos a mensagem
+            setTimeout(() => {
+                document.getElementById('mensagemConfirmacao').style.display = 'none';
+            }, 3000); // Esconder a mensagem após 3 segundos (3000 milissegundos)
+        }
+    </script>
+</body>
+
+</html>
