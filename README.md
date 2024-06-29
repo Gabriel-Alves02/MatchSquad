@@ -142,7 +142,7 @@ https://github.com/Gabriel-Alves02/MatchSquad/blob/main/MatchSquad.docx
 ![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/0b58fe1e-40b4-4f50-beae-084fa400e002)
 
 ### Coach
-![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/5949045/d0aa629d-1f12-40c3-aad6-e14e7545141e)
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/330452b0-8c82-4307-a71a-92d24e8b21c3)
 
 ### Admin (Em fase de ajuste/modelagem provisoria)
 ![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/f61fbecb-4972-41df-af05-f8402a8a11a9)
