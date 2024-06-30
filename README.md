@@ -30,7 +30,7 @@ As dores dos usuários que serão trabalhadas estão embasadas nas dificuldades:
 
 # Quantidade de Tabelas, quais tabelas?
 
-A aplicação terá 10 tabelas. São elas:
+A aplicação terá 8 tabelas. São elas:
 
 1) Tabela de instrutores
 2) Tabela de empreendedores
@@ -39,9 +39,7 @@ A aplicação terá 10 tabelas. São elas:
 5) Tabela de registros de reuniões
 6) Tabela de pagamentos
 7) Tabela de planos
-8) Tabela de planos para empreendedores (relacionamento n:n)
-9) Tabela de habilidades
-10) Tabela de habilidades para instrutores (relacionamento n:n)
+8) Tabela de habilidades
 
 # Quantidade de dores (Casos de Uso). Quais dores?
 
