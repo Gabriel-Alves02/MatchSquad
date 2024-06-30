@@ -148,7 +148,7 @@ https://github.com/Gabriel-Alves02/MatchSquad/blob/main/MatchSquad.docx
 ![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/f61fbecb-4972-41df-af05-f8402a8a11a9)
 
 ### Diagrama E/R
-![Modelo_Entidade_Relacionamento_Trabalho](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/cf9911cd-e2d6-4996-9504-a48902edc9af)
+![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/161254104/90a6e2a6-f63f-454e-93d7-885fdabbdeff)
 
 ### Modelo Lógico
 ![image](https://github.com/Gabriel-Alves02/MatchSquad/assets/5949045/b7ff18c8-28e5-49fc-b3e6-4651d00486cf)
