@@ -175,6 +175,8 @@ https://almanriquejr.github.io/MatchSquad_Consultor/index.html
 
 ### Fluxo do Empreendedor
 https://gabriel-alves02.github.io/MatchSquad-Empreendedor/
+                    
+https://gabriel-alves02.github.io/Matchsquad-Emp/
 
 ### Fluxo do Administrador
 https://gabriel-alves02.github.io/MatchSquad-ADM/
