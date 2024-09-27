@@ -1,0 +1,10 @@
+INSERT INTO Cliente(nome,cpf_cnpj,email,telefone) VALUES
+('Marcio Otelo','321.321.321-19','marcio@gmail.com','(11) 91111-2222'),
+('Claudia Macaxeira','111.222.333-44','claudia@terra.com','(15) 93333-4444'),
+('Teles Torradas','222.333.444-55','torradas@ig.com','(19) 95555-6666'),
+('Merivaldo Albino','555.666.777-88','meribad_boy@bol.com','(48) 97777-8888'),
+('admin','999.999.999-99','admin@hotmail.com','(12) 90000-1111'),
+('Silvinho Silva','888.777.666-55','silvio@outlook.com','(47) 99999-8888'),
+('Einstenio Garcia','555.444.333-22','garcia123@gmail.com','(22) 98888-7777'),
+('Pablo Penne','222.111.000-99','pablo@bol.com','(11) 96666-5555'),
+('Sasuke Carvalho','000.000.000-11','sasuke@gmail.com','(19) 94444-3333');
