@@ -1,0 +1,16 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "browser-sync start --server --file . --host --port 5000 --startPath index.html"
+  },
+  "keywords": [],
+  "author": "Matchsquad",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "browser-sync": "^3.0.3"
+  }
+}
