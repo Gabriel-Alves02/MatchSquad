@@ -1,5 +1,7 @@
 import express from 'express';
-import { Login, CadastrarCliente } from './controller/Cliente.js';
+import { CadastrarCliente } from './controller/Cliente.js';
+import { Login } from './controller/LoginBackend.js';
+import { CadastrarConsultor } from './controller/Consultor.js';
 
 const app = express();
 
@@ -19,7 +21,8 @@ app.use(express.json()); // exp interpreta txt por padrão, aux p/ o body ser li
 
 //ENDPOINTS
 app.post('/clientes/login', Login);
-app.post('/clientes/cadastro', CadastrarCliente);
+app.post('/clientes/cadCliente', CadastrarCliente);
+app.post('/clientes/cadConsultor', CadastrarConsultor);
 
 //BASTIDORES
 

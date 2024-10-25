@@ -1,4 +1,4 @@
-import { getCliente } from "../service/req_respManager4Client.js";
+import { getUser } from "../service/req_respManager.js";
 
 const form = document.getElementById('loginForm');
 
@@ -11,6 +11,6 @@ form.addEventListener('submit', (event) => {
         senha: document.getElementById('senha').value
     }
 
-    getCliente(objLogin);
+    getUser(objLogin);
 
 });

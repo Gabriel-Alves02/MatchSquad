@@ -1,0 +1,31 @@
+@startuml "Cliente use-cases"
+left to right direction
+actor Cliente as C
+
+package MatchSquad {
+
+    usecase "Adicionar Cartões de Crédito" as UC1
+    usecase "Agendar Reunião" as UC2
+    usecase "Pagar Consultoria" as UC3
+    usecase "Cancelar Agendamento" as UC4
+    usecase "Avaliar Reunião" as UC5
+    usecase "Trocar de Consultor" as UC6
+    usecase "Consultar Agendamentos" as UC7
+    usecase "Escolher Consultor" as UC8
+    usecase "Consultar Relatório de Reunião" as UC9
+
+}
+
+C --> UC1
+C --> UC7
+C --> UC8
+C --> UC9
+
+(UC4)<.up.(UC6): <<include>>
+(UC5).up.>(UC2): <<extend>>
+(UC6).up.>(UC2): <<extend>>
+(UC6)..up.>(UC7): <<extend>>
+(UC3)<.up.(UC2): <<include>>
+(UC2).up.>(UC8): <<extend>>
+
+@enduml

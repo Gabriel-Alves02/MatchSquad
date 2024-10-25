@@ -1,24 +1,5 @@
 import { openDatabase } from "../database.js";
 
-export const Login = async (request, response, next) => {
-
-    const { nickname, senha } = request.body;
-
-    const DB = await openDatabase();
-
-    const cliente = await DB.get(`SELECT * FROM Login WHERE nickname = ? AND senha = ?;`, [nickname, senha]);
-
-    if (cliente) {
-        response.status(200).send("Login autorizado");
-        return;
-    }
-
-    DB.close();
-
-    response.status(400).send('Não cadastrado');
-
-};
-
 export const CadastrarCliente = async (request, response, next) => {
 
     const { nome, cpf_cnpj, email, telefone, nickname, senha } = request.body;
@@ -34,12 +15,14 @@ export const CadastrarCliente = async (request, response, next) => {
         return response.status(400).send("Usuário já cadastrado!");
     }
 
-    const addCliente = await DB.run(`INSERT INTO Cliente(nome,cpf_cnpj,email,telefone) VALUES (?,?,?,?);`, [nome, cpf_cnpj, email, telefone]);
+    const addLogin = await DB.run(`INSERT INTO Login(nickname,senha) VALUES (?,?);`, [nickname, senha]);
 
-    const addLogin = await DB.run(`INSERT INTO Login(nickname,senha,idCliente) VALUES (?,?,?);`, [nickname, senha, addCliente.lastID]);
+    const addCliente = await DB.run(`INSERT INTO Cliente(nome,cpf_cnpj,email,telefone,idLogin) VALUES (?,?,?,?,?);`, [nome, cpf_cnpj, email, telefone, addLogin.lastID]);
+
+    
 
     DB.close();
 
-    response.status(200).send("Cadastrado com sucesso!");
+    response.status(200).send(`Cadastrado com sucesso! ${addCliente}`);
 
 };

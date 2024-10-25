@@ -1,4 +1,4 @@
-import { postCliente } from "../service/req_respManager4Client.js";
+import { Cadastrar } from "../service/req_respManager.js";
 
 const form = document.getElementById('customerForm');
 
@@ -15,5 +15,5 @@ form.addEventListener('submit', (event) => {
         senha: document.getElementById('senha').value
     }
 
-    postCliente(objCliente);
+    Cadastrar(objCliente);
 });

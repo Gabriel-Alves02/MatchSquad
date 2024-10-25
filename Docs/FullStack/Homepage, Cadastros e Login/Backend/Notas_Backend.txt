@@ -1,22 +1,71 @@
-Clientes Inseridos no Banco de Teste
-
-INSERT INTO Cliente(nome,cpf_cnpj,email,telefone) VALUES
-('Marcio Otelo','321.321.321-19','marcio@gmail.com','(11) 91111-2222'),
-('Claudia Macaxeira','111.222.333-44','claudia@terra.com','(15) 93333-4444'),
-('Teles Torradas','222.333.444-55','torradas@ig.com','(19) 95555-6666'),
-('Merivaldo Albino','555.666.777-88','meribad_boy@bol.com','(48) 97777-8888'),
-('admin','999.999.999-99','admin@hotmail.com','(12) 90000-1111'),
-('Silvinho Silva','888.777.666-55','silvio@outlook.com','(47) 99999-8888'),
-('Einstenio Garcia','555.444.333-22','garcia123@gmail.com','(22) 98888-7777'),
-('Pablo Penne','222.111.000-99','pablo@bol.com','(11) 96666-5555'),
-('Sasuke Carvalho','000.000.000-11','sasuke@gmail.com','(19) 94444-3333');
+CREATE TABLE "Cliente" (
+	"idCliente"	INTEGER NOT NULL,
+	"nome"	TEXT NOT NULL,
+	"cpf_cnpj"	TEXT NOT NULL UNIQUE,
+	"email"	TEXT NOT NULL,
+	"telefone"	TEXT,
+	"obs"	TEXT,
+	"idLogin"	INTEGER,
+	PRIMARY KEY("idCliente" AUTOINCREMENT)
+);
 
 
+CREATE TABLE "Consultor" (
+	"idConsultor"	INTEGER NOT NULL,
+	"nome"	TEXT NOT NULL,
+	"cpf"	TEXT NOT NULL UNIQUE,
+	"email"	TEXT NOT NULL,
+	"telefone"	TEXT,
+	"obs"	TEXT,
+	"bio"	TEXT,
+	"redeSocial"	TEXT,
+	"precoConsultoria"	NUMERIC,
+	"chavePix"	TEXT,
+	"idLogin"	INTEGER,
+	"idHabilidade"	INTEGER,
+	PRIMARY KEY("idConsultor" AUTOINCREMENT)
+);
 
-Controller: é comentado que trata de todas requests e responses da aplicação que vão para o backend
-            Contem a lógica de programação c/ regra de negocio, mas ainda redireciona para outras camadas para execução de outras
-            responsabilidades
+CREATE TABLE "Login" (
+	"idLogin"	INTEGER NOT NULL,
+	"nickname"	TEXT NOT NULL UNIQUE,
+	"senha"	INTEGER NOT NULL,
+	PRIMARY KEY("idLogin" AUTOINCREMENT)
+);
 
-DB.all = todas instancias do banco
-DB.get = acha o 1º resultado
-DB.run = exe comando
+CREATE TABLE "Habilidade" (
+	"idHabilidade"	INTEGER NOT NULL,
+	"nomeHabilidade"	TEXT NOT NULL UNIQUE,
+	PRIMARY KEY("idHabilidade" AUTOINCREMENT)
+);
+
+CREATE TABLE "Consultor_Habilidades" (
+	"idConsultor"	INTEGER NOT NULL,
+	"idHabilidade"	INTEGER NOT NULL,
+	PRIMARY KEY("idHabilidade","idConsultor"),
+	FOREIGN KEY("idConsultor") REFERENCES "Consultor"("idConsultor"),
+	FOREIGN KEY("idHabilidade") REFERENCES "Habilidade"("idHabilidade")
+);
+
+INSERT INTO Habilidade(nomeHabilidade) 
+VALUES 
+('financas'),
+('designer'),
+('ti'),
+('agro'),
+('pecuaria'),
+('logistica'),
+('judicial'),
+('gestao');
+
+
+INSERT INTO Login(nickname,senha) VALUES ('Al97','@ale#321');
+
+INSERT INTO Login(nickname,senha) VALUES ('GabRabbit','12345');
+
+
+
+INSERT INTO Consultor(nome,cpf,email,telefone,obs,bio,redeSocial,precoConsultoria,chavePix,idLogin)
+ VALUES ('Gabriel Coelho','999.000.999-00','gab@bol.com','(19) 5555-1234','Este campo é para notacao do ADM-Ms','estudante fatec','x.om/gab',440.56,'gab@bol.com',3);
+
+INSERT INTO Consultor_Habilidades (idConsultor,idHabilidade) VALUES (1,1),(1,2),(1,3);
