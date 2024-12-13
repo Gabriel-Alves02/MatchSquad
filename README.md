@@ -195,3 +195,5 @@ A partir de decisão dos integrantes do grupo, o coach será um elemento descont
 
 
 Encontre os arquivos do projeto já implementados em: Docs/FullStack/Homepage, Cadastros e Login
+
+A documentação desenvolvida em ES3 está no arquivo: Documentação-MatchSquad.pdf
