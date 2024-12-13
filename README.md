@@ -111,8 +111,8 @@ A aplicação terá 11 telas principais e outras telas informativas. São elas:
 
 Serão utilizadas as seguintes tecnologias para a etapa de desenvolvimento BackEnd:
 
-1)	Java;
-2)	Spring;
+1)	JavaScript;
+2)	Node.js;
 3)	VSCode;
 4)	GitHub;
 5)	Git cliente;
@@ -123,7 +123,11 @@ No início do projeto não está previsto o desenvolvimento de aplicação mobil
 
 # Banco de Dados
 
+Anteriormente:
 Prezando pela consistência e de maior integridade provida pelos bancos SQL, dado o uso de operações financeiras, será utilizado o Oracle como base de dados. O que confere maior segurança no armazenamento de segurança e rollback necessários em eventual mau funcionamento.
+
+Atualmente:
+SQLite 3.
 
 # Documento Principal
 
@@ -183,5 +187,8 @@ https://gabriel-alves02.github.io/MatchSquad-ADM/
 
 O protótipo se encontra na pasta Docs/Alta Fidelidade, a qual contêm pastas com os fluxos de cada ator do sistema, separadamente.
 
-# Apresentação final:
+# Apresentação final de ES2:
 https://www.youtube.com/watch?v=QVF9fPfuNxw
+
+# Observação:
+A partir de decisão dos integrantes do grupo, o coach será um elemento descontinuado, para que seja possível focar em outras áreas de interesse para o projeto.
