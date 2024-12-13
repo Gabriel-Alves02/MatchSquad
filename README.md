@@ -194,4 +194,4 @@ https://www.youtube.com/watch?v=QVF9fPfuNxw
 A partir de decisão dos integrantes do grupo, o coach será um elemento descontinuado, para que seja possível focar em outras áreas de interesse para o projeto.
 
 
-Encontre os arquivos do projeto já implementados [clicando aqui](./Docs/FullStack/Homepage,%Cadastros%e%Login)
+Encontre os arquivos do projeto já implementados [clicando aqui](./Docs/FullStack/Homepage,%Cadastros%e%Login/)
