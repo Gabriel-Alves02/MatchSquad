@@ -8,24 +8,26 @@ package MatchSquad {
     usecase "Agendar Reunião" as UC2
     usecase "Pagar Consultoria" as UC3
     usecase "Cancelar Agendamento" as UC4
-    usecase "Avaliar Reunião" as UC5
-    usecase "Trocar de Consultor" as UC6
+    usecase "Assistir Consultoria" as UC5
     usecase "Consultar Agendamentos" as UC7
-    usecase "Escolher Consultor" as UC8
+    usecase "Pesquisar Consultor" as UC8
+    usecase "Consultar Agendamento" as UC9
+    usecase "Avaliar Consultaria" as UC9
     usecase "Consultar Relatório de Reunião" as UC9
 
 }
 
+C --> UC9
 C --> UC1
+C --> UC2
+C --> UC3
+C --> UC5
 C --> UC7
 C --> UC8
-C --> UC9
 
-(UC4)<.up.(UC6): <<include>>
-(UC5).up.>(UC2): <<extend>>
-(UC6).up.>(UC2): <<extend>>
-(UC6)..up.>(UC7): <<extend>>
-(UC3)<.up.(UC2): <<include>>
-(UC2).up.>(UC8): <<extend>>
+
+
+(UC4).up.>(UC7): <<extend>>
+
 
 @enduml

@@ -3,28 +3,21 @@ left to right direction
 actor Admin as A
 
 package MatchSquad {
-    usecase "Bloquear Usuário" as UC1
-    usecase "Configurar Planos" as UC2
-    usecase "Acompanhar Faturamento" as UC3
-    usecase "Cancelar Consultoria" as UC4
-    usecase "Reembolsar Cliente" as UC5
-    usecase "Gerenciar Pagamentos" as UC6
-    usecase "Avaliação da Reunião" as UC7
-    usecase "Envio de Comunicados" as UC8
-    usecase "Gerenciar Usuários" as UC9
-    usecase "Exportar Dados" as UC10
+    usecase "Configurar Troca de Comissão" as UC1
+    usecase "Acompanhar Faturamento" as UC2
+    usecase "Exportar Dados" as UC3
+    usecase "Visualizar Dashboard" as UC4
+    usecase "Bloquear Usuário" as UC5
+    usecase "Envio de Comunicados" as UC6
+
 }
 
+A --> UC1
 A --> UC2
 A --> UC3
+A --> UC4
+A --> UC5
 A --> UC6
-A --> UC7
-A --> UC8
-A --> UC9
-A --> UC10
 
-(UC1).up.>(UC9): <<extend>>
-(UC4).up.>(UC9): <<extend>>
-(UC5)<.up.(UC4): <<include>>
 
 @enduml
