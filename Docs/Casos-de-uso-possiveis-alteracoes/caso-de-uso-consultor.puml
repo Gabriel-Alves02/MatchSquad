@@ -1,0 +1,40 @@
+@startuml "Consultor use-cases"
+
+left to right direction
+
+actor Consultor as CO
+
+package MatchSquad{
+usecase "Consultar Agendamentos" as UC1
+usecase "Confirmar Agendamento" as UC2
+usecase "Cancelar Agendamento" as UC3
+usecase "Editar Portifolio" as UC4
+usecase "Receber Pagamentos - API" as UC5
+usecase "Registrar Reunião" as UC6
+usecase "Prestar Consultoria" as UC7
+usecase "Alterar Preço da Consultoria/Reunião" as UC8
+usecase "Alterar Habilidade" as UC9
+usecase "Fazer login" as UC10
+usecase "Fazer logout" as UC11
+usecase "Cadastrar" as UC12
+usecase "Recuperar senha" as UC13
+}
+
+CO --> UC1
+CO --> UC4
+CO --> UC5
+CO --> UC6
+CO --> UC7
+CO --> UC10
+CO --> UC11
+CO --> UC12
+CO --> UC13
+
+
+(UC2).up.>(UC1) : <<extend>>
+(UC3).up.>(UC1) : <<extend>>
+
+(UC8)..up..>(UC4) : <<extend>>
+(UC9)..up..>(UC4) : <<extend>>
+
+@enduml
