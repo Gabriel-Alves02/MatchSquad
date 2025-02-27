@@ -1,46 +1,43 @@
-Alessandro Manrique Junior
-      
-Gabriel Alves Coelho
-      
-Guilherme de Freitas Diniz      
-
+### Integrantes
+Alessandro Manrique Junior   
+Gabriel Alves Coelho 
 Natã Siloe
-
 Pedro Henrique Aranha
-
 Victor Akira Maejima
 
-Prof. Glauco Todesco
+### Orientadora
+Alessandro Manrique Junior   
  
 # Síntese do Projeto
 
-O projeto da MatchSquad, trabalha com ideias. Inicialmente tem como objetivo de fomentar o encontro de interessados dos mais variados nichos do empreendedorismo, buscando unir empresários com novas ideias de negócio, e experts do ramo. Complementarmente, disponibilizar a venda de conteúdos dos consultores e coaches previamente apurados, para a maturação e melhoria contínua das ideias, como uma incubadora ou dar propulsão a um negócio ja em curso, como aceleradora.
+O projeto da MatchSquad tem como objetivo inicialmente fomentar o encontro de interessados dos mais variados nichos do empreendedorismo, de pequena a média empresa, buscando unir empresários com novas ideias ou dificuldades de negócio, e experts do ramo da consultoria desejada. 
+
 As dores dos usuários que serão trabalhadas estão embasadas nas dificuldades:
-* Perspectiva do Empreendedor
+* Perspectiva dos Clientes:
     * Dificuldade na procura de um profissinal qualificado;
-    * Falta de visões chave/insights para por em prática as ideias;
+    * Falta de informações ou insights para por em prática as ideias;
+    * Demora no encontro de profissional para ocasiões pontuais;
     * Confiabilidade na seleção de um profissinal;
-* Perspectiva dos Consultores e Coaches
+* Perspectiva dos Consultores:
     * Falha de Marketing Pessoal;
     * Oculto pela competitividade dos profissionais já estabelecidos no mercado;
     * Falta de informação de quais são os atuais projetos sendo trabalhados nas empresas;
-    * Cross Sell dos conteúdos educativos moldados ao campo de atuação que o empreendedor esta interessado em investir;
             
 # Nível de Dificuldade do Sistema Proposto
 
-# Quantidade de Tabelas, quais tabelas?
+## Quantidade de Tabelas, quais tabelas?
 
 A aplicação terá 8 tabelas. São elas:
 
-1) Tabela de instrutores
-2) Tabela de empreendedores
-3) Tabela de consultorias
-4) Tabela de reuniões
-5) Tabela de registros de reuniões
-6) Tabela de pagamentos
-7) Tabela de planos
-8) Tabela de habilidades
-
+1) Tabela de Cliente
+2) Tabela de Consultor
+3) Tabela de Reunião
+4) Tabela de Registro
+5) Tabela de Login
+6) Tabela de Cartão
+7) Tabela de Consultor_Habilidades
+8) Tabela de Cliente_Cartao
+---------------------------------------------------------------------------------------------
 # Quantidade de dores (Casos de Uso). Quais dores?
 
 As dores/casos de uso dos clientes da MatchSquad são:
