@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escolha de Coaches</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../style2.css">
+    <style>
+        .coach-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .coach-card img {
+            max-width: 100px;
+            border-radius: 50%;
+        }
+
+        .coach-card h5 {
+            margin-top: 10px;
+        }
+
+        .coach-card p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a href="menu.html"><img class="navbar-brand" src="assets/Logo.png" height="54.73px"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="" data-bs-target="#exampleModal2" data-bs-toggle="modal">Contatar a
+                        plataforma</a>
+                </li>
+                <li class="nav-item">
+                    <img src="../assets/1.jpg" class="profile-nav">
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2 class="mb-4">Escolha seu Coach</h2>
+        <!-- Barra de Pesquisa -->
+        <div class="input-group mb-4">
+            <input type="text" class="form-control" placeholder="Insira palavras chaves ou nomes de coaches">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button">Buscar</button>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Coach 1 -->
+            <div class="col-md-4">
+                <div class="coach-card">
+                    <img src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png" alt="Coach 1">
+                    <h5>Manoela Ferreira</h5>
+                    <p>Marketing Digital e Finanças</p>
+                    <a href="perfilcoach.html" class="btn btn-primary">Ver Perfil</a>
+                </div>
+            </div>
+            <!-- Coach 2 -->
+            <div class="col-md-4">
+                <div class="coach-card">
+                    <img src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png" alt="Coach 2">
+                    <h5>João Silva</h5>
+                    <p>Gestão de Projetos</p>
+                    <a href="perfil.html" class="btn btn-primary">Ver Perfil</a>
+                </div>
+            </div>
+            <!-- Coach 3 -->
+            <div class="col-md-4">
+                <div class="coach-card">
+                    <img src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png" alt="Coach 3">
+                    <h5>Ana Pereira</h5>
+                    <p>Desenvolvimento Pessoal</p>
+                    <a href="perfil.html" class="btn btn-primary">Ver Perfil</a>
+                </div>
+            </div>
+            <!-- Coach 4 -->
+            <div class="col-md-4">
+                <div class="coach-card">
+                    <img src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png" alt="Coach 4">
+                    <h5>Carlos Lima</h5>
+                    <p>Empreendedorismo</p>
+                    <a href="perfil.html" class="btn btn-primary">Ver Perfil</a>
+                </div>
+            </div>
+            <!-- Coach 5 -->
+            <div class="col-md-4">
+                <div class="coach-card">
+                    <img src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png" alt="Coach 5">
+                    <h5>Fernanda Costa</h5>
+                    <p>Planejamento Estratégico</p>
+                    <a href="perfil.html" class="btn btn-primary">Ver Perfil</a>
+                </div>
+            </div>
+        </div>
+        <!-- Paginação -->
+        <nav aria-label="Page navigation example" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">...</a></li>
+                <li class="page-item"><a class="page-link" href="#">99</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Próximo</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Footer -->
+    <footer style="background-color: #cbe2f8;">
+        <div class="container-fluid text-center margin">
+            <div class="row">
+                <div class="col-lg-4">
+                    <br>
+                    <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Politicas de Privacidade
+                    </a>
+                    <br> <br>
+                    <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Termos de Uso
+                    </a>
+                    <br> <br>
+                    <a href="" data-bs-target="#exampleModal2" data-bs-toggle="modal">
+                        Ajuda
+                    </a>
+                    <br>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Leia com atenção</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p style="text-align: justify; text-justify: inter-word;">
+                                        <!-- Conteúdo da política de privacidade -->
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Contato nosso representante:</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p style="text-align: justify; text-justify: inter-word;">
+                                    <p class="lead"> Como posso lhe ajudar?</p>
+                                    📱 (15) 99150-1628
+                                    <br>
+                                    📧 billportoes@matchsquad.com.br
+                                    <br><textarea name="" id=""></textarea><br>
+                                    <button class="btn btn-outline-success" type="submit">➤</button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <br>
+                    <h4>Contato</h4>
+                    <p>
+                        (15) 99170-7070 📱
+                    </p>
+                    <br>
+                    <h4>Endereço</h4>
+                    <a target="_blank"
+                        href="https://www.google.com/maps/@-23.4826573,-47.4260076,3a,75y,8.66h,90.1t/data=!3m6!1e1!3m4!1s0jnFsJazevJtZaqBOyuL5Q!2e0!7i13312!8i6656?entry=ttu">Av.
+                        Engenheiro Carlos Reinaldo Mendes, 2015<br>Alto da Boa Vista - Sorocaba/SP</a>
+                    <br><br>
+                </div>
+                <div class="col-lg-4" style="align-items: center;">
+                    <br>
+                    <table>
+                        <tr>
+                            <th>⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</th>
+                            <th style="text-align: center;"> <a href="https://twitter.com/" class="fa fa-twitter"
+                                    target="_blank"></a></th>
+                            <th style="text-align: center;"> <a href="https://facebook.com/" class="fa fa-facebook"
+                                    target="_blank"></a></th>
+                            <th style="text-align: center;"> <a href="https://instagram.com/"
+                                    class="fa fa-instagram" target="_blank"></a></th>
+                            <th style="text-align: center;"> <a href="https://linkedin.com/"
+                                    class="fa fa-linkedin" target="_blank"></a></th>
+                            <th style="text-align: center;"> <a href="https://github.com/" class="fa fa-github"
+                                    target="_blank"></a></th>
+                            <th style="text-align: center;"> <a href="https://youtube.com/"
+                                    class="fa fa-youtube" target="_blank"></a></th>
+                            <th style="text-align: center;"> <a href="https://tumblr.com/"
+                                    class="fa fa-tumblr" target="_blank"></a></th>
+                            <th>⠀</th>
+                        </tr>
+                    </table>
+                    <br><br>
+                    <p>
+                        <a target="_blank" href="https://github.com/Gabriel-Alves02/MatchSquad">Matchsquad</a> 2024 -
+                            Fatec (Sorocaba/Sao Paulo)
+                    </p>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+</body>
+
+</html>
