@@ -1,10 +1,10 @@
-import { openDatabase } from "../database.js";
+import { query } from "../database.js";
 
 export const Login = async (request, response, next) => {
 
     const { nickname, senha } = request.body;
 
-    const DB = await openDatabase();
+    const DB = await query();
 
     const cliente = await DB.get(`SELECT * FROM Login WHERE nickname = ? AND senha = ?;`, [nickname, senha]);
 

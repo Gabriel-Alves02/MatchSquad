@@ -1,11 +1,11 @@
-import { openDatabase } from "../database.js";
+import { query } from "../database.js";
 
 
 export const CadastrarConsultor = async (request, response, next) => {
 
     const { nome, cpf, email, telefone, nickname, senha, habilidades } = request.body;
 
-    const DB = await openDatabase();
+    const DB = await query();
 
     const consultores = await DB.all(`SELECT * FROM Consultor;`);
 
