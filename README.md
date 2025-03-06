@@ -1,9 +1,10 @@
 ### Integrantes
-Alessandro Manrique Junior   
-Gabriel Alves Coelho 
+Alessandro Manrique Junior
+Gabriel Alves Coelho
 Natã Siloe
 Pedro Henrique Aranha
 Victor Akira Maejima
+
 
 ### Orientadora
 Denilce de Almeida Oliveira Veloso 
