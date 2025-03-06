@@ -1,12 +1,19 @@
 ### Integrantes
-Alessandro Manrique Junior   
-Gabriel Alves Coelho 
+
+Alessandro Manrique Junior
+
+Gabriel Alves Coelho
+
 Natã Siloe
+
 Pedro Henrique Aranha
+
 Victor Akira Maejima
 
+
+
 ### Orientadora
-Alessandro Manrique Junior   
+Denilce de Almeida Oliveira Veloso 
  
 # Síntese do Projeto
 
@@ -37,7 +44,9 @@ A aplicação terá 8 tabelas. São elas:
 6) Tabela de Cartão
 7) Tabela de Consultor_Habilidades
 8) Tabela de Cliente_Cartao
----------------------------------------------------------------------------------------------
+
+==============================ALTERAR A PARTIR DAQUI =========================
+
 # Quantidade de dores (Casos de Uso). Quais dores?
 
 As dores/casos de uso dos clientes da MatchSquad são:
