@@ -1,0 +1,16 @@
+# .gitignore
+# Dependências
+node_modules/
+
+# Variáveis de ambiente
+.env
+
+# Arquivos do IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Arquivos temporários
+*.tmp
