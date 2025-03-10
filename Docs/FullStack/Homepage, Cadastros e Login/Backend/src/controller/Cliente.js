@@ -1,28 +1,64 @@
-import { query } from "../database.js";
+import { pool } from "../database.js";
 
 export const CadastrarCliente = async (request, response, next) => {
 
-    const { nome, cpf_cnpj, email, telefone, nickname, senha } = request.body;
+    const connection = await pool.getConnection();
 
-    const DB = await query();
+    try {
 
-    const clientes = await DB.all(`SELECT * FROM Cliente;`);
+        const { nome, cpf_cnpj, email, telefone, nickname, senha } = request.body;
 
-    const clienteRepetido = clientes.find(cliente => cliente.cpf_cnpj == cpf_cnpj);
+        if (!nome || !cpf_cnpj || !email || !telefone || !nickname || !senha) {
+            return response.status(400).json({
+                success: false,
+                message: "Todos os campos são obrigatórios"
+            });
+        }
 
-    if (clienteRepetido) {
-        DB.close();
-        return response.status(400).send("Usuário já cadastrado!");
+        await connection.beginTransaction();
+
+        const [clienteExistente] = await connection.query(
+            `SELECT idCliente FROM Cliente WHERE cpf_cnpj = ?;`,
+            [cpf_cnpj]
+        );
+
+        if (clienteExistente.length > 0) {
+            await connection.rollback();
+            return response.status(409).json({
+                success: false,
+                message: "CPF/CNPJ já cadastrado"
+            });
+        }
+
+        const [resultLogin] = await connection.query(
+            `INSERT INTO Login (nickname, senha) VALUES (?, ?);`,
+            [nickname, senha]
+        );
+
+        
+        const [result] = await connection.query(
+            `INSERT INTO Cliente 
+            (nome, cpf_cnpj, email, telefone, idLogin) 
+            VALUES (?, ?, ?, ?, ?);`,
+            [nome, cpf_cnpj, email, telefone,  resultLogin.insertId]
+        );
+
+        await connection.commit();
+
+        response.status(201).json({
+            success: true,
+            id: result.insertId,
+            message: "Cadastro realizado com sucesso"
+        });
+
+    } catch (error) {
+        console.error('Erro no cadastro do cliente:', error);
+        return response.status(500).json({
+            success: false,
+            message: "Erro interno do servidor"
+        });
+    }finally {
+        connection.release();
     }
-
-    const addLogin = await DB.run(`INSERT INTO Login(nickname,senha) VALUES (?,?);`, [nickname, senha]);
-
-    const addCliente = await DB.run(`INSERT INTO Cliente(nome,cpf_cnpj,email,telefone,idLogin) VALUES (?,?,?,?,?);`, [nome, cpf_cnpj, email, telefone, addLogin.lastID]);
-
-    
-
-    DB.close();
-
-    response.status(200).send(`Cadastrado com sucesso! ${addCliente}`);
 
 };

@@ -1,31 +1,76 @@
-import { query } from "../database.js";
+import { pool } from "../database.js";
 
 
 export const CadastrarConsultor = async (request, response, next) => {
 
-    const { nome, cpf, email, telefone, nickname, senha, habilidades } = request.body;
+    const connection = await pool.getConnection();
 
-    const DB = await query();
+    try {
 
-    const consultores = await DB.all(`SELECT * FROM Consultor;`);
+        const { nome, cpf, email, telefone, nickname, senha, habilidades } = request.body;
 
-    const consultorRepetido = consultores.find(consultor => consultor.cpf == cpf);
+        if (!nome || !cpf || !email || !telefone || !nickname || !senha || !habilidades) {
+            return response.status(400).json({
+                success: false,
+                message: "Todos os campos são obrigatórios"
+            });
+        }
 
-    if (consultorRepetido) {
-        DB.close();
-        return response.status(400).send("Usuário já cadastrado!");
+        await connection.beginTransaction();
+
+        const [consultorExistente] = await connection.query(
+            `SELECT idConsultor FROM Consultor WHERE cpf = ?;`, [cpf]
+        );
+
+        if (consultorExistente.length > 0) {
+            await connection.rollback();
+            return response.status(409).json({
+                success: false,
+                message: "CPF já cadastrado"
+            });
+        }
+
+        const [resultLogin] = await connection.query(
+            `INSERT INTO Login (nickname, senha) VALUES (?, ?);`,
+            [nickname, senha]
+        );
+
+        
+        const [consultorResult] = await connection.query(
+            `INSERT INTO Consultor 
+            (nome, cpf, email, telefone, idLogin, idHabilidade) 
+            VALUES (?, ?, ?, ?, ?, ?);`,
+            [nome, cpf, email, telefone,  resultLogin.insertId, 1]
+            //NECESSARIO IMPLEMENTAR INSERT NA TABELA consultor_habilidades, para >= 1 habilidade
+        );
+
+        const insertHabilidades = habilidades.map(async (idHabilidade) => {
+            await connection.query(
+                `INSERT INTO Consultor_Habilidades 
+                (idConsultor, idHabilidade) 
+                VALUES (?, ?)`,
+                [consultorResult.insertId, idHabilidade]
+            );
+        });
+
+        await Promise.all(insertHabilidades);
+        await connection.commit();
+
+        return response.status(201).json({
+            success: true,
+            id: consultorResult.insertId,
+            message: "Cadastro realizado com sucesso"
+        });
+
+    } catch (error) {
+        await connection.rollback();
+        console.error('Erro no cadastro:', error);
+        return res.status(500).json({
+            success: false,
+            message: "Erro interno do servidor"
+        });
+    } finally {
+        connection.release();
     }
-
-    const addLogin = await DB.run(`INSERT INTO Login(nickname,senha) VALUES (?,?);`, [nickname, senha]);
-
-    const addConsultor = await DB.run(`INSERT INTO Consultor(nome,cpf,email,telefone,idLogin) VALUES (?,?,?,?,?);`, [nome, cpf, email, telefone,addLogin.lastID]);
-    
-    for (const element of habilidades) {
-        await DB.run(`INSERT INTO Consultor_Habilidades (idConsultor,idHabilidade) VALUES (?, ?);`, [addConsultor.lastID,element]);
-    }
-
-    DB.close();
-
-    response.status(200).send("Cadastrado com sucesso!");
 
 };

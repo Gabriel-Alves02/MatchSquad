@@ -1,9 +1,10 @@
 import mysql from 'mysql2/promise';
 import 'dotenv/config';
 
-// Cria um pool de conexões (recomendado para aplicações web)
+
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
@@ -12,12 +13,16 @@ const pool = mysql.createPool({
     queueLimit: 0
 });
 
-export const query = async (sql, params) => {
-    const connection = await pool.getConnection();
+(async () => {
     try {
-        const [results] = await connection.query(sql, params);
-        return results;
-    } finally {
+        const connection = await pool.getConnection();
+        console.log("IN");
         connection.release();
+        
+    } catch (error) {
+        console.error("Erro de conexão: ", error);
+        process.exit(1);
     }
-};
+})();
+
+export { pool };
