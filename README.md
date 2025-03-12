@@ -177,13 +177,13 @@ https://www.figma.com/file/2fs2UONimMNqprCcBRt3nG/FlowOverview?type=design&node-
 ### Fluxo do Homepage
 https://almanriquejr.github.io/Matchsquad_Homepage/
 
-### Fluxo do Coach
+### Fluxo do Coach (Descontinuado)
 https://gabriel-alves02.github.io/MatchSquad-Coach/
 
 ### Fluxo do Consultor
 https://almanriquejr.github.io/MatchSquad_Consultor/index.html
 
-### Fluxo do Empreendedor
+### Fluxo do Empreendedor (Cliente)
 https://gabriel-alves02.github.io/MatchSquad-Empreendedor/
                     
 https://gabriel-alves02.github.io/Matchsquad-Emp/
