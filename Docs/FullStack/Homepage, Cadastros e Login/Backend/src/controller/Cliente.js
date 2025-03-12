@@ -1,4 +1,5 @@
 import { pool } from "../database.js";
+import { enviarParaBlob } from "../azureBlob.js";
 
 export const CadastrarCliente = async (request, response, next) => {
 
@@ -35,15 +36,31 @@ export const CadastrarCliente = async (request, response, next) => {
             [nickname, senha]
         );
 
-        
+
         const [result] = await connection.query(
             `INSERT INTO Cliente 
             (nome, cpf_cnpj, email, telefone, idLogin) 
             VALUES (?, ?, ?, ?, ?);`,
-            [nome, cpf_cnpj, email, telefone,  resultLogin.insertId]
+            [nome, cpf_cnpj, email, telefone, resultLogin.insertId]
         );
 
         await connection.commit();
+
+        // Criar um objeto JSON com os dados do cliente
+        const dadosCliente = {
+            id: result.insertId,
+            nome,
+            cpf_cnpj,
+            email,
+            telefone,
+            nickname
+        };
+
+        // Criar um nome único para o arquivo (ex: cliente_123.json)
+        const nomeArquivo = `cliente_${result.insertId}.json`;
+
+        // Enviar os dados para o Azure Blob Storage
+        await enviarParaBlob(dadosCliente, nomeArquivo);
 
         response.status(201).json({
             success: true,
@@ -57,7 +74,7 @@ export const CadastrarCliente = async (request, response, next) => {
             success: false,
             message: "Erro interno do servidor"
         });
-    }finally {
+    } finally {
         connection.release();
     }
 

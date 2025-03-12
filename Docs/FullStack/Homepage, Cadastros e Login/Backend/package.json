@@ -4,13 +4,14 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-     "dev": "nodemon ./src/index.js"
+    "dev": "nodemon ./src/index.js"
   },
   "keywords": [],
   "author": "Matchsquad",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@azure/storage-blob": "^12.26.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.0",
