@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Matchsquad</title>
     <link rel="icon" href="../assets/Icon.png  " type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -11,65 +12,144 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <link rel="stylesheet" href="../assets/style.css">
-    <script src="../controller/CadCliente.js" type="module"></script>
+    <script src="../controller/QualConsultor.js" type="module"></script>
+
 </head>
 
-<body id="bodyCad">
-    <!-- Navbar -->
+<body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a href="../index.html"><img class="navbar-brand" src="../assets/Logo.png"></img></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="FAQ.html">Como Funciona? </a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Planos
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Bronze</a></li>
-                        <li><a class="dropdown-item" href="#">Prata</a></li>
-                        <li><a class="dropdown-item" href="#">Ouro</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="Login.html">Login</a>
-                </li>
-            </ul>
+        <a href="menu.html"><img class="navbar-brand" src="../assets/Logo.png" height="54.73px"></a>
+        <div class="ml-auto">
+            <a href="configuracoes.html" class="btn btn-outline-primary mr-2">Configurações</a>
+            <a href="logout.html" class="btn btn-outline-danger">Deslogar</a>
         </div>
     </nav>
+    <br>
 
-    <div class="container containerCad">
-        <br>
-        <h1>Cadastro de Cliente</h1>
-        <br>
-        <form id="customerForm">
-
-            <input class="formfill" type="text" id="nome" placeholder="Nome" required>
-            <br><br>
-            <input class="formfill" type="text" id="cpf_cnpj" placeholder="CPF | CNPJ" required>
-            <br><br>
-            <input class="formfill" type="email" id="email" placeholder="Email" required>
-            <br><br>
-            <input class="formfill" type="tel" id="telefone" placeholder="Telefone" required>
-            <br><br>
-            <input class="formfill" type="text" id="nickname" placeholder="Nickname" required>
-            <br><br>
-            <input class="formfill" type="password" id="senha" placeholder="Senha" required>
-            <br><br>
-            <button class="btn btn-outline-success" type="submit">Cadastrar</button>
+    <div class="container mt-5">
+        <h1 class="text-primary">Bem-vindo a Matchsquad!</h1>
+        <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Qual o seu interesse?" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">🔎</button>
         </form>
-
+        </section>
     </div>
 
-    <h2 class="lead" style="text-align: center;"> ↓</h2>
+    <div class="flex-container-title-profissional">
+        <p class="profissional-title">Conheça nossos profissionais</p>
+    </div>
+
+    <div class="container mt-5" id="consultores-grid">
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <img src="../assets/2.jpg" class="img-box" alt="">
+                        <br><br>
+                        <h5 class="card-title">Dave</h5>
+                        <details class="card-text">
+                            <summary>Gestao, Generalista</summary>
+                            <span>Especialista em <i>pspspspspsps</i>. Campeao de brigas em telhados</span>
+                        </details>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <img src="../assets/8.jpg" class="img-box" alt="">
+                        <br><br>
+                        <h5 class="card-title">Aroldo Marcel Otto</h5>
+                        <details class="card-text">
+                            <summary>Financas</summary>
+                            <span>Experiencia em trade de bitcoins e sites de apostas</span>
+                        </details>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <img src="../assets/6.jpg" class="img-box" alt="">
+                        <br><br>
+                        <h5 class="card-title"> Misato Hanabi</h5>
+                        <details class="card-text">
+                            <summary>T.I., Gestão</summary>
+                            <span>Programadora fullstack, criadora do primeiro voo tripulado ao Sol</span>
+                        </details>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <img src="../assets/4.jpg" class="img-box" alt="">
+                        <br><br>
+                        <h5 class="card-title">Jorge</h5>
+                        <details class="card-text">
+                            <summary>Guru</summary>
+                            <span>Boa companhia para churrasco. Ganhou Nobel da Paz</span>
+                        </details>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <img src="../assets/5.jpg" class="img-box" alt="">
+                        <br><br>
+                        <h5 class="card-title">Carlos Readr Acrobbat</h5>
+                        <details class="card-text">
+                            <summary>Editoria</summary>
+                            <span>Analista de livros best-seller, mantenedor do blog MelhorLeitura.</span>
+                        </details>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <img src="../assets/7.jpg" class="img-box" alt="">
+                        <br><br>
+                        <h5 class="card-title">Adalberto Dicaspio</h5>
+                        <details class="card-text">
+                            <summary>Promoter</summary>
+                            <span>Alavanca vendas em famosa empresa de bebidas gaseificadas</span>
+                        </details>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+
+    <div id="modal-agendamento" class="modal-agenda">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <h2 id="modal-title"></h2>
+            <label>Escolha a data:</label>
+            <input type="date" id="data-agendamento">
+            <br>
+            <label>Período:</label>
+            <select id="periodo">
+                <option value="manha">Manhã</option>
+                <option value="tarde">Tarde</option>
+            </select>
+            <br><br>
+            <button onclick="confirmarAgendamento()">Confirmar</button>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -77,8 +157,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-
-
 </body>
 
 <footer style="background-color: #cbe2f8;">
@@ -223,8 +301,10 @@
                 </table>
 
                 <br><br>
-                <p><a target="_blank" href="https://github.com/Gabriel-Alves02/MatchSquad">Matchsquad</a> 2024 - Fatec
-                    (Sorocaba/Sao Paulo)</p>
+                <p>
+                    <atarget="_blank" href="https://github.com/Gabriel-Alves02/MatchSquad">Matchsquad</atarget=> 2024 -
+                        Fatec (Sorocaba/Sao Paulo)
+                </p>
                 <br>
             </div>
         </div>

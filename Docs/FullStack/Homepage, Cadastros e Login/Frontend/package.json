@@ -11,6 +11,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "browser-sync": "^3.0.3"
+    "fullcalendar": "^6.1.15"
   }
 }
