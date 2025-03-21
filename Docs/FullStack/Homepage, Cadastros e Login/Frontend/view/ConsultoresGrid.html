@@ -23,7 +23,7 @@
         <a href="menu.html"><img class="navbar-brand" src="../assets/Logo.png" height="54.73px"></a>
         <div class="ml-auto">
             <a href="configuracoes.html" class="btn btn-outline-primary mr-2">Configurações</a>
-            <a href="logout.html" class="btn btn-outline-danger">Deslogar</a>
+            <a href="../view/Login.html" class="btn btn-outline-danger">Deslogar</a>
         </div>
     </nav>
     <br>
@@ -31,7 +31,7 @@
     <div class="container mt-5">
         <h1 class="text-primary">Bem-vindo a Matchsquad!</h1>
         <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Qual o seu interesse?" aria-label="Search">
+            <input class="form-control me-2" type="search" placeholder="Qual o seu interesse?" aria-label="Search" id="searchBar">
             <button class="btn btn-outline-success" type="submit">🔎</button>
         </form>
         </section>
@@ -138,13 +138,13 @@
         <div class="modal-content">
             <span class="close" onclick="fecharModal()">&times;</span>
             <h2 id="modal-title"></h2>
-            <label>Escolha a data:</label>
+            <label for="data-agendamento">Escolha a data:</label>
             <input type="date" id="data-agendamento">
             <br>
-            <label>Período:</label>
+            <label for="periodo">Período:</label>
             <select id="periodo">
-                <option value="manha">Manhã</option>
-                <option value="tarde">Tarde</option>
+                <option value="manha">Manhã (Até às 12h)</option>
+                <option value="tarde">Tarde (Após às 12h)</option>
             </select>
             <br><br>
             <button onclick="confirmarAgendamento()">Confirmar</button>
@@ -252,7 +252,7 @@
                                     📱 (15) 99150-1628
                                     <br>
                                     📧 billportoes@matchsquad.com.br
-                                    <br><textarea name="" id=""></textarea><br>
+                                    <br><textarea id="msg"></textarea><br>
                                     <button class="btn btn-outline-success" type="submit">➤</button>
                                     </p>
                                 </div>
