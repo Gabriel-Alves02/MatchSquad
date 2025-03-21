@@ -18,7 +18,6 @@ form.addEventListener('click', (event) => {
 
     if (card) {
         const nomeConsultor = card.querySelector('.card-title')?.innerText.trim();
-    
         abrirModalAgendamento(nomeConsultor);
     }
 });
