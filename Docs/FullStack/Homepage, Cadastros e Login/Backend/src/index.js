@@ -3,6 +3,7 @@ import cors from 'cors';
 import { CadastrarCliente } from './controller/Cliente.js';
 import { Login } from './controller/LoginBackend.js';
 import { CadastrarConsultor } from './controller/Consultor.js';
+import { RegistrarPedido } from './controller/PedidoAgendamento.js';
 
 const app = express();
 
@@ -19,6 +20,8 @@ app.use(express.json()); // exp interpreta txt por padrão, aux p/ o body ser li
 app.post('/clientes/login', Login);
 app.post('/clientes/cadCliente', CadastrarCliente);
 app.post('/clientes/cadConsultor', CadastrarConsultor);
+
+app.post('/clientes/pedidoAgendamento', RegistrarPedido);
 
 // console.log("Banco de Dados:", process.env.DB_NAME);
 // console.log("Rodando na porta:", process.env.PORT);

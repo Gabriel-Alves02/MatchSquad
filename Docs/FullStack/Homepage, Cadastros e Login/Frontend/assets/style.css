@@ -33,6 +33,11 @@ h1{
     background-color: #1573E5;
 }
 
+.btnConsultor {
+    color: #1573E5;
+    background-color: #d2d7df;
+}
+
 .navbar-light{
     color: #007bff;
 }
@@ -63,8 +68,8 @@ h1{
 }
 
 .cx_Top-Right{
-    text-align: right;
-    margin-right: 35px;
+    text-align: left;
+    margin-right: 40px;
     margin-bottom: 0px;
     padding-bottom: 0px;
     border-bottom: 0px;
@@ -191,4 +196,13 @@ a:active {
     padding: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
+}
+
+.details{
+    cursor: pointer;
+    font-size: smaller;
+    color: white;
+    margin-left: 10rem;
+    background-color: black;
+    display: inline-block;
 }
