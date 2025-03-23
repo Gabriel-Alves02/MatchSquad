@@ -1,16 +1,33 @@
 import { getUser } from "../service/req_respManager.js";
+import { getUserConsultor } from "../service/req_respManager.js";
+import { userType } from "../service/req_respManager.js";
 
 const form = document.getElementById('loginForm');
 
-
-form.addEventListener('submit', (event) => {
+form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    let objLogin = {
-        nickname: document.getElementById('nick').value,
-        senha: document.getElementById('senha').value
-    }
+    let username = document.getElementById('nick').value;
 
-    getUser(objLogin);
+    try {
+        const test = await userType(username);
+
+        let objLogin = {
+            nickname: username,
+            senha: document.getElementById('senha').value
+        }
+    
+        
+        if (test.message === "1") {
+            getUser(objLogin);
+        } else if (test.message === "0") {
+            getUserConsultor(objLogin);
+        }else {
+            throw new Error('Erro no login.js');
+        }
+        
+    } catch (error) {
+        console.error('Erro no login.js:', error);
+    }
 
 });

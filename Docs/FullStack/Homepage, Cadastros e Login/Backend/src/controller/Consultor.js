@@ -38,10 +38,9 @@ export const CadastrarConsultor = async (request, response, next) => {
         
         const [consultorResult] = await connection.query(
             `INSERT INTO Consultor 
-            (nome, cpf, email, telefone, idLogin, idHabilidade) 
-            VALUES (?, ?, ?, ?, ?, ?);`,
-            [nome, cpf, email, telefone,  resultLogin.insertId, 1]
-            //NECESSARIO IMPLEMENTAR INSERT NA TABELA consultor_habilidades, para >= 1 habilidade
+            (nome, cpf, email, telefone, idLogin) 
+            VALUES (?, ?, ?, ?, ?);`,
+            [nome, cpf, email, telefone,  resultLogin.insertId]
         );
 
         const insertHabilidades = habilidades.map(async (idHabilidade) => {

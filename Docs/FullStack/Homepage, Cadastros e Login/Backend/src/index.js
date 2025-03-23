@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { CadastrarCliente } from './controller/Cliente.js';
 import { Login } from './controller/LoginBackend.js';
+import { UserType } from './controller/LoginBackend.js';
 import { CadastrarConsultor } from './controller/Consultor.js';
 import { RegistrarPedido } from './controller/PedidoAgendamento.js';
 
@@ -17,9 +18,11 @@ app.use(express.json()); // exp interpreta txt por padrão, aux p/ o body ser li
                             // Habilita parsing de JSON no body das requisições
 
 //ENDPOINTS
-app.post('/clientes/login', Login);
 app.post('/clientes/cadCliente', CadastrarCliente);
 app.post('/clientes/cadConsultor', CadastrarConsultor);
+app.post('/checks', UserType );
+app.post('/clientes/login', Login);
+app.post('/consultores/login', Login);
 
 app.post('/clientes/pedidoAgendamento', RegistrarPedido);
 
