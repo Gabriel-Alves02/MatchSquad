@@ -9,7 +9,7 @@ import { RegistrarPedido } from './controller/PedidoAgendamento.js';
 const app = express();
 
 app.use(cors({
-    origin: "*", // Pode ser ajustado para permitir apenas domínios específicos
+    origin: "*", // Pode ser ajustado para permitir apenas domínios específicos exemplo http://127.0.0.1:8000
     methods: ["GET", "PUT", "POST", "DELETE"],
     allowedHeaders: ["X-PINGOTHER", "Content-Type", "Authorization"]
 }));
