@@ -4,7 +4,7 @@ import { CadastrarCliente } from './controller/Cliente.js';
 import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
 import { CadastrarConsultor } from './controller/Consultor.js';
-import { RegistrarPedido } from './controller/PedidoAgendamento.js';
+import { RegistrarAgendamento } from './controller/PedidoAgendamento.js';
 
 const app = express();
 
@@ -23,8 +23,7 @@ app.post('/clientes/cadConsultor', CadastrarConsultor);
 app.post('/checks', UserType );
 app.post('/clientes/login', Login);
 app.post('/consultores/login', Login);
-
-app.post('/clientes/pedidoAgendamento', RegistrarPedido);
+app.post('/clientes/agendamento', RegistrarAgendamento);
 
 // console.log("Banco de Dados:", process.env.DB_NAME);
 // console.log("Rodando na porta:", process.env.PORT);

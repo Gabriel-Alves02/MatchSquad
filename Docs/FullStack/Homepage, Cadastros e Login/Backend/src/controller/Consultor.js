@@ -64,7 +64,7 @@ export const CadastrarConsultor = async (request, response, next) => {
     } catch (error) {
         await connection.rollback();
         console.error('Erro no cadastro:', error);
-        return res.status(500).json({
+        return response.status(500).json({
             success: false,
             message: "Erro interno do servidor"
         });

@@ -55,7 +55,7 @@ export const userType = async (info) => {
 };
 
 
-//ESSE GET USER É SÓ PARA CLIENTES, TERIA QUE FAZER UM PARA CONSTRUTOR TAMBEM
+
 export const getUser = async (objUser) => {
     return await fetch(url_cliente + '/login', {
         method: "POST",
@@ -102,6 +102,25 @@ export const Registrar = async (pedido) => {
         if (response.status >= 200 && response.status < 300) {
             alert("Cadastro realizado com sucesso. Enviado e-mail para confirmação enviado");
         }       
+        else {
+            console.log(`Erro do servidor: ${response.status}`);
+        }
+    })
+};
+
+export const Agendar = async (Pedido) => {
+
+    return await fetch(url_cliente + '/agendamento', {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(Pedido)
+    }).then((response) => {
+        if (response.status >= 200 && response.status < 300) {
+            alert("Solicitação de agendamento enviado com sucesso!");
+        } 
+        // else if (response.status === 409){       ELSE IF SE O USUARIO JA AGENDOU COM ESSE CONSULTOR
+        //     alert("Usuário já cadastrado");
+        // }    
         else {
             console.log(`Erro do servidor: ${response.status}`);
         }

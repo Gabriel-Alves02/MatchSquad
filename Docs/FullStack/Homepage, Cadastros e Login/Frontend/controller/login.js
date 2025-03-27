@@ -2,6 +2,8 @@ import { getUser } from "../service/req_respManager.js";
 import { getUserConsultor } from "../service/req_respManager.js";
 import { userType } from "../service/req_respManager.js";
 
+import { getUserId } from './SysFx.js';
+
 const form = document.getElementById('loginForm');
 
 form.addEventListener('submit', async (event) => {
@@ -15,10 +17,11 @@ form.addEventListener('submit', async (event) => {
         let objLogin = {
             nickname: username,
             senha: document.getElementById('senha').value
-        }
-    
+        };
         
         if (test.message === "1") {
+            localStorage.setItem("userId", test.user);
+            //console.log(getUserId() + "  " + test.user);
             getUser(objLogin);
         } else if (test.message === "0") {
             getUserConsultor(objLogin);

@@ -47,7 +47,7 @@
 
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
-                    <div class="card-body">
+                    <div class="card-body" data-value="1">
                         <img src="../assets/2.jpg" class="img-box" alt="">
                         <br><br>
                         <h5 class="card-title">Dave</h5>
@@ -61,10 +61,10 @@
 
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
-                    <div class="card-body">
+                    <div class="card-body" data-value="2">
                         <img src="../assets/8.jpg" class="img-box" alt="">
                         <br><br>
-                        <h5 class="card-title">Aroldo Marcel Otto</h5>
+                        <h5 class="card-title">Aroldo</h5>
                         <details class="card-text">
                             <summary>Financas</summary>
                             <span>Experiencia em trade de bitcoins e sites de apostas</span>
@@ -76,10 +76,10 @@
 
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
-                    <div class="card-body">
+                    <div class="card-body" data-value="3">
                         <img src="../assets/6.jpg" class="img-box" alt="">
                         <br><br>
-                        <h5 class="card-title"> Misato Hanabi</h5>
+                        <h5 class="card-title"> Misato</h5>
                         <details class="card-text">
                             <summary>T.I., Gestão</summary>
                             <span>Programadora fullstack, criadora do primeiro voo tripulado ao Sol</span>
@@ -107,7 +107,7 @@
                     <div class="card-body">
                         <img src="../assets/5.jpg" class="img-box" alt="">
                         <br><br>
-                        <h5 class="card-title">Carlos Readr Acrobbat</h5>
+                        <h5 class="card-title">Carlos</h5>
                         <details class="card-text">
                             <summary>Editoria</summary>
                             <span>Analista de livros best-seller, mantenedor do blog MelhorLeitura.</span>
@@ -121,7 +121,7 @@
                     <div class="card-body">
                         <img src="../assets/7.jpg" class="img-box" alt="">
                         <br><br>
-                        <h5 class="card-title">Adalberto Dicaspio</h5>
+                        <h5 class="card-title">Adalberto</h5>
                         <details class="card-text">
                             <summary>Promoter</summary>
                             <span>Alavanca vendas em famosa empresa de bebidas gaseificadas</span>
@@ -146,6 +146,9 @@
                 <option value="manha">Manhã (Até às 12h)</option>
                 <option value="tarde">Tarde (Após às 12h)</option>
             </select>
+            <label><input type="radio" name="tipo" value="online" checked> Online</label>
+            <label><input type="radio" name="tipo" value="presencial"> Presencial</label>
+            <textarea id="infoAdiantada"></textarea>
             <br><br>
             <button onclick="confirmarAgendamento()">Confirmar</button>
         </div>

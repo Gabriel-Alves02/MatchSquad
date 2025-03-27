@@ -46,18 +46,14 @@ export const CadastrarCliente = async (request, response, next) => {
 
         await connection.commit();
 
-        // Criar um objeto JSON com os dados do cliente
+        // Criar um objeto JSON com os dados do cliente e A IMAGEM DE PERFIL
         const dadosCliente = {
             id: result.insertId,
-            nome,
-            cpf_cnpj,
-            email,
-            telefone,
-            nickname
+            nome
         };
 
         // Criar um nome único para o arquivo (ex: cliente_123.json)
-        const nomeArquivo = `cliente_${result.insertId}.json`;
+        const nomeArquivo = `cliente_${result.insertId}_imagem.json`;
 
         // Enviar os dados para o Azure Blob Storage
         await enviarParaBlob(dadosCliente, nomeArquivo);
@@ -65,7 +61,7 @@ export const CadastrarCliente = async (request, response, next) => {
         response.status(201).json({
             success: true,
             id: result.insertId,
-            message: "Cadastro realizado com sucesso"
+            message: "Cadastro realizado com sucesso, e imagem no repositorio como blob"
         });
 
     } catch (error) {

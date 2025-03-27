@@ -2,8 +2,7 @@ import { pool } from "../database.js";
 
 export const Login = async (request, response, next) => {
 
-    try 
-    {
+    try {
         const { nickname, senha } = request.body;
 
         const [cliente] = await pool.query(`SELECT * FROM Login WHERE nickname = ? AND senha = ?`, [nickname, senha]);
@@ -33,8 +32,7 @@ export const Login = async (request, response, next) => {
 
 export const UserType = async (request, response, next) => {
 
-    try 
-    {
+    try {
         const { nickname } = request.body;
 
 
@@ -50,18 +48,24 @@ export const UserType = async (request, response, next) => {
             //RETORNA 1 CASO CLIENTE E 0 CASO CONSULTOR
 
             if (cliente.length > 0) {
+
+                //console.log("dentro do cliente backend " + cliente[0].idCliente);
+
                 return response.status(200).json({
                     success: true,
                     message: "1",
-                    user: cliente[0]
+                    user: cliente[0].idCliente
                 });
             }
 
             if (consultor.length > 0) {
+
+                //console.log("dentro do consultor backend " + consultor[0].idConsultor);
+
                 return response.status(200).json({
                     success: true,
                     message: "0",
-                    user: consultor[0]
+                    user: consultor[0].idConsultor
                 });
             }
 

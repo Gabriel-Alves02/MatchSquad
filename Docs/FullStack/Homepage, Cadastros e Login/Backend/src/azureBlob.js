@@ -11,7 +11,7 @@ if (!AZURE_STORAGE_CONNECTION_STRING) {
 }
 
 const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
-const containerClient = blobServiceClient.getContainerClient("cadastro");
+const containerClient = blobServiceClient.getContainerClient("imagens");
 
 
 export const enviarParaBlob = async (dados, nomeArquivo) => {
