@@ -52,24 +52,66 @@
         <br>
         <form id="customerForm">
 
-            <input class="formfill" type="text" id="nome" placeholder="Nome" required>
-            <br><br>
-            <input class="formfill" type="text" id="cpf_cnpj" placeholder="CPF | CNPJ" required>
-            <br><br>
-            <input class="formfill" type="email" id="email" placeholder="Email" required>
-            <br><br>
-            <input class="formfill" type="tel" id="telefone" placeholder="Telefone" required>
-            <br><br>
-            <input class="formfill" type="text" id="nickname" placeholder="Nickname" required>
-            <br><br>
-            <input class="formfill" type="password" id="senha" placeholder="Senha" required>
-            <br><br>
+            <input class="formfill" type="text" id="nome" placeholder="Nome" required onkeyup="limparN()">
+            <br>
+            <label for="nome" id="msgnome"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Nome
+                inválido! O nome do usuário deve conter apenas letras.</label>
+            <br>
+            <input class="formfill" type="text" id="cpf_cnpj" placeholder="CPF | CNPJ" required onkeyup="limparC()">
+            <br>
+            <label for="cpf_cnpj" id="msgcpf"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">CPF
+                inválido!</label>
+            <label for="cpf_cnpj" id="msgcnpj"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">CNPJ
+                inválido!</label>
+            <br>
+            <input class="formfill" type="email" id="email" placeholder="Email" required onkeyup="limparE()"
+                autocomplete="on">
+            <br>
+            <label for="email" id="msgemail"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Email
+                inválido! O endereço de email deve conter "@"!</label>
+            <br>
+            <input class="formfill" type="email" id="confirmacaoEmail" placeholder="confirmação de email" required
+                onkeyup="limparCe()">
+            <br>
+            <label for="email" id="msgconfirmacaoemail"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Email
+                não confere!</label>
+            <br>
+            <input class="formfill" type="tel" id="telefone" placeholder="Telefone" required onkeyup="limparT()">
+            <br>
+            <label for="telefone" id="msgphone"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Telefone
+                inválido! O telefone deve serguir um dos seguintes padrões: (xx) xxxxx-xxxx ou (xx) xxxx-xxxx!</label>
+            <br>
+            <input class="formfill" type="text" id="nickname" placeholder="Nickname" required onkeyup="limparNi()">
+            <br>
+            <label for="nickname" id="msgnickname"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Nickname
+                inválido! O nickname não deve conter espaços!</label>
+            <br>
+            <input class="formfill" type="password" id="senha" placeholder="Senha" required onkeyup="limparS()">
+            <br>
+            <label for="senha" id="msgsenha"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Senha
+                inválida! A senha não deve conter números e caracteres sequenciais!</label>
+            <br>
+            <input class="formfill" type="password" id="confirmacaoSenha" placeholder="Confirmação de senha" required
+                onkeyup="limparCs()">
+            <br>
+            <label for="senha" id="msgconfirmacaosenha"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">As
+                senhas não correspondem!</label>
+            <br>
+            <br>
             <button class="btn btn-outline-success" type="submit">Cadastrar</button>
+            <br><br>
         </form>
 
     </div>
-
-    <h2 class="lead" style="text-align: center;"> ↓</h2>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -77,6 +119,42 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+
+    <script>
+
+        function limparN() {
+            msgnome.style.display = 'none';
+        }
+
+        function limparE() {
+            msgemail.style.display = 'none';
+        }
+
+        function limparCe() {
+            msgconfirmacaoemail.style.display = 'none';
+        }
+
+        function limparT() {
+            msgphone.style.display = 'none';
+        }
+
+        function limparNi() {
+            msgnickname.style.display = 'none';
+        }
+
+        function limparS() {
+            msgsenha.style.display = 'none';
+        }
+
+        function limparCs() {
+            msgconfirmacaosenha.style.display = 'none';
+        }
+
+        function limparC() {
+            msgcpf.style.display = 'none';
+            msgcnpj.style.display = 'none';
+        }
+    </script>
 
 
 </body>
@@ -174,7 +252,7 @@
                                     📱 (15) 99150-1628
                                     <br>
                                     📧 billportoes@matchsquad.com.br
-                                    <br><textarea name="" id=""></textarea><br>
+                                    <br><textarea id="msg"></textarea><br>
                                     <button class="btn btn-outline-success" type="submit">➤</button>
                                     </p>
                                 </div>

@@ -11,11 +11,13 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 
     <link rel="stylesheet" href="../assets/style.css">
     <script src="../controller/CadConsultor.js" type="module"></script>
+    
 </head>
 
 <body id="bodyCC">
@@ -56,19 +58,53 @@
 
         <form id="consultorForm">
 
-            <input class="formfill" type="text" id="nome" name="nome" placeholder="Nome" required>
-            <br><br>
-            <input class="formfill" type="text" id="cpf" name="cpf" placeholder="CPF" required>
-            <br><br>
-            <input class="formfill" type="email" id="email" name="email" placeholder="Email" required>
-            <br><br>
-            <input class="formfill" type="tel" id="telefone" name="phone" placeholder="Telefone" required>
-            <br><br>
-            <input class="formfill" type="text" id="nickname" name="nickname" placeholder="Nickname" required>
-            <br><br>
-            <input class="formfill" type="password" id="senha" placeholder="Senha" required>
-            <br><br>
-            <label style="color: #fff;">Habilidade Principal: </label>
+            <input class="formfill" type="text" id="nome" name="nome" placeholder="Nome" required onkeyup="limparN()">
+            <br>
+            <label for="nome" id="msgnome"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Nome
+                inválido! O nome do usuário deve conter apenas letras.</label>
+            <br>
+            <input class="formfill" type="text" id="cpf" name="cpf" placeholder="CPF" required onkeyup="limparC()">
+            <br>
+            <label for="cpf" id="msgcpf"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">CPF
+                inválido!</label>
+            <br>
+            <input class="formfill" type="email" id="email" name="email" placeholder="Email" required/
+                onkeyup="limparE()" autocomplete="on">
+            <br>
+            <label for="email" id="msgemail"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Email
+                inválido! O endereço de email deve conter "@"!</label>
+            <br>
+            <input class="formfill" type="tel" id="telefone" name="phone" placeholder="Telefone" required
+                onkeyup="limparT()" autocomplete="on">
+            <br>
+            <label for="telefone" id="msgphone"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Telefone
+                inválido! O telefone deve serguir um dos seguintes padrões: (xx) xxxxx-xxxx ou (xx) xxxx-xxxx!</label>
+            <br>
+            <input class="formfill" type="text" id="nickname" name="nickname" placeholder="Nickname" required
+                onkeyup="limparNi()">
+            <br>
+            <label for="nickname" id="msgnickname"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Nickname
+                inválido! O nickname não deve conter espaços!</label>
+            <br>
+            <input class="formfill" type="password" id="senha" placeholder="Senha" required onkeyup="limparS()">
+            <br>
+            <label for="senha" id="msgsenha"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Senha
+                inválida! A senha não deve conter números e caracteres sequenciais!</label>
+            <br>
+            <input class="formfill" type="password" id="confirmacaoSenha" placeholder="Confirmação de senha" required
+                onkeyup="limparCs()">
+            <br>
+            <label for="senha" id="msgconfirmacaosenha"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">As
+                senhas não correspondem!</label>
+            <br>
+            <h5 style="color: #fff;">Habilidade Principal: </h5>
             <br><br>
 
             <div id="habilidades" class="row" style="color:white;">
@@ -82,13 +118,10 @@
                     <input type="checkbox" id="financas" name="financas" value="3" />Finanças
                 </div>
                 <div class="col-4 text-center">
-                    <input type="checkbox" id="ti" name="ti" value="4" />T.I.
+                    <input type="checkbox" id="t.i." name="t.i." value="4" />T.I.
                 </div>
                 <div class="col-4 text-center">
                     <input type="checkbox" id="guru" name="guru" value="5" />Guru
-                </div>
-                <div class="col-4 text-center">
-                    <input type="checkbox" id="promoter" name="promoter" value="6" />Promoter
                 </div>
                 <!-- <div class="col-4 text-center">
                     FUTURA INCLUSÃO DE NOVAS HABILIDADES, AINDA NÃO LISTADAS (por meio de "Outros")
@@ -100,7 +133,7 @@
 
 
             <br><br>
-            <button class="btn btn-outline-success" type="submit" >Cadastrar</button>
+            <button class="btn btn-outline-success" type="submit">Cadastrar</button>
         </form>
         <br><br>
 
@@ -112,6 +145,39 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+
+    <script>
+
+        function limparN() {
+            msgnome.style.display = 'none';
+        }
+
+        function limparE() {
+            msgemail.style.display = 'none';
+        }
+
+        function limparT() {
+            msgphone.style.display = 'none';
+        }
+
+        function limparNi() {
+            msgnickname.style.display = 'none';
+        }
+
+        function limparS() {
+            msgsenha.style.display = 'none';
+        }
+
+        function limparCs() {
+            msgconfirmacaosenha.style.display = 'none';
+        }
+
+        function limparC() {
+            msgcpf.style.display = 'none';
+        }
+
+    </script>
+
 </body>
 
 <footer style="background-color: #cbe2f8;">

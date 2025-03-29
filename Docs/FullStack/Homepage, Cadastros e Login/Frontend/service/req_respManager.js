@@ -18,6 +18,10 @@ export const Cadastrar = async (objUser) => {
 
     let improviseAdaptOvercome = possuiHabilidades ? "/cadConsultor" : "/cadCliente";
 
+    console.log(improviseAdaptOvercome);
+
+    console.log(objUser);
+
     return await fetch(url_cliente + improviseAdaptOvercome, {
         method: "POST",
         headers: {"Content-Type":"application/json"},

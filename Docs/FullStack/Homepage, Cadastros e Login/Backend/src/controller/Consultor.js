@@ -48,7 +48,7 @@ export const CadastrarConsultor = async (request, response, next) => {
                 `INSERT INTO Consultor_Habilidades 
                 (idConsultor, idHabilidade) 
                 VALUES (?, ?)`,
-                [consultorResult.insertId, idHabilidade]
+                [consultorResult.insertId, Number(idHabilidade)]
             );
         });
 
