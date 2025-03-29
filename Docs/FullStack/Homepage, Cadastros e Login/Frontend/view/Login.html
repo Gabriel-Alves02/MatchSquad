@@ -44,16 +44,45 @@
     <div class="container">
         <br>
         <h1 style="color: #fff;">LOGIN</h1>
-        <br>    
+        <br>
         <form id="loginForm">
             <br><br>
-            <input class="formfill"  type="text" id="nick" placeholder="Nickname" required>
+            <input class="formfill" type="text" id="nick" placeholder="Nickname" required>
             <br><br>
-            <input class="formfill"  type="password" id="senha" placeholder="Senha" required>
+            <input class="formfill" type="password" id="senha" placeholder="Senha" required>
             <br><br>
-            <h3 class="details">Esqueci a senha (criar modal de trocar senha)</h3><br>
-            <button class="btn btn-outline-success" type="submit">Entrar</button>
+            <button class="btn btn-outline-success" type="submit">Entrar</button>&nbsp;&nbsp;
+            <a href="" data-bs-target="#exampleModal3" data-bs-toggle="modal">
+                <u>Esqueci a senha</u>
+            </a>
         </form>
+    </div>
+
+    <div class="container-fluid text-center margin">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Recuperação de senha:
+                                </h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p style="text-align: justify; text-justify: inter-word;">
+                                <p class="lead">Para recuperar a senha informe no campo a seguir o usuário ou o email cadastrado da sua conta. Um email de recuperação será enviado.</p>
+                                <br>
+                                <p>Email ou nome de usuário</p>
+                                <textarea name="" id=""></textarea><br>
+                                <button class="btn btn-outline-success" type="submit">➤</button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
