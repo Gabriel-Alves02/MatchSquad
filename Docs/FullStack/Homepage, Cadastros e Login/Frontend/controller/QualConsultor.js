@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     inputData.min = hoje;
 
 
-    const userId = getUserId();
+    const userId = getUserId(1);
 
     if (userId) {
         console.log("ID recuperado: ", userId);

@@ -5,6 +5,7 @@ import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
 import { CadastrarConsultor } from './controller/Consultor.js';
 import { RegistrarAgendamento } from './controller/PedidoAgendamento.js';
+import { BuscarAgendamentos } from './controller/PedidoAgendamento.js';
 
 const app = express();
 
@@ -25,10 +26,8 @@ app.post('/clientes/login', Login);
 app.post('/consultores/login', Login);
 app.post('/clientes/agendamento', RegistrarAgendamento);
 
-// console.log("Banco de Dados:", process.env.DB_NAME);
-// console.log("Rodando na porta:", process.env.PORT);
+app.get('/consultores/agendamento/:idConsultor', BuscarAgendamentos);
 
-//BASTIDORES
 
 app.get('/ping', (request,response,next) => {
     response.send({
@@ -36,7 +35,7 @@ app.get('/ping', (request,response,next) => {
     });
 });
 
-console.log("host: " + process.env.DB_HOST, "user: " + process.env.DB_USER,"password: " + process.env.DB_PASSWORD,"database: " + process.env.DB_NAME);
+//console.log("host: " + process.env.DB_HOST, "user: " + process.env.DB_USER,"password: " + process.env.DB_PASSWORD,"database: " + process.env.DB_NAME);
 
 const PORT = process.env.PORT || 8001;
 

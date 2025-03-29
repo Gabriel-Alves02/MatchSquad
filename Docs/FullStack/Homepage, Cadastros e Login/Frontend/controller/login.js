@@ -19,12 +19,13 @@ form.addEventListener('submit', async (event) => {
             senha: document.getElementById('senha').value
         };
         
-        if (test.message === "1") {
-            localStorage.setItem("userId", test.user);
-            //console.log(getUserId() + "  " + test.user);
-            getUser(objLogin);
-        } else if (test.message === "0") {
+        if (test.message === "0") {
+            localStorage.setItem("idConsultor", test.user);
             getUserConsultor(objLogin);
+           
+        } else if (test.message === "1") {
+            localStorage.setItem("idCliente", test.user);
+            getUser(objLogin);
         }else {
             throw new Error('Erro no login.js');
         }

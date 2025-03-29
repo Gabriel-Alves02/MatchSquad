@@ -25,17 +25,28 @@
 
     <script>
 
-        document.addEventListener('DOMContentLoaded', function () {
+
+        document.addEventListener('DOMContentLoaded', async function () {
+
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 locale: 'pt-br',
                 selectable: true,
                 validRange: {
-                    start: moment().format('YYYY-MM-DD') // Definindo o início do intervalo como a data de hoje
+                    start: moment().format('YYYY-MM-DD')
                 },
             });
             calendar.render();
+
+            const idConsultor = getUserId(0);
+
+            if (idConsultor) {
+                const agendamentos = await buscarAgendamentos(idConsultor);
+                console.log("Agendamentos recebidos:", agendamentos);
+            }
+
+
         });
 
     </script>

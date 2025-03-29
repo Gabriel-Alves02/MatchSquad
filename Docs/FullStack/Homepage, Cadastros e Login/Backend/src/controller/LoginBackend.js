@@ -45,7 +45,7 @@ export const UserType = async (request, response, next) => {
             const [consultor] = await pool.query(`SELECT idConsultor FROM Consultor WHERE idLogin = ?`, [user[0].idLogin]);
 
 
-            //RETORNA 1 CASO CLIENTE E 0 CASO CONSULTOR
+            //RETORNA 0 = CONSULTOR  ;  1 = CLIENTE
 
             if (cliente.length > 0) {
 
