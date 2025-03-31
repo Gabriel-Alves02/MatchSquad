@@ -39,8 +39,8 @@ export const RegistrarAgendamento = async (request, response, next) => {
 };
 
 
-export const BuscarAgendamentos = async (request, response, next) => {
-    
+export const BuscarAgenda = async (request, response, next) => {
+
     const connection = await pool.getConnection();
 
     try {
@@ -49,13 +49,14 @@ export const BuscarAgendamentos = async (request, response, next) => {
         const [agendamentos] = await connection.query(
             `SELECT idReuniao, idCliente, infoAdiantada, data, status_situacao, tipo, periodo 
              FROM Reuniao 
-             WHERE idConsultor = ? 
-             ORDER BY data, periodo;`, 
+             WHERE idConsultor = ?;`, 
             [idConsultor]
         );
 
+        // AO ACERTAR O MECANISMO, SERA REFINADO O SQL PARA "ORDER BY data, periodo"
+
         if (agendamentos.length === 0) {
-            return response.status(401).json({
+            return response.status(404).json({
                 success: false,
                 message: "Nenhum agendamento encontrado para este consultor."
             });

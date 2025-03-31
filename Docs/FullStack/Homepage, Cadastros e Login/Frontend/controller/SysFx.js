@@ -1,4 +1,5 @@
 export function getUserId(num) {
+  
   if (num === 0) {
     return localStorage.getItem("idConsultor");
     

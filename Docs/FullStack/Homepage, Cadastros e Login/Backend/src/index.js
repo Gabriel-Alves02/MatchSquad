@@ -4,8 +4,7 @@ import { CadastrarCliente } from './controller/Cliente.js';
 import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
 import { CadastrarConsultor } from './controller/Consultor.js';
-import { RegistrarAgendamento } from './controller/PedidoAgendamento.js';
-import { BuscarAgendamentos } from './controller/PedidoAgendamento.js';
+import { RegistrarAgendamento, BuscarAgenda } from './controller/PedidoAgendamento.js';
 
 const app = express();
 
@@ -26,7 +25,7 @@ app.post('/clientes/login', Login);
 app.post('/consultores/login', Login);
 app.post('/clientes/agendamento', RegistrarAgendamento);
 
-app.get('/consultores/agendamento/:idConsultor', BuscarAgendamentos);
+app.get('/consultores/agenda/:idConsultor', BuscarAgenda);
 
 
 app.get('/ping', (request,response,next) => {

@@ -2,8 +2,6 @@ import { getUser } from "../service/req_respManager.js";
 import { getUserConsultor } from "../service/req_respManager.js";
 import { userType } from "../service/req_respManager.js";
 
-import { getUserId } from './SysFx.js';
-
 const form = document.getElementById('loginForm');
 
 form.addEventListener('submit', async (event) => {

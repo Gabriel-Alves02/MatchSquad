@@ -22,34 +22,7 @@
     <script src='https://cdn.jsdelivr.net/npm/moment@2.27.0/min/moment.min.js'></script>
 
     <link rel="stylesheet" href="../assets/style.css">
-
-    <script>
-
-
-        document.addEventListener('DOMContentLoaded', async function () {
-
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                locale: 'pt-br',
-                selectable: true,
-                validRange: {
-                    start: moment().format('YYYY-MM-DD')
-                },
-            });
-            calendar.render();
-
-            const idConsultor = getUserId(0);
-
-            if (idConsultor) {
-                const agendamentos = await buscarAgendamentos(idConsultor);
-                console.log("Agendamentos recebidos:", agendamentos);
-            }
-
-
-        });
-
-    </script>
+    <script src="../controller/AgendaConsultor.js" type="module"></script>
 
 </head>
 
@@ -58,8 +31,8 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a href="menu.html"><img class="navbar-brand" src="../assets/Logo.png" height="54.73px"></a>
         <div class="ml-auto">
-            <a href="configuracoes.html" class="btn btn-outline-primary mr-2">Configurações</a>
-            <a href="view/Login.html" class="btn btn-outline-danger">Deslogar</a>
+            <a href="#" class="btn btn-outline-primary mr-2">Configurações</a>
+            <a href="Login.html" class="btn btn-outline-danger">Deslogar</a>
         </div>
     </nav>
 

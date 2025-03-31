@@ -42,7 +42,7 @@ function abrirModalAgendamento(nome) {
     const modalTitle = document.getElementById('modal-title');
 
     modalTitle.innerText = `Agendar com ${nome}`;
-    modal.style.display = 'block'; // Exibe o modal
+    modal.style.display = 'block';
 }
 
 function fecharModal() {

@@ -112,22 +112,20 @@ export const Registrar = async (pedido) => {
     })
 };
 
-export const Agendar = async (Pedido) => {
+export async function carregarAgendamentos(id) {
 
-    return await fetch(url_cliente + '/agendamento', {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify(Pedido)
-    }).then((response) => {
-        if (response.status >= 200 && response.status < 300) {
-            alert("Solicitação de agendamento enviado com sucesso!");
-        } 
-        // else if (response.status === 409){       ELSE IF SE O USUARIO JA AGENDOU COM ESSE CONSULTOR
-        //     alert("Usuário já cadastrado");
-        // }    
-        else {
-            console.log(`Erro do servidor: ${response.status}`);
+    try {
+        const response = await fetch(url_consultores + `/agenda/${id}`);
+        const data = await response.json();
+
+        if (data.success) {
+            return data
+        } else {
+            return null;
         }
-    })
-};
+
+    } catch (error) {
+        console.error("Erro ao carregar agendamentos:", error);
+    }
+}
 
