@@ -14,7 +14,7 @@ export const RegistrarAgendamento = async (request, response, next) => {
         const [result] = await connection.query(
             `INSERT INTO Reuniao (idConsultor, idCliente, infoAdiantada, data, status_situacao, tipo, periodo) 
         VALUES (?, ?, ?, ?, ?, ?, ?);`,
-            [idConsultor, idCliente, infoAdiantada, data,status_situacao, tipo, periodo]
+            [idConsultor, idCliente, infoAdiantada, data, status_situacao, tipo, periodo]
         );
 
         await connection.commit();
@@ -47,9 +47,7 @@ export const BuscarAgenda = async (request, response, next) => {
         const { idConsultor } = request.params;
 
         const [agendamentos] = await connection.query(
-            `SELECT idReuniao, idCliente, infoAdiantada, data, status_situacao, tipo, periodo 
-             FROM Reuniao 
-             WHERE idConsultor = ?;`, 
+            `SELECT idReuniao, idCliente, infoAdiantada, data, status_situacao, tipo, periodo, horario FROM Reuniao WHERE idConsultor = ?;`,
             [idConsultor]
         );
 

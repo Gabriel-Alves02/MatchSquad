@@ -107,8 +107,6 @@ function cadastrarUsuario() {
         cpf_cnpj: document.getElementById('cpf_cnpj').value,
     };
 
-    console.log(dados);
-
     Cadastrar (dados);
 }
 

@@ -18,15 +18,12 @@ export const Cadastrar = async (objUser) => {
 
     let improviseAdaptOvercome = possuiHabilidades ? "/cadConsultor" : "/cadCliente";
 
-    console.log(improviseAdaptOvercome);
-
-    console.log(objUser);
-
     return await fetch(url_cliente + improviseAdaptOvercome, {
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify(objUser)
-    }).then((response) => {
+    })
+    .then((response) => {
         if (response.status >= 200 && response.status < 300) {
             alert("Cadastro realizado com sucesso. Enviado e-mail para confirmação enviado");
         } 
@@ -119,7 +116,7 @@ export async function carregarAgendamentos(id) {
         const data = await response.json();
 
         if (data.success) {
-            return data
+            return data;
         } else {
             return null;
         }

@@ -5,6 +5,7 @@ import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
 import { CadastrarConsultor } from './controller/Consultor.js';
 import { RegistrarAgendamento, BuscarAgenda } from './controller/PedidoAgendamento.js';
+import { getClienteName } from './controller/Cliente.js';
 
 const app = express();
 
@@ -27,12 +28,15 @@ app.post('/clientes/agendamento', RegistrarAgendamento);
 
 app.get('/consultores/agenda/:idConsultor', BuscarAgenda);
 
+app.get('/checks/:idCliente', getClienteName);
+
 
 app.get('/ping', (request,response,next) => {
     response.send({
         message: "pong"
     });
 });
+
 
 //console.log("host: " + process.env.DB_HOST, "user: " + process.env.DB_USER,"password: " + process.env.DB_PASSWORD,"database: " + process.env.DB_NAME);
 

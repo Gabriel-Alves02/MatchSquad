@@ -11,6 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "browser-sync": "^3.0.3",
     "fullcalendar": "^6.1.15"
   }
