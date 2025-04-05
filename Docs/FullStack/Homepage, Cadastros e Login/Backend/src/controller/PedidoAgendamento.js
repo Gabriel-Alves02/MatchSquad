@@ -75,3 +75,38 @@ export const BuscarAgenda = async (request, response, next) => {
         connection.release();
     }
 };
+
+
+export const AgendamentoRepetido = async (request, response, next) => {
+    const connection = await pool.getConnection();
+    try {
+        const { idCliente, idConsultor } = request.params;
+        
+        const [agenda] = await connection.query(
+            `SELECT idReuniao FROM Reuniao WHERE idConsultor = ? AND idCliente = ?;`,
+            [idConsultor,idCliente]
+        );
+        
+        if (agenda.length === 0) {
+            return response.status(200).json({
+                success: false,
+                message: "Não tem agendamento repetido. Pode agendar!"
+            });
+        }
+
+        return response.status(409).json({
+            success: true,
+            message: "Tem agendamento deste cliente para este consultor. Não pode agendar!"
+        });
+
+    } catch (error) {
+        console.error('Erro ao buscar agendamentos:', error);
+        return response.status(500).json({
+            success: false,
+            message: "Erro interno do servidor"
+        });
+
+    } finally {
+        connection.release();
+    }
+};

@@ -34,6 +34,15 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         },
         eventDidMount: function (info) {
+
+            let hoje = new Date();
+            let eventoData = new Date(info.event.start);
+    
+            let diffEmDias = Math.floor((eventoData - hoje) / (1000 * 60 * 60 * 24));
+    
+            if (diffEmDias <= 1) {
+                info.el.classList.add("no-drag");
+            }
             
             let tooltip = document.createElement('div');
             tooltip.classList.add('tooltip-custom');

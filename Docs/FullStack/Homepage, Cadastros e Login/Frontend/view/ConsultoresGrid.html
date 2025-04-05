@@ -135,9 +135,9 @@
 
 
     <div id="modal-agendamento" class="modal-agenda">
-        <div class="modal-content">
-            <span class="close" onclick="fecharModal()">&times;</span>
-            <h2 id="modal-title"></h2>
+        <form class="modal-content">
+            
+           <span><h2 id="modal-title"></h2><span class="close">Cancelar</span></span>
             <label for="data-agendamento">Escolha a data:</label>
             <input type="date" id="data-agendamento">
             <br>
@@ -150,8 +150,8 @@
             <label><input type="radio" name="tipo" value="presencial"> Presencial</label>
             <textarea id="infoAdiantada"></textarea>
             <br><br>
-            <button onclick="confirmarAgendamento()">Confirmar</button>
-        </div>
+            <button type="submit">Confirmar</button>
+        </form>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

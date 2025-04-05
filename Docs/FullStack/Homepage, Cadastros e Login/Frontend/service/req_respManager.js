@@ -95,7 +95,7 @@ export const getUserConsultor = async (objConsultor) => {
 
 export const Registrar = async (pedido) => {
 
-    return await fetch(url_cliente + '/pedidoAgendamento', {
+    return await fetch(url_cliente + '/agendamento', {
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify(pedido)

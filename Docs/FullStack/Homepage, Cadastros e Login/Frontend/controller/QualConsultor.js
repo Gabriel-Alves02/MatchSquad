@@ -1,9 +1,11 @@
-import { Agendar } from "../service/req_respManager.js";
+import { Registrar } from "../service/req_respManager.js";
 import { getUserId } from './SysFx.js';
+import { agendadoNovamente } from '../service/AJAX.js';
 
 let idConsultor = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+
     const inputData = document.getElementById("data-agendamento");
 
     const hoje = new Date().toISOString().split("T")[0];
@@ -26,31 +28,49 @@ const form = document.getElementById('consultores-grid');
 
 form.addEventListener('click', (event) => {
 
+    if (event.target.closest('summary')) {
+        return;
+    }
+
     const card = event.target.closest('.card-body');
-    idConsultor = card.getAttribute('data-value');
 
     if (card) {
         const nomeConsultor = card.querySelector('.card-title')?.innerText.trim();
-        const idConsultor = card.getAttribute('data-value');
+        idConsultor = card.getAttribute('data-value');
         abrirModalAgendamento(nomeConsultor);
     }
 });
 
 
 function abrirModalAgendamento(nome) {
+
     const modal = document.getElementById('modal-agendamento');
     const modalTitle = document.getElementById('modal-title');
 
     modalTitle.innerText = `Agendar com ${nome}`;
     modal.style.display = 'block';
+
+    document.getElementById('data-agendamento').value = '';
+    document.getElementById('periodo').value = 'manha';
+    document.getElementById('infoAdiantada').value = '';
+    document.querySelector('input[name="tipo"][value="online"]').checked = true;
+
+    modal.addEventListener('click', (event) => {
+        if (event.target.classList.contains('close')) {
+            fecharModal();
+        }
+    });
 }
 
 function fecharModal() {
     document.getElementById('modal-agendamento').style.display = 'none';
 }
 
-function confirmarAgendamento() {
+const modalForm = document.getElementById('modal-agendamento');
 
+modalForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    
     const data = document.getElementById('data-agendamento').value;
     const periodo = document.getElementById('periodo').value;
     const infoAdiantada = document.getElementById('infoAdiantada').value;
@@ -61,9 +81,16 @@ function confirmarAgendamento() {
         return;
     }
 
+    const repetido = await agendadoNovamente(getUserId(1), idConsultor);
+
+    if (repetido) {
+        alert("Você já tem um agendamento com esse consultor!");
+        return;        
+    }
+
     const PedidoAgendamento = {
         idConsultor: idConsultor,
-        idCliente: getUserId(),
+        idCliente: getUserId(1),
         infoAdiantada: infoAdiantada,
         data: data,
         status_situacao: "Pendente",
@@ -71,12 +98,11 @@ function confirmarAgendamento() {
         periodo: periodo
     };
 
-    console.log("Agendamento criado:\n\n", PedidoAgendamento);
-
-    Agendar(PedidoAgendamento);
-
+    console.log("Agendamento criado:\n\n", PedidoAgendamento || null);
+    Registrar(PedidoAgendamento);
     fecharModal();
-}
+});
+
 
 
 // function formatarData(data) {
@@ -84,5 +110,4 @@ function confirmarAgendamento() {
 //     return `${dia}/${mes}/${ano}`;
 // }
 
-window.confirmarAgendamento = confirmarAgendamento;
 window.fecharModal = fecharModal;

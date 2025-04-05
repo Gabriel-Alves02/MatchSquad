@@ -77,7 +77,7 @@ export const CadastrarCliente = async (request, response, next) => {
 };
 
 
-export const getClienteName = async (request, response, next) => {
+export const GetClienteName = async (request, response, next) => {
 
     const connection = await pool.getConnection();
 
