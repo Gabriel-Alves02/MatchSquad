@@ -30,3 +30,24 @@ export async function agendadoNovamente(idCliente, idConsultor) {
         return;
     }
 }
+
+export async function enviarRemarcacao (info) {
+    try {
+
+        const response = await fetch('http://localhost:8000/notifications', {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(info)
+        }).then((response) => {
+            if (response.status >= 200 && response.status < 300) {
+                alert("Sua mudança no agendamento já foi notificada para o cliente. Enviado por e-mail para que ele fique ciente!");
+            }       
+            else {
+                console.log(`Erro do servidor: ${response.status}`);
+            }
+        })
+
+    } catch (error) {
+        console.error("Erro no envio de remarcação:", error);
+    }
+}

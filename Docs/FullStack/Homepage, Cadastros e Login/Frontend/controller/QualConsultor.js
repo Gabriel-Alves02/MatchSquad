@@ -103,8 +103,6 @@ modalForm.addEventListener('submit', async (event) => {
     fecharModal();
 });
 
-
-
 // function formatarData(data) {
 //     const [ano, mes, dia] = data.split('-');
 //     return `${dia}/${mes}/${ano}`;

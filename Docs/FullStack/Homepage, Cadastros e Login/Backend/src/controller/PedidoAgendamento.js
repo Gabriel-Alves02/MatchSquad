@@ -47,7 +47,12 @@ export const BuscarAgenda = async (request, response, next) => {
         const { idConsultor } = request.params;
 
         const [agendamentos] = await connection.query(
-            `SELECT idReuniao, idCliente, infoAdiantada, data, status_situacao, tipo, periodo, horario FROM Reuniao WHERE idConsultor = ?;`,
+            `SELECT r.idReuniao, r.idCliente, c.email AS emailCliente, r.idConsultor, con.email AS emailConsultor, 
+            r.infoAdiantada, r.data, r.status_situacao, r.tipo, r.periodo, r.horario
+            FROM Reuniao r JOIN Cliente c 
+            ON r.idCliente = c.idCliente
+            JOIN Consultor con ON r.idConsultor = con.idConsultor
+            WHERE r.idConsultor = ?;`,
             [idConsultor]
         );
 
@@ -81,12 +86,12 @@ export const AgendamentoRepetido = async (request, response, next) => {
     const connection = await pool.getConnection();
     try {
         const { idCliente, idConsultor } = request.params;
-        
+
         const [agenda] = await connection.query(
             `SELECT idReuniao FROM Reuniao WHERE idConsultor = ? AND idCliente = ?;`,
-            [idConsultor,idCliente]
+            [idConsultor, idCliente]
         );
-        
+
         if (agenda.length === 0) {
             return response.status(200).json({
                 success: false,
