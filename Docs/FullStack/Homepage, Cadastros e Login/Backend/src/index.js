@@ -5,8 +5,8 @@ import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
 import { CadastrarConsultor } from './controller/Consultor.js';
 import { RegistrarAgendamento, BuscarAgenda, AgendamentoRepetido } from './controller/PedidoAgendamento.js';
-import { GetClienteName } from './controller/Cliente.js';
-import { enviarEmailRemarcacao } from './service/sendgrid.js';
+import { GetCode, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid } from './controller/SysFx.js';
+import { EnviarEmailRemarcacao, ConfirmacaoEmail } from './service/sendgrid.js';
 
 const app = express();
 
@@ -26,13 +26,18 @@ app.post('/checks', UserType );
 app.post('/clientes/login', Login);
 app.post('/consultores/login', Login);
 app.post('/clientes/agendamento', RegistrarAgendamento);
-app.post('/notifications', enviarEmailRemarcacao)
+app.post('/notifications', EnviarEmailRemarcacao)
+
+app.put('/notifications', ConfirmacaoEmail)
+app.put('/checks/verified', RefreshBlock)
 
 app.get('/consultores/agenda/:idConsultor', BuscarAgenda);
-app.post('/consultores/agenda/:idConsultor', enviarEmailRemarcacao);
-
-app.get('/checks/:idCliente', GetClienteName);
-app.get("/checks/:idCliente/:idConsultor", AgendamentoRepetido );
+app.post('/consultores/agenda/:idConsultor', EnviarEmailRemarcacao);
+app.get('/checks/:nickname', GetIfNicknameIsValid);
+app.get('/checks/:id/:usertype/name', GetName);
+app.get('/checks/:id/:usertype/code', GetCode);
+app.get('/checks/:id/:usertype/block', GetBlockStatus);
+app.get("/checks/:idCliente/:idConsultor", AgendamentoRepetido);
 
 
 

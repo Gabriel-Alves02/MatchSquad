@@ -19,7 +19,7 @@ export const RegistrarAgendamento = async (request, response, next) => {
 
         await connection.commit();
 
-        response.status(201).json({
+        return response.status(201).json({
             success: true,
             message: "Agendamento realizado com sucesso!"
         });
@@ -52,7 +52,7 @@ export const BuscarAgenda = async (request, response, next) => {
             FROM Reuniao r JOIN Cliente c 
             ON r.idCliente = c.idCliente
             JOIN Consultor con ON r.idConsultor = con.idConsultor
-            WHERE r.idConsultor = ?;`,
+            WHERE r.idConsultor = ? AND r.data >= CURRENT_DATE;`,
             [idConsultor]
         );
 
@@ -65,7 +65,7 @@ export const BuscarAgenda = async (request, response, next) => {
             });
         }
 
-        response.status(200).json({
+        return response.status(200).json({
             success: true,
             agendamentos
         });

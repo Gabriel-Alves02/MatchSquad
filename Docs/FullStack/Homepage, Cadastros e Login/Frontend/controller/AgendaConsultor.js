@@ -1,6 +1,5 @@
 import { getUserId } from './SysFx.js';
-import { carregarAgendamentos } from '../service/req_respManager.js';
-import { buscarNomeCliente, enviarRemarcacao } from '../service/AJAX.js';
+import { buscarNome, enviarRemarcacao, carregarAgendamentos } from '../service/AJAX.js';
 import { createPopper } from '../node_modules/@popperjs/core/dist/esm/popper.js';
 
 
@@ -87,13 +86,14 @@ document.addEventListener('DOMContentLoaded', async function () {
     const idConsultor = getUserId(0);
 
     if (idConsultor) {
+
         try {
             const response = await carregarAgendamentos(idConsultor);
 
-            if (response.success) {
+            if (response) {
 
                 const eventosPromises = response.agendamentos.map(async agendamento => {
-                    const cliente = await buscarNomeCliente(agendamento.idCliente);
+                    const cliente = await buscarNome(agendamento.idCliente, 1);
                     return {
                         title: `[${agendamento.tipo}] - ${cliente.message}`,
                         start: agendamento.data,
@@ -115,12 +115,12 @@ document.addEventListener('DOMContentLoaded', async function () {
                 eventos.forEach(evento => calendar.addEvent(evento));
 
             } else {
-                console.error("Erro ao buscar agendamentos:", response);
+                alert("Ainda sem nenhum cliente agendado em seu calendário.");
             }
+
         } catch (error) {
             console.error("Erro ao carregar agendamentos:", error);
         }
-    } else {
-        console.log("Nenhum usuário logado.");
+
     }
 });

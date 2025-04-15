@@ -1,4 +1,4 @@
-import { Cadastrar } from "../service/req_respManager.js";
+import { Cadastrar, buscarNick } from "../service/AJAX.js";
 
 const form = document.getElementById('customerForm');
 
@@ -14,7 +14,7 @@ form.addEventListener('submit', (event) => {
     
 });
 
-function validarFormulario() {
+async function validarFormulario() {
 
     let nomeusuario = document.getElementById('nome');
     let emailusuario = document.getElementById('email');
@@ -63,9 +63,11 @@ function validarFormulario() {
         document.getElementById('telefone').value='';
     }
 
-    if (!nicknamePattern.test(nicknameusuario.value)) {
+    const nickCheck = await buscarNick(nicknameusuario.value);
+    
+    if (!nicknamePattern.test(nicknameusuario.value) || nickCheck === false) {
         msgnickname.style.display = 'inline-block';
-        document.getElementById('nickname').value='';
+        document.getElementById('nickname').value = '';
     }
 
     if (testeSenha(senhausuario.value) === false) {
@@ -98,6 +100,7 @@ function validarFormulario() {
 }
 
 function cadastrarUsuario() {
+
     let dados = {
         nome: document.getElementById('nome').value,
         email: document.getElementById('email').value,
@@ -107,7 +110,7 @@ function cadastrarUsuario() {
         cpf_cnpj: document.getElementById('cpf_cnpj').value,
     };
 
-    Cadastrar (dados);
+    //Cadastrar (dados);
 }
 
 function testeSenha(senhausuario) {

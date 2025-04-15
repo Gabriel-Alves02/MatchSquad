@@ -114,15 +114,15 @@ a:active {
 
 
 #bodyCad{
-    background-image: url(./CadWpp.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+    background-color: #FFF8F8;
 }
 
 #bodyCC{
-    background-image: url(./LogWpp2.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+    background-color: #FFF8F8;
 }
 
 .profile {

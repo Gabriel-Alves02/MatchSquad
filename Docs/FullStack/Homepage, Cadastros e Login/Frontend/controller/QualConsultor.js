@@ -1,6 +1,5 @@
-import { Registrar } from "../service/req_respManager.js";
 import { getUserId } from './SysFx.js';
-import { agendadoNovamente } from '../service/AJAX.js';
+import { Registrar, agendadoNovamente } from '../service/AJAX.js';
 
 let idConsultor = null;
 
