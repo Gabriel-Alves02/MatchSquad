@@ -22,6 +22,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a href="menu.html"><img class="navbar-brand" src="../assets/Logo.png" height="54.73px"></a>
         <div class="ml-auto">
+            <a href="Menu.html" class="btn btn-outline-primary mr-2">Retornar ao Menu</a>
             <a href="configuracoes.html" class="btn btn-outline-primary mr-2">Configurações</a>
             <a href="../view/Login.html" class="btn btn-outline-danger">Deslogar</a>
         </div>
@@ -90,7 +91,7 @@
 
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
-                    <div class="card-body">
+                    <div class="card-body" data-value="4">
                         <img src="../assets/4.jpg" class="img-box" alt="">
                         <br><br>
                         <h5 class="card-title">Jorge</h5>
@@ -104,7 +105,7 @@
 
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
-                    <div class="card-body">
+                    <div class="card-body" data-value="5">
                         <img src="../assets/5.jpg" class="img-box" alt="">
                         <br><br>
                         <h5 class="card-title">Carlos</h5>
@@ -118,7 +119,7 @@
 
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
-                    <div class="card-body">
+                    <div class="card-body" data-value="6">
                         <img src="../assets/7.jpg" class="img-box" alt="">
                         <br><br>
                         <h5 class="card-title">Adalberto</h5>
@@ -142,10 +143,14 @@
             <input type="date" id="data-agendamento">
             <br>
             <label for="periodo">Período:</label>
-            <select id="periodo">
+            <select id="periodo" required>
                 <option value="manha">Manhã (Até às 12h)</option>
                 <option value="tarde">Tarde (Após às 12h)</option>
             </select>
+            <div id="horario-container">
+                <label for="horario">Horário (opcional):</label>
+                <input type="time" id="horario" placeholder="Opcional" step="1800">
+            </div>
             <label><input type="radio" name="tipo" value="online" checked> Online</label>
             <label><input type="radio" name="tipo" value="presencial"> Presencial</label>
             <textarea id="infoAdiantada"></textarea>

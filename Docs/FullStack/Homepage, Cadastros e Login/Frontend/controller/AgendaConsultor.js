@@ -1,5 +1,5 @@
 import { getUserId } from './SysFx.js';
-import { buscarNome, enviarRemarcacao, carregarAgendamentos } from '../service/AJAX.js';
+import { buscarNome, enviarRemarcacao, carregarAgendamentos,agendamentoCancelado } from '../service/AJAX.js';
 import { createPopper } from '../node_modules/@popperjs/core/dist/esm/popper.js';
 
 
@@ -17,20 +17,18 @@ document.addEventListener('DOMContentLoaded', async function () {
             start: moment().format('YYYY-MM-DD')
         },
         editable: true,
-        // dateClick: function (info) {
-        //     alert('clicked ' + info.dateStr);
-        // },
-        // select: function (info) {
-        //     alert('selected ' + info.startStr + ' to ' + info.endStr);
-        // },
         eventClick: async function (info) {
 
             try {
-                alert(`Cliente: ${info.event._def.title} \nInfo: ${info.event.extendedProps.infoAdiantada}\nPeriodo: ${info.event.extendedProps.periodo}\nStatus: ${info.event.extendedProps.status}\nHorario: ${info.event.extendedProps.horario}`);
-
+                let resp = confirm(`Deseja cancelar o agendamento ?\nCliente: ${info.event._def.title} \nInfo: ${info.event.extendedProps.infoAdiantada}\nPeriodo: ${info.event.extendedProps.periodo}\nStatus: ${info.event.extendedProps.status}\nHorario: ${info.event.extendedProps.horario}`);
+                
+                if (resp) {
+                    await agendamentoCancelado(info.event.extendedProps.idReuniao);
+                    alert("Agendamento excluido com sucesso!");
+                    info.event.remove();
+                }
             } catch (error) {
                 console.error("Erro ao buscar o nome do cliente:", error);
-                alert("Erro ao carregar os detalhes do cliente.");
             }
         }, eventDrop: async function (info) {
             const evento = info.event;
@@ -55,13 +53,14 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             let diffEmDias = Math.floor((eventoData - hoje) / (1000 * 60 * 60 * 24));
 
+            // CARREGAR O GRAU DE LIBERDADE PARA QTD DE DIAS MINIMO ANTES DE REAGENDAR DO CONSULTOR, AQUI ESTA PARA 1 (A PARTIR DE AMANHÃ NÃO REAGENDA, SO CANCELA)
             if (diffEmDias <= 1) {
-                info.el.classList.add("no-drag");
+                info.el.classList.add("no-drag"); //FUNÇÃO DRAG-DROP = REAGENDAMENTO
             }
 
             let tooltip = document.createElement('div');
             tooltip.classList.add('tooltip-custom');
-            tooltip.innerHTML = `Cliente: ${info.event._def.title} <br>Info: ${info.event.extendedProps.infoAdiantada}<br>Periodo: ${info.event.extendedProps.periodo}<br>Status: ${info.event.extendedProps.status}<br> Horario: ${info.event.extendedProps.horario}`;
+            tooltip.innerHTML = `Cliente: ${info.event._def.title} <br>Info: ${info.event.extendedProps.infoAdiantada}<br>Periodo: ${info.event.extendedProps.periodo}<br>Status: ${info.event.extendedProps.status}<br>Horario: ${info.event.extendedProps.horario}`;
             document.body.appendChild(tooltip);
 
             const popperInstance = createPopper(info.el, tooltip, {
@@ -99,6 +98,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         start: agendamento.data,
                         allDay: false,
                         extendedProps: {
+                            idReuniao: agendamento.idReuniao,
                             idCliente: agendamento.idCliente,
                             infoAdiantada: agendamento.infoAdiantada,
                             periodo: agendamento.periodo,

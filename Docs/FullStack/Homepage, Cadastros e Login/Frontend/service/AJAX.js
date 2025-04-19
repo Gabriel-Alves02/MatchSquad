@@ -117,6 +117,26 @@ export async function carregarAgendamentos(id) {
 
 }
 
+export async function carregarSolicitacoesAgendadas(id) {
+
+    return await fetch(url_cliente + `/agenda/${id}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return await data.agendamentos;
+        }
+        else if (response.status === 404) {
+            return null;
+        }
+        else {
+            console.error("Erro ao carregar agendamentos:", error);
+        }
+    })
+
+}
+
 export async function buscarNome(id, usertype) {
 
     return await fetch(url_checks + `/${id}/${usertype}/name`, {
@@ -175,7 +195,7 @@ export async function temBloqueio(id, usertype) {
 
 export async function agendadoNovamente(idCliente, idConsultor) {
     try {
-        const response = await fetch(`http://localhost:8000/checks/${idCliente}/${idConsultor}`);
+        const response = await fetch(url_checks + `/${idCliente}/${idConsultor}`);
         const data = await response.json();
 
         if (response.status === 200 || response.status === 409) {
@@ -250,7 +270,7 @@ export async function verificado(id, userType) {
         })
 
     } catch (error) {
-        console.error("Erro no envio do código de verificação:", error);
+        console.error("Erro na verificação:", error);
     }
 }
 
@@ -261,7 +281,7 @@ export async function buscarNick(nickname) {
         headers: { "Content-Type": "application/json" }
       });
   
-      if (response.ok) {
+      if (response.status === 200) {
         const data = await response.json();
         //console.log("data valid: ", data.valid);
         return data.valid;
@@ -271,7 +291,49 @@ export async function buscarNick(nickname) {
       }
   
     } catch (error) {
-      console.error("Erro no envio do código de verificação:", error);
+      console.error("Erro em buscar o nickname:", error);
       return null;
+    }
+  }
+
+  export async function agendamentoCancelado(id) {
+    try {
+
+        const response = await fetch(url_consultores + `/agenda/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ "id": `${id}`})
+        }).then((response) => {
+            if (response.status == 200) {
+                console.log("Excluido com sucesso!");
+            }
+            else {
+                console.log(`Erro do servidor: ${response.status}`);
+            }
+        })
+
+    } catch (error) {
+        console.error("Erro geral no cancelamento do agendamento:", error);
+    }
+  }
+
+  export async function canceladoReuniao(id) {
+    try {
+
+        const response = await fetch(url_cliente + `/agenda/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ "id": `${id}`})
+        }).then((response) => {
+            if (response.status == 200) {
+                console.log("Cancelado com sucesso!");
+            }
+            else {
+                console.log(`Erro do servidor: ${response.status}`);
+            }
+        })
+
+    } catch (error) {
+        console.error("Erro geral no cancelamento do agendamento:", error);
     }
   }

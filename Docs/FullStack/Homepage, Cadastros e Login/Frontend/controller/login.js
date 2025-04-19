@@ -45,7 +45,7 @@ form.addEventListener('submit', async (event) => {
 
                 } while (1);
             }
-            //getUserConsultor(objLogin);
+            getUserConsultor(objLogin);
 
         } else if (test.message === "1") {
             localStorage.setItem("idCliente", test.user);
@@ -77,7 +77,7 @@ form.addEventListener('submit', async (event) => {
                 } while (1);
 
             }
-            //getUser(objLogin);
+            getUser(objLogin);
         } else {
             throw new Error('Erro na seleção binária do cliente ou consultor');
         }

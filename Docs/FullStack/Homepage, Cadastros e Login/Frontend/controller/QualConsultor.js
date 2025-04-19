@@ -2,6 +2,7 @@ import { getUserId } from './SysFx.js';
 import { Registrar, agendadoNovamente } from '../service/AJAX.js';
 
 let idConsultor = null;
+const periodoSelect = document.getElementById("periodo");
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -20,8 +21,81 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Nenhum usuário logado.");
     }
 
-});
 
+    //Horario
+
+    const periodoSelect = document.getElementById('periodo');
+    const horarioInput = document.getElementById('horario');
+
+    configurarLimitesHorario('manha');
+
+    periodoSelect.addEventListener('change', function(e) {
+        const novoPeriodo = e.target.value;
+        configurarLimitesHorario(novoPeriodo);
+        validarHorario();
+    });
+
+    horarioInput.addEventListener('change', function() {
+        validarHorario();
+    });
+
+    function configurarLimitesHorario(periodo) 
+	{
+        switch(periodo) {
+            case 'manha':
+                horarioInput.min = '07:00';
+                horarioInput.max = '12:00';
+                break;
+            case 'tarde':
+                horarioInput.min = '12:00';
+                horarioInput.max = '18:00';
+                break;
+        }
+
+        const horarioAtual = horarioInput.value;
+        if (horarioAtual && (!horarioInput.min || !horarioInput.max)) {
+            horarioInput.value = '';
+        }
+    }
+
+    function validarHorario() {
+        const horario = horarioInput.value;
+        const periodo = periodoSelect.value;
+
+
+        if (!horario) {
+            return true;
+        }
+
+        const [hora, minuto] = horario.split(':').map(Number);
+        
+        let valido = true;
+        let mensagemErro = '';
+
+        switch(periodo) {
+            case 'manha':
+                if (hora < 7 || hora >= 12) {
+                    valido = false;
+                    mensagemErro = 'Horário inválido para a manhã. Escolha entre 07:00 e 12:00.';
+                }
+                break;
+            case 'tarde':
+                if (hora < 12 || (hora >= 17 && minuto > 30) ) {
+                    valido = false;
+                    mensagemErro = 'Horário inválido para a tarde. Escolha entre 12:00 e 17:30.';
+                }
+                break;
+        }
+
+        if (!valido) {
+            alert('Horarios menores que 7h ou após as 17h30 não podem ser agendados!');
+            horarioInput.value = '';
+        }
+
+        return valido;
+    }
+
+});
 
 const form = document.getElementById('consultores-grid');
 
@@ -35,7 +109,7 @@ form.addEventListener('click', (event) => {
 
     if (card) {
         const nomeConsultor = card.querySelector('.card-title')?.innerText.trim();
-        idConsultor = card.getAttribute('data-value');
+        localStorage.setItem("idConsultor", card.getAttribute('data-value'));
         abrirModalAgendamento(nomeConsultor);
     }
 });
@@ -69,32 +143,35 @@ const modalForm = document.getElementById('modal-agendamento');
 
 modalForm.addEventListener('submit', async (event) => {
     event.preventDefault();
-    
+
     const data = document.getElementById('data-agendamento').value;
     const periodo = document.getElementById('periodo').value;
     const infoAdiantada = document.getElementById('infoAdiantada').value;
     const radioSelecionado = document.querySelector('input[name="tipo"]:checked');
+    const horario = document.getElementById('horario').value;
+    
 
     if (!data) {
         alert('Por favor, escolha uma data!');
         return;
     }
 
-    const repetido = await agendadoNovamente(getUserId(1), idConsultor);
+    const repetido = await agendadoNovamente(getUserId(1), getUserId(0));
 
     if (repetido) {
         alert("Você já tem um agendamento com esse consultor!");
-        return;        
+        return;
     }
 
     const PedidoAgendamento = {
-        idConsultor: idConsultor,
+        idConsultor: getUserId(0),
         idCliente: getUserId(1),
         infoAdiantada: infoAdiantada,
         data: data,
-        status_situacao: "Pendente",
+        status_situacao: "pendente",
         tipo: radioSelecionado.value,
-        periodo: periodo
+        periodo: periodo,
+        horario: horario || '12:00:00'
     };
 
     console.log("Agendamento criado:\n\n", PedidoAgendamento || null);
@@ -102,9 +179,6 @@ modalForm.addEventListener('submit', async (event) => {
     fecharModal();
 });
 
-// function formatarData(data) {
-//     const [ano, mes, dia] = data.split('-');
-//     return `${dia}/${mes}/${ano}`;
-// }
 
 window.fecharModal = fecharModal;
+

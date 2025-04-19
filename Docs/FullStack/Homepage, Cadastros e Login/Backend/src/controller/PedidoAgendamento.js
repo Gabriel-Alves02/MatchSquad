@@ -7,14 +7,14 @@ export const RegistrarAgendamento = async (request, response, next) => {
 
     try {
 
-        const { idConsultor, idCliente, infoAdiantada, data, status_situacao, tipo, periodo } = request.body;
+        const { idConsultor, idCliente, infoAdiantada, data, status_situacao, tipo, periodo, horario } = request.body;
 
         await connection.beginTransaction();
 
         const [result] = await connection.query(
-            `INSERT INTO Reuniao (idConsultor, idCliente, infoAdiantada, data, status_situacao, tipo, periodo) 
-        VALUES (?, ?, ?, ?, ?, ?, ?);`,
-            [idConsultor, idCliente, infoAdiantada, data, status_situacao, tipo, periodo]
+            `INSERT INTO Reuniao (idConsultor, idCliente, infoAdiantada, data, status_situacao, tipo, periodo, horario) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?);`,
+            [idConsultor, idCliente, infoAdiantada, data, status_situacao, tipo, periodo, horario]
         );
 
         await connection.commit();
@@ -41,20 +41,20 @@ export const RegistrarAgendamento = async (request, response, next) => {
 
 export const BuscarAgenda = async (request, response, next) => {
 
-    const connection = await pool.getConnection();
-
     try {
         const { idConsultor } = request.params;
 
-        const [agendamentos] = await connection.query(
+        const [agendamentos] = await pool.query(
             `SELECT r.idReuniao, r.idCliente, c.email AS emailCliente, r.idConsultor, con.email AS emailConsultor, 
             r.infoAdiantada, r.data, r.status_situacao, r.tipo, r.periodo, r.horario
             FROM Reuniao r JOIN Cliente c 
             ON r.idCliente = c.idCliente
             JOIN Consultor con ON r.idConsultor = con.idConsultor
-            WHERE r.idConsultor = ? AND r.data >= CURRENT_DATE;`,
+            WHERE r.idConsultor = ? AND r.data >= CURRENT_DATE AND r.status_situacao = 'pendente';`,
             [idConsultor]
         );
+
+        // Só carrega agendamento que: sejam do consultor logado, que sejam do dia atual ou futuro e que estejam pendentes.
 
         // AO ACERTAR O MECANISMO, SERA REFINADO O SQL PARA "ORDER BY data, periodo"
 
@@ -76,19 +76,51 @@ export const BuscarAgenda = async (request, response, next) => {
             success: false,
             message: "Erro interno do servidor"
         });
-    } finally {
-        connection.release();
+    }
+};
+
+export const BuscarSolicitacoes = async (request, response, next) => {
+
+    try {
+        const { idCliente } = request.params;
+
+        const [agendamentos] = await pool.query(
+            `SELECT r.idReuniao, r.idCliente, con.nome, con.email AS emailConsultor, 
+            r.infoAdiantada, r.data, r.status_situacao, r.tipo, r.periodo, r.horario
+            FROM Reuniao r JOIN Consultor con ON r.idConsultor = con.idConsultor
+            WHERE r.idCliente = ?;`,
+            [idCliente]
+        );
+
+        if (agendamentos.length === 0) {
+            return response.status(404).json({
+                success: false,
+                message: "Nenhum agendamento encontrado para este cliente."
+            });
+        }
+
+        return response.status(200).json({
+            success: true,
+            agendamentos
+        });
+
+    } catch (error) {
+        console.error('Erro ao buscar agendamentos:', error);
+        return response.status(500).json({
+            success: false,
+            message: "Erro interno do servidor"
+        });
     }
 };
 
 
 export const AgendamentoRepetido = async (request, response, next) => {
-    const connection = await pool.getConnection();
+
     try {
         const { idCliente, idConsultor } = request.params;
 
-        const [agenda] = await connection.query(
-            `SELECT idReuniao FROM Reuniao WHERE idConsultor = ? AND idCliente = ?;`,
+        const [agenda] = await pool.query(
+            `SELECT idReuniao FROM Reuniao WHERE idConsultor = ? AND idCliente = ? AND  data >= CURRENT_DATE;`,
             [idConsultor, idCliente]
         );
 
@@ -106,6 +138,43 @@ export const AgendamentoRepetido = async (request, response, next) => {
 
     } catch (error) {
         console.error('Erro ao buscar agendamentos:', error);
+        return response.status(500).json({
+            success: false,
+            message: "Erro interno do servidor"
+        });
+
+    } 
+};
+
+export const CancelaAgendamento = async (request, response, next) => {
+
+    const connection = await pool.getConnection();
+    try {
+        const reuniao = request.params;
+
+        await connection.beginTransaction();
+
+        const [result] = await connection.query(
+            `UPDATE Reuniao SET status_situacao = ? WHERE idReuniao = ?;`,
+            ['cancelada', reuniao.id]
+        );
+
+        await connection.commit();
+
+        if (result.changedRows > 0) {
+            return response.status(200).json({
+                success: true,
+                message: "Cancelado com sucesso!"
+            });
+        }
+
+        return response.status(200).json({
+            success: true,
+            message: "Não encontrado a Reunião!" //id passado foi invalido
+        });
+
+    } catch (error) {
+        console.error('Erro ao buscar agendamentos na tabela de reunião:', error);
         return response.status(500).json({
             success: false,
             message: "Erro interno do servidor"

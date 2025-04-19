@@ -4,7 +4,7 @@ import { CadastrarCliente } from './controller/Cliente.js';
 import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
 import { CadastrarConsultor } from './controller/Consultor.js';
-import { RegistrarAgendamento, BuscarAgenda, AgendamentoRepetido } from './controller/PedidoAgendamento.js';
+import { RegistrarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepetido, CancelaAgendamento } from './controller/PedidoAgendamento.js';
 import { GetCode, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid } from './controller/SysFx.js';
 import { EnviarEmailRemarcacao, ConfirmacaoEmail } from './service/sendgrid.js';
 
@@ -28,10 +28,13 @@ app.post('/consultores/login', Login);
 app.post('/clientes/agendamento', RegistrarAgendamento);
 app.post('/notifications', EnviarEmailRemarcacao)
 
-app.put('/notifications', ConfirmacaoEmail)
-app.put('/checks/verified', RefreshBlock)
+app.put('/notifications', ConfirmacaoEmail);
+app.put('/checks/verified', RefreshBlock);
+app.put('/consultores/agenda/:id', CancelaAgendamento );
+app.put('/clientes/agenda/:id', CancelaAgendamento );
 
 app.get('/consultores/agenda/:idConsultor', BuscarAgenda);
+app.get('/clientes/agenda/:idCliente', BuscarSolicitacoes);
 app.post('/consultores/agenda/:idConsultor', EnviarEmailRemarcacao);
 app.get('/checks/:nickname', GetIfNicknameIsValid);
 app.get('/checks/:id/:usertype/name', GetName);
