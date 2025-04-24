@@ -37,6 +37,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             buttonCancel = `<td><button class="btn btn-danger" data-value="${reuniao.idReuniao}">Sim</button></td>`;
         }
 
+        //Tratar o link futuramente (gerar, desabilitar,etc)
+
         html += `
           <tr>
             <td>${reuniao.nome}</td>

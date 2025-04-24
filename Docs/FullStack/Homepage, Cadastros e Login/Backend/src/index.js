@@ -7,6 +7,10 @@ import { CadastrarConsultor } from './controller/Consultor.js';
 import { RegistrarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepetido, CancelaAgendamento } from './controller/PedidoAgendamento.js';
 import { GetCode, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid } from './controller/SysFx.js';
 import { EnviarEmailRemarcacao, ConfirmacaoEmail } from './service/sendgrid.js';
+import { enviarParaBlob } from "./azureBlob.js";
+import { upload } from "./upload.js";
+import fs from "fs";
+
 
 const app = express();
 
@@ -41,6 +45,29 @@ app.get('/checks/:id/:usertype/name', GetName);
 app.get('/checks/:id/:usertype/code', GetCode);
 app.get('/checks/:id/:usertype/block', GetBlockStatus);
 app.get("/checks/:idCliente/:idConsultor", AgendamentoRepetido);
+
+
+app.post("/upload/:idConsultor/:tipo", upload.single("imagem"), async (req, res) => {
+    const { idConsultor, tipo } = req.params;
+    const arquivoLocal = req.file.path;
+
+    if (!["imagem", "certificado"].includes(tipo)) {
+        return res.status(400).json({ error: "Tipo inválido. Use 'imagem' ou 'certificado'" });
+    }
+
+    try {
+        const nomeBlob = `${idConsultor}/${tipo}/${idConsultor}_${tipo}_${Date.now()}.png`;
+        const url = await enviarParaBlob(arquivoLocal, nomeBlob);
+
+        // Remove o arquivo local após envio
+        fs.unlinkSync(arquivoLocal);
+
+        res.status(200).json({ success: true, url });
+
+    } catch (err) {
+        res.status(500).json({ error: "Erro ao enviar para o Azure", details: err.message });
+    }
+});
 
 
 

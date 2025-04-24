@@ -52,9 +52,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             let eventoData = new Date(info.event.start);
 
             let diffEmDias = Math.floor((eventoData - hoje) / (1000 * 60 * 60 * 24));
+            console.log("Diferença em dias:", diffEmDias);
 
             // CARREGAR O GRAU DE LIBERDADE PARA QTD DE DIAS MINIMO ANTES DE REAGENDAR DO CONSULTOR, AQUI ESTA PARA 1 (A PARTIR DE AMANHÃ NÃO REAGENDA, SO CANCELA)
-            if (diffEmDias <= 1) {
+            if (diffEmDias < 1) {
                 info.el.classList.add("no-drag"); //FUNÇÃO DRAG-DROP = REAGENDAMENTO
             }
 

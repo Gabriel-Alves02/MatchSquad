@@ -4,14 +4,14 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
-
+const containerName = "usuarios";
 
 if (!AZURE_STORAGE_CONNECTION_STRING) {
     throw new Error("ERRO: Azure Blob Storage variables.");
 }
 
 const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
-const containerClient = blobServiceClient.getContainerClient("imagens");
+const containerClient = blobServiceClient.getContainerClient(containerName);
 
 
 export const enviarParaBlob = async (dados, nomeArquivo) => {

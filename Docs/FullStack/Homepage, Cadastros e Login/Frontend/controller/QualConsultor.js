@@ -4,7 +4,7 @@ import { Registrar, agendadoNovamente } from '../service/AJAX.js';
 let idConsultor = null;
 const periodoSelect = document.getElementById("periodo");
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async function () {
 
     const inputData = document.getElementById("data-agendamento");
 
@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         console.log("Nenhum usuário logado.");
     }
-
 
     //Horario
 
