@@ -114,15 +114,15 @@ a:active {
 
 
 #bodyCad{
-    background-image: url(./CadWpp.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+    background-color: #FFF8F8;
 }
 
 #bodyCC{
-    background-image: url(./LogWpp2.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+    background-color: #FFF8F8;
 }
 
 .profile {
@@ -229,3 +229,11 @@ a:active {
     pointer-events: none;
     opacity: 0.6; /* Deixa visualmente mais fraco */
 }
+
+.btn:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    border: 1px solid #999;
+    opacity: 0.7;
+  }

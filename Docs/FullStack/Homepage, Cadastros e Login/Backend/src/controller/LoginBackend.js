@@ -71,13 +71,13 @@ export const UserType = async (request, response, next) => {
 
             return response.status(401).json({
                 success: false,
-                message: "Não tem nem cliente e nem consultor com o nickname informado!"
+                message: "Usuario não é cliente e nem consultor 🤨"
             });
         }
 
         return response.status(401).json({
             success: false,
-            message: "Não existe este login"
+            message: "Não usuário com este nickname!"
         });
 
 

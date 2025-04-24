@@ -1,4 +1,4 @@
-import { Cadastrar } from "../service/req_respManager.js";
+import { Cadastrar } from "../service/AJAX.js";
 
 const form = document.getElementById('consultorForm');
 
