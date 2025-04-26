@@ -10,6 +10,7 @@ import { EnviarEmailRemarcacao, ConfirmacaoEmail } from './service/sendgrid.js';
 import { enviarParaBlob } from "./azureBlob.js";
 import { upload } from "./upload.js";
 import fs from "fs";
+import { RegistrarReuniao } from './controller/RegistrarReuniao.js';
 
 
 const app = express();
@@ -31,6 +32,7 @@ app.post('/clientes/login', Login);
 app.post('/consultores/login', Login);
 app.post('/clientes/agendamento', RegistrarAgendamento);
 app.post('/notifications', EnviarEmailRemarcacao)
+app.post('/clientes/registrarReuniao', RegistrarReuniao);
 
 app.put('/notifications', ConfirmacaoEmail);
 app.put('/checks/verified', RefreshBlock);

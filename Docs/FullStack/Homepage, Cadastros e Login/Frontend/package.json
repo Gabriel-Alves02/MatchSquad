@@ -12,7 +12,7 @@
   "description": "",
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "browser-sync": "^3.0.3",
+    "browser-sync": "^3.0.4",
     "fullcalendar": "^6.1.15"
   }
 }

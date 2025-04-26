@@ -337,3 +337,17 @@ export async function buscarNick(nickname) {
         console.error("Erro geral no cancelamento do agendamento:", error);
     }
   }
+
+  export const RegistrarReuniao = async (objRegistro) => {
+    return await fetch(url_cliente + '/registrarReuniao', {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(objRegistro)
+    }).then((response) => {
+        if (response.status == 200) {
+            alert('Registro de reunião salvo com sucesso!');
+        } else {
+            console.log(`Erro do servidor: ${response.status}`);
+        }
+    })
+}
