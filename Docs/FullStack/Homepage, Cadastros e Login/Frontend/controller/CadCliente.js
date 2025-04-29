@@ -110,7 +110,7 @@ function cadastrarUsuario() {
         cpf_cnpj: document.getElementById('cpf_cnpj').value,
     };
 
-    //Cadastrar (dados);
+    Cadastrar (dados);
 }
 
 function testeSenha(senhausuario) {

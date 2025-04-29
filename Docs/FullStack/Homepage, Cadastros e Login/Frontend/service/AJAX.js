@@ -320,6 +320,10 @@ export async function buscarNick(nickname) {
   export async function canceladoReuniao(id) {
     try {
 
+        if (!id || id === null) {
+            throw new Error("Erro na identificação da Reuniao");
+        }
+
         const response = await fetch(url_cliente + `/agenda/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },

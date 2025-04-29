@@ -7,7 +7,7 @@ body {
     --blue: #1573E5;
 }
 
-h1{
+h1 {
     -webkit-text-stroke: 0.8px black;
 }
 
@@ -39,28 +39,24 @@ h1{
     background-color: #d2d7df;
 }
 
-.navbar-light{
+.navbar-light {
     color: #007bff;
 }
 
-.card {
-    border: 1px solid #1573E5;
-}
-
-.navbar navbar-expand-lg navbar-light bg-light{
+.navbar navbar-expand-lg navbar-light bg-light {
     border: #1573E5;
 }
 
-.d-flex{
+.d-flex {
     margin-bottom: 50px;
     margin-top: 10px;
 }
 
-.lead{
+.lead {
     margin-top: 20px;
 }
 
-.navbar-brand{
+.navbar-brand {
     min-height: 5px;
     min-width: 10px;
     max-height: 180px;
@@ -68,7 +64,7 @@ h1{
     padding-left: 10px;
 }
 
-.cx_Top-Right{
+.cx_Top-Right {
     text-align: left;
     margin-right: 40px;
     margin-bottom: 0px;
@@ -76,50 +72,53 @@ h1{
     border-bottom: 0px;
 }
 
-.text-primary{
+.text-primary {
     margin-bottom: 50px;
     text-align: center;
     color: #1573E5;
 
 }
 
-.img-box{
+.img-box {
     width: 12rem;
     height: 12rem;
     border-radius: 50%;
     margin-left: 20%;
 }
 
-a:link { 
-  text-decoration: none; 
-} 
-a:visited { 
-  text-decoration: none; 
-} 
-a:hover { 
-  text-decoration: none; 
-} 
-a:active { 
-  text-decoration: none; 
+a:link {
+    text-decoration: none;
 }
 
-#customerForm{
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
+}
+
+#customerForm {
     padding: 20px 10px 5px 2px;
 }
 
-.formfill{
+.formfill {
     width: 230px;
     height: 40px;
 }
 
 
-#bodyCad{
+#bodyCad {
     background-repeat: no-repeat;
     background-size: cover;
     background-color: #FFF8F8;
 }
 
-#bodyCC{
+#bodyCC {
     background-repeat: no-repeat;
     background-size: cover;
     background-color: #FFF8F8;
@@ -148,18 +147,18 @@ a:active {
     padding: 0.5%;
 }
 
-.certif{
+.certif {
     width: 60%;
     height: 40%;
     margin-left: 4.9rem;
 }
 
-.imgEmp{
+.imgEmp {
     width: 10rem;
     height: 8rem;
 }
 
-.card-body{
+.card-body {
     margin: 5%;
     height: 21rem;
 }
@@ -199,7 +198,7 @@ a:active {
     min-width: 250px;
 }
 
-.details{
+.details {
     cursor: pointer;
     font-size: smaller;
     color: white;
@@ -208,7 +207,7 @@ a:active {
     display: inline-block;
 }
 
-.info input{
+.info input {
     border: none;
     cursor: text;
 }
@@ -227,7 +226,8 @@ a:active {
 
 .no-drag {
     pointer-events: none;
-    opacity: 0.6; /* Deixa visualmente mais fraco */
+    opacity: 0.6;
+    /* Deixa visualmente mais fraco */
 }
 
 .btn:disabled {
@@ -236,4 +236,28 @@ a:active {
     cursor: not-allowed;
     border: 1px solid #999;
     opacity: 0.7;
-  }
+}
+
+.card {
+    margin: 15px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: justify;
+    border: 1px solid #1573E5;
+}
+.card-title {
+    font-weight: bold;
+}
+.card p {
+    margin-bottom: 10px;
+}
+.card button {
+    margin-top: 10px;
+}
+.btn-disabled {
+    pointer-events: none;
+    background-color: #ccc;
+    color: #666;
+}

@@ -34,9 +34,10 @@ form.addEventListener('submit', async (event) => {
                     if (codigoBanco.message === codigo) {
                         alert("Parabéns! Conta verificada com sucesso.");
                         verificado(idConsultor, 0);
+                        getUserConsultor(objLogin);
                         break;
                     }
-                    
+
                     if (codigoBanco.message !== codigo) {
                         enviarCodigo(idConsultor, 0);
                         alert("Código invalido, consulte o email novamente para verificar o código de confirmação.");
@@ -44,8 +45,10 @@ form.addEventListener('submit', async (event) => {
                     }
 
                 } while (1);
+            } else {
+                getUserConsultor(objLogin);
             }
-            getUserConsultor(objLogin);
+
 
         } else if (test.message === "1") {
             localStorage.setItem("idCliente", test.user);
@@ -65,19 +68,23 @@ form.addEventListener('submit', async (event) => {
                     if (codigoBanco.message === codigo) {
                         alert("Parabéns! Conta verificada com sucesso.");
                         verificado(idCliente, 1);
+                        getUser(objLogin);
                         break;
                     }
-                    
+
                     if (codigoBanco.message !== codigo) {
                         alert("Código invalido, consulte o email novamente para verificar o código de confirmação.");
                         enviarCodigo(idCliente, 1);
                         break;
                     }
 
+
                 } while (1);
 
+            } else {
+                getUser(objLogin);
             }
-            getUser(objLogin);
+
         } else {
             throw new Error('Erro na seleção binária do cliente ou consultor');
         }
