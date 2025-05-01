@@ -1,10 +1,10 @@
-import { carregarConsultoriasPesquisadas } from '../service/AJAX.js';
+import { carregarMatchsPesquisados } from '../service/AJAX.js';
 import { getUserId } from '../controller/SysFx.js';
 
 let consultorias;
 
 document.addEventListener('DOMContentLoaded', async function () {
-   consultorias = await carregarConsultoriasPesquisadas(getUserId(1));
+   consultorias = await carregarMatchsPesquisados(getUserId(1));
 
    try {
 
@@ -41,10 +41,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             style="background-color: #cbe2f8; border-radius: 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3); max-width: 900px;">
             <div style="display: flex;">
                 <h1 style="margin: 15px;">
-                    Consultoria com ${consultoria.nomeCliente}
+                    Consultoria com ${consultoria.nomeConsultor}
                 </h1>
                 <div style="margin-top: 20px; margin-left: 20px; margin-right: 10px; margin-bottom: 15px;">
-                    <a href="RegistroReuniao.html" class="btn btn-primary">Ver relatório</a>
+                    <a href="infocomplete.html" class="btn btn-primary">Ver relatório</a>
                 </div>
                 <div style="margin-top: 20px; margin-left: 10px; margin-right: 5px; margin-bottom: 15px;">
                     <a href="infocomplete.html" class="btn btn-primary">Ver Avaliação</a>
@@ -53,10 +53,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             <br>
             <div style="display: flex; margin-bottom: 10px;">
                 <div style="display: flex;">
-                    <img src="../assets/6.jpg" class="profile-nav">
+                    <img src="../assets/8.jpg" class="profile-nav">
                     <h5
                         style="padding: 15px; padding-bottom: 5px; padding-top: 2.5px; padding-left: 2.5px; font-family: Arial, Helvetica, sans-serif;">
-                        ${consultoria.nomeCliente}
+                        ${consultoria.nomeConsultor}
                     </h5>
                 </div>
                 
@@ -77,9 +77,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
 
-    document.getElementById('listaConsultorias').innerHTML = html;
+    document.getElementById('listaMatchs').innerHTML = html;
 
 } catch (error) {
-    console.error("Erro ao carregar consultorias:", error);
+    console.error("Erro ao carregar matchs:", error);
 }
 });
