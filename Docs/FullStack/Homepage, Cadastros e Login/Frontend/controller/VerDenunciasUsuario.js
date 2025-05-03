@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         `;
     });
 
+    document.getElementById('nomeDenunciado').innerHTML = `Denúncias para ${denuncia.nomeDenunciado}`
 
     document.getElementById('listaDenuncias').innerHTML = html;
 
