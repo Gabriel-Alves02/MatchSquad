@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tela de informações</title>
+    <title>Matchsquad</title>
     <link rel="stylesheet" href="style.css">
 
     <link rel="icon" href="../assets/Icon.png  " type="image/x-icon">
@@ -19,7 +19,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-
+    <script src="../controller/VerDenunciasUsuario.js"></script>
 </head>
 
 <body>
@@ -49,7 +49,7 @@
     <div class="container">
         <div class="title-info" id="nomeDenunciado">
         </div>
-    </div>    
+    </div>
 
     <br>
 
@@ -58,9 +58,28 @@
         <div id="listaDenuncias"></div>
 
         <div style="margin-top: 20px; margin-left: 4px; margin-right: 10px; margin-bottom: 15px;">
-            <a href="#" class="btn btn-primary">Bloquear usuário</a>
+            <a href="" data-bs-toggle="modal" data-bs-target="#modalBloquearUsuario" class="btn btn-primary">Bloquear usuário</a>
         </div>
 
+    </div>
+
+    <!--Modal: Deseja bloquear este usuário?-->
+    <div class="modal fade" id="modalBloquearUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Deseja bloquear este usuário?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <a href="#" class="btn btn-primary">Sim</a>
+                    <a href="#" class="btn btn-primary">Não</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!--VLibras -->
