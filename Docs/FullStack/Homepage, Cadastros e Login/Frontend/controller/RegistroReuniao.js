@@ -1,4 +1,4 @@
-import { RegistrarReuniao } from "../service/req_respManager.js";
+import { RegistrarReuniao } from "../service/AJAX.js";
 
 const form = document.getElementById('formRegistro');
 
