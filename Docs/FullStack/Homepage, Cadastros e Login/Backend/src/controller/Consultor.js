@@ -35,12 +35,12 @@ export const CadastrarConsultor = async (request, response, next) => {
             [nickname, senha]
         );
 
-        
+
         const [consultorResult] = await connection.query(
             `INSERT INTO Consultor 
             (nome, cpf, email, telefone, idLogin) 
             VALUES (?, ?, ?, ?, ?);`,
-            [nome, cpf, email, telefone,  resultLogin.insertId]
+            [nome, cpf, email, telefone, resultLogin.insertId]
         );
 
         const insertHabilidades = habilidades.map(async (idHabilidade) => {

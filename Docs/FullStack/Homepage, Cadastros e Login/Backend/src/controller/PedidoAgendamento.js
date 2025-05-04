@@ -59,7 +59,7 @@ export const BuscarAgenda = async (request, response, next) => {
         // AO ACERTAR O MECANISMO, SERA REFINADO O SQL PARA "ORDER BY data, periodo"
 
         if (agendamentos.length === 0) {
-            return response.status(404).json({
+            return response.status(201).json({
                 success: false,
                 message: "Nenhum agendamento encontrado para este consultor."
             });
@@ -93,7 +93,7 @@ export const BuscarSolicitacoes = async (request, response, next) => {
         );
 
         if (agendamentos.length === 0) {
-            return response.status(404).json({
+            return response.status(201).json({
                 success: false,
                 message: "Nenhum agendamento encontrado para este cliente."
             });

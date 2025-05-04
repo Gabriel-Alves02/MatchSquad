@@ -22,6 +22,7 @@ form.addEventListener('submit', async (event) => {
             let idConsultor = getUserId(0);
             let codigo = null;
             const block = await temBloqueio(idConsultor, 0);
+            console.log('bloq ', block)
             if (block.message === 1) {
                 do {
                     codigoBanco = await buscarCodigo(idConsultor, 0);

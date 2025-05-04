@@ -1,3 +1,5 @@
+import { enviarImagemParaBlob } from '../azureBlob.js';
+import path from 'path';
 import { pool } from "../database.js";
 
 export function gerarNum6digitos() {
@@ -78,7 +80,6 @@ export const GetCode = async (request, response, next) => {
     });
 
   } catch (error) {
-    //console.error('Erro na procura do codigo de verificação: ', error);
     return response.status(500).json({
       success: false,
       message: "Erro de servidor"
@@ -113,7 +114,7 @@ export const GetBlockStatus = async (request, response, next) => {
       });
     }
 
-    return response.status(200).json({
+    return response.status(201).json({
       success: false,
       message: 0
     });
@@ -154,18 +155,21 @@ export const RefreshBlock = async (request, response, next) => {
     if (flag === 1) {
       return response.status(200).json({
         success: true,
-        message: "Enviado",
+        message: "Alterado",
         checkChange
       });
     }
 
     return response.status(200).json({
       success: false,
-      message: "Não enviado"
+      message: "Não alterado"
     });
 
   } catch (error) {
-    console.error('Erro na procura do cliente : ', error);
+    return response.status(500).json({
+      success: false,
+      message: "Erro interno de servidor"
+    });
   } finally {
     connection.release();
   }
@@ -175,25 +179,177 @@ export const RefreshBlock = async (request, response, next) => {
 export const GetIfNicknameIsValid = async (request, response) => {
 
   try {
-      const user = request.params;
+    const user = request.params;
 
-      const [rows] = await pool.query(
-          'SELECT COUNT(*) as total FROM Login WHERE nickname = ?;',
-          [user.nickname]
-      );
+    const [rows] = await pool.query(
+      'SELECT COUNT(*) as total FROM Login WHERE nickname = ?;',
+      [user.nickname]
+    );
 
-      if (rows[0].total === 0) {
-        return response.status(200).json({ valid: true });
-      }
+    if (rows[0].total === 0) {
+      return response.status(200).json({ valid: true });
+    }
 
-      return response.status(200).json({ valid: false });
-      
+    return response.status(200).json({ valid: false });
+
   } catch (error) {
-      console.error("Erro ao verificar nickname:", error);
-      return response.status(500).json({
-        success: false,
-        message: "Problema interno no servidor!"
-      });
+    console.error("Erro ao verificar nickname:", error);
+    return response.status(500).json({
+      success: false,
+      message: "Problema interno no servidor!"
+    });
   }
 
+};
+
+
+export const CarregarPerfil = async (request, response, next) => {
+
+  try {
+
+    const { id, usertype } = request.params;
+
+    if (usertype === '0') {
+      const [perfil] = await pool.query(
+        `SELECT nome,email,telefone,valorHora,urlImagemPerfil,redeSocial,horarioInicio,horarioFim,prazoMinReag,bio FROM Consultor WHERE idConsultor = ?;`, [id]
+      );
+
+      if (perfil.length > 0) {
+        return response.status(200).json({
+          success: true,
+          perfil
+        });
+      }
+
+    } else if (usertype === '1') {
+      const [perfil] = await pool.query(
+        `SELECT nome,email,telefone,redeSocial,urlImagemPerfil,bio FROM Cliente WHERE idCliente = ?;`, [id]
+      );
+
+      if (perfil.length > 0) {
+        return response.status(200).json({
+          success: true,
+          perfil
+        });
+      }
+    }
+
+    return response.status(201).json({
+      success: true,
+      message: "Perfil não encontrado."
+    });
+
+  } catch (error) {
+    console.error('Erro no cadastro:', error);
+    return response.status(500).json({
+      success: false,
+      message: "Erro interno do servidor"
+    });
+  }
+};
+
+export const AtualizarPerfil = async (request, response, next) => {
+
+  const connection = await pool.getConnection();
+
+  try {
+
+    const { id, usertype } = request.params;
+    const info = request.body;
+    let flag = 0;
+
+    await connection.beginTransaction();
+
+    if (usertype === '0') {
+      await connection.query(`UPDATE Consultor SET email = ?, telefone = ?, valorHora = ?,redeSocial = ?,horarioInicio = ?,horarioFim = ?,prazoMinReag = ?,bio = ? WHERE idConsultor = ?;`,
+        [info.email, info.telefone, info.valorHora, info.redeSocial, info.horarioInicio, info.horarioFim, info.prazoMinReag, info.bio, id]);
+      flag = 1;
+    } else if (usertype === '1') {
+      await connection.query(`UPDATE Cliente SET email = ?, telefone = ?, redeSocial = ?, bio = ? WHERE idCliente = ?;`,
+        [info.email, info.telefone, info.redeSocial, info.bio, id]);
+      flag = 1;
+    }
+
+    await connection.commit();
+
+    if (flag === 1) {
+      return response.status(200).json({
+        success: true,
+        message: "Seus dados foram alterados com sucesso!"
+      });
+    }
+
+    return response.status(201).json({
+      success: false,
+      message: "Sem sucesso em alterar os dados"
+    });
+
+  } catch (error) {
+    return response.status(500).json({
+      success: false,
+      message: "Erro interno de servidor"
+    });
+  } finally {
+    connection.release();
+  }
+
+};
+
+export const GoCloudImage = async (req, res) => {
+  const connection = await pool.getConnection();
+
+  try {
+    const usuario = req.params;
+    const file = req.file;
+
+    if (!file) {
+      return res.status(400).json({
+        success: false,
+        message: 'Nenhuma imagem foi enviada.'
+      });
+    }
+
+    let url = null;
+
+    await connection.beginTransaction();
+
+    if (usuario.usertype === '0') {
+      const [userIdentity] = await pool.query(
+        `SELECT idLogin FROM Consultor WHERE idConsultor = ?;`, [usuario.id]
+      );
+
+      url = await enviarImagemParaBlob(file.buffer, userIdentity[0].idLogin, file.originalname);
+
+      await connection.query(`UPDATE Consultor SET urlImagemPerfil = ? WHERE idConsultor = ?;`,
+        [url, usuario.id]);
+
+    } else if (usuario.usertype === '1') {
+      const [userIdentity] = await pool.query(
+        `SELECT idLogin FROM Cliente WHERE idCliente = ?;`, [usuario.id]
+      );
+
+
+      url = await enviarImagemParaBlob(file.buffer, userIdentity[0].idLogin, file.originalname);
+
+      await connection.query(`UPDATE Cliente SET urlImagemPerfil = ? WHERE idCliente = ?;`,
+        [url, usuario.id]);
+    }
+
+    await connection.commit();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Imagem enviada com sucesso!',
+      url
+    });
+
+  } catch (error) {
+    console.error("Erro ao enviar imagem:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Problema interno no servidor!"
+    });
+  } finally {
+    connection.release();
+  }
 };

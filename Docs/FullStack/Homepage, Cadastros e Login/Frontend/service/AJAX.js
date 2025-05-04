@@ -107,7 +107,7 @@ export async function carregarAgendamentos(id) {
         if (response.status === 200) {
             return await response.json();
         }
-        else if (response.status === 404) {
+        else if (response.status === 201) {
             return null;
         }
         else {
@@ -127,7 +127,7 @@ export async function carregarSolicitacoesAgendadas(id) {
             const data = await response.json();
             return await data.agendamentos;
         }
-        else if (response.status === 404) {
+        else if (response.status === 201) {
             return null;
         }
         else {
@@ -146,7 +146,7 @@ export async function buscarNome(id, usertype) {
         if (response.status === 200) {
             return await response.json();
         }
-        else if (response.status === 404) {
+        else if (response.status === 201) {
             return null;
         }
         else {
@@ -165,7 +165,7 @@ export async function buscarCodigo(id, usertype) {
         if (response.status === 200) {
             return await response.json();
         }
-        else if (response.status === 404) {
+        else if (response.status === 201) {
             return null;
         }
         else {
@@ -184,8 +184,8 @@ export async function temBloqueio(id, usertype) {
         if (response.status === 200) {
             return await response.json();
         }
-        else if (response.status === 404) {
-            return null;
+        else if (response.status === 201) {
+            return -1;
         }
         else {
             console.error("Erro ao procurar pelo codigo do usuario:", error);
@@ -276,33 +276,33 @@ export async function verificado(id, userType) {
 
 export async function buscarNick(nickname) {
     try {
-      const response = await fetch(url_checks + `/${nickname}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" }
-      });
-  
-      if (response.status === 200) {
-        const data = await response.json();
-        //console.log("data valid: ", data.valid);
-        return data.valid;
-      } else {
-        console.log(`Erro do servidor: ${response.status}`);
-        return null;
-      }
-  
-    } catch (error) {
-      console.error("Erro em buscar o nickname:", error);
-      return null;
-    }
-  }
+        const response = await fetch(url_checks + `/${nickname}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        });
 
-  export async function agendamentoCancelado(id) {
+        if (response.status === 200) {
+            const data = await response.json();
+            //console.log("data valid: ", data.valid);
+            return data.valid;
+        } else {
+            console.log(`Erro do servidor: ${response.status}`);
+            return null;
+        }
+
+    } catch (error) {
+        console.error("Erro em buscar o nickname:", error);
+        return null;
+    }
+}
+
+export async function agendamentoCancelado(id) {
     try {
 
         const response = await fetch(url_consultores + `/agenda/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ "id": `${id}`})
+            body: JSON.stringify({ "id": `${id}` })
         }).then((response) => {
             if (response.status == 200) {
                 console.log("Excluido com sucesso!");
@@ -315,9 +315,9 @@ export async function buscarNick(nickname) {
     } catch (error) {
         console.error("Erro geral no cancelamento do agendamento:", error);
     }
-  }
+}
 
-  export async function canceladoReuniao(id) {
+export async function canceladoReuniao(id) {
     try {
 
         if (!id || id === null) {
@@ -327,7 +327,7 @@ export async function buscarNick(nickname) {
         const response = await fetch(url_cliente + `/agenda/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ "id": `${id}`})
+            body: JSON.stringify({ "id": `${id}` })
         }).then((response) => {
             if (response.status == 200) {
                 console.log("Cancelado com sucesso!");
@@ -340,12 +340,12 @@ export async function buscarNick(nickname) {
     } catch (error) {
         console.error("Erro geral no cancelamento do agendamento:", error);
     }
-  }
+}
 
-  export const RegistrarReuniao = async (objRegistro) => {
+export const RegistrarReuniao = async (objRegistro) => {
     return await fetch(url_cliente + '/registrarReuniao', {
         method: "POST",
-        headers: {"Content-Type":"application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(objRegistro)
     }).then((response) => {
         if (response.status == 200) {
@@ -354,4 +354,68 @@ export async function buscarNick(nickname) {
             console.log(`Erro do servidor: ${response.status}`);
         }
     })
+}
+
+export async function carregarInfoPerfil(id, usertype) {
+    return await fetch(url_checks + `/perfil/${id}/${usertype}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return await data.perfil;
+        }
+        else if (response.status === 201) {
+            return null;
+        }
+        else {
+            console.error("Erro ao carregar info de perfil:", error);
+        }
+    })
+}
+
+export async function atualizarPerfil(id, usertype, info) {
+    try {
+        const response = await fetch(url_checks + `/perfil/${id}/${usertype}/refresh`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(info)
+        });
+
+        let data = await response.json();
+
+        if (data) {
+            return data;
+        }
+
+        return 'Falha na atualização dos dados!'
+
+    } catch (error) {
+        return alert('Erro ao atualizar perfil:', error);
+    }
+}
+
+export async function uploadImagemPerfil(id, usertype, file) {
+
+    const formData = new FormData();
+    formData.append('profilePic', file);
+
+    try {
+        const response = await fetch(url_checks + `/perfil/${id}/${usertype}/image`, {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data) {
+            return data;
+        }
+
+        return { success : false, message: 'Erro: Não foi possivel fazer upload da imagem!'}
+
+    } catch (error) {
+        console.error('Erro ao enviar imagem:', error);
+        return { success: false, message: 'Erro de rede ou servidor.' };
+    }
 }
