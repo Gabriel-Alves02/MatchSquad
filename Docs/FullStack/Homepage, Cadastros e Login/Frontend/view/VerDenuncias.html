@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tela de informações</title>
+    <title>Matchsquad</title>
     <link rel="stylesheet" href="style.css">
 
     <link rel="icon" href="../assets/Icon.png  " type="image/x-icon">
@@ -19,7 +19,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-
+    <script src="../controller/VerDenunciasUsuario.js"></script>
 </head>
 
 <body>
@@ -47,53 +47,57 @@
     </nav>
 
     <div class="container">
-        <div class="title-info">
-            Denúncias para Fernanda Sousa
+        <div class="title-info" id="nomeDenunciado">
         </div>
-    </div>    
+    </div>
 
     <br>
 
     <div class="container">
 
-        <div
-            style="background-color: #cbe2f8; border-radius: 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3); max-width: 900px;">
-            <div style="display: flex;">
-                <img src="../assets/7.jpg" class="profile-nav" style="margin-top: 20px;">
-                <h1 style="margin: 15px;">
-                    Doces Delícias
-                </h1>
-            </div>
-            <br>
-            <div style="display: flex; margin-bottom: 10px;">
-                
-                <div>
-                    <p style="margin-left: 20px;">A consultora agiu de forma preconceituosa durante a reunião. Faço a denúncia para que isto não se repita.</p>
-                </div>
-            </div>
-        </div>
-
-        <div
-            style="background-color: #cbe2f8; border-radius: 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3); max-width: 900px;">
-            <div style="display: flex;">
-                <img src="../assets/8.jpg" class="profile-nav" style="margin-top: 20px;">
-                <h1 style="margin: 15px;">
-                    SuperTech
-                </h1>
-            </div>
-            <br>
-            <div style="display: flex; margin-bottom: 10px;">
-                
-                <div>
-                    <p style="margin-left: 20px;">A consultora fez piadas sobre minhas dúvidas durante duas reuniões. Isto desanima os clientes. Não gostaria que isto se repetisse com ninguém.</p>
-                </div>
-            </div>
-        </div>
+        <div id="listaDenuncias"></div>
 
         <div style="margin-top: 20px; margin-left: 4px; margin-right: 10px; margin-bottom: 15px;">
-            <a href="#" class="btn btn-primary">Bloquear usuário</a>
+            <a href="" data-bs-toggle="modal" data-bs-target="#modalBloquearUsuario" class="btn btn-primary">Bloquear usuário</a>
         </div>
 
+    </div>
+
+    <!--Modal: Deseja bloquear este usuário?-->
+    <div class="modal fade" id="modalBloquearUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Deseja bloquear este usuário?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <a href="" data-bs-toggle="modal" data-bs-target="#modalUsuarioBloqueado" class="btn btn-primary">Sim</a>
+                    <a href="#" class="btn btn-primary">Não</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal: Usuário bloqueado-->
+    <div class="modal fade" id="modalUsuarioBloqueado" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Usuário bloqueado</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>O usuário não poderá mais acessar a plataforma.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!--VLibras -->
@@ -107,7 +111,7 @@
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
         new window.VLibras.Widget('https://vlibras.gov.br/app');
-    </script>    
+    </script>
 </body>
 
 
