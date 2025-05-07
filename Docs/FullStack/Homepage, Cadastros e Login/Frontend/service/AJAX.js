@@ -419,3 +419,39 @@ export async function uploadImagemPerfil(id, usertype, file) {
         return { success: false, message: 'Erro de rede ou servidor.' };
     }
 }
+
+export async function carregarConsultoriasPesquisadas(nomeCliente) {
+    return await fetch(url_checks + `/historico/${nomeCliente}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return await data.historico;
+        }
+        else if (response.status === 201) {
+            return null;
+        }
+        else {
+            console.error("Erro ao carregar historico de consultorias:", error);
+        }
+    })
+}
+
+export async function carregarMatchsPesquisados(nomeConsultor) {
+    return await fetch(url_checks + `/historico/${nomeConsultor}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return await data.historico;
+        }
+        else if (response.status === 201) {
+            return null;
+        }
+        else {
+            console.error("Erro ao carregar historico de match:", error);
+        }
+    })
+}

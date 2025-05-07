@@ -8,6 +8,8 @@ import { RegistrarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepe
 import { GetCode, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid, CarregarPerfil, AtualizarPerfil, GoCloudImage } from './controller/SysFx.js';
 import { EnviarEmailRemarcacao, ConfirmacaoEmail } from './service/sendgrid.js';
 import { RegistrarReuniao } from './controller/RegistrarReuniao.js';
+import { ConsultarHistorico } from './controller/HistoricoConsultorias.js';
+import { ConsultarHistoricoMatch } from './controller/HistoricoMatch.js';
 import multer from 'multer';
 
 const storage = multer.memoryStorage();
@@ -47,6 +49,8 @@ app.get('/checks/:id/:usertype/name', GetName);
 app.get('/checks/:id/:usertype/code', GetCode);
 app.get('/checks/:id/:usertype/block', GetBlockStatus);
 app.get("/checks/:idCliente/:idConsultor", AgendamentoRepetido);
+app.get('/consultores/historico/:nomeCliente', ConsultarHistorico);
+app.get('/clientes/historico/:nomeConsultor', ConsultarHistoricoMatch);
 
 
 app.get("/checks/perfil/:id/:usertype", CarregarPerfil);
