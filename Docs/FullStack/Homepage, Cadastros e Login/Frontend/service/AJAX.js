@@ -2,6 +2,7 @@
 const url_cliente = "http://127.0.0.1:8000/clientes";
 const url_consultores = "http://127.0.0.1:8000/consultores";
 const url_checks = "http://127.0.0.1:8000/checks";
+const url_administrador = "http://127.0.0.1:8000/administrador";
 
 export const Cadastrar = async (objUser) => {
 
