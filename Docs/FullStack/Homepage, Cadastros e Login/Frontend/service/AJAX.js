@@ -421,7 +421,7 @@ export async function uploadImagemPerfil(id, usertype, file) {
 }
 
 export async function carregarConsultoriasPesquisadas(nomeCliente) {
-    return await fetch(url_checks + `/historico/${nomeCliente}`, {
+    return await fetch(url_consultores + `/historico/${nomeCliente}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
     }).then(async (response) => {
@@ -439,7 +439,7 @@ export async function carregarConsultoriasPesquisadas(nomeCliente) {
 }
 
 export async function carregarMatchsPesquisados(nomeConsultor) {
-    return await fetch(url_checks + `/historico/${nomeConsultor}`, {
+    return await fetch(url_cliente + `/historico/${nomeConsultor}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
     }).then(async (response) => {
@@ -452,6 +452,42 @@ export async function carregarMatchsPesquisados(nomeConsultor) {
         }
         else {
             console.error("Erro ao carregar historico de match:", error);
+        }
+    })
+}
+
+export async function carregarUsuariosPesquisados(nomeUsuario) {
+    return await fetch(url_administrador + `/denuncias/${nomeUsuario}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return await data.denuncias;
+        }
+        else if (response.status === 201) {
+            return null;
+        }
+        else {
+            console.error("Erro ao carregar denuncias:", error);
+        }
+    })
+}
+
+export async function carregarDenunciasUsuario(idUsuario) {
+    return await fetch(url_administrador + `/denuncias/${idUsuario}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return await data.denuncias;
+        }
+        else if (response.status === 201) {
+            return null;
+        }
+        else {
+            console.error("Erro ao carregar denuncias:", error);
         }
     })
 }
