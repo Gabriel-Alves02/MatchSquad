@@ -2,6 +2,7 @@
 const url_cliente = "http://127.0.0.1:8000/clientes";
 const url_consultores = "http://127.0.0.1:8000/consultores";
 const url_checks = "http://127.0.0.1:8000/checks";
+const url_administrador = "http://127.0.0.1:8000/administrador";
 
 export const Cadastrar = async (objUser) => {
 
@@ -418,4 +419,76 @@ export async function uploadImagemPerfil(id, usertype, file) {
         console.error('Erro ao enviar imagem:', error);
         return { success: false, message: 'Erro de rede ou servidor.' };
     }
+}
+
+export async function carregarConsultoriasPesquisadas(nomeCliente) {
+    return await fetch(url_consultores + `/historico/${nomeCliente}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return await data.historico;
+        }
+        else if (response.status === 201) {
+            return null;
+        }
+        else {
+            console.error("Erro ao carregar historico de consultorias:", error);
+        }
+    })
+}
+
+export async function carregarMatchsPesquisados(nomeConsultor) {
+    return await fetch(url_cliente + `/historico/${nomeConsultor}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return await data.historico;
+        }
+        else if (response.status === 201) {
+            return null;
+        }
+        else {
+            console.error("Erro ao carregar historico de match:", error);
+        }
+    })
+}
+
+export async function carregarUsuariosPesquisados(nomeUsuario) {
+    return await fetch(url_administrador + `/denuncias/${nomeUsuario}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return await data.denuncias;
+        }
+        else if (response.status === 201) {
+            return null;
+        }
+        else {
+            console.error("Erro ao carregar denuncias:", error);
+        }
+    })
+}
+
+export async function carregarDenunciasUsuario(idUsuario) {
+    return await fetch(url_administrador + `/denuncias/${idUsuario}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return await data.denuncias;
+        }
+        else if (response.status === 201) {
+            return null;
+        }
+        else {
+            console.error("Erro ao carregar denuncias:", error);
+        }
+    })
 }

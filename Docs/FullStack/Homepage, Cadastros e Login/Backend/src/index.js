@@ -8,6 +8,9 @@ import { RegistrarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepe
 import { GetCode, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid, CarregarPerfil, AtualizarPerfil, GoCloudImage } from './controller/SysFx.js';
 import { EnviarEmailRemarcacao, ConfirmacaoEmail } from './service/sendgrid.js';
 import { RegistrarReuniao } from './controller/RegistrarReuniao.js';
+import { ConsultarHistorico } from './controller/HistoricoConsultorias.js';
+import { ConsultarHistoricoMatch } from './controller/HistoricoMatch.js';
+import { ConsultarUsuariosDenunciados, ConsultarDenuncias, BloquearUsuario } from './controller/Denuncias.js'
 import multer from 'multer';
 
 const storage = multer.memoryStorage();
@@ -38,6 +41,7 @@ app.put('/notifications', ConfirmacaoEmail);
 app.put('/checks/verified', RefreshBlock);
 app.put('/consultores/agenda/:id', CancelaAgendamento );
 app.put('/clientes/agenda/:id', CancelaAgendamento );
+app.put('/administrador/denuncias/bloquearUsuario', BloquearUsuario)
 
 app.get('/consultores/agenda/:idConsultor', BuscarAgenda);
 app.get('/clientes/agenda/:idCliente', BuscarSolicitacoes);
@@ -47,6 +51,10 @@ app.get('/checks/:id/:usertype/name', GetName);
 app.get('/checks/:id/:usertype/code', GetCode);
 app.get('/checks/:id/:usertype/block', GetBlockStatus);
 app.get("/checks/:idCliente/:idConsultor", AgendamentoRepetido);
+app.get('/consultores/historico/:nomeCliente', ConsultarHistorico);
+app.get('/clientes/historico/:nomeConsultor', ConsultarHistoricoMatch);
+app.get('/administrador/denuncias/:nomeUsuario', ConsultarUsuariosDenunciados);
+app.get('/administrador/denuncias/:idUsuario', ConsultarDenuncias);
 
 
 app.get("/checks/perfil/:id/:usertype", CarregarPerfil);
