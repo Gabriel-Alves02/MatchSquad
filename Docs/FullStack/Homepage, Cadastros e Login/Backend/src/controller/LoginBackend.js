@@ -71,7 +71,7 @@ export const UserType = async (request, response, next) => {
 
             return response.status(401).json({
                 success: false,
-                message: "Usuario não é cliente e nem consultor 🤨"
+                message: "ADMIN"
             });
         }
 

@@ -24,6 +24,7 @@ form.addEventListener('submit', async (event) => {
             const block = await temBloqueio(idConsultor, 0);
             console.log('bloq ', block)
             if (block.message === 1) {
+                alert('Novos usuários ou usuários excluídos, precisam realizar confirmação de código!')
                 do {
                     codigoBanco = await buscarCodigo(idConsultor, 0);
                     codigo = Number(window.prompt("Codigo de confirmação enviado no email:"));
@@ -58,6 +59,7 @@ form.addEventListener('submit', async (event) => {
             const block = await temBloqueio(idCliente, 1);
 
             if (block.message === 1) {
+                alert('Novos usuários ou usuários excluídos, precisam realizar confirmação de código!')
                 do {
                     codigoBanco = await buscarCodigo(idCliente, 1);
                     codigo = Number(window.prompt("Codigo de confirmação enviado no email:"));

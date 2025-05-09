@@ -203,7 +203,7 @@ export const GetIfNicknameIsValid = async (request, response) => {
 };
 
 
-export const CarregarPerfil = async (request, response, next) => {
+export const LoadProfile = async (request, response, next) => {
 
   try {
 
@@ -248,7 +248,7 @@ export const CarregarPerfil = async (request, response, next) => {
   }
 };
 
-export const AtualizarPerfil = async (request, response, next) => {
+export const RefreshProfile = async (request, response, next) => {
 
   const connection = await pool.getConnection();
 
@@ -352,4 +352,163 @@ export const GoCloudImage = async (req, res) => {
   } finally {
     connection.release();
   }
+};
+
+export const RefreshPassword = async (request, response, next) => {
+
+  const connection = await pool.getConnection();
+
+  try {
+
+    const { id, usertype } = request.params;
+    const info = request.body;
+    let flag = 0;
+
+    await connection.beginTransaction();
+
+    if (usertype === '0') {
+      const [user] = await pool.query(
+        `SELECT idLogin FROM Consultor WHERE idConsultor = ?;`, [id]
+      );
+
+      await connection.query(`UPDATE Login SET senha = ? WHERE idLogin = ?;`,
+        [info.novaSenha, user[0].idLogin]);
+      flag = 1;
+
+    } else if (usertype === '1') {
+      const [user] = await pool.query(
+        `SELECT idLogin FROM Cliente WHERE idCliente = ?;`, [id]
+      );
+
+      await connection.query(`UPDATE Login SET senha = ? WHERE idLogin = ?;`,
+        [info.novaSenha, user[0].idLogin]);
+      flag = 1;
+    }
+
+    await connection.commit();
+
+    if (flag === 1) {
+      return response.status(200).json({
+        success: true,
+        message: "Seus dados foram alterados com sucesso!"
+      });
+    }
+
+    return response.status(201).json({
+      success: false,
+      message: "Sem sucesso em alterar os dados"
+    });
+
+  } catch (error) {
+    return response.status(500).json({
+      success: false,
+      message: "Erro interno de servidor"
+    });
+  } finally {
+    connection.release();
+  }
+
+};
+
+export const GetPassword = async (request, response, next) => {
+
+  try {
+
+    const { id, usertype } = request.params;
+
+    if (usertype === '0') {
+      const [perfil] = await pool.query(
+        `SELECT idLogin FROM Consultor WHERE idConsultor = ?;`, [id]
+      );
+
+      if (perfil.length > 0) {
+
+        const [user] = await pool.query(
+          `SELECT senha FROM Login WHERE idLogin = ?;`, [perfil[0].idLogin]
+        );
+
+        return response.status(200).json({
+          success: true,
+          message: user[0].senha
+        });
+      }
+
+    } else if (usertype === '1') {
+      const [perfil] = await pool.query(
+        `SELECT idLogin FROM Cliente WHERE idCliente = ?;`, [id]
+      );
+
+      if (perfil.length > 0) {
+
+        const [user] = await pool.query(
+          `SELECT senha FROM Login WHERE idLogin = ?;`, [perfil[0].idLogin]
+        );
+
+        return response.status(200).json({
+          success: true,
+          message: user[0].senha
+        });
+      }
+
+    }
+
+
+    return response.status(201).json({
+      success: true,
+      message: "Senha não encontrada."
+    });
+
+  } catch (error) {
+    console.error('Erro na busca da senha:', error);
+    return response.status(500).json({
+      success: false,
+      message: "Erro interno do servidor"
+    });
+  }
+};
+
+export const EndUser = async (request, response, next) => {
+
+  const connection = await pool.getConnection();
+
+  try {
+
+    const { id, usertype } = request.params;
+    let flag = 0;
+
+    await connection.beginTransaction();
+
+    if (usertype === '0') {
+      await connection.query(`UPDATE Consultor SET bloqueio = ? WHERE idConsultor = ?;`,
+        ['1', id]);
+      flag = 1;
+    } else if (usertype === '1') {
+      await connection.query(`UPDATE Cliente SET  bloqueio = ? WHERE idCliente = ?;`,
+        ['1', id]);
+      flag = 1;
+    }
+
+    await connection.commit();
+
+    if (flag === 1) {
+      return response.status(200).json({
+        success: true,
+        message: "Seus dados foram alterados com sucesso!"
+      });
+    }
+
+    return response.status(201).json({
+      success: false,
+      message: "Sem sucesso em alterar os dados"
+    });
+
+  } catch (error) {
+    return response.status(500).json({
+      success: false,
+      message: "Erro interno de servidor"
+    });
+  } finally {
+    connection.release();
+  }
+
 };

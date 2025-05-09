@@ -233,13 +233,13 @@ export async function enviarRemarcacao(info) {
 }
 
 
-export async function enviarCodigo(id, userType) {
+export async function enviarCodigo(id, usertype) {
     try {
 
         const response = await fetch('http://localhost:8000/notifications', {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ "id": `${id}`, "userType": `${userType}` })
+            body: JSON.stringify({ "id": `${id}`, "usertype": `${usertype}` })
         }).then((response) => {
             if (response.status == 200) {
                 console.log("Enviado com sucesso!");
@@ -254,13 +254,13 @@ export async function enviarCodigo(id, userType) {
     }
 }
 
-export async function verificado(id, userType) {
+export async function verificado(id, usertype) {
     try {
 
         const response = await fetch(url_checks + '/verified', {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ "id": `${id}`, "userType": `${userType}` })
+            body: JSON.stringify({ "id": `${id}`, "usertype": `${usertype}` })
         }).then((response) => {
             if (response.status == 200) {
                 console.log("Enviado com sucesso!");
@@ -396,6 +396,27 @@ export async function atualizarPerfil(id, usertype, info) {
     }
 }
 
+export async function atualizarSenha(id, usertype, info) {
+    try {
+        const response = await fetch(url_checks + `/senha/${id}/${usertype}/refresh`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(info)
+        });
+
+        let data = await response.json();
+
+        if (data) {
+            return data;
+        }
+
+        return 'Falha na atualização dos dados!'
+
+    } catch (error) {
+        return alert('Erro ao atualizar senha:', error);
+    }
+}
+
 export async function uploadImagemPerfil(id, usertype, file) {
 
     const formData = new FormData();
@@ -491,4 +512,50 @@ export async function carregarDenunciasUsuario(idUsuario) {
             console.error("Erro ao carregar denuncias:", error);
         }
     })
+}
+
+export const buscarSenha = async (id, usertype) => {
+
+    try {
+        const response = await fetch(url_checks + `/${id}/${usertype}/senha`, {
+            method: 'GET',
+            headers: { "Content-Type": "application/json" }
+        });
+
+        const data = await response.json();
+
+        if (data) {
+            return data.message;
+        }
+
+        return { success : false, message: 'Erro: Não foi possivel fazer upload da imagem!'}
+
+    } catch (error) {
+        console.error('Erro ao buscar senha:', error);
+        return { success: false, message: 'Erro de rede ou servidor.' };
+    }
+};
+
+
+export async function desativarUsuario(id, usertype) {
+    try {
+
+        const response = await fetch(url_checks + `/${id}/${usertype}/desativar`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ "id": `${id}`, "usertype": `${usertype}` })
+        }).then((response) => {
+            if (response.status == 200) {
+                console.log("Desativado com sucesso!");
+                localStorage.clear();
+                location.replace("../view/Login.html")
+            }
+            else {
+                console.log(`Erro do servidor: ${response.status}`);
+            }
+        })
+
+    } catch (error) {
+        console.error("Erro no envio do código de verificação:", error);
+    }
 }

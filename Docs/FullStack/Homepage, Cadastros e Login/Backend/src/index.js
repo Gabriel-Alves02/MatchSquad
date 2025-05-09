@@ -5,7 +5,7 @@ import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
 import { CadastrarConsultor } from './controller/Consultor.js';
 import { RegistrarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepetido, CancelaAgendamento } from './controller/PedidoAgendamento.js';
-import { GetCode, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid, CarregarPerfil, AtualizarPerfil, GoCloudImage } from './controller/SysFx.js';
+import { GetCode, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid, LoadProfile, RefreshProfile, GoCloudImage, GetPassword, EndUser, RefreshPassword} from './controller/SysFx.js';
 import { EnviarEmailRemarcacao, ConfirmacaoEmail } from './service/sendgrid.js';
 import { RegistrarReuniao } from './controller/RegistrarReuniao.js';
 import { ConsultarHistorico } from './controller/HistoricoConsultorias.js';
@@ -57,11 +57,13 @@ app.get('/administrador/denuncias/:nomeUsuario', ConsultarUsuariosDenunciados);
 app.get('/administrador/denuncias/:idUsuario', ConsultarDenuncias);
 
 
-app.get("/checks/perfil/:id/:usertype", CarregarPerfil);
-app.put("/checks/perfil/:id/:usertype/refresh", AtualizarPerfil);
-
-
+app.get("/checks/perfil/:id/:usertype", LoadProfile);
+app.put("/checks/perfil/:id/:usertype/refresh", RefreshProfile);
 app.post("/checks/perfil/:id/:usertype/image", upload.single('profilePic'), GoCloudImage)
+app.put("/checks/senha/:id/:usertype/refresh", RefreshPassword)
+
+app.get("/checks/:id/:usertype/senha", GetPassword);
+app.put("/checks/:id/:usertype/desativar", EndUser);
 
 
 

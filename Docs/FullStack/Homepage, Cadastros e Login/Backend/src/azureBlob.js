@@ -27,8 +27,6 @@ export const enviarImagemParaBlob = async (fileBuffer, idLogin, originalName) =>
             blobHTTPHeaders: { blobContentType: `image/${extensao.replace('.', '')}` }
         });
 
-        console.log(`Imagem ${nomeArquivo} enviada com sucesso para o Azure Blob Storage.`);
-
         return blobClient.url;
         
     } catch (error) {

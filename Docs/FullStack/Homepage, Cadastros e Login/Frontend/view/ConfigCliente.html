@@ -10,7 +10,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="../assets/style.css">
-    <script src="../controller/ConfigConsultor.js" type="module"></script>
+    <script src="../controller/ConfigCliente.js" type="module"></script>
 
     <style>
         .card {
@@ -62,9 +62,9 @@
         }
 
         .profile-info {
-            padding: 20px;
+            padding: 5px;
             background: white;
-            border-radius: 0 0 10px 10px;
+            border-radius: 0 0 5px 5px;
         }
 
         .profile-info h3 {
@@ -151,10 +151,10 @@
         .profile-info textarea {
             width: 100%;
             resize: vertical;
-            padding: 10px;
+            padding: 5px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 14px;
         }
 
         .profile-info textarea:focus {
@@ -191,13 +191,7 @@
                         <h3>Nome: <input type="text" id="nome" disabled></h3>
                         <h3>Email: <input type="email" id="email" autocomplete="off"></h3>
                         <h3>Telefone: <input type="tel" id="telefone" autocomplete="off"></h3>
-                        <h3>Valor/Hora: <input type="text" id="valor-hora" value="R$"></h3>
                         <h3>Rede Social: <input type="text" id="rede-social"></h3>
-                        <h3>Horario Inicial de Trabalho: <input type="time" id="hora-inicial" step="1800"></h3>
-                        <h3>Horario Final de Trabalho: <input type="time" id="hora-final" step="1800"></h3>
-                        <h3>Prazo mínimo para reagendamento: <span id="prazo-valor">1</span> dias <br> <input
-                                type="range" id="prazo" min="1" max="5" value="1"
-                                oninput="document.getElementById('prazo-valor').textContent = this.value"></h3>
                         <h3>Bio:</h3>
                         <textarea id="bio" class="form-control" rows="5"
                             placeholder="Fale um pouco sobre você..."></textarea>
@@ -210,7 +204,7 @@
                 <h3 class="profile-header">Configurações Adicionais</h3>
                 <form class="plus-config" style="padding: 15px;">
                     <br>
-                    <h3>Senha antiga: <input type="password" id="senha" autocomplete="off"></h3>
+                    <h3>Senha antiga: <input type="password" id="senha" autocomplete="off"><label for="senha" id="msgsenhaAntiga" style="color: red; background-color: white; font-size: 1rem; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Não coincide com a senha atual!</label></h3>
                     <br>
                     <h3>Nova senha: <input type="password" id="nova-senha" autocomplete="off"></h3>
                     <br>
@@ -221,13 +215,7 @@
                     <button id="salvar-plus" type="submit" class="btn" disabled>Salvar</button>
                 </form>
             </div>
-            <h3>Upload de Certificados</h3>
-            <input type="file" id="certificados" accept="image/*" style="display:none" multiple>
-            <button class="edit-btn" onclick="document.getElementById('certificados').click()">Adicionar
-                Imagens</button>
-            <div class="gallery" id="gallery"></div>
         </div>
-    </div>
     </div>
     <footer class="footer">
         <div class="container-fluid">
