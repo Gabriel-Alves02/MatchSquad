@@ -141,7 +141,7 @@ export const consultaTopClientes = async (request, response, next) => {
             on Reuniao.idCliente = Cliente.idCliente
             group by idCliente
             having idConsultor = ?
-            order by idCliente desc
+            order by qtdeConsultorias desc
             limit 5`,
             [idConsultor]
         )
