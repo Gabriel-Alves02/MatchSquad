@@ -41,6 +41,12 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 });
 
+document.addEventListener('paste', function(event) {
+    if (event.target.tagName === 'INPUT') {
+        event.preventDefault();
+    }
+});
+
 document.querySelector('.profile-info').addEventListener('submit', async (e) => {
   e.preventDefault();
 

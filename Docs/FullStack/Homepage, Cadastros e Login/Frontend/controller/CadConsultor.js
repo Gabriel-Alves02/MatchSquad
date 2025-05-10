@@ -20,6 +20,12 @@ form.addEventListener('submit', (event) => {
 
 });
 
+document.addEventListener('paste', function (event) {
+  if (event.target.tagName === 'INPUT') {
+    event.preventDefault();
+  }
+});
+
 function validarFormulario() {
 
 
@@ -37,6 +43,7 @@ function validarFormulario() {
   let msgphone = document.getElementById('msgphone');
   let msgnickname = document.getElementById('msgnickname');
   let msgsenha = document.getElementById('msgsenha');
+  let msgconfirmacaoemail = document.getElementById('msgconfirmacaoemail');
   let msgconfirmacaosenha = document.getElementById('msgconfirmacaosenha');
   let msgcpf = document.getElementById('msgcpf');
 
@@ -55,6 +62,11 @@ function validarFormulario() {
   if (!emailPattern.test(emailusuario.value)) {
     msgemail.style.display = 'inline-block';
     document.getElementById('email').value = '';
+  } else {
+    if (emailusuario.value !== confirmacaoEmail.value) {
+      msgconfirmacaoemail.style.display = 'inline-block';
+      document.getElementById('confirmacaoEmail').value = '';
+    }
   }
 
   if (!phonePattern.test(telefoneusuario.value)) {

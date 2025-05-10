@@ -1,10 +1,10 @@
 import { desativarUsuario, buscarSenha } from '../service/AJAX.js';
 
 export function getUserId(num) {
-  
+
   if (num === 0) {
     return localStorage.getItem("idConsultor");
-    
+
   } else if (num === 1) {
     return localStorage.getItem("idCliente");
   }
@@ -12,11 +12,11 @@ export function getUserId(num) {
   return null;
 }
 
-export function deactivateUser(id, usertype){
+export function deactivateUser(id, usertype) {
 
   let resp = confirm('Tem certeza que deseja desativar sua conta na nossa plataforma?')
 
-  if(resp){
+  if (resp) {
     desativarUsuario(id, usertype);
   }
 
@@ -29,8 +29,6 @@ export async function senhaInvalida(senhaAntiga, confirmNovaSenha, novaSenha, ty
 
   const senha = await buscarSenha(getUserId(type), type);
 
-  console.log(senhaAntiga.value, senha, confirmNovaSenha.value, novaSenha.value)
-
   if (!(senhaAntiga.value === senha)) {
     msgSenhaAntiga.style.display = 'inline-block';
     senhaAntiga.value = '';
@@ -41,6 +39,13 @@ export async function senhaInvalida(senhaAntiga, confirmNovaSenha, novaSenha, ty
   msgSenhaAntiga.style.display = 'none';
 
   if (!(confirmNovaSenha.value === novaSenha.value)) {
+    msgConfirmSenha.style.display = 'inline-block';
+    confirmNovaSenha.value = '';
+    confirmNovaSenha.focus();
+    return false;
+  }
+
+  if (novaSenha.value.length < 5) {
     msgConfirmSenha.style.display = 'inline-block';
     confirmNovaSenha.value = '';
     confirmNovaSenha.focus();

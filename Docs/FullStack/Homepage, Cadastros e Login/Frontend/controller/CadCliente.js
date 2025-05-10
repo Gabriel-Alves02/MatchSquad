@@ -99,6 +99,12 @@ async function validarFormulario() {
     return isValid;
 }
 
+document.addEventListener('paste', function(event) {
+    if (event.target.tagName === 'INPUT') {
+        event.preventDefault();
+    }
+});
+
 function cadastrarUsuario() {
 
     let dados = {

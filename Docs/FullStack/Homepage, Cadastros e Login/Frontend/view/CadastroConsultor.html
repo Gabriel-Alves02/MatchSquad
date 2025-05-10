@@ -17,7 +17,7 @@
 
     <link rel="stylesheet" href="../assets/style.css">
     <script src="../controller/CadConsultor.js" type="module"></script>
-    
+
 </head>
 
 <body id="bodyCC">
@@ -58,47 +58,57 @@
 
         <form id="consultorForm">
 
-            <input class="formfill" type="text" id="nome" name="nome" placeholder="Nome" required onkeyup="limparN()">
+            <label for="nome">Nome: <input class="formfill" type="text" id="nome" name="nome" required
+                    onkeyup="limparN()" autocomplete="off"></label>
             <br>
             <label for="nome" id="msgnome"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Nome
                 inválido! O nome do usuário deve conter apenas letras.</label>
             <br>
-            <input class="formfill" type="text" id="cpf" name="cpf" placeholder="CPF" required onkeyup="limparC()">
+            <label for="cpf">CPF: <input class="formfill" type="text" id="cpf" name="cpf" required onkeyup="limparC()"
+                    autocomplete="off"></label>
             <br>
             <label for="cpf" id="msgcpf"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">CPF
                 inválido!</label>
             <br>
-            <input class="formfill" type="email" id="email" name="email" placeholder="Email" required/
-                onkeyup="limparE()" autocomplete="on">
+            <label for="email">Email: <input class="formfill" type="email" id="email" name="email" required
+                    onkeyup="limparE()" autocomplete="off"></label>
             <br>
             <label for="email" id="msgemail"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Email
                 inválido! O endereço de email deve conter "@"!</label>
             <br>
-            <input class="formfill" type="tel" id="telefone" name="phone" placeholder="Telefone" required
-                onkeyup="limparT()" autocomplete="on">
+            <label for="confirmacaoEmail">Confirme o email: <input class="formfill" type="email" id="confirmacaoEmail"
+                    required onkeyup="limparCe()" autocomplete="off"></label>
+            <br>
+            <label for="email" id="msgconfirmacaoemail"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Email
+                não confere!</label>
+            <br>
+            <label for="telefone">Telefone: <input class="formfill" type="tel" id="telefone" name="phone" required
+                    onkeyup="limparT()" autocomplete="off"></label>
             <br>
             <label for="telefone" id="msgphone"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Telefone
                 inválido! O telefone deve serguir um dos seguintes padrões: (xx) xxxxx-xxxx ou (xx) xxxx-xxxx!</label>
             <br>
-            <input class="formfill" type="text" id="nickname" name="nickname" placeholder="Nickname" required
-                onkeyup="limparNi()">
+            <label for="nickname">Nickname: <input class="formfill" type="text" id="nickname" name="nickname"
+                    placeholder="(Sem Espaços)" required onkeyup="limparNi()" autocomplete="off"></label>
             <br>
             <label for="nickname" id="msgnickname"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Nickname
                 inválido! O nickname não deve conter espaços!</label>
             <br>
-            <input class="formfill" type="password" id="senha" placeholder="Senha" required onkeyup="limparS()">
+            <label for="senha">Senha: <input class="formfill" type="password" id="senha" required onkeyup="limparS()"
+                    autocomplete="off"></label>
             <br>
             <label for="senha" id="msgsenha"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Senha
                 inválida! A senha não deve conter números e caracteres sequenciais!</label>
             <br>
-            <input class="formfill" type="password" id="confirmacaoSenha" placeholder="Confirmação de senha" required
-                onkeyup="limparCs()">
+            <label for="confirmacaoSenha">Confirme a senha: <input class="formfill" type="password"
+                    id="confirmacaoSenha" required onkeyup="limparCs()" autocomplete="off"></label>
             <br>
             <label for="senha" id="msgconfirmacaosenha"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">As
@@ -189,7 +199,7 @@
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
         new window.VLibras.Widget('https://vlibras.gov.br/app');
-    </script>    
+    </script>
 
 </body>
 

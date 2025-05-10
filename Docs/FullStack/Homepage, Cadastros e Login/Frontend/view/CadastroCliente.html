@@ -52,13 +52,13 @@
         <br>
         <form id="customerForm">
 
-            <input class="formfill" type="text" id="nome" placeholder="Nome" required onkeyup="limparN()">
+            <label for="nome">Nome: <input class="formfill" type="text" id="nome" required onkeyup="limparN()" autocomplete="off"></label>
             <br>
             <label for="nome" id="msgnome"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Nome
                 inválido! O nome do usuário deve conter apenas letras.</label>
             <br>
-            <input class="formfill" type="text" id="cpf_cnpj" placeholder="CPF | CNPJ" required onkeyup="limparC()">
+            <label for="cpf_cnpj">CPF ou CNPJ: <input class="formfill" type="text" id="cpf_cnpj" required onkeyup="limparC()" autocomplete="off"></label>
             <br>
             <label for="cpf_cnpj" id="msgcpf"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">CPF
@@ -67,40 +67,39 @@
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">CNPJ
                 inválido!</label>
             <br>
-            <input class="formfill" type="email" id="email" placeholder="Email" required onkeyup="limparE()"
-                autocomplete="on">
+            <label for="email">Email: <input class="formfill" type="email" id="email" required onkeyup="limparE()"
+                autocomplete="off"></label>
             <br>
             <label for="email" id="msgemail"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Email
                 inválido! O endereço de email deve conter "@"!</label>
             <br>
-            <input class="formfill" type="email" id="confirmacaoEmail" placeholder="confirmação de email" required
-                onkeyup="limparCe()">
+            <label for="confirmacaoEmail">Confirme o email: <input class="formfill" type="email" id="confirmacaoEmail" required onkeyup="limparCe()" autocomplete="off"></label>
             <br>
             <label for="email" id="msgconfirmacaoemail"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Email
                 não confere!</label>
             <br>
-            <input class="formfill" type="tel" id="telefone" placeholder="Telefone" required onkeyup="limparT()">
+            <label for="telefone">Telefone: <input class="formfill" type="tel" id="telefone" required onkeyup="limparT()" autocomplete="off"></label>
             <br>
             <label for="telefone" id="msgphone"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Telefone
                 inválido! O telefone deve serguir um dos seguintes padrões: (xx) xxxxx-xxxx ou (xx) xxxx-xxxx!</label>
             <br>
-            <input class="formfill" type="text" id="nickname" placeholder="Nickname (Sem espaços)" required onkeyup="limparNi()">
+            <label for="nickname">Nickname: <input class="formfill" type="text" placeholder="(Sem espaços)" id="nickname" required onkeyup="limparNi()" autocomplete="off"></label>
             <br>
             <label for="nickname" id="msgnickname"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Nickname
                 já selecionado! </label>
             <br>
-            <input class="formfill" type="password" id="senha" placeholder="Senha" required onkeyup="limparS()">
+            <label for="senha">Senha: <input class="formfill" type="password" id="senha" required onkeyup="limparS()" autocomplete="off"></label>
             <br>
             <label for="senha" id="msgsenha"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Senha
                 inválida! A senha não deve conter números e caracteres sequenciais!</label>
             <br>
-            <input class="formfill" type="password" id="confirmacaoSenha" placeholder="Confirmação de senha" required
-                onkeyup="limparCs()">
+            <label for="confirmacaoSenha">Confirme a senha: <input class="formfill" type="password" id="confirmacaoSenha" required
+                onkeyup="limparCs()" autocomplete="off"></label>
             <br>
             <label for="senha" id="msgconfirmacaosenha"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">As
