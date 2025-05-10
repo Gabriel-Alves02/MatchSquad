@@ -118,6 +118,25 @@ export async function carregarAgendamentos(id) {
 
 }
 
+export async function carregarHabilidades() {
+
+    return await fetch(url_consultores + `/habilidades`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            return await response.json();
+        }
+        else if (response.status === 201) {
+            return null;
+        }
+        else {
+            console.error("Erro ao carregar as habilidades:", error);
+        }
+    })
+
+}
+
 export async function carregarSolicitacoesAgendadas(id) {
 
     return await fetch(url_cliente + `/agenda/${id}`, {
@@ -149,6 +168,24 @@ export async function buscarNome(id, usertype) {
         }
         else if (response.status === 201) {
             return null;
+        }
+        else {
+            console.error("Erro ao procurar pelo nome do usuario:", error);
+        }
+    })
+}
+
+export async function buscarPrazo(id) {
+
+    return await fetch(url_consultores + `/${id}/prazo`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            return await response.json();
+        }
+        else if (response.status === 201) {
+            return 1;
         }
         else {
             console.error("Erro ao procurar pelo nome do usuario:", error);
@@ -461,6 +498,7 @@ export async function carregarConsultoriasPesquisadas(nomeCliente) {
 }
 
 export async function carregarMatchsPesquisados(nomeConsultor) {
+    
     return await fetch(url_cliente + `/historico/${nomeConsultor}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }

@@ -30,13 +30,48 @@ export const GetName = async (request, response, next) => {
       });
     }
 
-    return response.status(404).json({
+    return response.status(201).json({
       success: false,
       message: "Nome não encontrado para este id."
     });
 
   } catch (error) {
     console.error('Erro na procura do cliente >', error);
+    return response.status(500).json({
+      success: false,
+      message: "Erro interno do servidor"
+    });
+  }
+
+};
+
+
+export const GetPrazo = async (request, response, next) => {
+
+  try {
+
+    const usuario = request.params;
+
+    if (usuario) {
+      const [username] = await pool.query(
+        `SELECT prazoMinReag FROM Consultor WHERE idConsultor = ?;`, [usuario.id]
+      );
+
+      if (username.length > 0) {
+        return response.status(200).json({
+          success: true,
+          message: username[0].prazoMinReag
+        });
+      }
+    }
+
+    return response.status(201).json({
+      success: false,
+      message: "Nome não encontrado para este id."
+    });
+
+  } catch (error) {
+    console.error('Erro na procura do consultor >', error);
     return response.status(500).json({
       success: false,
       message: "Erro interno do servidor"

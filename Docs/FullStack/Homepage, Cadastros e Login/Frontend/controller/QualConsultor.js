@@ -2,7 +2,7 @@ import { getUserId } from './SysFx.js';
 import { Registrar, agendadoNovamente } from '../service/AJAX.js';
 
 let idConsultor = null;
-const periodoSelect = document.getElementById("periodo");
+let flagHorario = -1;
 
 document.addEventListener("DOMContentLoaded", async function () {
 
@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     horarioInput.addEventListener('change', function() {
         validarHorario();
+        flagHorario = 1;
     });
 
     function configurarLimitesHorario(periodo) 
@@ -143,11 +144,18 @@ const modalForm = document.getElementById('modal-agendamento');
 modalForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
+    let endHour = '';
+    if(flagHorario === 1)
+        endHour = document.getElementById('horario').value;
+    else
+        endHour = '00:00:00';
+
+
     const data = document.getElementById('data-agendamento').value;
     const periodo = document.getElementById('periodo').value;
     const infoAdiantada = document.getElementById('infoAdiantada').value;
     const radioSelecionado = document.querySelector('input[name="tipo"]:checked');
-    const horario = document.getElementById('horario').value;
+    const horario = endHour;
     
 
     if (!data) {
@@ -170,7 +178,7 @@ modalForm.addEventListener('submit', async (event) => {
         status_situacao: "pendente",
         tipo: radioSelecionado.value,
         periodo: periodo,
-        horario: horario || '12:00:00'
+        horario: horario || '00:00:00'
     };
 
     console.log("Agendamento criado:\n\n", PedidoAgendamento || null);

@@ -73,3 +73,34 @@ export const CadastrarConsultor = async (request, response, next) => {
     }
 
 };
+
+
+export const GetHabilidades = async (request, response, next) => {
+
+    try {
+
+        const [habilidades] = await pool.query(
+            `SELECT * FROM habilidade;`,
+        );
+
+        if (habilidades.length > 0) {
+            return response.status(200).json({
+                success: true,
+                habilidades
+            });
+        }
+
+        return response.status(201).json({
+            success: false,
+            message: "Sem habilidades resgatadas do banco"
+        });
+
+    } catch (error) {
+        console.error('Erro ao buscar habilidades:', error);
+        return response.status(500).json({
+            success: false,
+            message: "Erro interno do servidor"
+        });
+
+    }
+};

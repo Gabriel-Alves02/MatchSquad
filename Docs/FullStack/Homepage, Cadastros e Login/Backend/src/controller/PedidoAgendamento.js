@@ -1,4 +1,5 @@
 import { pool } from "../database.js";
+import { EnviarCancelamentoAgendamento } from "../service/sendgrid.js"
 
 
 export const RegistrarAgendamento = async (request, response, next) => {
@@ -143,12 +144,13 @@ export const AgendamentoRepetido = async (request, response, next) => {
             message: "Erro interno do servidor"
         });
 
-    } 
+    }
 };
 
 export const CancelaAgendamento = async (request, response, next) => {
 
     const connection = await pool.getConnection();
+
     try {
         const reuniao = request.params;
 
@@ -162,6 +164,12 @@ export const CancelaAgendamento = async (request, response, next) => {
         await connection.commit();
 
         if (result.changedRows > 0) {
+
+            const [info] = await pool.query(`UPDATE Reuniao SET status_situacao = ? WHERE idReuniao = ?;`,
+                [reuniao.id])
+
+            //EnviarCancelamentoAgendamento(email,assunto,data)
+
             return response.status(200).json({
                 success: true,
                 message: "Cancelado com sucesso!"
@@ -179,6 +187,39 @@ export const CancelaAgendamento = async (request, response, next) => {
             success: false,
             message: "Erro interno do servidor"
         });
+
+    } finally {
+        connection.release();
+    }
+};
+
+export const AtualizaData = async (novaData, novoHorario, id) => {
+
+    const connection = await pool.getConnection();
+
+    try {
+
+        await connection.beginTransaction();
+
+        const [result] = await connection.query(
+            `UPDATE Reuniao SET status_situacao = ?, data = ?, horario = ? WHERE idReuniao = ?;`,
+            ['pendente', novaData, novoHorario, id]
+        );
+
+        await connection.commit();
+
+        if (result.changedRows > 0) {
+            console.log('Alterado com sucesso!')
+            return;
+        }
+
+        console.log('Não houve alteração em data e horario do agendamento');
+        return;
+
+    } catch (error) {
+        console.error('Erro ao buscar agendamentos na tabela de reunião:', error);
+        await connection.rollback();
+        return;
 
     } finally {
         connection.release();

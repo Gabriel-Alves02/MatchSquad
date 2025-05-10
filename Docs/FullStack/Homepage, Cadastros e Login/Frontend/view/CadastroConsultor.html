@@ -117,28 +117,8 @@
             <h5 style="color: #fff;">Habilidade Principal: </h5>
             <br><br>
 
-            <div id="habilidades" class="row" style="color:white;">
-                <div class="col-4 text-center">
-                    <input type="checkbox" id="generalista" name="generalista" value="1" />Generalista
-                </div>
-                <div class="col-4 text-center">
-                    <input type="checkbox" id="gestao" name="gestao" value="2" />Gestão
-                </div>
-                <div class="col-4 text-center">
-                    <input type="checkbox" id="financas" name="financas" value="3" />Finanças
-                </div>
-                <div class="col-4 text-center">
-                    <input type="checkbox" id="t.i." name="t.i." value="4" />T.I.
-                </div>
-                <div class="col-4 text-center">
-                    <input type="checkbox" id="guru" name="guru" value="5" />Guru
-                </div>
-                <!-- <div class="col-4 text-center">
-                    FUTURA INCLUSÃO DE NOVAS HABILIDADES, AINDA NÃO LISTADAS (por meio de "Outros")
-                    <input type="radio" id="outro" name="outro" value="99" />Outro:
-                    <br><br>
-                    <input type="hidden" id="other">
-                </div> -->
+            <div id="habilidadesContainer" class="row">
+
             </div>
 
 
@@ -169,6 +149,10 @@
         function limparT() {
             msgphone.style.display = 'none';
         }
+
+        function limparCe() {
+            msgconfirmacaoemail.style.display = 'none';
+        }   
 
         function limparNi() {
             msgnickname.style.display = 'none';

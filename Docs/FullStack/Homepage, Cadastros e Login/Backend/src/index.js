@@ -3,9 +3,9 @@ import cors from 'cors';
 import { CadastrarCliente } from './controller/Cliente.js';
 import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
-import { CadastrarConsultor } from './controller/Consultor.js';
+import { CadastrarConsultor, GetHabilidades } from './controller/Consultor.js';
 import { RegistrarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepetido, CancelaAgendamento } from './controller/PedidoAgendamento.js';
-import { GetCode, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid, LoadProfile, RefreshProfile, GoCloudImage, GetPassword, EndUser, RefreshPassword} from './controller/SysFx.js';
+import { GetCode, GetPrazo, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid, LoadProfile, RefreshProfile, GoCloudImage, GetPassword, EndUser, RefreshPassword} from './controller/SysFx.js';
 import { EnviarEmailRemarcacao, ConfirmacaoEmail } from './service/sendgrid.js';
 import { RegistrarReuniao } from './controller/RegistrarReuniao.js';
 import { ConsultarHistorico } from './controller/HistoricoConsultorias.js';
@@ -42,12 +42,13 @@ app.put('/checks/verified', RefreshBlock);
 app.put('/consultores/agenda/:id', CancelaAgendamento );
 app.put('/clientes/agenda/:id', CancelaAgendamento );
 app.put('/administrador/denuncias/bloquearUsuario', BloquearUsuario)
-
+app.get('/consultores/habilidades', GetHabilidades);
 app.get('/consultores/agenda/:idConsultor', BuscarAgenda);
 app.get('/clientes/agenda/:idCliente', BuscarSolicitacoes);
 app.post('/consultores/agenda/:idConsultor', EnviarEmailRemarcacao);
 app.get('/checks/:nickname', GetIfNicknameIsValid);
 app.get('/checks/:id/:usertype/name', GetName);
+app.get('/consultores/:id/prazo', GetPrazo);
 app.get('/checks/:id/:usertype/code', GetCode);
 app.get('/checks/:id/:usertype/block', GetBlockStatus);
 app.get("/checks/:idCliente/:idConsultor", AgendamentoRepetido);

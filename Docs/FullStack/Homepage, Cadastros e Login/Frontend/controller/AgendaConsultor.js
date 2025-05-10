@@ -1,5 +1,5 @@
 import { getUserId } from './SysFx.js';
-import { buscarNome, enviarRemarcacao, carregarAgendamentos,agendamentoCancelado } from '../service/AJAX.js';
+import { buscarNome, buscarPrazo, enviarRemarcacao, carregarAgendamentos, agendamentoCancelado } from '../service/AJAX.js';
 import { createPopper } from '../node_modules/@popperjs/core/dist/esm/popper.js';
 
 
@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         eventClick: async function (info) {
 
             try {
-                let resp = confirm(`Deseja cancelar o agendamento ?\nCliente: ${info.event._def.title} \nInfo: ${info.event.extendedProps.infoAdiantada}\nPeriodo: ${info.event.extendedProps.periodo}\nStatus: ${info.event.extendedProps.status}\nHorario: ${info.event.extendedProps.horario}`);
-                
+                let resp = confirm(`Deseja cancelar o agendamento ?\nCliente: ${info.event._def.title} \nPeriodo: ${info.event.extendedProps.periodo}`);
+
                 if (resp) {
                     await agendamentoCancelado(info.event.extendedProps.idReuniao);
                     alert("Agendamento excluido com sucesso!");
@@ -36,27 +36,55 @@ document.addEventListener('DOMContentLoaded', async function () {
             const clienteEmail = evento.extendedProps.emailCliente; // armazenar no extendedProps no momento do carregamento
             const consultorEmail = evento.extendedProps.emailConsultor; // idem
 
-            const payload = {
-                clienteEmail: clienteEmail,
-                consultorEmail: consultorEmail,
-                novaData: novaData,
-                nomeCliente: evento.title,
+            const modal = document.getElementById('timeModal');
+            const inputHorario = document.getElementById('horarioInput');
+            const confirmBtn = document.getElementById('confirmHorario');
+
+            inputHorario.value = '';
+
+            modal.style.display = 'flex';
+            modal.style.alignItems = 'center';
+            modal.style.justifyContent = 'center';
+
+            let novoHorario = '';
+            let payload = '';
+
+            confirmBtn.onclick = () => {
+                const fullHorario = inputHorario.value;
+
+                console.log('novoHorario: ', novoHorario)
+
+                modal.style.display = 'none';
+
+                payload = {
+                    clienteEmail: clienteEmail,
+                    consultorEmail: consultorEmail,
+                    novaData: novaData,
+                    nomeCliente: evento.title,
+                    novoHorario: fullHorario,
+                    id: info.event.extendedProps.idReuniao
+                };
+
+                console.log(payload)
+
+                enviarRemarcacao(payload);
             };
 
-            enviarRemarcacao(payload);
-
+            
         },
-        eventDidMount: function (info) {
+        eventDidMount: async function (info) {
 
             let hoje = new Date();
             let eventoData = new Date(info.event.start);
 
             let diffEmDias = Math.floor((eventoData - hoje) / (1000 * 60 * 60 * 24));
-            console.log("Diferença em dias:", diffEmDias);
 
-            // CARREGAR O GRAU DE LIBERDADE PARA QTD DE DIAS MINIMO ANTES DE REAGENDAR DO CONSULTOR, AQUI ESTA PARA 1 (A PARTIR DE AMANHÃ NÃO REAGENDA, SO CANCELA)
-            if (diffEmDias < 1) {
-                info.el.classList.add("no-drag"); //FUNÇÃO DRAG-DROP = REAGENDAMENTO
+            const prazoReag = await buscarPrazo(idConsultor);
+
+            if (diffEmDias < prazoReag.message) {
+                info.event.setProp('editable', false);
+            } else {
+                info.event.setProp('editable', true);
             }
 
             let tooltip = document.createElement('div');

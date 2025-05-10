@@ -1,6 +1,8 @@
-import { Cadastrar } from "../service/AJAX.js";
+import { Cadastrar, carregarHabilidades } from "../service/AJAX.js";
 
 const form = document.getElementById('consultorForm');
+
+let htmlHab = '';
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -119,12 +121,14 @@ function cadastrarUsuario() {
     habilidades: listaHab
   }
 
+  console.log(objConsultor)
+
   Cadastrar(objConsultor);
 }
 
 function getHabilities() {
 
-  const checkboxes = document.querySelectorAll('#habilidades input[type="checkbox"]');
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
   const selecionados = [];
 
   checkboxes.forEach(checkbox => {
@@ -189,3 +193,33 @@ function multiplicarCpf(qtdeNumeros, cpf_cnpj, multiplicador) {
 
   return soma;
 }
+
+document.addEventListener('DOMContentLoaded', async function () {
+
+  const consultor = await carregarHabilidades();
+
+  try {
+
+    (consultor.habilidades).forEach((habilidade) => {
+
+      console.log(habilidade)
+
+      htmlHab += `
+
+                <div class="col-4 text-center">
+                    <input type="checkbox" id="${habilidade.nomeHabilidade}" name="${habilidade.nomeHabilidade}" value="${habilidade.idHabilidade}" />
+                    <label for="${habilidade.nomeHabilidade}">
+                        ${habilidade.nomeHabilidade}
+                    </label>
+                </div>
+
+            `;
+    });
+
+    // Insere no container de habilidades (ex: um elemento com id 'habilidadesContainer')
+    document.getElementById('habilidadesContainer').innerHTML = htmlHab;
+
+  } catch (error) {
+    console.error("Erro ao carregar habilidades:", error);
+  }
+});

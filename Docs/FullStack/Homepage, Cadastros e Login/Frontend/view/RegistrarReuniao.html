@@ -23,25 +23,11 @@
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a href="../MenuConsultor.html"><img class="navbar-brand" src="../assets/Logo.png"></img></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-
-                <li class="nav-item">
-                    <a href="MenuConsultor.html" class="btn btn-outline-primary mr-2">Voltar</a>
-                    <a class="nav-link" href="" data-bs-target="#exampleModal2" data-bs-toggle="modal">Contatar a
-                        plataforma</a>
-                </li>
-
-                <li class="nav-item">
-                    <img src="../assets/1.jpg" class="profile-nav">
-                </li>
-
-            </ul>
+        <a href="menu.html"><img class="navbar-brand" src="../assets/Logo.png" height="54.73px"></a>
+        <div class="ml-auto">
+            <a href="Menu.html" class="btn btn-outline-primary mr-2">Voltar</a>
+            <a href="ConfigConsultor.html" class="btn btn-outline-primary mr-2">Configurações</a>
+            <a href="Login.html" class="btn btn-outline-danger" onclick="localStorage.clear()">Deslogar</a>
         </div>
     </nav>
 
@@ -92,7 +78,9 @@
                 <br>
                 <div class="imput-text">
                     <div class="form-group">
-                        <label for="topicosTratados" style="font-size: large; font-family: Arial, Helvetica, sans-serif;">Tópicos tratados na reunião:</label>
+                        <label for="topicosTratados"
+                            style="font-size: large; font-family: Arial, Helvetica, sans-serif;">Tópicos tratados na
+                            reunião:</label>
                         <textarea class="form-control" id="topicosTratados" rows="3"></textarea>
                     </div>
                 </div>
@@ -101,7 +89,9 @@
                 <br>
                 <div class="imput-text">
                     <div class="form-group">
-                        <label for="solucaoProposta" style="font-size: large; font-family: Arial, Helvetica, sans-serif;">Soluções e metas estabelecidas:</label>
+                        <label for="solucaoProposta"
+                            style="font-size: large; font-family: Arial, Helvetica, sans-serif;">Soluções e metas
+                            estabelecidas:</label>
                         <textarea class="form-control" id="solucaoProposta" rows="3"></textarea>
                     </div>
                 </div>
@@ -110,7 +100,9 @@
                 <br>
                 <div class="imput-text">
                     <div class="form-group">
-                        <label for="infoSolicitadas" style="font-size: large; font-family: Arial, Helvetica, sans-serif;">Informações solicitadas para a próxima reunião:</label>
+                        <label for="infoSolicitadas"
+                            style="font-size: large; font-family: Arial, Helvetica, sans-serif;">Informações solicitadas
+                            para a próxima reunião:</label>
                         <textarea class="form-control" id="infoSolicitadas" rows="3"></textarea>
                     </div>
                 </div>
@@ -149,7 +141,7 @@
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
         new window.VLibras.Widget('https://vlibras.gov.br/app');
-    </script>        
+    </script>
 
 </body>
 
