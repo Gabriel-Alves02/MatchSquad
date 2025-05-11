@@ -18,6 +18,9 @@ let senhaAntiga = document.getElementById('senha');
 let novaSenha = document.getElementById('nova-senha');
 let confirmNovaSenha = document.getElementById('confirma-senha');
 
+// let msgSenhaAntiga = document.getElementById('msgsenhaAntiga');
+// let msgConfirmSenha = document.getElementById('msgconfirmSenha');
+
 let salvarBtn2 = document.getElementById('salvar-plus');
 
 document.addEventListener('DOMContentLoaded', async function () {
@@ -41,10 +44,10 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 });
 
-document.addEventListener('paste', function(event) {
-    if (event.target.tagName === 'INPUT') {
-        event.preventDefault();
-    }
+document.addEventListener('paste', function (event) {
+  if (event.target.tagName === 'INPUT') {
+    event.preventDefault();
+  }
 });
 
 document.querySelector('.profile-info').addEventListener('submit', async (e) => {

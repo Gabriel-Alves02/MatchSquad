@@ -65,6 +65,9 @@ export const getUser = async (objUser) => {
 };
 
 export const getUserConsultor = async (objConsultor) => {
+
+    console.log('obj no ajax: ', objConsultor)
+
     return await fetch(url_consultores + '/login', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -270,13 +273,13 @@ export async function enviarRemarcacao(info) {
 }
 
 
-export async function enviarCodigo(id, usertype) {
+export async function enviarCodigo(id, usertype, email) {
     try {
 
         const response = await fetch('http://localhost:8000/notifications', {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ "id": `${id}`, "usertype": `${usertype}` })
+            body: JSON.stringify({ "id": `${id}`, "usertype": `${usertype}`, "email": `${email}`})
         }).then((response) => {
             if (response.status == 200) {
                 console.log("Enviado com sucesso!");

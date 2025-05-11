@@ -36,7 +36,10 @@ export async function senhaInvalida(senhaAntiga, confirmNovaSenha, novaSenha, ty
     return false;
   }
 
-  msgSenhaAntiga.style.display = 'none';
+  if (msgSenhaAntiga.style.display === 'inline-block') {
+    msgSenhaAntiga.style.display = 'none';
+  }
+
 
   if (!(confirmNovaSenha.value === novaSenha.value)) {
     msgConfirmSenha.style.display = 'inline-block';
@@ -52,7 +55,11 @@ export async function senhaInvalida(senhaAntiga, confirmNovaSenha, novaSenha, ty
     return false;
   }
 
-  msgConfirmSenha.style.display = 'none';
+
+  if (msgConfirmSenha.style.display === 'inline-block') {
+    msgConfirmSenha.style.display = 'none';
+  }
+
 
   return true;
 }

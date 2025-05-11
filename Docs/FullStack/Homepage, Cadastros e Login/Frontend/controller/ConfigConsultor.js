@@ -23,6 +23,9 @@ let senhaAntiga = document.getElementById('senha');
 let novaSenha = document.getElementById('nova-senha');
 let confirmNovaSenha = document.getElementById('confirma-senha');
 
+// let msgSenhaAntiga = document.getElementById('msgsenhaAntiga');
+// let msgConfirmSenha = document.getElementById('msgconfirmSenha');
+
 let salvarBtn2 = document.getElementById('salvar-plus');
 
 
@@ -53,10 +56,10 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 });
 
-document.addEventListener('paste', function(event) {
-    if (event.target.tagName === 'INPUT') {
-        event.preventDefault();
-    }
+document.addEventListener('paste', function (event) {
+  if (event.target.tagName === 'INPUT') {
+    event.preventDefault();
+  }
 });
 
 document.querySelector('.profile-info').addEventListener('submit', async (e) => {
@@ -144,6 +147,10 @@ document.querySelector('.plus-config').addEventListener('submit', async (e) => {
     const resp = await atualizarSenha(getUserId(0), 0, senhaAtualizada);
 
     alert(resp.message)
+
+    senhaAntiga.value = ''
+    novaSenha.value = ''
+    confirmNovaSenha.value = ''
 
   } else {
     console.log("Formulário inválido. Corrija os erros antes de enviar.");

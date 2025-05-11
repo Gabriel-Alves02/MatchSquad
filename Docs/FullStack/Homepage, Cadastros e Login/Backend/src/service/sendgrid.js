@@ -18,7 +18,7 @@ export async function EnviarEmailRemarcacao(req, res) {
 
     await AtualizaData(dataIso, novoHorario, id);
 
-    if(!(novoHorario === '00:00'))
+    if (!(novoHorario === '00:00'))
         infoHora += ` no horário ${novoHorario}`
 
     const msg = {
@@ -55,44 +55,132 @@ export async function ConfirmacaoEmail(req, res) {
 
     const usuario = req.body;
 
+    let id = usuario.id || '-1';
+    let usertype = usuario.usertype || '-1';
+    let email = usuario.email || '-1';
+
     const connection = await pool.getConnection();
 
     await connection.beginTransaction();
 
     let logMail = null;
-
     let newNum = gerarNum6digitos();
+    let msg;
+    let search;
 
-    if (usuario.userType === '0') {
-        [logMail] = await connection.query(
-            `SELECT idLogin,email FROM Consultor WHERE idConsultor = ?;`, [usuario.id]
-        );
+    console.log(' email: ', email);
 
-        await pool.query(`UPDATE Login SET codigoVerificacao = ? WHERE idLogin = ?;`, [newNum, logMail[0].idLogin]);
-
-    } else if (usuario.userType === '1') {
-        [logMail] = await connection.query(
-            `SELECT idLogin,email FROM Cliente WHERE idCliente = ?;`, [usuario.id]
-        );
-
-        await pool.query(`UPDATE Login SET codigoVerificacao = ? WHERE idLogin = ?;`, [newNum, logMail[0].idLogin]);
-    }
-
-
-    const msg = {
-        to: logMail[0].email,
-        from: "matchsquad.brasil@gmail.com",
-        subject: `Matchsquad - Código de Confirmação`,
-        text: `Copie o código de segurança abaixo para prosseguir. \n\n ${newNum}`,
-        html: `Copie o código de segurança abaixo para prosseguir. <br><br>${newNum}`,
-    };
-
-    await connection.commit();
 
     try {
-        //await sgMail.send(msg);
-        console.log("MSG DO E-mail!", msg);
-        res.status(200).json({ success: true, message: "E-mail enviado com sucesso" });
+
+        if (email === '-1') {
+
+            if (usertype === '0' && id !== '-1') {
+
+                [logMail] = await connection.query(
+                    `SELECT idLogin,email FROM Consultor WHERE idConsultor = ?;`, [usuario.id]
+                );
+
+                await pool.query(`UPDATE Login SET codigoVerificacao = ? WHERE idLogin = ?;`, [newNum, logMail[0].idLogin]);
+
+            } else if (usuario.usertype === '1' && id !== '-1') {
+
+                [logMail] = await connection.query(
+                    `SELECT idLogin,email FROM Cliente WHERE idCliente = ?;`, [usuario.id]
+                );
+
+                await pool.query(`UPDATE Login SET codigoVerificacao = ? WHERE idLogin = ?;`, [newNum, logMail[0].idLogin]);
+
+            }
+
+            msg = {
+                to: logMail[0].email,
+                from: "matchsquad.brasil@gmail.com",
+                subject: `Matchsquad - Código de Confirmação`,
+                text: `Copie o código de segurança abaixo para prosseguir. \n\n ${newNum}`,
+                html: `Copie o código de segurança abaixo para prosseguir. <br><br>${newNum}`,
+            };
+
+            console.log("MSG DO E-mail!", msg);
+            //await sgMail.send(msg);
+
+        } else {
+
+            let flag = 0;
+
+            [search] = await connection.query(
+                `SELECT idConsultor FROM Consultor WHERE email = ?;`, [email]
+            );
+
+            if (search.length === 0) {
+                flag = 1;
+
+                [search] = await connection.query(
+                    `SELECT idCliente FROM Cliente WHERE email = ?;`, [email]
+                );
+
+                if (search.length === 0)
+                    return res.status(201).json({ success: false, message: "Erro: E-mail passado não esta na base de dados!" });
+            }
+
+            if (flag === 0) {
+                const [logMail] = await connection.query(
+                    `SELECT idLogin FROM Consultor WHERE idConsultor = ?;`, [search[0].idConsultor]
+                );
+
+                const [user] = await connection.query(
+                    `SELECT nickname FROM Login WHERE idLogin = ?;`, [logMail[0].idLogin]
+                );
+
+                await pool.query(`UPDATE Login SET codigoVerificacao = ?, senha = ? WHERE idLogin = ?;`, [newNum, newNum, logMail[0].idLogin]);
+
+                msg = {
+                    to: email,
+                    from: "matchsquad.brasil@gmail.com",
+                    subject: `Matchsquad - Recuperação da Conta`,
+                    text: `Para o usuário de nickname ${user[0].nickname}. Copie o código de segurança abaixo como senha. \n\n ${newNum}\n\n Não se esqueça de alterar a senha em configurações posteriormente, por questões de segurança!`,
+                    html: `<p>Para o usuário de nickname ${user[0].nickname}. Copie o código de segurança abaixo como senha. <br><br> ${newNum}<br><br> <strong>Não se esqueça de alterar a senha em configurações posteriormente, por questões de segurança!</strong></p>`,
+                };
+
+                //await sgMail.send(msg);
+
+                console.log("MSG DO E-mail!", msg);
+
+                return res.status(201).json({ success: true, message: "CAIU NO RETURN do Consultor" });
+
+            } else {
+
+                const [logMail] = await connection.query(
+                    `SELECT idLogin FROM Cliente WHERE idCliente = ?;`, [search[0].idCliente]
+                );
+
+                const [user] = await connection.query(
+                    `SELECT nickname FROM Login WHERE idLogin = ?;`, [logMail[0].idLogin]
+                );
+
+                await pool.query(`UPDATE Login SET codigoVerificacao = ?, senha =? WHERE idLogin = ?;`, [newNum, newNum, logMail[0].idLogin]);
+
+                msg = {
+                    to: email,
+                    from: "matchsquad.brasil@gmail.com",
+                    subject: `Matchsquad - Recuperação da Conta`,
+                    text: `Para o usuário de nickname ${user[0].nickname}. Copie o código de segurança abaixo como senha. \n\n ${newNum}\n\n Não se esqueça de alterar a senha em configurações posteriormente, por questões de segurança!`,
+                    html: `<p>Para o usuário de nickname ${user[0].nickname}. Copie o código de segurança abaixo como senha. <br><br> ${newNum}<br><br> <strong>Não se esqueça de alterar a senha em configurações posteriormente, por questões de segurança!</strong></p>`,
+                };
+
+                //await sgMail.send(msg);
+
+                console.log("MSG DO E-mail!", msg);
+
+                return res.status(201).json({ success: true, message: "CAIU NO RETURN do Cliente" });
+            }
+
+        }
+
+
+        await connection.commit();
+
+
     } catch (error) {
         console.error("Erro ao enviar e-mail:", error.response?.body || error);
         res.status(500).json({ success: false, message: "Falha ao enviar e-mail" });

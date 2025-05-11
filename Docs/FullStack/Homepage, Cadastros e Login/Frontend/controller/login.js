@@ -24,7 +24,7 @@ form.addEventListener('submit', async (event) => {
             const block = await temBloqueio(idConsultor, 0);
             console.log('bloq ', block)
             if (block.message === 1) {
-                alert('Novos usuários ou usuários excluídos, precisam realizar confirmação de código!')
+                alert('Novos usuários ou usuários desativados, precisam realizar confirmação de código solicitada')
                 do {
                     codigoBanco = await buscarCodigo(idConsultor, 0);
                     codigo = Number(window.prompt("Codigo de confirmação enviado no email:"));
@@ -95,5 +95,25 @@ form.addEventListener('submit', async (event) => {
     } catch (error) {
         console.error('Erro no login.js:', error);
     }
+
+});
+
+const modalSenha = document.getElementById('modal-dialog');
+
+modalSenha.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    let modalBody = document.getElementById('modal-body');
+    let email = document.getElementById('email').value
+
+
+    modalBody.innerHTML = `
+        <div class="text-center">
+            <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+            <p class="lead">Enviado email contendo o nickname e código para recuperação de acesso no ${email}. Consulte a caixa de entrada ou spam, e use este código como senha para logar na próxima vez =)</p>
+        </div>
+    `;
+
+    enviarCodigo('-1', '-1', email);
 
 });

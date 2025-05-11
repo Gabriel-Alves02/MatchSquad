@@ -178,10 +178,9 @@ modalForm.addEventListener('submit', async (event) => {
         status_situacao: "pendente",
         tipo: radioSelecionado.value,
         periodo: periodo,
-        horario: horario || '00:00:00'
+        horario: horario //|| '00:00:00'
     };
 
-    console.log("Agendamento criado:\n\n", PedidoAgendamento || null);
     Registrar(PedidoAgendamento);
     fecharModal();
 });

@@ -5,13 +5,13 @@ export const Login = async (request, response, next) => {
     try {
         const { nickname, senha } = request.body;
 
-        const [cliente] = await pool.query(`SELECT * FROM Login WHERE nickname = ? AND senha = ?`, [nickname, senha]);
+        const [usuario] = await pool.query(`SELECT * FROM Login WHERE nickname = ? AND senha = ?`, [nickname, senha]);
 
-        if (cliente.length > 0) {
+        if (usuario.length > 0) {
             return response.status(200).json({
                 success: true,
                 message: "Login autorizado",
-                user: cliente[0]
+                user: usuario[0]
             });
         }
 
