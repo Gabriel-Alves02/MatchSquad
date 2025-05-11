@@ -47,6 +47,7 @@ export const userType = async (info) => {
     })
 };
 
+//ADAPTAR PARA ATRIB NOVO STATUS 1
 export const getUser = async (objUser) => {
     return await fetch(url_cliente + '/login', {
         method: "POST",
@@ -64,6 +65,8 @@ export const getUser = async (objUser) => {
     })
 };
 
+
+//ADAPTAR PARA ATRIB NOVO STATUS 0
 export const getUserConsultor = async (objConsultor) => {
 
     console.log('obj no ajax: ', objConsultor)
@@ -84,6 +87,8 @@ export const getUserConsultor = async (objConsultor) => {
         }
     })
 };
+
+//ADAPTAR PARA ATRIB NOVO STATUS 3 = ADMIN
 
 
 export const Registrar = async (pedido) => {
@@ -234,6 +239,7 @@ export async function temBloqueio(id, usertype) {
     })
 }
 
+//Rever, checar se ainda funciona
 export async function agendadoNovamente(idCliente, idConsultor) {
     try {
         const response = await fetch(url_checks + `/${idCliente}/${idConsultor}`);
@@ -346,7 +352,7 @@ export async function agendamentoCancelado(id) {
             body: JSON.stringify({ "id": `${id}` })
         }).then((response) => {
             if (response.status == 200) {
-                console.log("Excluido com sucesso!");
+                console.log("Cancelado com sucesso!");
             }
             else {
                 console.log(`Erro do servidor: ${response.status}`);
@@ -361,7 +367,7 @@ export async function agendamentoCancelado(id) {
 export async function canceladoReuniao(id) {
     try {
 
-        if (!id || id === null) {
+        if (!id) {
             throw new Error("Erro na identificação da Reuniao");
         }
 

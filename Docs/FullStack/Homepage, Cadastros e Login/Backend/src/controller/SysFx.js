@@ -244,6 +244,43 @@ export const LoadProfile = async (request, response, next) => {
 
     const { id, usertype } = request.params;
 
+    if (id === '-1' && usertype === '-1') {
+      const [perfil] = await pool.query
+        (
+            `SELECT 
+            c.nome,
+            c.email,
+            c.telefone,
+            c.valorHora,
+            c.urlImagemPerfil,
+            c.redeSocial,
+            c.horarioInicio,
+            c.horarioFim,
+            c.prazoMinReag,
+            c.bio,
+            GROUP_CONCAT(h.nomeHabilidade SEPARATOR ', ') AS habilidades
+        FROM 
+            Consultor c
+        INNER JOIN 
+            Consultor_Habilidades ch ON ch.idConsultor = c.idConsultor
+        INNER JOIN 
+            Habilidade h ON h.idHabilidade = ch.idHabilidade
+        GROUP BY 
+            c.idConsultor;
+        `
+        );
+
+      if (perfil.length > 0) {
+        return response.status(200).json
+          ({
+            success: true,
+            perfil
+          });
+      }
+
+    }
+
+
     if (usertype === '0') {
       const [perfil] = await pool.query(
         `SELECT nome,email,telefone,valorHora,urlImagemPerfil,redeSocial,horarioInicio,horarioFim,prazoMinReag,bio FROM Consultor WHERE idConsultor = ?;`, [id]
