@@ -60,7 +60,7 @@ export const ConsultarDenuncias = async (request, response, next) => {
 
         if(tipoUsuario === '1'){
             const [denuncias] = await pool.query(
-                `SELECT Denuncia_cliente.descricao, Cliente.nome, Consultor.nome FROM Cliente inner join Denuncia_cliente
+                `SELECT Denuncia_cliente.descricao, Cliente.nome as nomeDenunciado, Consultor.nome as nomeDenunciante FROM Cliente inner join Denuncia_cliente
                 on Cliente.idCliente = Denuncia_cliente.idCliente inner join Consultor
                 on Denuncia_cliente.idConsultor = Consultor.idConsultor
                 WHERE idCliente = ?`,
@@ -69,7 +69,7 @@ export const ConsultarDenuncias = async (request, response, next) => {
         }
         if(tipoUsuario === '0') {
             const [denuncias] = await pool.query(
-                `SELECT Denuncia_consultor.descricao, Consultor.nome, Cliente.nome FROM onsultor inner join Denuncia_consultor
+                `SELECT Denuncia_consultor.descricao, Consultor.nome as nomeDenunciado, Cliente.nome as nomeDenunciante FROM onsultor inner join Denuncia_consultor
                 on Consultor.idConsultor = Denuncia_consultor.idConsultor inner join Cliente
                 on Denuncia_consultor.idCliente = Cliente.idCliente
                 WHERE idConsultor = ?`,
