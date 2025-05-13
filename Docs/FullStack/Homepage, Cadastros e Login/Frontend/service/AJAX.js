@@ -543,8 +543,8 @@ export async function carregarUsuariosPesquisados(nomeUsuario) {
     })
 }
 
-export async function carregarDenunciasUsuario(idUsuario) {
-    return await fetch(url_administrador + `/denuncias/${idUsuario}`, {
+export async function carregarDenunciasUsuario(idUsuario, tipoUsuario) {
+    return await fetch(url_administrador + `/denuncias/${idUsuario}/${tipoUsuario}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
     }).then(async (response) => {

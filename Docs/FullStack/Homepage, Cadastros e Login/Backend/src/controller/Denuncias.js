@@ -17,7 +17,8 @@ export const ConsultarUsuariosDenunciados = async (request, response, next) => {
                 inner join Denuncia_cliente
                 on Cliente.idCliente = Denuncia_cliente.idCliente
                 group by Cliente.idCliente
-                `
+                having Cliente.nome = ?`,
+                [nomeUsuario]
             )
         }
         else {
@@ -26,7 +27,8 @@ export const ConsultarUsuariosDenunciados = async (request, response, next) => {
                 inner join Denuncia_consultor
                 on Consultor.idConsultor = Denuncia_consultor.idConsultor
                 group by Consultor.idConsultor
-                `
+                having Consultor.nome = ?`,
+                [nomeUsuario]
             )
         }
 
@@ -56,7 +58,7 @@ export const ConsultarDenuncias = async (request, response, next) => {
     try {
         const { idUsuario, tipoUsuario } = request.params;
 
-        if(tipoUsuario == 'Cliente'){
+        if(tipoUsuario === '1'){
             const [denuncias] = await pool.query(
                 `SELECT Denuncia_cliente.descricao, Cliente.nome, Consultor.nome FROM Cliente inner join Denuncia_cliente
                 on Cliente.idCliente = Denuncia_cliente.idCliente inner join Consultor
@@ -65,7 +67,7 @@ export const ConsultarDenuncias = async (request, response, next) => {
                 [idUsuario]
             )
         }
-        else {
+        if(tipoUsuario === '0') {
             const [denuncias] = await pool.query(
                 `SELECT Denuncia_consultor.descricao, Consultor.nome, Cliente.nome FROM onsultor inner join Denuncia_consultor
                 on Consultor.idConsultor = Denuncia_consultor.idConsultor inner join Cliente
