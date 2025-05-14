@@ -12,7 +12,7 @@ export const ConsultarHistoricoMatch = async (request, response, next) => {
         )
 
         const [matches] = await pool.query(
-            `SELECT Consultor.nome, Reuniao.horario, Reuniao.data, Reuniao.horario, Reuniao.status, Reuniao.avaliacao
+            `SELECT Consultor.nome as nomeConsultor, Reuniao.horario, Reuniao.data, Reuniao.horario, Reuniao.status, Reuniao.avaliacao
             FROM Reuniao inner join Consultor
             on Reuniao.idConsultor = Consultor.idConsultor
             WHERE Reuniao.idConsultor = ?`,

@@ -6,9 +6,9 @@ export const RegistrarReuniao = async (request, response, next) => {
 
     try {
 
-        const { cliente, data, topicosTratados, solucoesPropostas, infoSolicitadas } = request.body;
+        const { cliente, data, assunto, solucoes, infoSolicitada } = request.body;
 
-        if (!cliente || !data || !topicosTratados || !solucoesPropostas || !infoSolicitadas) {
+        if (!cliente || !data || !assunto || !solucoes || !infoSolicitada) {
             return response.status(400).json({
                 success: false,
                 message: "Todos os campos são obrigatórios"
@@ -28,8 +28,8 @@ export const RegistrarReuniao = async (request, response, next) => {
         );*/
 
         const [resultRegistro] = await connection.query(
-            `INSERT INTO Registro (topicosTratados, solucoesPropostas, infoSolicitadas) VALUES (?, ?, ?, ?);`,
-            [topicosTratados, solucoesPropostas, infoSolicitadas]
+            `INSERT INTO Registro (assunto, solucoes, infoSolicitada) VALUES (?, ?, ?, ?);`,
+            [assunto, solucoes, infoSolicitada]
         );
 
         await connection.commit();

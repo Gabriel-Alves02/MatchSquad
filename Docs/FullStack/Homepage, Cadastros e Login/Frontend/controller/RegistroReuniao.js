@@ -9,9 +9,9 @@ form.addEventListener('submit', (event) => {
     {
         cliente: document.getElementById('clientes').value,
         data: document.getElementById('data').value,
-        topicosTratados: document.getElementById('topicosTratados').value,
-        solucaoProposta: document.getElementById('solucaoProposta').value,
-        infoSolicitadas: document.getElementById('infoSolicitadas').value,
+        assunto: document.getElementById('topicosTratados').value,
+        solucao: document.getElementById('solucaoProposta').value,
+        infoSolicitada: document.getElementById('infoSolicitadas').value,
     }
 
     RegistrarReuniao(objRegistro);

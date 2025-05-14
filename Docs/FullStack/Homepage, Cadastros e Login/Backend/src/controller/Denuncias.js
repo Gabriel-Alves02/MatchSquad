@@ -107,13 +107,13 @@ export const BloquearUsuario = async (request, response, next) => {
 
         await connection.beginTransaction();
 
-        if(usuario.tipo == 'Cliente'){
+        if(usuario.tipo === '1'){
             const [result] = await connection.query(
                 `UPDATE Cliente SET bloqueio = ? WHERE idCliente = ?;`,
                 [0, usuario.id]
             );
         }
-        else {
+        if(usuario.tipo === '0') {
             const [result] = await connection.query(
                 `UPDATE Consultor SET bloqueio = ? WHERE idConsultor = ?;`,
                 [0, usuario.id]

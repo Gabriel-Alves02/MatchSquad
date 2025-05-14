@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             estrelas = `<i class="fa-solid fa-star" style="color: #FFC83D;"></i> <i class="fa-solid fa-star" style="color: #FFC83D;"></i> <i class="fa-solid fa-star" style="color: #FFC83D;"></i> <i class="fa-solid fa-star" style="color: #FFC83D;"></i> <i class="fa-solid fa-star" style="color: #FFC83D;"></i>`;
         }
 
-        //Tratar o link futuramente (gerar, desabilitar,etc)
 
         html += `
           <div

@@ -12,7 +12,7 @@ export const ConsultarHistorico = async (request, response, next) => {
         )
 
         const [consultorias] = await pool.query(
-            `SELECT Cliente.nome, Reuniao.horario, Reuniao.data, Reuniao.horario, Reuniao.status, Reuniao.avaliacao
+            `SELECT Cliente.nome as nomeCliente, Reuniao.horario, Reuniao.data, Reuniao.horario, Reuniao.status, Reuniao.avaliacao
             FROM Reuniao inner join Cliente
             on Reuniao.idCliente = Cliente.idCliente
             WHERE Reuniao.idCliente = ?`,
