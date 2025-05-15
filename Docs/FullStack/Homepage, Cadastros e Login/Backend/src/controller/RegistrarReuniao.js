@@ -17,7 +17,7 @@ export const RegistrarReuniao = async (request, response, next) => {
 
         await connection.beginTransaction();
 
-        /*const [idCliente] = await connection.query(
+        const [idCliente] = await connection.query(
             `SELECT idCliente FROM Cliente WHERE nome = ?;`,
             [cliente]
         );
@@ -25,11 +25,11 @@ export const RegistrarReuniao = async (request, response, next) => {
         const [idReuniao] = await connection.query(
             `SELECT idReuniao FROM Reuniao WHERE idCliente = ? and data = ?;`,
             [idCliente, data]
-        );*/
+        );
 
         const [resultRegistro] = await connection.query(
-            `INSERT INTO Registro (assunto, solucoes, infoSolicitada) VALUES (?, ?, ?, ?);`,
-            [assunto, solucoes, infoSolicitada]
+            `INSERT INTO Registro (assunto, solucoes, infoSolicitada, idReuniao) VALUES (?, ?, ?, ?, ?);`,
+            [assunto, solucoes, infoSolicitada, idReuniao]
         );
 
         await connection.commit();
