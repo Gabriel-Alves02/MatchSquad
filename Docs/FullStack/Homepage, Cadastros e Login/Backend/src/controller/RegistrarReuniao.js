@@ -51,3 +51,44 @@ export const RegistrarReuniao = async (request, response, next) => {
     }
 
 };
+
+export const obterClientesData = async (request, response, next) => {
+
+    const connection = await pool.getConnection();
+
+    try {
+
+        const { idConsultor } = request.body;
+
+        await connection.beginTransaction();
+
+        const [clientes] = await connection.query(
+            `SELECT Cliente.nome Reuniao.data FROM Cliente INNER JOIN Reuniao
+            ON Cliente.idCliente = Reuniao.idCliente
+            LEFT JOIN Registro
+            ON Reuniao.idReuniao = Registro.idReuniao
+            WHERE Reuniao.idConsultor = ? and Registro.idReuniao is null;`,
+            [idConsultor]
+        );
+
+        if (clientes.length === 0) {
+            return response.status(404).json({
+                success: false,
+                message: "Nenhum cliente encontrado."
+            });
+        }
+
+        return response.status(200).json({
+            success: true,
+            clientes
+        });
+
+    } catch (error) {
+        console.error('Erro ao buscar clientes:', error);
+        return response.status(500).json({
+            success: false,
+            message: "Erro interno do servidor"
+        });
+    }
+
+};
