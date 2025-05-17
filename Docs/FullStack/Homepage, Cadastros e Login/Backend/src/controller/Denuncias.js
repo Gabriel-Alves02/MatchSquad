@@ -17,7 +17,8 @@ export const ConsultarUsuariosDenunciados = async (request, response, next) => {
                 inner join Denuncia_cliente
                 on Cliente.idCliente = Denuncia_cliente.idCliente
                 group by Cliente.idCliente
-                `
+                having Cliente.nome = ?`,
+                [nomeUsuario]
             )
         }
         else {
@@ -26,7 +27,8 @@ export const ConsultarUsuariosDenunciados = async (request, response, next) => {
                 inner join Denuncia_consultor
                 on Consultor.idConsultor = Denuncia_consultor.idConsultor
                 group by Consultor.idConsultor
-                `
+                having Consultor.nome = ?`,
+                [nomeUsuario]
             )
         }
 
@@ -56,18 +58,18 @@ export const ConsultarDenuncias = async (request, response, next) => {
     try {
         const { idUsuario, tipoUsuario } = request.params;
 
-        if(tipoUsuario == 'Cliente'){
+        if(tipoUsuario === '1'){
             const [denuncias] = await pool.query(
-                `SELECT Denuncia_cliente.descricao, Cliente.nome, Consultor.nome FROM Cliente inner join Denuncia_cliente
+                `SELECT Denuncia_cliente.descricao, Cliente.nome as nomeDenunciado, Consultor.nome as nomeDenunciante FROM Cliente inner join Denuncia_cliente
                 on Cliente.idCliente = Denuncia_cliente.idCliente inner join Consultor
                 on Denuncia_cliente.idConsultor = Consultor.idConsultor
                 WHERE idCliente = ?`,
                 [idUsuario]
             )
         }
-        else {
+        if(tipoUsuario === '0') {
             const [denuncias] = await pool.query(
-                `SELECT Denuncia_consultor.descricao, Consultor.nome, Cliente.nome FROM onsultor inner join Denuncia_consultor
+                `SELECT Denuncia_consultor.descricao, Consultor.nome as nomeDenunciado, Cliente.nome as nomeDenunciante FROM onsultor inner join Denuncia_consultor
                 on Consultor.idConsultor = Denuncia_consultor.idConsultor inner join Cliente
                 on Denuncia_consultor.idCliente = Cliente.idCliente
                 WHERE idConsultor = ?`,
@@ -105,13 +107,13 @@ export const BloquearUsuario = async (request, response, next) => {
 
         await connection.beginTransaction();
 
-        if(usuario.tipo == 'Cliente'){
+        if(usuario.tipo === '1'){
             const [result] = await connection.query(
                 `UPDATE Cliente SET bloqueio = ? WHERE idCliente = ?;`,
                 [0, usuario.id]
             );
         }
-        else {
+        if(usuario.tipo === '0') {
             const [result] = await connection.query(
                 `UPDATE Consultor SET bloqueio = ? WHERE idConsultor = ?;`,
                 [0, usuario.id]

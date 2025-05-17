@@ -58,7 +58,7 @@ app.get('/consultores/historico/:nomeCliente', ConsultarHistorico);
 app.get('/clientes/historico/:id', LoadMatchHistory);
 
 app.get('/administrador/denuncias/:nomeUsuario', ConsultarUsuariosDenunciados);
-app.get('/administrador/denuncias/:idUsuario', ConsultarDenuncias);
+app.get('/administrador/denuncias/:idUsuario/:tipoUsuario', ConsultarDenuncias);
 
 app.get("/checks/perfil/:id/:usertype", LoadProfile);
 app.put("/checks/perfil/:id/:usertype/refresh", RefreshProfile);
