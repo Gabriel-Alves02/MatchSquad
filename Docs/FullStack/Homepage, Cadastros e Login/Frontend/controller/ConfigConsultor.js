@@ -6,6 +6,9 @@ let info;
 const uploadInput = document.getElementById('upload-pic');
 const profilePic = document.getElementById('profile-pic');
 
+const uploadCertif = document.getElementById('upload-certif');
+const galeriaCertif = document.getElementById('gallery');
+
 let nome = document.getElementById('nome');
 let email = document.getElementById('email');
 let valorHora = document.getElementById('valor-hora');

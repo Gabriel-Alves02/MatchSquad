@@ -9,7 +9,7 @@ import { GetCode, GetPrazo, GetName, GetBlockStatus, RefreshBlock, GetIfNickname
 import { EnviarEmailRemarcacao, ConfirmacaoEmail } from './service/sendgrid.js';
 import { RegistrarReuniao } from './controller/RegistrarReuniao.js';
 import { ConsultarHistorico } from './controller/HistoricoConsultorias.js';
-import { ConsultarHistoricoMatch } from './controller/HistoricoMatch.js';
+import { LoadMatchHistory } from './controller/Historico.js';
 import { ConsultarUsuariosDenunciados, ConsultarDenuncias, BloquearUsuario } from './controller/Denuncias.js'
 import multer from 'multer';
 
@@ -53,10 +53,12 @@ app.get('/checks/:id/:usertype/code', GetCode);
 app.get('/checks/:id/:usertype/block', GetBlockStatus);
 app.get("/checks/:idCliente/:idConsultor", AgendamentoRepetido);
 app.get('/consultores/historico/:nomeCliente', ConsultarHistorico);
-app.get('/clientes/historico/:nomeConsultor', ConsultarHistoricoMatch);
+
+
+app.get('/clientes/historico/:id', LoadMatchHistory);
+
 app.get('/administrador/denuncias/:nomeUsuario', ConsultarUsuariosDenunciados);
 app.get('/administrador/denuncias/:idUsuario', ConsultarDenuncias);
-
 
 app.get("/checks/perfil/:id/:usertype", LoadProfile);
 app.put("/checks/perfil/:id/:usertype/refresh", RefreshProfile);

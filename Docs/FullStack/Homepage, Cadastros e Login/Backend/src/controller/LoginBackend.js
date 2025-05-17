@@ -5,6 +5,7 @@ export const Login = async (request, response, next) => {
     try {
         const { nickname, senha } = request.body;
 
+
         const [usuario] = await pool.query(`SELECT * FROM Login WHERE nickname = ? AND senha = ?`, [nickname, senha]);
 
         if (usuario.length > 0) {

@@ -2,7 +2,6 @@ import { carregarInfoPerfil } from '../service/AJAX.js';
 
 let consultores;
 
-
 document.addEventListener('DOMContentLoaded', async function () {
 
     consultores = await carregarInfoPerfil('-1', '-1');

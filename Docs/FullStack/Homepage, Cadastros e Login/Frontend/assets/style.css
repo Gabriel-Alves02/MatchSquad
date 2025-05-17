@@ -191,11 +191,12 @@ a:active {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: white;
+    background: #b7c9f7f1;
     padding: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     min-width: 250px;
+    padding: 0px;
 }
 
 .details {
@@ -270,6 +271,7 @@ a:active {
     border-radius: 15px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     border: none;
+    padding: 15px;
 }
 
 .modal-header {

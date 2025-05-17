@@ -22,13 +22,13 @@ form.addEventListener('submit', async (event) => {
             let idConsultor = getUserId(0);
             let codigo = null;
             const block = await temBloqueio(idConsultor, 0);
-            console.log('bloq ', block)
+
             if (block.message === 1) {
                 alert('Novos usuários ou usuários desativados, precisam realizar confirmação de código solicitada')
                 do {
-                    codigoBanco = await buscarCodigo(idConsultor, 0);
+                    codigoBanco = await buscarCodigo(idConsultor, '0');
                     codigo = Number(window.prompt("Codigo de confirmação enviado no email:"));
-
+                    console.log('codigoBanco', codigoBanco, 'codigo', codigo);
                     if (codigo == null || codigo == "") {
                         break;
                     }
@@ -36,19 +36,19 @@ form.addEventListener('submit', async (event) => {
                     if (codigoBanco.message === codigo) {
                         alert("Parabéns! Conta verificada com sucesso.");
                         verificado(idConsultor, 0);
-                        getUserConsultor(objLogin);
+                        getUserConsultor(objLogin, '1');
                         break;
                     }
 
                     if (codigoBanco.message !== codigo) {
-                        enviarCodigo(idConsultor, 0);
+                        enviarCodigo(idConsultor, 0, '-1');
                         alert("Código invalido, consulte o email novamente para verificar o código de confirmação.");
                         break;
                     }
 
                 } while (1);
             } else {
-                getUserConsultor(objLogin);
+                getUserConsultor(objLogin, '-1');
             }
 
 
@@ -58,34 +58,33 @@ form.addEventListener('submit', async (event) => {
             let codigo = null;
             const block = await temBloqueio(idCliente, 1);
 
+
             if (block.message === 1) {
                 alert('Novos usuários ou usuários excluídos, precisam realizar confirmação de código!')
                 do {
-                    codigoBanco = await buscarCodigo(idCliente, 1);
+                    codigoBanco = await buscarCodigo(idCliente, '1');
                     codigo = Number(window.prompt("Codigo de confirmação enviado no email:"));
-
+                    console.log('codigoBanco', codigoBanco, 'codigo', codigo);
                     if (codigo == null || codigo == "") {
                         break;
                     }
-
                     if (codigoBanco.message === codigo) {
                         alert("Parabéns! Conta verificada com sucesso.");
                         verificado(idCliente, 1);
-                        getUser(objLogin);
+                        getUser(objLogin, '1');
                         break;
                     }
 
                     if (codigoBanco.message !== codigo) {
                         alert("Código invalido, consulte o email novamente para verificar o código de confirmação.");
-                        enviarCodigo(idCliente, 1);
+                        enviarCodigo(idCliente, 1, '-1');
                         break;
                     }
-
 
                 } while (1);
 
             } else {
-                getUser(objLogin);
+                getUser(objLogin, '-1');
             }
 
         } else {

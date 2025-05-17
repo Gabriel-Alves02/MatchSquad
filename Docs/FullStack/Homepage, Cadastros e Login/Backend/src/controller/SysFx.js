@@ -177,11 +177,11 @@ export const RefreshBlock = async (request, response, next) => {
 
     await connection.beginTransaction();
 
-    if (usuario.userType === '0') {
-      [checkChange] = await connection.query(`UPDATE Consultor SET bloqueio = ? WHERE idConsultor = ?;`, [0, usuario.id]);
+    if (usuario.usertype === '0') {
+      [checkChange] = await connection.query(`UPDATE Consultor SET bloqueio = ? WHERE idConsultor = ?;`, ['0', usuario.id]);
       flag = 1;
-    } else if (usuario.userType === '1') {
-      [checkChange] = await connection.query(`UPDATE Cliente SET bloqueio = ? WHERE idCliente = ?;`, [0, usuario.id]);
+    } else if (usuario.usertype === '1') {
+      [checkChange] = await connection.query(`UPDATE Cliente SET bloqueio = ? WHERE idCliente = ?;`, ['0', usuario.id]);
       flag = 1;
     }
 
@@ -195,9 +195,9 @@ export const RefreshBlock = async (request, response, next) => {
       });
     }
 
-    return response.status(200).json({
+    return response.status(201).json({
       success: false,
-      message: "Não alterado"
+      message: "Não verificado"
     });
 
   } catch (error) {
@@ -523,7 +523,6 @@ export const GetPassword = async (request, response, next) => {
       }
 
     }
-
 
     return response.status(201).json({
       success: true,

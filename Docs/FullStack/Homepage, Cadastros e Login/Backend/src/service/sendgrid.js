@@ -68,8 +68,6 @@ export async function ConfirmacaoEmail(req, res) {
     let msg;
     let search;
 
-    console.log(' email: ', email);
-
 
     try {
 
@@ -81,28 +79,32 @@ export async function ConfirmacaoEmail(req, res) {
                     `SELECT idLogin,email FROM Consultor WHERE idConsultor = ?;`, [usuario.id]
                 );
 
-                await pool.query(`UPDATE Login SET codigoVerificacao = ? WHERE idLogin = ?;`, [newNum, logMail[0].idLogin]);
-
+                await pool.query(`UPDATE Consultor SET bloqueio = ? WHERE idLogin = ?;`, ['1', usuario.id]);
+                await pool.query(`UPDATE Login SET senha = ?, codigoVerificacao = ? WHERE idLogin = ?;`, [newNum, newNum, logMail[0].idLogin]);
+                await connection.commit();
             } else if (usuario.usertype === '1' && id !== '-1') {
 
                 [logMail] = await connection.query(
                     `SELECT idLogin,email FROM Cliente WHERE idCliente = ?;`, [usuario.id]
                 );
 
-                await pool.query(`UPDATE Login SET codigoVerificacao = ? WHERE idLogin = ?;`, [newNum, logMail[0].idLogin]);
-
+                await pool.query(`UPDATE Consultor SET bloqueio = ? WHERE idLogin = ?;`, ['1', usuario.id]);
+                await pool.query(`UPDATE Login SET senha = ?, codigoVerificacao = ? WHERE idLogin = ?;`, [newNum, newNum, logMail[0].idLogin]);
+                await connection.commit();
             }
 
             msg = {
                 to: logMail[0].email,
                 from: "matchsquad.brasil@gmail.com",
                 subject: `Matchsquad - Código de Confirmação`,
-                text: `Copie o código de segurança abaixo para prosseguir. \n\n ${newNum}`,
-                html: `Copie o código de segurança abaixo para prosseguir. <br><br>${newNum}`,
+                text: `Copie o código de segurança abaixo para prosseguir usando-o como senha. \n\n ${newNum}`,
+                html: `Copie o código de segurança abaixo para prosseguir usando-o como senha. <br><br>${newNum}`,
             };
 
             console.log("MSG DO E-mail!", msg);
             //await sgMail.send(msg);
+
+            return res.status(201).json({ success: true, message: "CAIU NO RETURN do nickname-senha" });
 
         } else {
 
@@ -112,12 +114,18 @@ export async function ConfirmacaoEmail(req, res) {
                 `SELECT idConsultor FROM Consultor WHERE email = ?;`, [email]
             );
 
+            if (search.length > 0) {
+                await pool.query(`UPDATE Consultor SET bloqueio = ? WHERE idConsultor = ?;`, ['1', search[0].idConsultor]);
+            }
+
             if (search.length === 0) {
                 flag = 1;
 
                 [search] = await connection.query(
                     `SELECT idCliente FROM Cliente WHERE email = ?;`, [email]
                 );
+
+                await pool.query(`UPDATE Cliente SET bloqueio = ? WHERE idCliente = ?;`, ['1', search[0].idCliente]);
 
                 if (search.length === 0)
                     return res.status(201).json({ success: false, message: "Erro: E-mail passado não esta na base de dados!" });
@@ -128,18 +136,19 @@ export async function ConfirmacaoEmail(req, res) {
                     `SELECT idLogin FROM Consultor WHERE idConsultor = ?;`, [search[0].idConsultor]
                 );
 
-                const [user] = await connection.query(
-                    `SELECT nickname FROM Login WHERE idLogin = ?;`, [logMail[0].idLogin]
-                );
-
                 await pool.query(`UPDATE Login SET codigoVerificacao = ?, senha = ? WHERE idLogin = ?;`, [newNum, newNum, logMail[0].idLogin]);
+                await connection.commit();
+
+                const [user] = await connection.query(
+                    `SELECT nickname, senha FROM Login WHERE idLogin = ?;`, [logMail[0].idLogin]
+                );
 
                 msg = {
                     to: email,
                     from: "matchsquad.brasil@gmail.com",
                     subject: `Matchsquad - Recuperação da Conta`,
-                    text: `Para o usuário de nickname ${user[0].nickname}. Copie o código de segurança abaixo como senha. \n\n ${newNum}\n\n Não se esqueça de alterar a senha em configurações posteriormente, por questões de segurança!`,
-                    html: `<p>Para o usuário de nickname ${user[0].nickname}. Copie o código de segurança abaixo como senha. <br><br> ${newNum}<br><br> <strong>Não se esqueça de alterar a senha em configurações posteriormente, por questões de segurança!</strong></p>`,
+                    text: `Para o usuário de nickname ${user[0].nickname}. Copie o código de segurança abaixo como senha. \n\n ${user[0].senha}\n\n Não se esqueça de alterar a senha em configurações posteriormente, por questões de segurança!`,
+                    html: `<p>Para o usuário de nickname ${user[0].nickname}. Copie o código de segurança abaixo como senha. <br><br> ${user[0].senha}<br><br> <strong>Não se esqueça de alterar a senha em configurações posteriormente, por questões de segurança!</strong></p>`,
                 };
 
                 //await sgMail.send(msg);
@@ -154,11 +163,12 @@ export async function ConfirmacaoEmail(req, res) {
                     `SELECT idLogin FROM Cliente WHERE idCliente = ?;`, [search[0].idCliente]
                 );
 
-                const [user] = await connection.query(
-                    `SELECT nickname FROM Login WHERE idLogin = ?;`, [logMail[0].idLogin]
-                );
-
                 await pool.query(`UPDATE Login SET codigoVerificacao = ?, senha =? WHERE idLogin = ?;`, [newNum, newNum, logMail[0].idLogin]);
+                await connection.commit();
+
+                const [user] = await connection.query(
+                    `SELECT nickname, senha FROM Login WHERE idLogin = ?;`, [logMail[0].idLogin]
+                );
 
                 msg = {
                     to: email,
@@ -176,9 +186,6 @@ export async function ConfirmacaoEmail(req, res) {
             }
 
         }
-
-
-        await connection.commit();
 
 
     } catch (error) {

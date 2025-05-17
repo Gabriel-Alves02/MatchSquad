@@ -48,14 +48,19 @@ export const userType = async (info) => {
 };
 
 //ADAPTAR PARA ATRIB NOVO STATUS 1
-export const getUser = async (objUser) => {
+export const getUser = async (objUser, opt) => {
+
     return await fetch(url_cliente + '/login', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(objUser)
     }).then((response) => {
         if (response.status >= 200 && response.status < 300) {
-            location.replace("./Menu.html")
+            if (opt === '1') {
+                location.replace("./ConfigCliente.html");
+            } else {
+                location.replace("./Menu.html");
+            }
         } else if (response.status === 401) {
             alert("Credenciais inválidas");
         }
@@ -67,9 +72,7 @@ export const getUser = async (objUser) => {
 
 
 //ADAPTAR PARA ATRIB NOVO STATUS 0
-export const getUserConsultor = async (objConsultor) => {
-
-    console.log('obj no ajax: ', objConsultor)
+export const getUserConsultor = async (objConsultor, opt) => {
 
     return await fetch(url_consultores + '/login', {
         method: "POST",
@@ -77,7 +80,11 @@ export const getUserConsultor = async (objConsultor) => {
         body: JSON.stringify(objConsultor)
     }).then((response) => {
         if (response.status >= 200 && response.status < 300) {
-            location.replace("../view/MenuConsultor.html")
+            if (opt === '1') {
+                location.replace("./ConfigConsultor.html");
+            } else {
+                location.replace("./MenuConsultor.html");
+            }
         }
         else if (response.status === 401) {
             alert("Credenciais inválidas");
@@ -231,7 +238,7 @@ export async function temBloqueio(id, usertype) {
             return await response.json();
         }
         else if (response.status === 201) {
-            return -1;
+            return { success: false, message: 0 };
         }
         else {
             console.error("Erro ao procurar pelo codigo do usuario:", error);
@@ -287,7 +294,7 @@ export async function enviarCodigo(id, usertype, email) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ "id": `${id}`, "usertype": `${usertype}`, "email": `${email}`})
         }).then((response) => {
-            if (response.status == 200) {
+            if (response.status >= 200 && response.status < 300) {
                 console.log("Enviado com sucesso!");
             }
             else {
@@ -309,7 +316,7 @@ export async function verificado(id, usertype) {
             body: JSON.stringify({ "id": `${id}`, "usertype": `${usertype}` })
         }).then((response) => {
             if (response.status == 200) {
-                console.log("Enviado com sucesso!");
+                console.log("Verificado com sucesso!");
             }
             else {
                 console.log(`Erro do servidor: ${response.status}`);
@@ -506,15 +513,15 @@ export async function carregarConsultoriasPesquisadas(nomeCliente) {
     })
 }
 
-export async function carregarMatchsPesquisados(nomeConsultor) {
+export async function carregarMatchsPesquisados(id) {
     
-    return await fetch(url_cliente + `/historico/${nomeConsultor}`, {
+    return await fetch(url_cliente + `/historico/${id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
     }).then(async (response) => {
         if (response.status === 200) {
             const data = await response.json();
-            return await data.historico;
+            return await data;
         }
         else if (response.status === 201) {
             return null;
@@ -605,4 +612,21 @@ export async function desativarUsuario(id, usertype) {
     } catch (error) {
         console.error("Erro no envio do código de verificação:", error);
     }
+}
+
+
+export async function buscarHabilidades() {
+
+    return await fetch(url_consultores + `/habilidades`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            let data = await response.json();
+            return data;
+        }
+        else {
+            console.error("Erro ao procurar pelo nome do usuario:", error);
+        }
+    })
 }
