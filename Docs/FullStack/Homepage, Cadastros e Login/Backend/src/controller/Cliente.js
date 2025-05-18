@@ -50,18 +50,6 @@ export const CadastrarCliente = async (request, response, next) => {
 
         await connection.commit();
 
-        // // Criar um objeto JSON com os dados do cliente e A IMAGEM DE PERFIL
-        // const dadosCliente = {
-        //     id: result.insertId,
-        //     nome
-        // };
-
-        // // Criar um nome único para o arquivo (ex: cliente_123.json)
-        // const nomeArquivo = `cliente_${result.insertId}_imagem.json`;
-
-        // // Enviar os dados para o Azure Blob Storage
-        // await enviarParaBlob(dadosCliente, nomeArquivo);
-
         response.status(201).json({
             success: true,
             id: result.insertId,
@@ -73,6 +61,44 @@ export const CadastrarCliente = async (request, response, next) => {
         return response.status(500).json({
             success: false,
             message: "Erro interno do servidor"
+        });
+    } finally {
+        connection.release();
+    }
+
+};
+
+export const Reviewed = async (request, response, next) => {
+
+    const connection = await pool.getConnection();
+
+    try {
+
+        const info = request.body;
+
+        await connection.beginTransaction();
+
+        const [alter] = await connection.query(`UPDATE reuniao SET avaliacao = ?, comentario = ? WHERE idReuniao = ?;`,
+            [info.nota, info.comentario, info.idReuniao]);
+
+        await connection.commit();
+
+        if (alter.affectedRows > 0) {
+            return response.status(200).json({
+                success: true,
+                message: "Avaliação feita com sucesso!"
+            });
+        }
+
+        return response.status(201).json({
+            success: false,
+            message: "Sem sucesso em avaliar"
+        });
+
+    } catch (error) {
+        return response.status(500).json({
+            success: false,
+            message: "Erro interno de servidor"
         });
     } finally {
         connection.release();

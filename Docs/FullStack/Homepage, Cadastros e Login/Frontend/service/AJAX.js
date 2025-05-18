@@ -630,3 +630,24 @@ export async function buscarHabilidades() {
         }
     })
 }
+
+export async function avaliado (info) {
+    try {
+        const response = await fetch(url_cliente + `/avaliacao`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(info)
+        });
+
+        let data = await response.json();
+
+        if (data) {
+            return data;
+        }
+
+        return 'Falha na atualização dos dados!'
+
+    } catch (error) {
+        return alert('Erro ao atualizar senha:', error);
+    }
+}

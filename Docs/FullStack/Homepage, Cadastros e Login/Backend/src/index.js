@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { CadastrarCliente } from './controller/Cliente.js';
+import { CadastrarCliente, Reviewed } from './controller/Cliente.js';
 import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
 import { CadastrarConsultor, GetHabilidades } from './controller/Consultor.js';
@@ -36,7 +36,7 @@ app.post('/consultores/login', Login);
 app.post('/clientes/agendamento', RegistrarAgendamento);
 app.post('/notifications', EnviarEmailRemarcacao)
 app.post('/clientes/registrarReuniao', RegistrarReuniao);
-
+app.put('/clientes/avaliacao', Reviewed );
 app.put('/notifications', ConfirmacaoEmail);
 app.put('/checks/verified', RefreshBlock);
 app.put('/consultores/agenda/:id', CancelaAgendamento );

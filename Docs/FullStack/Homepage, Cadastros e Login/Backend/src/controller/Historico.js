@@ -7,6 +7,7 @@ export const LoadMatchHistory = async (request, response, next) => {
 
         const [reuniao] = await pool.query(
             `SELECT 
+                r.idReuniao,
                 c.nome, 
                 c.urlImagemPerfil, 
                 r.data, 
@@ -15,13 +16,17 @@ export const LoadMatchHistory = async (request, response, next) => {
                 r.avaliacao, 
                 re.assunto, 
                 re.solucoes, 
-                re.infoSolicitada
+                re.infoSolicitada,
+                r.avaliacao,
+                r.comentario
             FROM 
-                consultor c
+                reuniao r
             INNER JOIN 
-                reuniao r ON c.idConsultor = r.idConsultor
-            INNER JOIN 
-                registro re ON r.idReuniao = re.idReuniao;`,
+                consultor c ON r.idConsultor = c.idConsultor
+            LEFT JOIN 
+                registro re ON r.idReuniao = re.idReuniao
+            WHERE
+                r.idCliente = ?;`,
             [user.id]
         );
 
