@@ -694,3 +694,25 @@ export const checkDenuncia = async (id, usertype, id2) => {
         return { success: false, message: 'Erro de rede ou servidor no momento de carregar denuncias.' };
     }
 };
+
+export const buscarMediaConsultor = async (id) => {
+
+    try {
+        const response = await fetch(url_consultores + `/${id}/media`, {
+            method: 'GET',
+            headers: { "Content-Type": "application/json" }
+        });
+
+        const data = await response.json();
+
+        if (data) {
+            return data.message;
+        }
+
+        return { success : false, message: 'Erro: Não foi possivel buscar media'}
+
+    } catch (error) {
+        console.error('Erro ao buscar media:', error);
+        return { success: false, message: 'Erro de rede ou servidor.' };
+    }
+};

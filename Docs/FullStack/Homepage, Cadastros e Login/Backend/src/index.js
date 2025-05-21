@@ -3,7 +3,7 @@ import cors from 'cors';
 import { CadastrarCliente, Reviewed } from './controller/Cliente.js';
 import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
-import { CadastrarConsultor, GetHabilidades } from './controller/Consultor.js';
+import { CadastrarConsultor, GetHabilidades, ConsultarMediaConsultor } from './controller/Consultor.js';
 import { RegistrarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepetido, CancelaAgendamento } from './controller/PedidoAgendamento.js';
 import { GetCode, GetPrazo, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid, LoadProfile, RefreshProfile, GoCloudImage, GetPassword, EndUser, RefreshPassword, SubmitReport, GetReport } from './controller/SysFx.js';
 import { EnviarEmailRemarcacao, ConfirmacaoEmail } from './service/sendgrid.js';
@@ -57,6 +57,8 @@ app.get('/consultores/historico/:nomeCliente', ConsultarHistorico);
 app.get('/checks/denuncia/:id/:usertype/:id2', GetReport);
 
 app.get('/clientes/historico/:id', LoadMatchHistory);
+
+app.get('/consultores/:id/media', ConsultarMediaConsultor);
 
 app.get('/administrador/denuncias/:nomeUsuario', ConsultarUsuariosDenunciados);
 app.get('/administrador/denuncias/:idUsuario/:tipoUsuario', ConsultarDenuncias);
