@@ -1,10 +1,10 @@
 import { carregarSolicitacoesAgendadas, canceladoReuniao } from '../service/AJAX.js';
-import { getUserId } from '../controller/SysFx.js';
+import { getUserId } from './SysFx.js';
 
 let reunioes;
 
 document.addEventListener('DOMContentLoaded', async function () {
-  reunioes = await carregarSolicitacoesAgendadas(getUserId(1));
+  reunioes = await carregarSolicitacoesAgendadas(getUserId(0));
 
   try {
 
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       <table class="table table-bordered" border="1" style="width:100%; border-collapse:collapse">
         <thead>
           <tr>
-            <th>Consultor</th>
+            <th>Cliente</th>
             <th>Informação Prévia</th>
             <th>Data</th>
             <th>Status</th>
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
       let buttonCancel;
 
-      if (reuniao.status_situacao === 'cancelada') {
+      if (reuniao.status_situacao === 'cancelada' || reuniao.status_situacao === 'realizada') {
         buttonCancel = `<td><button class="btn btn-cancel" data-value="${reuniao.idReuniao}" disabled>Sim</button></td>`;
       } else {
         buttonCancel = `<td><button class="btn btn-cancel btn-danger" data-value="${reuniao.idReuniao}">Sim</button></td>`;

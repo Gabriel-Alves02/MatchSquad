@@ -8,6 +8,7 @@ export const LoadMatchHistory = async (request, response, next) => {
         const [reuniao] = await pool.query(
             `SELECT 
                 r.idReuniao,
+                r.idConsultor,
                 c.nome, 
                 c.urlImagemPerfil, 
                 r.data, 

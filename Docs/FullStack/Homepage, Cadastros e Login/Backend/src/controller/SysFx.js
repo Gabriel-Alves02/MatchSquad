@@ -247,7 +247,7 @@ export const LoadProfile = async (request, response, next) => {
     if (id === '-1' && usertype === '-1') {
       const [perfil] = await pool.query
         (
-            `SELECT 
+          `SELECT 
             c.nome,
             c.email,
             c.telefone,
@@ -580,6 +580,126 @@ export const EndUser = async (request, response, next) => {
     });
   } finally {
     connection.release();
+  }
+
+};
+
+
+export const SubmitReport = async (request, response, next) => {
+
+  //Quando consultor -denuncia-> cliente, sentido = 0
+  //Quando cliente -denuncia-> consultor, sentido = 1
+
+  const connection = await pool.getConnection();
+
+  try {
+
+    const { id, usertype } = request.params;
+
+    const { idReuniao, gravidade, comentario } = request.body;
+
+    await connection.beginTransaction();
+
+    if (usertype === '0') {
+      const [cliente] = await connection.query(`SELECT idCliente FROM reuniao WHERE idReuniao = ?;`, [idReuniao]);
+
+      if (cliente.length > 0) {
+        await connection.query(`INSERT INTO Denuncia (idConsultor, idCliente, gravidade, descricao, sentido) VALUES (?, ?, ?, ?, ?);`,
+          [id, cliente[0].idCliente, gravidade, comentario, usertype]);
+      }
+
+      await connection.commit();
+
+      return response.status(200).json({
+        success: true,
+        message: "Denuncia realizada ao cliente!"
+      });
+
+    } else if (usertype === '1') {
+
+      const [consultor] = await connection.query(`SELECT idConsultor FROM reuniao WHERE idReuniao = ?;`, [idReuniao]);
+
+      if (consultor.length > 0) {
+        await connection.query(`INSERT INTO Denuncia (idCliente, idConsultor, gravidade, descricao, sentido) VALUES ( ?, ?, ?, ?, ?);`,
+          [id, consultor[0].idConsultor, gravidade, comentario, usertype]);
+      }
+
+      await connection.commit();
+
+      return response.status(200).json({
+        success: true,
+        message: "Denuncia realizada ao consultor!"
+      });
+
+    }
+
+
+    return response.status(201).json({
+      success: false,
+      message: "Denuncia falhou!"
+    });
+
+
+  } catch (error) {
+    await connection.rollback();
+    console.error('Erro no cadastro:', error);
+    return response.status(500).json({
+      success: false,
+      message: "Erro interno do servidor"
+    });
+  }
+  finally {
+    connection.release();
+  }
+
+};
+
+
+
+export const GetReport = async (request, response, next) => {
+
+  try {
+
+    const { id, usertype, id2 } = request.params;
+
+    if (usertype === '0') {
+
+      const [report] = await pool.query(`SELECT * FROM denuncia WHERE idCliente = ? AND idConsultor = ? AND sentido = 0 ;`, [id, id2]);
+
+      if (report.length > 0) {
+        return response.status(200).json({
+          success: true,
+          message: "Tem denuncia"
+        });
+      }
+
+    } else if (usertype === '1') {
+
+      const [report] = await pool.query(`SELECT * FROM denuncia WHERE idCliente = ? AND idConsultor = ? AND sentido = 1 ;`, [id, id2]);
+
+
+      if (report.length > 0) {
+        return response.status(200).json({
+          success: true,
+          message: true
+        });
+      }
+    }
+
+
+    return response.status(201).json({
+      success: true,
+      message: false
+    });
+
+
+  } catch (error) {
+
+    console.error('Erro ao pegar denuncia:', error);
+    return response.status(500).json({
+      success: false,
+      message: "Erro interno do servidor"
+    });
   }
 
 };

@@ -35,10 +35,10 @@
             <input class="form-control me-2" id="searchBar" type="search" placeholder="Pesquisar">
             <br>
             <select class="form-select" id="filtros">
-                <option selected>Filtros</option>
-                <option value="1">Data</option>
-                <option value="2">Consultor</option>
-                <option value="3">Status</option>
+                <option value="consultor">Consultor</option>
+                <option value="data">Data</option>
+                <option value="status">Realizadas</option>
+                <option value="melhor_avaliado">Melhor avaliado</option>
             </select>
         </div>
     </div>
@@ -103,9 +103,37 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalDenuncia" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAvaliacaoLabel">Denunciar Consultor</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="formDenuncia">
+                        <div class="mb-3">
+                            <label for="gravidade" class="form-label">Lembre-se que ao denunciar, as medidas legais cabíveis serão tomadas para apurar o caso com ambos participantes.</label>
+                            <select class="form-select" id="gravidade" required>
+                                <option value="">Selecione a gravidade da denuncia</option>
+                                <option value="1">1 - Baixa</option>
+                                <option value="2">2 - Moderada</option>
+                                <option value="3">3 - Grave</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="comentarioDenuncia" class="form-label">Descrição do ocorrido</label>
+                            <textarea class="form-control" id="comentarioDenuncia" rows="3"
+                                placeholder="Deixe seu comentário..." required></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="enviar" class="btn btn-primary">Enviar Avaliação</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
-    <!--VLibras -->
 
     <div vw class="enabled">
         <div vw-access-button class="active"></div>

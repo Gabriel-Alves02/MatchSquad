@@ -83,20 +83,20 @@ export const BuscarAgenda = async (request, response, next) => {
 export const BuscarSolicitacoes = async (request, response, next) => {
 
     try {
-        const { idCliente } = request.params;
+        const { idConsultor } = request.params;
 
         const [agendamentos] = await pool.query(
-            `SELECT r.idReuniao, r.idCliente, con.nome, con.email AS emailConsultor, 
+            `SELECT r.idReuniao, r.idCliente, c.nome, c.email AS emailCliente, 
             r.infoAdiantada, r.data, r.status_situacao, r.tipo, r.periodo, r.horario
-            FROM Reuniao r JOIN Consultor con ON r.idConsultor = con.idConsultor
-            WHERE r.idCliente = ?;`,
-            [idCliente]
+            FROM Reuniao r JOIN Cliente c ON r.idCliente = c.idCliente
+            WHERE r.idConsultor = ?;`,
+            [idConsultor]
         );
 
         if (agendamentos.length === 0) {
             return response.status(201).json({
                 success: false,
-                message: "Nenhum agendamento encontrado para este cliente."
+                message: "Nenhum agendamento encontrado para este consultor."
             });
         }
 

@@ -5,7 +5,7 @@ import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
 import { CadastrarConsultor, GetHabilidades } from './controller/Consultor.js';
 import { RegistrarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepetido, CancelaAgendamento } from './controller/PedidoAgendamento.js';
-import { GetCode, GetPrazo, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid, LoadProfile, RefreshProfile, GoCloudImage, GetPassword, EndUser, RefreshPassword} from './controller/SysFx.js';
+import { GetCode, GetPrazo, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid, LoadProfile, RefreshProfile, GoCloudImage, GetPassword, EndUser, RefreshPassword, SubmitReport, GetReport } from './controller/SysFx.js';
 import { EnviarEmailRemarcacao, ConfirmacaoEmail } from './service/sendgrid.js';
 import { RegistrarReuniao } from './controller/RegistrarReuniao.js';
 import { ConsultarHistorico } from './controller/HistoricoConsultorias.js';
@@ -19,7 +19,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 const app = express();
 
 app.use(cors({
-    origin: "*", // Pode ser ajustado para permitir apenas domínios específicos exemplo http://127.0.0.1:8000
+    origin: "*", //  http://127.0.0.1:8000
     methods: ["GET", "PUT", "POST", "DELETE"],
     allowedHeaders: ["X-PINGOTHER", "Content-Type", "Authorization"]
 }));
@@ -31,6 +31,7 @@ app.use(express.json()); // exp interpreta txt por padrão, aux p/ o body ser li
 app.post('/clientes/cadCliente', CadastrarCliente);
 app.post('/clientes/cadConsultor', CadastrarConsultor);
 app.post('/checks', UserType );
+app.post('/checks/:id/:usertype/denuncia', SubmitReport );
 app.post('/clientes/login', Login);
 app.post('/consultores/login', Login);
 app.post('/clientes/agendamento', RegistrarAgendamento);
@@ -44,7 +45,7 @@ app.put('/clientes/agenda/:id', CancelaAgendamento );
 app.put('/administrador/denuncias/bloquearUsuario', BloquearUsuario)
 app.get('/consultores/habilidades', GetHabilidades);
 app.get('/consultores/agenda/:idConsultor', BuscarAgenda);
-app.get('/clientes/agenda/:idCliente', BuscarSolicitacoes);
+app.get('/consultores/historico/:idConsultor', BuscarSolicitacoes);
 app.post('/consultores/agenda/:idConsultor', EnviarEmailRemarcacao);
 app.get('/checks/:nickname', GetIfNicknameIsValid);
 app.get('/checks/:id/:usertype/name', GetName);
@@ -53,7 +54,7 @@ app.get('/checks/:id/:usertype/code', GetCode);
 app.get('/checks/:id/:usertype/block', GetBlockStatus);
 app.get("/checks/:idCliente/:idConsultor", AgendamentoRepetido);
 app.get('/consultores/historico/:nomeCliente', ConsultarHistorico);
-
+app.get('/checks/denuncia/:id/:usertype/:id2', GetReport);
 
 app.get('/clientes/historico/:id', LoadMatchHistory);
 

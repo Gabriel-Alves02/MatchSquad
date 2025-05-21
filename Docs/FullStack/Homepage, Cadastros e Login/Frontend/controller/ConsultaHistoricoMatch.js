@@ -1,4 +1,4 @@
-import { carregarMatchsPesquisados, avaliado } from '../service/AJAX.js';
+import { carregarMatchsPesquisados, avaliado, denunciar, checkDenuncia } from '../service/AJAX.js';
 import { getUserId } from '../controller/SysFx.js';
 
 let consultorias;
@@ -6,6 +6,8 @@ let consultorias;
 const searchBar = document.getElementById('searchBar');
 const filtro = document.getElementById('filtros');
 const grid = document.getElementById('listaMatchs');
+let allConsultorias = [];
+let displayedConsultorias = [];
 
 let consultoriasMap = new Map();
 
@@ -13,11 +15,11 @@ const modalRelatorio = document.getElementById('modalRelatorio');
 
 document.addEventListener('DOMContentLoaded', async function () {
 
-    consultorias = await carregarMatchsPesquisados(getUserId(1));
+    const fetchedConsultorias = await carregarMatchsPesquisados(getUserId(1));
 
     consultoriasMap = new Map();
 
-    if ((consultorias.reuniao).length === 0) {
+    if ((fetchedConsultorias.reuniao).length === 0) {
         document.getElementById('listaMatchs').innerHTML = `
             <div style="text-align: center; margin: 20rem 1rem;">
                 <h2 style="color: #000;">Sem consultorias em seu histórico.</h2>
@@ -26,159 +28,84 @@ document.addEventListener('DOMContentLoaded', async function () {
         return;
     }
 
-    try {
-        let html = '';
+    allConsultorias = fetchedConsultorias.reuniao;
+    displayedConsultorias = [...allConsultorias];
 
-        (consultorias.reuniao).forEach((consultoria) => {
-            let estrelas = preencherestrelas(consultoria.avaliacao);
-            let status = capitalize(consultoria.status_situacao);
-            let hora = (consultoria.horario === '00:00:00') ? '' : consultoria.horario.substring(0, 5);
-            let avalia = '';
+    renderizarConsultorias(displayedConsultorias);
 
-            if (consultoria.status_situacao === 'pendente' || consultoria.status_situacao === 'cancelada') {
+    searchBar.addEventListener('input', aplicarFiltros);
+    filtro.addEventListener('change', aplicarFiltros);
 
-                if (consultoria.status_situacao === 'pendente') {
-                    avalia =  `<h5 style="padding: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5>`;
-                }
+    const formAvaliacao = document.getElementById('formAvaliacao');
+    if (formAvaliacao) {
+        formAvaliacao.addEventListener('submit', async function (event) {
+            event.preventDefault();
 
-                html += `
-                <div style="background-color: #cbe2f8; border-radius: 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3); max-width: 900px; margin-bottom: 20px;">
-                    <div style="display: flex;">
-                        <h1 style="margin: 15px;">
-                            Consultoria com ${consultoria.nome}
-                        </h1>
-                        <div style="margin-top: 20px; margin-left: 20px; margin-right: 10px; margin-bottom: 15px;">
-                            <button class="btn btn-primary" type="button" disabled>Ver relatório</button>
-                        </div>
-                        <div style="margin-top: 20px; margin-left: 10px; margin-right: 5px; margin-bottom: 15px;">
-                            <button class="btn btn-primary" type="button" disabled>Ver avaliação</button>
-                        </div>
-                    </div>
-                    <br>
-                    <div style="display: flex; margin-bottom: 10px;">
-                        <div style="display: flex;">
-                            <img src="${consultoria.urlImagemPerfil}" class="profile-nav">
-                            <h5 style="padding: 15px; padding-bottom: 5px; padding-top: 2.5px; padding-left: 2.5px; font-family: Arial, Helvetica, sans-serif;">
-                                ${consultoria.nome}
-                            </h5>
-                        </div>
-                        
-                        <div>
-                            <h5 style="padding: 15px; padding-bottom: 5px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">
-                                Em ${formatarData(consultoria.data)} ${hora}
-                            </h5>
-                            <h5 style="padding-left: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">
-                                Status: ${status}
-                            </h5>
-                            ${avalia}
-                        </div>
-                    </div>
-                </div>
-                `;
-            } else {
-                const relatorio = {
-                    assunto: consultoria.assunto,
-                    solucoes: consultoria.solucoes,
-                    infoSolicitada: consultoria.infoSolicitada
-                };
+            const nota = document.getElementById('notaAvaliacao').value;
+            const comentario = document.getElementById('comentarioAvaliacao').value;
 
-
-                consultoriasMap.set(consultoria.idReuniao.toString(), relatorio);
-
-                let btnAvaliacao;
-                let comentario;
-
-                if (consultoria.avaliacao === 0) {
-                    btnAvaliacao = `<button class="btn btn-primary" type="button" data-action="avaliacao">Avaliar</button>`;
-                    comentario = ``;
-                } else {
-                    btnAvaliacao = `<button class="btn btn-primary" type="button" data-action="avaliacao" disabled>Avaliado</button>`;
-                    comentario = `<h5 style="padding: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">${consultoria.comentario}</h5>`;
-                }
-
-
-                html += `
-                    <div class="consultoria-item" data-id="${consultoria.idReuniao.toString()}" style="background-color: #cbe2f8; border-radius: 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3); max-width: 900px; margin-bottom: 20px;">
-                        <div style="display: flex;">
-                            <h1 style="margin: 15px;">
-                                Consultoria com ${consultoria.nome}
-                            </h1>
-                            <div style="margin-top: 20px; margin-left: 20px; margin-right: 10px; margin-bottom: 15px;">
-                                <button class="btn btn-primary" type="button" data-action="relatorio">Ver relatório</button>
-                            </div>
-                            <div style="margin-top: 20px; margin-left: 10px; margin-right: 5px; margin-bottom: 15px;">
-                                ${btnAvaliacao}
-                            </div>
-                        </div>
-                        <br>
-                        <div style="display: flex; margin-bottom: 10px;">
-                            <div style="display: flex;">
-                                <img src="${consultoria.urlImagemPerfil}" class="profile-nav">
-                                <h5
-                                    style="padding: 15px; padding-bottom: 5px; padding-top: 2.5px; padding-left: 2.5px; font-family: Arial, Helvetica, sans-serif;">
-                                    ${consultoria.nome}
-                                </h5>
-                            </div>
-                            
-                            <div>
-                                <h5 style="padding: 15px; padding-bottom: 5px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">
-                                    Em ${formatarData(consultoria.data)} ${hora}
-                                </h5>
-                                <h5 style="padding-left: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">
-                                    Status: ${status}
-                                </h5>
-                                <h5 style="padding: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">
-                                    Avaliação: ${estrelas}
-                                </h5>
-                                <h5 style="padding: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">
-                                    Comentário: ${comentario}
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    `;
+            if (!nota) {
+                alert("Por favor, selecione uma nota.");
+                return;
             }
+
+            const idReuniaoAtual = formAvaliacao.getAttribute('data-id-reuniao');
+            if (!idReuniaoAtual) {
+                console.error("ID da reunião não encontrado para avaliação.");
+                return;
+            }
+
+            const dadosAvaliacao = {
+                idReuniao: idReuniaoAtual,
+                nota: parseInt(nota),
+                comentario: comentario.trim()
+            };
+
+            await avaliado(dadosAvaliacao);
+
+            modalAvaliacaoInstance.hide();
+            window.location.reload();
         });
-
-        grid.innerHTML = html;
-
-        const formAvaliacao = document.getElementById('formAvaliacao');
-        if (formAvaliacao) {
-            formAvaliacao.addEventListener('submit', async function (event) {
-                event.preventDefault();
-
-                const nota = document.getElementById('notaAvaliacao').value;
-                const comentario = document.getElementById('comentarioAvaliacao').value;
-
-                if (!nota) {
-                    alert("Por favor, selecione uma nota.");
-                    return;
-                }
-
-                const idReuniaoAtual = formAvaliacao.getAttribute('data-id-reuniao'); // Adicione este atributo ao form
-                if (!idReuniaoAtual) {
-                    console.error("ID da reunião não encontrado para avaliação.");
-                    return;
-                }
-
-                const dadosAvaliacao = {
-                    idReuniao: idReuniaoAtual,
-                    nota: parseInt(nota),
-                    comentario: comentario.trim()
-                };
-
-                await avaliado(dadosAvaliacao);
-
-                modalAvaliacaoInstance.hide();
-                window.location.reload();
-            });
-        }
-
-
-    } catch (error) {
-        console.error("Erro ao carregar matchs:", error);
     }
-});
+
+    const formDenuncia = document.getElementById('formDenuncia');
+    if (formDenuncia) {
+        formDenuncia.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const gravidade = document.getElementById('gravidade').value;
+            const comentario = document.getElementById('comentarioDenuncia').value;
+
+            if (!gravidade) {
+                alert("Por favor, selecione uma gravidade a sua denúncia.");
+                return;
+            }
+
+            const idReuniaoAtual = formDenuncia.getAttribute('data-id-reuniao');
+            if (!idReuniaoAtual) {
+                console.error("ID da reunião não encontrado para denuncia.");
+                return;
+            }
+
+            const dadosDenuncia = {
+                idReuniao: idReuniaoAtual,
+                gravidade: parseInt(gravidade),
+                comentario: comentario.trim()
+            };
+
+            console.log(dadosDenuncia,);
+
+            await denunciar(getUserId(1), '1', dadosDenuncia);
+
+            modalDenunciaInstance.hide();
+            window.location.reload();
+        });
+    }
+
+
+}
+
+);
 
 
 function preencherestrelas(value) {
@@ -214,7 +141,6 @@ let currentConsultoriaId = null;
 
 document.addEventListener('click', function (event) {
 
-
     if (event.target.matches('button[data-action]')) {
         const consultoriaItem = event.target.closest('.consultoria-item');
         if (consultoriaItem) {
@@ -239,12 +165,21 @@ document.addEventListener('click', function (event) {
                 }
                 modalAvaliacao();
             }
+            else if (event.target.getAttribute('data-action') === 'denunciar') {
+                currentConsultoriaId = id;
+                const formDenuncia = document.getElementById('formDenuncia');
+                if (formDenuncia) {
+                    formDenuncia.setAttribute('data-id-reuniao', id);
+                }
+                modalDenuncia();
+            }
         }
     }
 });
 
 let modalRelatorioInstance = null;
 let modalAvaliacaoInstance = null;
+let modalDenunciaInstance = null;
 
 function abrirModalRelatorio(assunto, solucoes, infoSolicitada) {
     if (!modalRelatorioInstance) {
@@ -260,8 +195,196 @@ function modalAvaliacao() {
     if (!modalAvaliacaoInstance) {
         modalAvaliacaoInstance = new bootstrap.Modal(document.getElementById('modalAvaliacao'));
     }
-  
+
     document.getElementById('notaAvaliacao').value = '';
     document.getElementById('comentarioAvaliacao').value = '';
     modalAvaliacaoInstance.show();
+}
+
+function modalDenuncia() {
+    if (!modalDenunciaInstance) {
+        modalDenunciaInstance = new bootstrap.Modal(document.getElementById('modalDenuncia'));
+    }
+
+    document.getElementById('gravidade').value = '';
+    document.getElementById('comentarioDenuncia').value = '';
+    modalDenunciaInstance.show();
+}
+
+async function detectDenuncia(idCliente, tipoUsuario, idConsultor) {
+
+    const response = await checkDenuncia(idCliente, tipoUsuario, idConsultor);
+
+    if (response == true) {
+        return true;
+    }
+
+    return false;
+}
+
+async function renderizarConsultorias(listaDeConsultorias) { // Parâmetro renomeado
+    grid.innerHTML = '';
+
+    if (listaDeConsultorias.length === 0) {
+        grid.innerHTML = `
+            <div style="text-align: center; margin: 5rem 1rem;">
+                <h2 style="color: #000;">Nenhuma consultoria encontrada com os filtros aplicados.</h2>
+            </div>
+        `;
+        return;
+    }
+
+    let html = '';
+    for (const consultoria of listaDeConsultorias) { // Iterando sobre o parâmetro
+        let estrelas = preencherestrelas(consultoria.avaliacao);
+        let status = capitalize(consultoria.status_situacao);
+        let hora = (consultoria.horario === '00:00:00') ? '' : consultoria.horario.substring(0, 5);
+        let avalia = '';
+
+        if (consultoria.status_situacao === 'pendente' || consultoria.status_situacao === 'cancelada') {
+            if (consultoria.status_situacao === 'pendente') {
+                avalia = `<h5 style="padding: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5>`;
+            }
+
+            html += `
+                <div style="background-color: #cbe2f8; border-radius: 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3); max-width: 900px; margin-bottom: 20px;">
+                    <div style="display: flex;">
+                        <h1 style="margin: 15px;">
+                            Consultoria com ${consultoria.nome}
+                        </h1>
+                        <div style="margin-top: 20px; margin-left: 20px; margin-right: 10px; margin-bottom: 15px;">
+                            <button class="btn btn-primary" type="button" disabled>Relatório</button>
+                        </div>
+                        <div style="margin-top: 20px; margin-left: 10px; margin-right: 5px; margin-bottom: 15px;">
+                            <button class="btn btn-primary" type="button" disabled>Ver avaliação</button>
+                        </div>
+                    </div>
+                    <br>
+                    <div style="display: flex; margin-bottom: 10px;">
+                        <div style="display: flex;">
+                            <img src="${consultoria.urlImagemPerfil}" class="profile-nav">
+                            <h5 style="padding: 15px; padding-bottom: 5px; padding-top: 2.5px; padding-left: 2.5px; font-family: Arial, Helvetica, sans-serif;">
+                                ${consultoria.nome}
+                            </h5>
+                        </div>
+                        
+                        <div>
+                            <h5 style="padding: 15px; padding-bottom: 5px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">
+                                Em ${formatarData(consultoria.data)} ${hora}
+                            </h5>
+                            <h5 style="padding-left: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">
+                                Status: ${status}
+                            </h5>
+                            ${avalia}
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            const relatorio = {
+                assunto: consultoria.assunto,
+                solucoes: consultoria.solucoes,
+                infoSolicitada: consultoria.infoSolicitada
+            };
+
+            consultoriasMap.set(consultoria.idReuniao.toString(), relatorio);
+
+            let btnAvaliacao;
+            let btnDenuncia = `<button class="btn btn-outline-danger" type="button" data-action="denunciar">Denunciar</button>`;
+            let comentario;
+
+            if (consultoria.avaliacao === 0) {
+                btnAvaliacao = `<button class="btn btn-primary" type="button" data-action="avaliacao">Avaliar</button>`;
+                comentario = ``;
+            } else {
+                btnAvaliacao = `<button class="btn btn-primary" type="button" data-action="avaliacao" disabled>Avaliado</button>`;
+                comentario = `<h5 style="padding: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">${consultoria.comentario}</h5>`;
+            }
+
+            const temDenuncia = await detectDenuncia(getUserId(1), '1', consultoria.idConsultor);
+
+            if (temDenuncia) {
+                btnDenuncia = `<button class="btn btn-primary" type="button" data-action="denunciar" disabled>Denunciado</button>`;
+            }
+
+            html += `
+                <div class="consultoria-item" data-id="${consultoria.idReuniao.toString()}" style="background-color: #cbe2f8; border-radius: 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3); max-width: 900px; margin-bottom: 20px;">
+                    <div style="display: flex;">
+                        <h1 style="margin: 15px;">
+                            Consultoria com ${consultoria.nome}
+                        </h1>
+                        <div style="margin-top: 20px; margin-left: 20px; margin-right: 10px; margin-bottom: 15px;">
+                            <button class="btn btn-primary" type="button" data-action="relatorio">Relatório</button>
+                        </div>
+                        <div style="margin-top: 20px; margin-left: 10px; margin-right: 5px; margin-bottom: 15px;">
+                            ${btnAvaliacao}
+                        </div>
+                        <div style="margin-top: 20px; margin-left: 20px; margin-right: 10px; margin-bottom: 15px;">
+                            ${btnDenuncia}
+                        </div>
+                    </div>
+                    <br>
+                    <div style="display: flex; margin-bottom: 10px;">
+                        <div style="display: flex;">
+                            <img src="${consultoria.urlImagemPerfil}" class="profile-nav">
+                            <h5
+                                style="padding: 15px; padding-bottom: 5px; padding-top: 2.5px; padding-left: 2.5px; font-family: Arial, Helvetica, sans-serif;">
+                                ${consultoria.nome}
+                            </h5>
+                        </div>
+                        
+                        <div>
+                            <h5 style="padding: 15px; padding-bottom: 5px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">
+                                Em ${formatarData(consultoria.data)} ${hora}
+                            </h5>
+                            <h5 style="padding-left: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">
+                                Status: ${status}
+                            </h5>
+                            <h5 style="padding: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">
+                                Avaliação: ${estrelas}
+                            </h5>
+                            <h5 style="padding: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">
+                                Comentário: ${comentario}
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    }
+    grid.innerHTML = html;
+}
+
+function aplicarFiltros() {
+    let consultoriasFiltradas = [...allConsultorias];
+
+    const textoBusca = searchBar.value.trim().toLowerCase();
+    if (textoBusca) {
+        consultoriasFiltradas = consultoriasFiltradas.filter(consultoria => {
+            return consultoria.nome.toLowerCase().includes(textoBusca);
+        });
+    }
+
+    const tipoFiltro = filtro.value;
+
+    switch (tipoFiltro) {
+        case 'consultor':
+
+            break;
+        case 'data':
+            consultoriasFiltradas.sort((a, b) => new Date(b.data) - new Date(a.data));
+            break;
+        case 'status':
+            consultoriasFiltradas = consultoriasFiltradas.filter(c => c.status_situacao === 'realizada');
+            break;
+        case 'melhor_avaliado':
+            consultoriasFiltradas.sort((a, b) => b.avaliacao - a.avaliacao);
+            break;
+        default:
+            console.log('caiu no default:', tipoFiltro);
+            break;
+    }
+
+    displayedConsultorias = consultoriasFiltradas; // Atualiza a lista exibida
+    renderizarConsultorias(displayedConsultorias); // Renderiza a lista filtrada/ordenada
 }

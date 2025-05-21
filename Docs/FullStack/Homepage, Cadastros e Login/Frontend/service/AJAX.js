@@ -154,7 +154,7 @@ export async function carregarHabilidades() {
 
 export async function carregarSolicitacoesAgendadas(id) {
 
-    return await fetch(url_cliente + `/agenda/${id}`, {
+    return await fetch(url_consultores + `/historico/${id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
     }).then(async (response) => {
@@ -651,3 +651,46 @@ export async function avaliado (info) {
         return alert('Erro ao atualizar senha:', error);
     }
 }
+
+export async function denunciar(id,usertype,info) {
+    try {
+        const response = await fetch(url_checks + `/${id}/${usertype}/denuncia`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(info)
+        });
+
+        let data = await response.json();
+
+        if (data) {
+            return data;
+        }
+
+        return 'Falha na submissão da denuncia'
+
+    } catch (error) {
+        return alert('Erro ao submter a denuncia: ', error);
+    }
+}
+
+export const checkDenuncia = async (id, usertype, id2) => {
+
+    try {
+        const response = await fetch(url_checks + `/denuncia/${id}/${usertype}/${id2}`, {
+            method: 'GET',
+            headers: { "Content-Type": "application/json" }
+        });
+
+        const data = await response.json();
+
+        if (data) {
+            return data.message;
+        }
+
+        return { success : false, message: 'Erro: Não foi verificar se tem denuncia!'}
+
+    } catch (error) {
+        console.error('Erro ao buscar informação de denuncia:', error);
+        return { success: false, message: 'Erro de rede ou servidor no momento de carregar denuncias.' };
+    }
+};
