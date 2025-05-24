@@ -1,8 +1,6 @@
 import { carregarMatchsPesquisados, avaliado, denunciar, checkDenuncia } from '../service/AJAX.js';
 import { getUserId } from '../controller/SysFx.js';
 
-let consultorias;
-
 const searchBar = document.getElementById('searchBar');
 const filtro = document.getElementById('filtros');
 const grid = document.getElementById('listaMatchs');
@@ -87,13 +85,22 @@ document.addEventListener('DOMContentLoaded', async function () {
                 return;
             }
 
+            const consultoriaAtual = allConsultorias.find(c => c.idReuniao.toString() === idReuniaoAtual);
+            let dataReuniaoDenunciada = null;
+
+            if (consultoriaAtual && consultoriaAtual.data) {
+                dataReuniaoDenunciada = consultoriaAtual.data;
+                dataReuniaoDenunciada = dataReuniaoDenunciada.substring(0, 10);
+            } else {
+                console.warn("Data da reunião não encontrada para a denúncia.");
+            }
+
             const dadosDenuncia = {
                 idReuniao: idReuniaoAtual,
                 gravidade: parseInt(gravidade),
-                comentario: comentario.trim()
+                comentario: comentario.trim(),
+                dataReuniao: dataReuniaoDenunciada
             };
-
-            console.log(dadosDenuncia,);
 
             await denunciar(getUserId(1), '1', dadosDenuncia);
 
@@ -101,7 +108,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             window.location.reload();
         });
     }
-
 
 }
 

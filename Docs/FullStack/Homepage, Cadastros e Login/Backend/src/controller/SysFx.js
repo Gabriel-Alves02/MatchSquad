@@ -585,7 +585,7 @@ export const EndUser = async (request, response, next) => {
 };
 
 
-export const SubmitReport = async (request, response, next) => {
+export const SubmitComplaint = async (request, response, next) => {
 
   //Quando consultor -denuncia-> cliente, sentido = 0
   //Quando cliente -denuncia-> consultor, sentido = 1
@@ -596,7 +596,7 @@ export const SubmitReport = async (request, response, next) => {
 
     const { id, usertype } = request.params;
 
-    const { idReuniao, gravidade, comentario } = request.body;
+    const { idReuniao, gravidade, comentario, dataReuniao } = request.body;
 
     await connection.beginTransaction();
 
@@ -604,8 +604,8 @@ export const SubmitReport = async (request, response, next) => {
       const [cliente] = await connection.query(`SELECT idCliente FROM reuniao WHERE idReuniao = ?;`, [idReuniao]);
 
       if (cliente.length > 0) {
-        await connection.query(`INSERT INTO Denuncia (idConsultor, idCliente, gravidade, descricao, sentido) VALUES (?, ?, ?, ?, ?);`,
-          [id, cliente[0].idCliente, gravidade, comentario, usertype]);
+        await connection.query(`INSERT INTO Denuncia (idConsultor, idCliente, gravidade, descricao, sentido, dataDenuncia) VALUES (?, ?, ?, ?, ?, ?);`,
+          [id, cliente[0].idCliente, gravidade, comentario, usertype, dataReuniao]);
       }
 
       await connection.commit();
@@ -620,8 +620,8 @@ export const SubmitReport = async (request, response, next) => {
       const [consultor] = await connection.query(`SELECT idConsultor FROM reuniao WHERE idReuniao = ?;`, [idReuniao]);
 
       if (consultor.length > 0) {
-        await connection.query(`INSERT INTO Denuncia (idCliente, idConsultor, gravidade, descricao, sentido) VALUES ( ?, ?, ?, ?, ?);`,
-          [id, consultor[0].idConsultor, gravidade, comentario, usertype]);
+        await connection.query(`INSERT INTO Denuncia (idCliente, idConsultor, gravidade, descricao, sentido, dataDenuncia) VALUES ( ?, ?, ?, ?, ?, ?);`,
+          [id, consultor[0].idConsultor, gravidade, comentario, usertype, dataReuniao]);
       }
 
       await connection.commit();
@@ -664,12 +664,12 @@ export const GetReport = async (request, response, next) => {
 
     if (usertype === '0') {
 
-      const [report] = await pool.query(`SELECT * FROM denuncia WHERE idCliente = ? AND idConsultor = ? AND sentido = 0 ;`, [id, id2]);
+      const [report] = await pool.query(`SELECT * FROM denuncia WHERE idConsultor = ? AND idCliente = ? AND sentido = 0 ;`, [id, id2]);
 
       if (report.length > 0) {
         return response.status(200).json({
           success: true,
-          message: "Tem denuncia"
+          message: true
         });
       }
 

@@ -2,7 +2,7 @@
 const url_cliente = "http://127.0.0.1:8000/clientes";
 const url_consultores = "http://127.0.0.1:8000/consultores";
 const url_checks = "http://127.0.0.1:8000/checks";
-const url_administrador = "http://127.0.0.1:8000/administrador";
+const url_administrador = "http://127.0.0.1:8000/administradores";
 
 export const Cadastrar = async (objUser) => {
 
@@ -72,6 +72,27 @@ export const getUser = async (objUser, opt) => {
 
 
 //ADAPTAR PARA ATRIB NOVO STATUS 0
+export const getAdmin = async (objAdmin) => {
+
+    return await fetch(url_administrador + '/login', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(objAdmin)
+    }).then((response) => {
+        if (response.status >= 200 && response.status < 300) {
+            location.replace("./MenuAdministrador.html");
+        }
+        else if (response.status === 401) {
+            alert("Credenciais inválidas");
+        }
+        else {
+            console.log(`Erro do servidor: ${response.status}`);
+        }
+    })
+};
+
+//ADAPTAR PARA ATRIB NOVO STATUS 3 = ADMIN
+
 export const getUserConsultor = async (objConsultor, opt) => {
 
     return await fetch(url_consultores + '/login', {
@@ -94,8 +115,6 @@ export const getUserConsultor = async (objConsultor, opt) => {
         }
     })
 };
-
-//ADAPTAR PARA ATRIB NOVO STATUS 3 = ADMIN
 
 
 export const Registrar = async (pedido) => {
@@ -160,7 +179,7 @@ export async function carregarSolicitacoesAgendadas(id) {
     }).then(async (response) => {
         if (response.status === 200) {
             const data = await response.json();
-            return await data.agendamentos;
+            return await data;
         }
         else if (response.status === 201) {
             return null;
@@ -230,6 +249,7 @@ export async function buscarCodigo(id, usertype) {
 
 export async function temBloqueio(id, usertype) {
 
+
     return await fetch(url_checks + `/${id}/${usertype}/block`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
@@ -292,7 +312,7 @@ export async function enviarCodigo(id, usertype, email) {
         const response = await fetch('http://localhost:8000/notifications', {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ "id": `${id}`, "usertype": `${usertype}`, "email": `${email}`})
+            body: JSON.stringify({ "id": `${id}`, "usertype": `${usertype}`, "email": `${email}` })
         }).then((response) => {
             if (response.status >= 200 && response.status < 300) {
                 console.log("Enviado com sucesso!");
@@ -337,7 +357,7 @@ export async function buscarNick(nickname) {
 
         if (response.status === 200) {
             const data = await response.json();
-            //console.log("data valid: ", data.valid);
+
             return data.valid;
         } else {
             console.log(`Erro do servidor: ${response.status}`);
@@ -487,7 +507,7 @@ export async function uploadImagemPerfil(id, usertype, file) {
             return data;
         }
 
-        return { success : false, message: 'Erro: Não foi possivel fazer upload da imagem!'}
+        return { success: false, message: 'Erro: Não foi possivel fazer upload da imagem!' }
 
     } catch (error) {
         console.error('Erro ao enviar imagem:', error);
@@ -514,7 +534,7 @@ export async function carregarConsultoriasPesquisadas(nomeCliente) {
 }
 
 export async function carregarMatchsPesquisados(id) {
-    
+
     return await fetch(url_cliente + `/historico/${id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
@@ -528,6 +548,26 @@ export async function carregarMatchsPesquisados(id) {
         }
         else {
             console.error("Erro ao carregar historico de match:", error);
+        }
+    })
+}
+
+export async function carregarMatchsConsultor(id) {
+
+    return await fetch(url_consultores + `/solicitacoes/${id}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+
+            return await data;
+        }
+        else if (response.status === 201) {
+            return null;
+        }
+        else {
+            console.error("Erro ao carregar historico do consultor:", error);
         }
     })
 }
@@ -582,7 +622,7 @@ export const buscarSenha = async (id, usertype) => {
             return data.message;
         }
 
-        return { success : false, message: 'Erro: Não foi possivel fazer upload da imagem!'}
+        return { success: false, message: 'Erro: Não foi possivel fazer upload da imagem!' }
 
     } catch (error) {
         console.error('Erro ao buscar senha:', error);
@@ -631,7 +671,7 @@ export async function buscarHabilidades() {
     })
 }
 
-export async function avaliado (info) {
+export async function avaliado(info) {
     try {
         const response = await fetch(url_cliente + `/avaliacao`, {
             method: "PUT",
@@ -652,7 +692,9 @@ export async function avaliado (info) {
     }
 }
 
-export async function denunciar(id,usertype,info) {
+export async function denunciar(id, usertype, info) {
+
+
     try {
         const response = await fetch(url_checks + `/${id}/${usertype}/denuncia`, {
             method: "POST",
@@ -673,7 +715,29 @@ export async function denunciar(id,usertype,info) {
     }
 }
 
+export async function registrarReuniao(info) {
+    try {
+        const response = await fetch(url_consultores + `/registrarReuniao`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(info)
+        });
+
+        let data = await response.json();
+
+        if (data) {
+            return data;
+        }
+
+        return 'Falha na submissão do registro da reunião';
+
+    } catch (error) {
+        return alert('Erro ao submter a registro: ', error);
+    }
+}
+
 export const checkDenuncia = async (id, usertype, id2) => {
+
 
     try {
         const response = await fetch(url_checks + `/denuncia/${id}/${usertype}/${id2}`, {
@@ -687,10 +751,29 @@ export const checkDenuncia = async (id, usertype, id2) => {
             return data.message;
         }
 
-        return { success : false, message: 'Erro: Não foi verificar se tem denuncia!'}
+        return { success: false, message: 'Erro: Não foi verificar se tem denuncia!' }
 
     } catch (error) {
         console.error('Erro ao buscar informação de denuncia:', error);
         return { success: false, message: 'Erro de rede ou servidor no momento de carregar denuncias.' };
     }
 };
+
+export async function carregarDenuncias() {
+
+    return await fetch(url_administrador + `/denuncias`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return await data;
+        }
+        else if (response.status === 201) {
+            return null;
+        }
+        else {
+            console.error("Erro ao carregar historico de match:", error);
+        }
+    })
+}

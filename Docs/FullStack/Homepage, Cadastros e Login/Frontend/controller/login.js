@@ -1,4 +1,4 @@
-import { getUser, getUserConsultor, userType, buscarCodigo, temBloqueio, enviarCodigo, verificado } from "../service/AJAX.js";
+import { getUser, getUserConsultor, userType, buscarCodigo, temBloqueio, enviarCodigo, verificado, getAdmin } from "../service/AJAX.js";
 import { getUserId } from "./SysFx.js";
 
 const form = document.getElementById('loginForm');
@@ -17,7 +17,9 @@ form.addEventListener('submit', async (event) => {
             senha: document.getElementById('senha').value
         };
 
+
         if (test.message === "0") {
+
             localStorage.setItem("idConsultor", test.user);
             let idConsultor = getUserId(0);
             let codigo = null;
@@ -28,7 +30,7 @@ form.addEventListener('submit', async (event) => {
                 do {
                     codigoBanco = await buscarCodigo(idConsultor, '0');
                     codigo = Number(window.prompt("Codigo de confirmação enviado no email:"));
-                    console.log('codigoBanco', codigoBanco, 'codigo', codigo);
+                    
                     if (codigo == null || codigo == "") {
                         break;
                     }
@@ -52,7 +54,9 @@ form.addEventListener('submit', async (event) => {
             }
 
 
-        } else if (test.message === "1") {
+        }
+        else if (test.message === "1") {
+
             localStorage.setItem("idCliente", test.user);
             let idCliente = getUserId(1);
             let codigo = null;
@@ -64,7 +68,7 @@ form.addEventListener('submit', async (event) => {
                 do {
                     codigoBanco = await buscarCodigo(idCliente, '1');
                     codigo = Number(window.prompt("Codigo de confirmação enviado no email:"));
-                    console.log('codigoBanco', codigoBanco, 'codigo', codigo);
+                   
                     if (codigo == null || codigo == "") {
                         break;
                     }
@@ -87,8 +91,9 @@ form.addEventListener('submit', async (event) => {
                 getUser(objLogin, '-1');
             }
 
-        } else {
-            throw new Error('Erro na seleção binária do cliente ou consultor');
+        }
+        else if (test.message === "3") {
+            getAdmin(objLogin);
         }
 
     } catch (error) {

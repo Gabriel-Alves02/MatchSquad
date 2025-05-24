@@ -34,45 +34,37 @@ export const Login = async (request, response, next) => {
 export const UserType = async (request, response, next) => {
 
     try {
+
         const { nickname } = request.body;
 
-
-        const [user] = await pool.query(`SELECT * FROM Login WHERE nickname = ?`, [nickname]);
-
-        if (user.length > 0) {
-
-            const [cliente] = await pool.query(`SELECT idCliente FROM Cliente WHERE idLogin = ?`, [user[0].idLogin]);
-
-            const [consultor] = await pool.query(`SELECT idConsultor FROM Consultor WHERE idLogin = ?`, [user[0].idLogin]);
+        const [user] = await pool.query(`SELECT tipo, idLogin FROM Login WHERE nickname = ?`, [nickname]);
 
 
-            //RETORNA 0 = CONSULTOR  ;  1 = CLIENTE
+        if (user[0].tipo === 0) {
 
-            if (cliente.length > 0) {
+            const [consultor] = await pool.query(`SELECT idConsultor FROM consultor WHERE idLogin = ?`, [user[0].idLogin]);
 
-                //console.log("dentro do cliente backend " + cliente[0].idCliente);
+            return response.status(200).json({
+                success: true,
+                message: "0",
+                user: consultor[0].idConsultor
+            });
+        }
 
-                return response.status(200).json({
-                    success: true,
-                    message: "1",
-                    user: cliente[0].idCliente
-                });
-            }
+        if (user[0].tipo === 1) {
+            const [cliente] = await pool.query(`SELECT idCliente FROM cliente WHERE idLogin = ?`, [user[0].idLogin]);
 
-            if (consultor.length > 0) {
+            return response.status(200).json({
+                success: true,
+                message: "1",
+                user: cliente[0].idCliente
+            });
+        }
 
-                //console.log("dentro do consultor backend " + consultor[0].idConsultor);
-
-                return response.status(200).json({
-                    success: true,
-                    message: "0",
-                    user: consultor[0].idConsultor
-                });
-            }
-
-            return response.status(401).json({
-                success: false,
-                message: "ADMIN"
+        if (user[0].tipo === 3) {
+            return response.status(200).json({
+                success: true,
+                message: "3",
             });
         }
 

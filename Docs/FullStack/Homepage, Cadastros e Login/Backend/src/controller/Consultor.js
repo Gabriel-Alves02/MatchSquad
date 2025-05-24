@@ -104,3 +104,82 @@ export const GetHabilidades = async (request, response, next) => {
 
     }
 };
+
+export const RecordMeetLog = async (request, response, next) => {
+
+    const connection = await pool.getConnection();
+
+    try {
+
+        const { idReuniao, assunto, solucoes, infoSolicitada } = request.body;
+
+        if (!idReuniao || !assunto || !solucoes || !infoSolicitada) {
+            return response.status(400).json({
+                success: false,
+                message: "Todos os campos são obrigatórios: idReuniao, assunto, solucoes, infoSolicitada."
+            });
+        }
+
+        await connection.beginTransaction();
+
+        const [meet] = await connection.query(
+            `SELECT idConsultor, idCliente FROM Reuniao WHERE idReuniao = ?;`, [idReuniao]
+        );
+
+        if (meet.length === 0) {
+            await connection.rollback();
+            return response.status(404).json({
+                success: false,
+                message: "Reunião não encontrada no sistema."
+            });
+        }
+
+        const [existingRecord] = await connection.query(
+            `SELECT idReuniao FROM registro WHERE idReuniao = ?;`, [idReuniao]
+        );
+
+        if (existingRecord.length > 0) {
+            await connection.rollback();
+            return response.status(409).json({
+                success: false,
+                message: "Um registro para esta reunião já existe."
+            });
+        }
+
+        const [recordResult] = await connection.query(
+            `INSERT INTO registro (idReuniao, assunto, solucoes, infoSolicitada) VALUES (?, ?, ?, ?);`,
+            [idReuniao, assunto, solucoes, infoSolicitada]
+        );
+
+        await connection.commit();
+
+        if (recordResult.affectedRows > 0) {
+            return response.status(201).json({
+                success: true,
+                message: "Registro da reunião adicionado com sucesso."
+            });
+        } else {
+            await connection.rollback();
+            return response.status(500).json({
+                success: false,
+                message: "Falha ao adicionar o registro da reunião por motivo desconhecido."
+            });
+        }
+
+    } catch (error) {
+        await connection.rollback();
+        console.error('Erro ao registrar reunião:', error);
+        if (error.code === 'ER_DUP_ENTRY') {
+            return response.status(409).json({
+                success: false,
+                message: "Um registro para esta reunião já existe."
+            });
+        }
+        return response.status(500).json({
+            success: false,
+            message: "Erro interno do servidor ao processar o registro da reunião."
+        });
+    } finally {
+        connection.release();
+    }
+};

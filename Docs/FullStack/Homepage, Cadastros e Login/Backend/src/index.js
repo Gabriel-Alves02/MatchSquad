@@ -3,14 +3,14 @@ import cors from 'cors';
 import { CadastrarCliente, Reviewed } from './controller/Cliente.js';
 import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
-import { CadastrarConsultor, GetHabilidades } from './controller/Consultor.js';
+import { CadastrarConsultor, GetHabilidades, RecordMeetLog } from './controller/Consultor.js';
 import { RegistrarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepetido, CancelaAgendamento } from './controller/PedidoAgendamento.js';
-import { GetCode, GetPrazo, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid, LoadProfile, RefreshProfile, GoCloudImage, GetPassword, EndUser, RefreshPassword, SubmitReport, GetReport } from './controller/SysFx.js';
+import { GetCode, GetPrazo, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid, LoadProfile, RefreshProfile, GoCloudImage, GetPassword, EndUser, RefreshPassword, SubmitComplaint, GetReport } from './controller/SysFx.js';
 import { EnviarEmailRemarcacao, ConfirmacaoEmail } from './service/sendgrid.js';
 import { RegistrarReuniao } from './controller/RegistrarReuniao.js';
 import { ConsultarHistorico } from './controller/HistoricoConsultorias.js';
-import { LoadMatchHistory } from './controller/Historico.js';
-import { ConsultarUsuariosDenunciados, ConsultarDenuncias, BloquearUsuario } from './controller/Denuncias.js'
+import { LoadMatchHistory, LoadHistory } from './controller/Historico.js';
+import { GetComplaints } from './controller/Denuncias.js'
 import multer from 'multer';
 
 const storage = multer.memoryStorage();
@@ -25,15 +25,16 @@ app.use(cors({
 }));
 
 app.use(express.json()); // exp interpreta txt por padrão, aux p/ o body ser lido
-                            // Habilita parsing de JSON no body das requisições
+// Habilita parsing de JSON no body das requisições
 
 //ENDPOINTS
 app.post('/clientes/cadCliente', CadastrarCliente);
 app.post('/clientes/cadConsultor', CadastrarConsultor);
 app.post('/checks', UserType );
-app.post('/checks/:id/:usertype/denuncia', SubmitReport );
+app.post('/checks/:id/:usertype/denuncia', SubmitComplaint );
 app.post('/clientes/login', Login);
 app.post('/consultores/login', Login);
+app.post('/administradores/login', Login);
 app.post('/clientes/agendamento', RegistrarAgendamento);
 app.post('/notifications', EnviarEmailRemarcacao)
 app.post('/clientes/registrarReuniao', RegistrarReuniao);
@@ -42,9 +43,10 @@ app.put('/notifications', ConfirmacaoEmail);
 app.put('/checks/verified', RefreshBlock);
 app.put('/consultores/agenda/:id', CancelaAgendamento );
 app.put('/clientes/agenda/:id', CancelaAgendamento );
-app.put('/administrador/denuncias/bloquearUsuario', BloquearUsuario)
+//app.put('/administrador/denuncias/bloquearUsuario', BloquearUsuario)
 app.get('/consultores/habilidades', GetHabilidades);
 app.get('/consultores/agenda/:idConsultor', BuscarAgenda);
+app.get('/administradores/denuncias', GetComplaints );
 app.get('/consultores/historico/:idConsultor', BuscarSolicitacoes);
 app.post('/consultores/agenda/:idConsultor', EnviarEmailRemarcacao);
 app.get('/checks/:nickname', GetIfNicknameIsValid);
@@ -57,9 +59,11 @@ app.get('/consultores/historico/:nomeCliente', ConsultarHistorico);
 app.get('/checks/denuncia/:id/:usertype/:id2', GetReport);
 
 app.get('/clientes/historico/:id', LoadMatchHistory);
+app.get('/consultores/solicitacoes/:id', LoadHistory);
+app.post('/consultores/registrarReuniao', RecordMeetLog);
 
-app.get('/administrador/denuncias/:nomeUsuario', ConsultarUsuariosDenunciados);
-app.get('/administrador/denuncias/:idUsuario/:tipoUsuario', ConsultarDenuncias);
+// app.get('/administrador/denuncias/:nomeUsuario', ConsultarUsuariosDenunciados);
+// app.get('/administrador/denuncias/:idUsuario/:tipoUsuario', ConsultarDenuncias);
 
 app.get("/checks/perfil/:id/:usertype", LoadProfile);
 app.put("/checks/perfil/:id/:usertype/refresh", RefreshProfile);
