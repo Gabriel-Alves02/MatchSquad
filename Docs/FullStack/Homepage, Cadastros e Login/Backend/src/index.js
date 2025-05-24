@@ -3,7 +3,11 @@ import cors from 'cors';
 import { CadastrarCliente, Reviewed } from './controller/Cliente.js';
 import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
+<<<<<<< HEAD
 import { CadastrarConsultor, GetHabilidades, RecordMeetLog } from './controller/Consultor.js';
+=======
+import { CadastrarConsultor, GetHabilidades, ConsultarMediaConsultor } from './controller/Consultor.js';
+>>>>>>> b820ad18789ea1883c2c92278efccb108b08c825
 import { RegistrarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepetido, CancelaAgendamento } from './controller/PedidoAgendamento.js';
 import { GetCode, GetPrazo, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid, LoadProfile, RefreshProfile, GoCloudImage, GetPassword, EndUser, RefreshPassword, SubmitComplaint, GetReport } from './controller/SysFx.js';
 import { EnviarEmailRemarcacao, ConfirmacaoEmail } from './service/sendgrid.js';
@@ -62,8 +66,15 @@ app.get('/clientes/historico/:id', LoadMatchHistory);
 app.get('/consultores/solicitacoes/:id', LoadHistory);
 app.post('/consultores/registrarReuniao', RecordMeetLog);
 
+<<<<<<< HEAD
 // app.get('/administrador/denuncias/:nomeUsuario', ConsultarUsuariosDenunciados);
 // app.get('/administrador/denuncias/:idUsuario/:tipoUsuario', ConsultarDenuncias);
+=======
+app.get('/consultores/:id/media', ConsultarMediaConsultor);
+
+app.get('/administrador/denuncias/:nomeUsuario', ConsultarUsuariosDenunciados);
+app.get('/administrador/denuncias/:idUsuario/:tipoUsuario', ConsultarDenuncias);
+>>>>>>> b820ad18789ea1883c2c92278efccb108b08c825
 
 app.get("/checks/perfil/:id/:usertype", LoadProfile);
 app.put("/checks/perfil/:id/:usertype/refresh", RefreshProfile);

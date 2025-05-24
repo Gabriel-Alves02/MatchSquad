@@ -23,7 +23,17 @@ document.addEventListener('DOMContentLoaded', async function () {
                     ${denuncia.nomeDenunciante}
                 </h1>
             </div>
+            <div style="display: flex;">
+                <h1 style="margin: 15px;">
+                    ${denuncia.emailDenunciante}
+                </h1>
+            </div>
             <br>
+            <div style="display: flex;">
+                <h1 style="margin: 15px;">
+                    ${denuncia.gravidade}
+                </h1>
+            </div>
             <div style="display: flex; margin-bottom: 10px;">
                 
                 <div>
