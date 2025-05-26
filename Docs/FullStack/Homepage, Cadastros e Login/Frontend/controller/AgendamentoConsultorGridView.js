@@ -313,7 +313,7 @@ async function renderizarConsultorias(listaDeConsultorias) {
 
 
         html += `
-            <div class="consultoria-item" data-id="${consultoria.idReuniao.toString()}" style="background-color: #cbe2f8; border-radius: 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3); max-width: 900px; margin-bottom: 20px;">
+            <div class="historic-card-consultoria" data-id="${consultoria.idReuniao.toString()}">
                 <div class="historic-card-header-container">
                     <h1 class="historic-card-title">Consultoria com ${consultoria.nome}</h1>
                     <div class="historic-card-buttons">
