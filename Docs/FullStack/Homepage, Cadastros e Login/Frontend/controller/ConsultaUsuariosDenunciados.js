@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         <th>nomeDenunciante</th>
                         <th>nomeDenunciado</th>
                         <th>SentidoDenuncia</th>
+                        <th>Data</th>
                         <th>Descrição</th>
                         <th>Banir?</th>
                     </tr>
@@ -67,6 +68,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 <td>${denunciante}</td>
                 <td>${denunciado}</td>
                 <td>${sentido}</td>
+                <td>${formatarData(denuncia.dataDenuncia)}</td>
                 <td>${denuncia.descricao}</td>
                 ${buttonBan}
               </tr>
@@ -81,6 +83,16 @@ document.addEventListener('DOMContentLoaded', async function () {
         console.error("Erro ao carregar reuniões:", error);
     }
 });
+
+function formatarData(isoDate) {
+    const data = new Date(isoDate);
+    return data.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+}
+
 
 // document.addEventListener('click', async function (event) {
 

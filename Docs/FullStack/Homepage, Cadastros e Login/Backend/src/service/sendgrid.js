@@ -218,6 +218,115 @@ export async function EnviarCancelamentoAgendamento(Email, Assunto, Data) {
 
 }
 
+export async function SendAnnouncement(req, res) {
+
+    const opt = req.params;
+
+    const pack = req.body;
+
+    if (!opt.numberOpt) {
+        return res.status(201).json({ success: false, message: "Parâmetro obrigatório não passado." });
+    }
+
+    const numberOpt = parseInt(opt.numberOpt, 10);
+
+    if (isNaN(numberOpt) || numberOpt < 0 || numberOpt > 4) {
+        return res.status(201).json({ success: false, message: "Opção inválida" });
+    }
+
+    if (opt.numberOpt === '1') {
+
+        const [rows] = await pool.query(`SELECT email FROM cliente;`);
+
+        const emailClientes = rows.map(row => row.email);
+
+        const msg = {
+            to: emailClientes,
+            from: "matchsquad.brasil@gmail.com",
+            subject: `${pack.titulo}`,
+            html: `${pack.corpoEmail}`
+        };
+
+        try {
+            //await sgMail.send(msg);
+            return res.status(200).json({ success: true, message: "E-mails enviados aos clientes com sucesso!", msg });
+        } catch (error) {
+            console.error("Erro ao enviar e-mail:", error.response?.body || error);
+            res.status(500).json({ success: false, message: "Falha ao enviar e-mail oas clientes" });
+        }
+
+    }
+
+    if (opt.numberOpt === '2') {
+        const [rows] = await pool.query(`SELECT email FROM consultor;`);
+
+        const emailConsultores = rows.map(row => row.email);
+
+        const msg = {
+            to: emailConsultores,
+            from: "matchsquad.brasil@gmail.com",
+            subject: `${pack.titulo}`,
+            html: `${pack.corpoEmail}`
+        };
+
+        try {
+            //await sgMail.send(msg);
+            return res.status(200).json({ success: true, message: "E-mails enviados aos consultores com sucesso!", msg});
+        } catch (error) {
+            console.error("Erro ao enviar e-mail:", error.response?.body || error);
+            res.status(500).json({ success: false, message: "Falha ao enviar e-mail oas consultores" });
+        }
+    }
+
+    if (opt.numberOpt === '3') {
+        const [rowsCli] = await pool.query(`SELECT email FROM cliente;`);
+        const [rowsCon] = await pool.query(`SELECT email FROM consultor;`);
+
+        const emailClientes = rowsCli.map(row => row.email);
+        const emailConsultores = rowsCon.map(row => row.email);
+
+        const allEmails = emailConsultores.concat(emailClientes);
+
+        const msg = {
+            to: allEmails,
+            from: "matchsquad.brasil@gmail.com",
+            subject: `${pack.titulo}`,
+            html: `${pack.corpoEmail}`
+        };
+
+        try {
+            //await sgMail.send(msg);
+            return res.status(200).json({ success: true, message: "E-mails enviados aos consultores com sucesso!", msg});
+        } catch (error) {
+            console.error("Erro ao enviar e-mail:", error.response?.body || error);
+            res.status(500).json({ success: false, message: "Falha ao enviar e-mail oas consultores" });
+        }
+    }
+
+    if (opt.numberOpt === '4') {
+
+        if (!(pack.emailSingular)) {
+            return res.status(201).json({ success: false, message: "Sem email singular para o envio" });
+        }
+
+        const msg = {
+            to: pack.emailSingular,
+            from: "matchsquad.brasil@gmail.com",
+            subject: `${pack.titulo}`,
+            html: `${pack.corpoEmail}`
+        };
+
+        try {
+            //await sgMail.send(msg);
+            return res.status(200).json({ success: true, message: "E-mails enviados aos consultores com sucesso!", msg});
+        } catch (error) {
+            console.error("Erro ao enviar e-mail:", error.response?.body || error);
+            res.status(500).json({ success: false, message: "Falha ao enviar e-mail oas consultores" });
+        }
+    }
+
+}
+
 function formatarData(isoDate) {
     const data = new Date(isoDate);
     return data.toLocaleDateString('pt-BR', {
