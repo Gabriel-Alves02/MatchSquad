@@ -249,36 +249,34 @@ async function renderizarConsultorias(listaDeConsultorias) { // Parâmetro renom
 
         if (consultoria.status_situacao === 'pendente' || consultoria.status_situacao === 'cancelada') {
             if (consultoria.status_situacao === 'pendente') {
-                avalia = `<h5 style="padding: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5>`;
+                avalia = `<h5 style="padding: 15px; padding-top: 5px; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5>`;
             }
 
             html += `
-                <div style="background-color: #cbe2f8; border-radius: 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3); max-width: 900px; margin-bottom: 20px;">
-                    <div style="display: flex;">
-                        <h1 style="margin: 15px;">
+                <div class="historic-card">
+                    <div class="historic-card-header-container">
+                        <h1 class="historic-card-title">
                             Consultoria com ${consultoria.nome}
                         </h1>
-                        <div style="margin-top: 20px; margin-left: 20px; margin-right: 10px; margin-bottom: 15px;">
+                        <div class="historic-card-buttons">
                             <button class="btn btn-primary" type="button" disabled>Relatório</button>
-                        </div>
-                        <div style="margin-top: 20px; margin-left: 10px; margin-right: 5px; margin-bottom: 15px;">
                             <button class="btn btn-primary" type="button" disabled>Ver avaliação</button>
                         </div>
                     </div>
                     <br>
-                    <div style="display: flex; margin-bottom: 10px;">
-                        <div style="display: flex;">
+                    <div class="historic-card-content">
+                        <div class="historic-card-user-data">
                             <img src="${consultoria.urlImagemPerfil}" class="profile-nav">
-                            <h5 style="padding: 15px; padding-bottom: 5px; padding-top: 2.5px; padding-left: 2.5px; font-family: Arial, Helvetica, sans-serif;">
+                            <h5 class="historic-card-user-name">
                                 ${consultoria.nome}
                             </h5>
                         </div>
                         
                         <div>
-                            <h5 style="padding: 15px; padding-bottom: 5px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">
+                            <h5 class="historic-card-date">
                                 Em ${formatarData(consultoria.data)} ${hora}
                             </h5>
-                            <h5 style="padding-left: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">
+                            <h5 class="historic-card-status">
                                 Status: ${status}
                             </h5>
                             ${avalia}
