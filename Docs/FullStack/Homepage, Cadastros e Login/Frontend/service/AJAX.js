@@ -799,3 +799,21 @@ export const buscarMediaConsultor = async (id) => {
         return { success: false, message: 'Erro de rede ou servidor.' };
     }
 };
+
+
+export const comunicarGeral = async (opt, objEmail) => {
+
+    return await fetch(url_administrador + `/comunicados/${opt}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(objEmail)
+    })
+        .then((response) => {
+            if (response.status >= 200 && response.status < 300) {
+                alert("Email enviado com sucesso.");
+            }
+            else {
+                console.log(`Erro do servidor: ${response.status}`);
+            }
+        })
+};

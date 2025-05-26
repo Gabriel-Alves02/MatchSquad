@@ -62,7 +62,7 @@ app.get('/consultores/solicitacoes/:id', LoadHistory);
 app.post('/consultores/registrarReuniao', RecordMeetLog);
 
 
-app.post('/administrador/comunicados/:numberOpt', SendAnnouncement);
+app.post('/administradores/comunicados/:numberOpt', SendAnnouncement);
 
 // app.get('/administrador/denuncias/:nomeUsuario', ConsultarUsuariosDenunciados);
 // app.get('/administrador/denuncias/:idUsuario/:tipoUsuario', ConsultarDenuncias);

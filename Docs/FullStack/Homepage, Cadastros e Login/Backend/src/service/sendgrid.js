@@ -224,6 +224,8 @@ export async function SendAnnouncement(req, res) {
 
     const pack = req.body;
 
+    console.log("PACK", pack);
+
     if (!opt.numberOpt) {
         return res.status(201).json({ success: false, message: "Parâmetro obrigatório não passado." });
     }
@@ -236,6 +238,7 @@ export async function SendAnnouncement(req, res) {
 
     if (opt.numberOpt === '1') {
 
+
         const [rows] = await pool.query(`SELECT email FROM cliente;`);
 
         const emailClientes = rows.map(row => row.email);
@@ -243,13 +246,15 @@ export async function SendAnnouncement(req, res) {
         const msg = {
             to: emailClientes,
             from: "matchsquad.brasil@gmail.com",
-            subject: `${pack.titulo}`,
-            html: `${pack.corpoEmail}`
+            subject: `${pack.assunto}`,
+            text: `${pack.corpo}`
         };
+
+        console.log("MSG clientes", msg);
 
         try {
             //await sgMail.send(msg);
-            return res.status(200).json({ success: true, message: "E-mails enviados aos clientes com sucesso!", msg });
+            return res.status(200).json({ success: true, message: "E-mails enviados aos clientes com sucesso!" });
         } catch (error) {
             console.error("Erro ao enviar e-mail:", error.response?.body || error);
             res.status(500).json({ success: false, message: "Falha ao enviar e-mail oas clientes" });
@@ -265,13 +270,15 @@ export async function SendAnnouncement(req, res) {
         const msg = {
             to: emailConsultores,
             from: "matchsquad.brasil@gmail.com",
-            subject: `${pack.titulo}`,
-            html: `${pack.corpoEmail}`
+            subject: `${pack.assunto}`,
+            text: `${pack.corpo}`
         };
+
+        console.log("MSG consultores", msg);
 
         try {
             //await sgMail.send(msg);
-            return res.status(200).json({ success: true, message: "E-mails enviados aos consultores com sucesso!", msg});
+            return res.status(200).json({ success: true, message: "E-mails enviados aos consultores com sucesso!" });
         } catch (error) {
             console.error("Erro ao enviar e-mail:", error.response?.body || error);
             res.status(500).json({ success: false, message: "Falha ao enviar e-mail oas consultores" });
@@ -290,13 +297,15 @@ export async function SendAnnouncement(req, res) {
         const msg = {
             to: allEmails,
             from: "matchsquad.brasil@gmail.com",
-            subject: `${pack.titulo}`,
-            html: `${pack.corpoEmail}`
+            subject: `${pack.assunto}`,
+            text: `${pack.corpo}`
         };
+
+        console.log("MSG clientes e consultores", msg);
 
         try {
             //await sgMail.send(msg);
-            return res.status(200).json({ success: true, message: "E-mails enviados aos consultores com sucesso!", msg});
+            return res.status(200).json({ success: true, message: "E-mails enviados aos consultores com sucesso!" });
         } catch (error) {
             console.error("Erro ao enviar e-mail:", error.response?.body || error);
             res.status(500).json({ success: false, message: "Falha ao enviar e-mail oas consultores" });
@@ -312,13 +321,15 @@ export async function SendAnnouncement(req, res) {
         const msg = {
             to: pack.emailSingular,
             from: "matchsquad.brasil@gmail.com",
-            subject: `${pack.titulo}`,
-            html: `${pack.corpoEmail}`
+            subject: `${pack.assunto}`,
+            text: `${pack.corpo}`
         };
+
+        console.log("MSG especifico", msg);
 
         try {
             //await sgMail.send(msg);
-            return res.status(200).json({ success: true, message: "E-mails enviados aos consultores com sucesso!", msg});
+            return res.status(200).json({ success: true, message: "E-mails enviados aos consultores com sucesso!" });
         } catch (error) {
             console.error("Erro ao enviar e-mail:", error.response?.body || error);
             res.status(500).json({ success: false, message: "Falha ao enviar e-mail oas consultores" });
