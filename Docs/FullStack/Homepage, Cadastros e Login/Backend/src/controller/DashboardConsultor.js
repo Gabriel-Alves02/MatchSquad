@@ -7,17 +7,10 @@ export const qtdeConsultoriasAgendadas = async (request, response, next) => {
 
         const [qtdeAgendadas] = await pool.query(
             `SELECT count(*) FROM Reuniao
-            group by idConsultor
-            having idConsultor = ? and status = 'agendada' and month(data) = month(sysdate)`,
+            GROUP BY idConsultor
+            HAVING idConsultor = ? AND status = 'agendada' AND MONTH(data) = MONTH(sysdate)`,
             [idConsultor]
         )
-
-        /*if (consultorias.length === 0) {
-            return response.status(404).json({
-                success: false,
-                message: "Nenhum match encontrado para este consultor."
-            });
-        }*/
 
         return response.status(200).json({
             success: true,
@@ -40,17 +33,10 @@ export const qtdeConsultoriasCanceladas = async (request, response, next) => {
 
         const [qtdeCanceladas] = await pool.query(
             `SELECT count(*) FROM Reuniao
-            group by idConsultor
-            having idConsultor = ? and status = 'cancelada' and month(data) = month(sysdate)`,
+            GROUP BY idConsultor
+            HAVING idConsultor = ? AND status = 'cancelada' AND MONTH(data) = MONTH(sysdate)`,
             [idConsultor]
         )
-
-        /*if (consultorias.length === 0) {
-            return response.status(404).json({
-                success: false,
-                message: "Nenhum match encontrado para este consultor."
-            });
-        }*/
 
         return response.status(200).json({
             success: true,
@@ -73,17 +59,10 @@ export const qtdeConsultoriasConcluidas = async (request, response, next) => {
 
         const [qtdeConcluidas] = await pool.query(
             `SELECT count(*) FROM Reuniao
-            group by idConsultor
-            having idConsultor = ? and status = 'concluida' and month(data) = month(sysdate)`,
+            GROUP BY idConsultor
+            HAVING idConsultor = ? AND status = 'concluida' AND MONTH(data) = MONTH(sysdate)`,
             [idConsultor]
         )
-
-        /*if (consultorias.length === 0) {
-            return response.status(404).json({
-                success: false,
-                message: "Nenhum match encontrado para este consultor."
-            });
-        }*/
 
         return response.status(200).json({
             success: true,
@@ -105,17 +84,11 @@ export const consultaMediaAvaliacao = async (request, response, next) => {
         const { idConsultor } = request.params;
 
         const [mediaAvaliacao] = await pool.query(
-            `SELECT avg(avaliacao) FROM Reuniao
-            WHERE idConsultor = ?`,
+            `SELECT AVG(avaliacao) FROM Reuniao
+            GROUP BY idConsultor
+            HAVING idConsultor = ?`,
             [idConsultor]
         )
-
-        /*if (consultorias.length === 0) {
-            return response.status(404).json({
-                success: false,
-                message: "Nenhum match encontrado para este consultor."
-            });
-        }*/
 
         return response.status(200).json({
             success: true,
@@ -137,21 +110,21 @@ export const consultaTopClientes = async (request, response, next) => {
         const { idConsultor } = request.params;
 
         const [topClientes] = await pool.query(
-            `SELECT Cliente.nome, count(*) as qtdeConsultorias FROM Reuniao inner join Cliente
-            on Reuniao.idCliente = Cliente.idCliente
-            group by idCliente
-            having idConsultor = ?
-            order by qtdeConsultorias desc
-            limit 5`,
+            `SELECT Cliente.nome, Cliente.urlImagemPerfil COUNT(*) as qtdeConsultorias FROM Reuniao INNER JOIN Cliente
+            ON Reuniao.idCliente = Cliente.idCliente
+            GROUP BY idCliente
+            HAVING idConsultor = ?
+            ORDER BY qtdeConsultorias DESC
+            LIMIT 5`,
             [idConsultor]
         )
 
-        /*if (consultorias.length === 0) {
+        if (topClientes.length === 0) {
             return response.status(404).json({
                 success: false,
                 message: "Nenhum match encontrado para este consultor."
             });
-        }*/
+        }
 
         return response.status(200).json({
             success: true,
@@ -173,18 +146,11 @@ export const consultaClientesVoltam = async (request, response, next) => {
         const { idConsultor } = request.params;
 
         const [qtdeClientesVoltam] = await pool.query(
-            `SELECT count(*) FROM (SELECT count(*) as qtde FROM Reuniao
-            group by idCliente
-            havind idConsultor = ? and qtde > 1)`,
+            `SELECT COUNT(*) FROM (SELECT COUNT(*) AS qtde FROM Reuniao
+            GROUP BY idCliente
+            HAVING idConsultor = ? AND qtde > 1)`,
             [idConsultor]
         )
-
-        /*if (consultorias.length === 0) {
-            return response.status(404).json({
-                success: false,
-                message: "Nenhum match encontrado para este consultor."
-            });
-        }*/
 
         return response.status(200).json({
             success: true,
@@ -206,18 +172,11 @@ export const consultaClientesNaoVoltam = async (request, response, next) => {
         const { idConsultor } = request.params;
 
         const [qtdeClientesNaoVoltam] = await pool.query(
-            `SELECT count(*) FROM (SELECT count(*) as qtde FROM Reuniao
-            group by idCliente
-            havind idConsultor = ? and qtde = 1)`,
+            `SELECT COUNT(*) FROM (SELECT COUNT(*) AS qtde FROM Reuniao
+            GROUP BY idCliente
+            HAVING idConsultor = ? AND qtde = 1)`,
             [idConsultor]
         )
-
-        /*if (consultorias.length === 0) {
-            return response.status(404).json({
-                success: false,
-                message: "Nenhum match encontrado para este consultor."
-            });
-        }*/
 
         return response.status(200).json({
             success: true,
@@ -239,19 +198,12 @@ export const qtdeAvaliacao = async (request, response, next) => {
         const { idConsultor } = request.params;
 
         const [qtdeAvaliacao] = await pool.query(
-            `SELECT count(*) FROM Reuniao
-            group by avaliacao
-            having idConsultor = ?
-            order by avaliacao asc`,
+            `SELECT avaliacao, COUNT(*) FROM Reuniao
+            GROUP BY avaliacao
+            HAVING idConsultor = ?
+            ORDER BY avaliacao ASC`,
             [idConsultor]
         )
-
-        /*if (consultorias.length === 0) {
-            return response.status(404).json({
-                success: false,
-                message: "Nenhum match encontrado para este consultor."
-            });
-        }*/
 
         return response.status(200).json({
             success: true,
