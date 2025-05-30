@@ -14,12 +14,14 @@ if (!AZURE_STORAGE_CONNECTION_STRING) {
 const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
 const containerClient = blobServiceClient.getContainerClient(containerName);
 
-export const enviarImagemParaBlob = async (fileBuffer, idLogin, originalName) => {
+
+export const enviarImagemParaBlob = async (fileBuffer, idLogin, originalName, subfolder = 'imagem') => {
     try {
         const extensao = path.extname(originalName);
         const sysDate = formatarDataHora();
-        const nomeArquivo = `${idLogin}_foto_${sysDate}${extensao}`;
-        const blobPath = `${idLogin}/imagem/${nomeArquivo}`;
+
+        const nomeArquivo = `${idLogin}_${subfolder}_${sysDate}${extensao}`;
+        const blobPath = `${idLogin}/${subfolder}/${nomeArquivo}`;
 
         const blobClient = containerClient.getBlockBlobClient(blobPath);
 
@@ -28,7 +30,7 @@ export const enviarImagemParaBlob = async (fileBuffer, idLogin, originalName) =>
         });
 
         return blobClient.url;
-        
+
     } catch (error) {
         console.error("Erro ao enviar imagem para o Blob Storage:", error);
         throw error;
@@ -36,19 +38,16 @@ export const enviarImagemParaBlob = async (fileBuffer, idLogin, originalName) =>
 };
 
 function formatarDataHora() {
-    const data = new Date();
+  const data = new Date();
 
-    const dataFormatada = data.toLocaleDateString('pt-BR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    }).replace(/\//g, '-');
+  const dia = String(data.getDate()).padStart(2, '0');
+  const mes = String(data.getMonth() + 1).padStart(2, '0');
+  const ano = data.getFullYear();
 
-    const horaFormatada = data.toLocaleTimeString('pt-BR', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-    });
+  const hora = String(data.getHours()).padStart(2, '0');
+  const minuto = String(data.getMinutes()).padStart(2, '0');
+  const segundo = String(data.getSeconds()).padStart(2, '0');
+  const ms = String(data.getMilliseconds()).padStart(3, '0');
 
-    return `${dataFormatada} ${horaFormatada}`;
+  return `${dia}-${mes}-${ano}_${hora}-${minuto}-${segundo}-${ms}`;
 }

@@ -283,7 +283,16 @@ export const LoadProfile = async (request, response, next) => {
 
     if (usertype === '0') {
       const [perfil] = await pool.query(
-        `SELECT nome,email,telefone,valorHora,urlImagemPerfil,redeSocial,horarioInicio,horarioFim,prazoMinReag,bio FROM Consultor WHERE idConsultor = ?;`, [id]
+        `SELECT 
+          c.nome,c.email,c.telefone,c.valorHora,c.urlImagemPerfil,c.redeSocial,c.horarioInicio,c.horarioFim,c.prazoMinReag,c.bio, GROUP_CONCAT(ce.urlCertificado SEPARATOR ',') AS urlsCertificados
+        FROM
+          Consultor c
+        LEFT JOIN
+          Certificados ce ON c.idConsultor = ce.idConsultor
+        WHERE
+          c.idConsultor = ?
+        GROUP BY
+          c.idConsultor;`, [id]
       );
 
       if (perfil.length > 0) {
@@ -420,6 +429,59 @@ export const GoCloudImage = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Problema interno no servidor!"
+    });
+  } finally {
+    connection.release();
+  }
+};
+
+export const GoCloudCertificateImage = async (req, res) => {
+  const connection = await pool.getConnection();
+
+  try {
+    const usuario = req.params;
+    const file = req.file;
+
+    if (!file) {
+      return res.status(201).json({
+        success: false,
+        message: 'Nenhum certificado foi enviado.'
+      });
+    }
+
+    let url = null;
+    let idLoginUsuario = null;
+
+    await connection.beginTransaction();
+
+    const [userIdentity] = await pool.query(
+      `SELECT idLogin FROM Consultor WHERE idConsultor = ?;`, [usuario.id]
+    );
+
+    idLoginUsuario = userIdentity[0].idLogin;
+
+    url = await enviarImagemParaBlob(file.buffer, idLoginUsuario, file.originalname, 'certificados');
+    
+    await connection.query(
+      `INSERT INTO Certificados (idConsultor, urlCertificado, descricao) VALUES (?, ?, ?);`,
+      [usuario.id, url, file.originalname]
+    );
+
+    await connection.commit();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Certificado enviado com sucesso!',
+      url
+    });
+
+  } catch (error) {
+    console.error("Erro ao enviar certificado:", error);
+    await connection.rollback();
+
+    return res.status(500).json({
+      success: false,
+      message: "Problema interno no servidor ao enviar certificado!"
     });
   } finally {
     connection.release();

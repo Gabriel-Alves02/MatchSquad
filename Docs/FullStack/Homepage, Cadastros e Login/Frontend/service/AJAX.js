@@ -515,6 +515,31 @@ export async function uploadImagemPerfil(id, usertype, file) {
     }
 }
 
+export async function uploadCertificado(id, file) {
+
+    const formData = new FormData();
+    formData.append('certificatePic', file);
+
+    try {
+        const response = await fetch(url_consultores + `/perfil/${id}/certificados`, {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data) {
+            return data;
+        }
+
+        return { success: false, message: 'Erro: Não foi possivel fazer upload do(s) certificado(s)!' }
+
+    } catch (error) {
+        console.error('Erro ao enviar certificado:', error);
+        return { success: false, message: 'Erro de rede ou servidor.' };
+    }
+}
+
 export async function carregarConsultoriasPesquisadas(nomeCliente) {
     return await fetch(url_consultores + `/historico/${nomeCliente}`, {
         method: "GET",

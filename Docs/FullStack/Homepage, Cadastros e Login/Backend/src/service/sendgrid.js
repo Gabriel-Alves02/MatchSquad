@@ -224,8 +224,6 @@ export async function SendAnnouncement(req, res) {
 
     const pack = req.body;
 
-    console.log("PACK", pack);
-
     if (!opt.numberOpt) {
         return res.status(201).json({ success: false, message: "Parâmetro obrigatório não passado." });
     }
@@ -239,7 +237,7 @@ export async function SendAnnouncement(req, res) {
     if (opt.numberOpt === '1') {
 
 
-        const [rows] = await pool.query(`SELECT email FROM cliente;`);
+        const [rows] = await pool.query(`SELECT email FROM cliente WHERE bloqueio = 0;`);
 
         const emailClientes = rows.map(row => row.email);
 
@@ -263,7 +261,7 @@ export async function SendAnnouncement(req, res) {
     }
 
     if (opt.numberOpt === '2') {
-        const [rows] = await pool.query(`SELECT email FROM consultor;`);
+        const [rows] = await pool.query(`SELECT email FROM consultor WHERE bloqueio = 0;`);
 
         const emailConsultores = rows.map(row => row.email);
 
@@ -286,8 +284,8 @@ export async function SendAnnouncement(req, res) {
     }
 
     if (opt.numberOpt === '3') {
-        const [rowsCli] = await pool.query(`SELECT email FROM cliente;`);
-        const [rowsCon] = await pool.query(`SELECT email FROM consultor;`);
+        const [rowsCli] = await pool.query(`SELECT email FROM cliente WHERE bloqueio = 0;`);
+        const [rowsCon] = await pool.query(`SELECT email FROM consultor WHERE bloqueio = 0;`);
 
         const emailClientes = rowsCli.map(row => row.email);
         const emailConsultores = rowsCon.map(row => row.email);
@@ -314,12 +312,12 @@ export async function SendAnnouncement(req, res) {
 
     if (opt.numberOpt === '4') {
 
-        if (!(pack.emailSingular)) {
+        if (!(pack.emailEspecifico)) {
             return res.status(201).json({ success: false, message: "Sem email singular para o envio" });
         }
 
         const msg = {
-            to: pack.emailSingular,
+            to: pack.emailEspecifico,
             from: "matchsquad.brasil@gmail.com",
             subject: `${pack.assunto}`,
             text: `${pack.corpo}`

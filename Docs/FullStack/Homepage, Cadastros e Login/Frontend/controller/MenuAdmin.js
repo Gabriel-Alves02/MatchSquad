@@ -77,6 +77,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 emailEspecifico: emailEspecifico
             };
 
+            console.log("Dados do comunicado:", dadosComunicado);
+            console.log("Destino selecionado:", destinoSelecionado);
+
             await comunicarGeral(destinoSelecionado, dadosComunicado);
 
             modalComunicadosInstance.hide();

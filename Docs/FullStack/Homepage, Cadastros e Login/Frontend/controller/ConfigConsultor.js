@@ -1,4 +1,4 @@
-import { carregarInfoPerfil, atualizarPerfil, atualizarSenha, uploadImagemPerfil, buscarSenha, userType } from '../service/AJAX.js';
+import { carregarInfoPerfil, atualizarPerfil, atualizarSenha, uploadImagemPerfil, uploadCertificado, buscarSenha, userType } from '../service/AJAX.js';
 import { getUserId, deactivateUser, senhaInvalida } from './SysFx.js';
 
 let info;
@@ -8,6 +8,11 @@ const profilePic = document.getElementById('profile-pic');
 
 const uploadCertif = document.getElementById('upload-certif');
 const galeriaCertif = document.getElementById('gallery');
+
+let arquivosCertificados = [];
+const MAX_FILE_SIZE = 2 * 1024 * 1024;
+const ALLOWED_MIMETYPES = ['image/jpeg', 'image/png', 'image/jpg'];
+
 
 let nome = document.getElementById('nome');
 let email = document.getElementById('email');
@@ -30,9 +35,11 @@ let confirmNovaSenha = document.getElementById('confirma-senha');
 // let msgConfirmSenha = document.getElementById('msgconfirmSenha');
 
 let salvarBtn2 = document.getElementById('salvar-plus');
+let salvarCertifBtn = document.getElementById('salvar-certif');
 
 
 document.addEventListener('DOMContentLoaded', async function () {
+
   info = await carregarInfoPerfil(getUserId(0), 0);
 
   prazo.value = info[0].prazoMinReag;
@@ -55,6 +62,22 @@ document.addEventListener('DOMContentLoaded', async function () {
     profilePic.src = localStorageUrl;
   } else if (urlImagemPerfil) {
     profilePic.src = urlImagemPerfil;
+  }
+
+  if (info[0].urlsCertificados !== null && info[0].urlsCertificados.length > 0) {
+
+    let certificados = info[0].urlsCertificados.split(',');
+
+    certificados.forEach(url => {
+      const imgContainer = document.createElement('div');
+      imgContainer.classList.add('certificate-item');
+      const img = document.createElement('img');
+      img.src = url;
+      img.classList.add('certificate-img');
+      imgContainer.appendChild(img);
+      galeriaCertif.appendChild(imgContainer);
+    });
+
   }
 
 });
@@ -117,6 +140,73 @@ uploadInput.addEventListener('change', async function () {
   }
 });
 
+uploadCertif.addEventListener('change', function () {
+  const files = this.files;
+  arquivosCertificados = [];
+  galeriaCertif.innerHTML = ''; // Limpa a galeria ao mudar seleção
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+
+    if (!ALLOWED_MIMETYPES.includes(file.type)) {
+      alert(`O arquivo '${file.name}' não é um tipo de imagem permitido (apenas JPG, JPEG, PNG). Ele será ignorado.`);
+      continue;
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      alert(`O arquivo '${file.name}' (${(file.size / (1024 * 1024)).toFixed(2)} MB) excede o tamanho máximo permitido de ${MAX_FILE_SIZE / (1024 * 1024)} MB. Ele será ignorado.`);
+      continue;
+    }
+
+    // IIFE para capturar o escopo correto
+    (function(file) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        const imgContainer = document.createElement('div');
+        imgContainer.classList.add('certificate-item');
+
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.classList.add('certificate-img');
+        img.dataset.fileName = file.name;
+
+        imgContainer.appendChild(img);
+        galeriaCertif.appendChild(imgContainer);
+
+        arquivosCertificados.push({ file, imgElement: img });
+        habilitarSalvar3();
+      };
+
+      reader.readAsDataURL(file);
+    })(file); // chamada imediata com o `file` atual
+  }
+});
+
+
+
+salvarCertifBtn.addEventListener('click', async function () {
+  for (let i = 0; i < arquivosCertificados.length; i++) {
+    const { file, imgElement } = arquivosCertificados[i];
+    try {
+      const resp = await uploadCertificado(getUserId(0), file);
+      if (resp && resp.url) {
+        imgElement.src = resp.url;
+      } else {
+        console.error('Erro ao enviar certificado:', resp?.message || 'Resposta inválida');
+      }
+    } catch (err) {
+      console.error('Erro no upload:', err);
+    }
+  }
+
+  arquivosCertificados = [];
+  localStorage.removeItem('certificadosPreview');
+  window.location.reload();
+});
+
+
+
 document.getElementById('excluir-conta').addEventListener('click', async (e) => {
 
   e.preventDefault();
@@ -168,4 +258,8 @@ document.querySelector('.plus-config').addEventListener('submit', async (e) => {
 
 function habilitarSalvar2() {
   salvarBtn2.disabled = false;
+}
+
+function habilitarSalvar3() {
+  salvarCertifBtn.disabled = false;
 }

@@ -5,7 +5,7 @@ import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
 import { CadastrarConsultor, GetHabilidades, RecordMeetLog } from './controller/Consultor.js';
 import { RegistrarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepetido, CancelaAgendamento } from './controller/PedidoAgendamento.js';
-import { GetCode, GetPrazo, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid, LoadProfile, RefreshProfile, GoCloudImage, GetPassword, EndUser, RefreshPassword, SubmitComplaint, GetReport } from './controller/SysFx.js';
+import { GetCode, GetPrazo, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid, LoadProfile, RefreshProfile, GoCloudImage, GoCloudCertificateImage, GetPassword, EndUser, RefreshPassword, SubmitComplaint, GetReport } from './controller/SysFx.js';
 import { EnviarEmailRemarcacao, ConfirmacaoEmail, SendAnnouncement } from './service/sendgrid.js';
 import { RegistrarReuniao } from './controller/RegistrarReuniao.js';
 import { ConsultarHistorico } from './controller/HistoricoConsultorias.js';
@@ -70,6 +70,7 @@ app.post('/administradores/comunicados/:numberOpt', SendAnnouncement);
 app.get("/checks/perfil/:id/:usertype", LoadProfile);
 app.put("/checks/perfil/:id/:usertype/refresh", RefreshProfile);
 app.post("/checks/perfil/:id/:usertype/image", upload.single('profilePic'), GoCloudImage)
+app.post("/consultores/perfil/:id/certificados", upload.single('certificatePic'), GoCloudCertificateImage);
 app.put("/checks/senha/:id/:usertype/refresh", RefreshPassword)
 
 app.get("/checks/:id/:usertype/senha", GetPassword);
