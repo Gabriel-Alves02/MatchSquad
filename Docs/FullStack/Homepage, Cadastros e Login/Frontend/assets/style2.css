@@ -1,5 +1,9 @@
+canvas {
+    width: 100% !important;
+    height: auto !important;
+}
 
-.historic-input-group{
+.historic-input-group {
     display: flex;
 }
 
@@ -93,6 +97,7 @@
     width: 10%;
     padding: 0.6rem 0.35rem;
 }
+
 .col-name {
     width: 50%;
     padding: 0.6rem 1.2rem;
@@ -152,7 +157,7 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.meeting-time{
+.meeting-time {
     width: 15%;
     font-size: 2rem;
     font-weight: 700;
@@ -178,7 +183,7 @@
 }
 
 .link-box {
-    width: 25%; 
+    width: 25%;
 }
 
 .col-return {
@@ -238,7 +243,7 @@
 
 .info-title {
     font-size: 50px;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .flex-container-title {
@@ -298,7 +303,7 @@
     color: #006666;
     font-size: 2rem;
     font-weight: 700;
-    margin-bottom:  1.2rem;
+    margin-bottom: 1.2rem;
 }
 
 
@@ -313,7 +318,7 @@ body {
     --blue: #1573E5;
 }
 
-h1{
+h1 {
     -webkit-text-stroke: 0.8px black;
 }
 
@@ -339,25 +344,25 @@ h1{
     background-color: #1573E5;
 }
 
-.navbar-light{
+.navbar-light {
     color: #007bff;
 }
 
 
-.navbar navbar-expand-lg navbar-light bg-light{
+.navbar navbar-expand-lg navbar-light bg-light {
     border: #1573E5;
 }
 
-.d-flex{
+.d-flex {
     margin-bottom: 50px;
     margin-top: 10px;
 }
 
-.lead{
+.lead {
     margin-top: 20px;
 }
 
-.navbar-brand{
+.navbar-brand {
     min-height: 5px;
     min-width: 10px;
     max-height: 180px;
@@ -365,21 +370,21 @@ h1{
     padding-left: 10px;
 }
 
-.text-primary{
+.text-primary {
     margin-bottom: 50px;
     text-align: center;
     color: #1573E5;
 
 }
 
-.img-box{
+.img-box {
     width: 12rem;
     height: 12rem;
     border-radius: 50%;
     margin-left: 20%;
 }
 
-#customerForm{
+#customerForm {
     padding: 20px 10px 5px 2px;
 }
 
@@ -397,12 +402,12 @@ h1{
     margin-right: 10px;
 }
 
-.flex-container{
+.flex-container {
     padding-top: 5%;
     padding-bottom: 5%;
 }
 
-.cx_Top-Right{
+.cx_Top-Right {
     text-align: right;
     margin-right: 35px;
     margin-bottom: 0px;
@@ -415,23 +420,23 @@ h1{
 .column {
     float: left;
     width: 25%;
-  }
-  
-  /* Clear floats */
-  .row:after {
+}
+
+/* Clear floats */
+.row:after {
     content: "";
     display: table;
-     clear: both;
-  }
-  
-  /* Responsive layout - makes a two column-layout instead of four columns */
-  @media screen and (max-width: 900px) {
-    .column {
-      width: 50%;
-    }
-  }
+    clear: both;
+}
 
-  @media screen (max-width: 576px) {
+/* Responsive layout - makes a two column-layout instead of four columns */
+@media screen and (max-width: 900px) {
+    .column {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 576px) {
     .historic-card-header-container {
         flex-direction: column;
         align-items: flex-start;
@@ -445,11 +450,11 @@ h1{
         flex-direction: column;
         align-items: flex-start;
     }
-  }
-  
-  /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
-  @media screen and (max-width: 600px) {
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
     .column {
-      width: 100%;
+        width: 100%;
     }
-  }
+}

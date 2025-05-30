@@ -5,23 +5,16 @@ export const consultaQtdeUsuariosAtivos = async (request, response, next) => {
     try {
 
         const [qtdeUsuariosAtivos] = await pool.query(
-            `SELECT count(*) FROM Cliente
-            group by bloqueio
-            having bloqueio = 0`
+            `SELECT COUNT(*) FROM Cliente
+            GROUP BY bloqueio
+            HAVING bloqueio = 0`
         )
 
         qtdeUsuariosAtivos += await pool.query(
-            `SELECT count(*) FROM Consultor
-            group by bloqueio
-            having bloqueio = 0`
+            `SELECT COUNT(*) FROM Consultor
+            GROUP BY bloqueio
+            HAVING bloqueio = 0`
         )
-
-        /*if (consultorias.length === 0) {
-            return response.status(404).json({
-                success: false,
-                message: "Nenhum match encontrado para este consultor."
-            });
-        }*/
 
         return response.status(200).json({
             success: true,
@@ -42,23 +35,16 @@ export const consultaQtdeUsuariosInativos = async (request, response, next) => {
     try {
 
         const [qtdeUsuariosInativos] = await pool.query(
-            `SELECT count(*) FROM Cliente
-            group by bloqueio
-            having bloqueio = 1`
+            `SELECT COUNT(*) FROM Cliente
+            GROUP BY bloqueio
+            HAVING bloqueio = 1`
         )
 
         qtdeUsuariosInativos += await pool.query(
-            `SELECT count(*) FROM Consultor
-            group by bloqueio
-            having bloqueio = 1`
+            `SELECT COUNT(*) FROM Consultor
+            GROUP BY bloqueio
+            HAVING bloqueio = 1`
         )
-
-        /*if (consultorias.length === 0) {
-            return response.status(404).json({
-                success: false,
-                message: "Nenhum match encontrado para este consultor."
-            });
-        }*/
 
         return response.status(200).json({
             success: true,
@@ -79,23 +65,16 @@ export const consultaQtdeUsuariosDenunciados = async (request, response, next) =
     try {
 
         const [qtdeUsuariosDenunciados] = await pool.query(
-            `SELECT count(*) FROM Cliente inner join Denuncia_cliente
-            on Cliente.idCliente = Denuncia_Cliente.idCliente
-            group by idCliente`
+            `SELECT COUNT(*) FROM Cliente INNER JOIN Denuncia
+            ON Cliente.idCliente = Denuncia.idDenunciado AND sentido = 1
+            GROUP BY idCliente`
         )
 
         qtdeUsuariosDenunciados += await pool.query(
-            `SELECT count(*) FROM Consultor inner join Denuncia_consultor
-            on Consultor.idConsultor = Denuncia_consultor.idConsultor
-            group by idConsultor`
+            `SELECT COUNT(*) FROM Consultor INNER JOIN Denuncia
+            ON Consultor.idConsultor = Denuncia.idDenunciado AND sentido = 0
+            GROUP BY idConsultor`
         )
-
-        /*if (consultorias.length === 0) {
-            return response.status(404).json({
-                success: false,
-                message: "Nenhum match encontrado para este consultor."
-            });
-        }*/
 
         return response.status(200).json({
             success: true,
@@ -116,15 +95,8 @@ export const consultaQtdeConsultores = async (request, response, next) => {
     try {
 
         const [qtdeConsultores] = await pool.query(
-            `SELECT count(*) FROM Consultores`
+            `SELECT COUNT(*) FROM Consultores`
         )
-
-        /*if (consultorias.length === 0) {
-            return response.status(404).json({
-                success: false,
-                message: "Nenhum match encontrado para este consultor."
-            });
-        }*/
 
         return response.status(200).json({
             success: true,
@@ -145,15 +117,8 @@ export const consultaQtdeClientes = async (request, response, next) => {
     try {
 
         const [qtdeClientes] = await pool.query(
-            `SELECT count(*) FROM Clientes`
+            `SELECT COUNT(*) FROM Clientes`
         )
-
-        /*if (consultorias.length === 0) {
-            return response.status(404).json({
-                success: false,
-                message: "Nenhum match encontrado para este consultor."
-            });
-        }*/
 
         return response.status(200).json({
             success: true,
@@ -174,16 +139,9 @@ export const qtdeConsultoriasAgendadas = async (request, response, next) => {
     try {
 
         const [qtdeAgendadas] = await pool.query(
-            `SELECT count(*) FROM Reuniao
-            WHERE status = 'agendada' and month(data) = month(sysdate)`
+            `SELECT COUNT(*) FROM Reuniao
+            WHERE status = 'agendada' AND MONTH(data) = MONTH(sysdate)`
         )
-
-        /*if (consultorias.length === 0) {
-            return response.status(404).json({
-                success: false,
-                message: "Nenhum match encontrado para este consultor."
-            });
-        }*/
 
         return response.status(200).json({
             success: true,
@@ -204,16 +162,9 @@ export const qtdeConsultoriasCanceladas = async (request, response, next) => {
     try {
 
         const [qtdeAgendadas] = await pool.query(
-            `SELECT count(*) FROM Reuniao
-            WHERE status = 'cancelada' and month(data) = month(sysdate)`
+            `SELECT COUNT(*) FROM Reuniao
+            WHERE status = 'cancelada' AND MONTH(data) = MONTH(sysdate)`
         )
-
-        /*if (consultorias.length === 0) {
-            return response.status(404).json({
-                success: false,
-                message: "Nenhum match encontrado para este consultor."
-            });
-        }*/
 
         return response.status(200).json({
             success: true,
@@ -234,16 +185,9 @@ export const qtdeConsultoriasConcluidas = async (request, response, next) => {
     try {
 
         const [qtdeAgendadas] = await pool.query(
-            `SELECT count(*) FROM Reuniao
-            WHERE status = 'concluida' and month(data) = month(sysdate)`
+            `SELECT COUNT(*) FROM Reuniao
+            WHERE status = 'concluida' AND MONTH(data) = MONTH(sysdate)`
         )
-
-        /*if (consultorias.length === 0) {
-            return response.status(404).json({
-                success: false,
-                message: "Nenhum match encontrado para este consultor."
-            });
-        }*/
 
         return response.status(200).json({
             success: true,
@@ -259,24 +203,18 @@ export const qtdeConsultoriasConcluidas = async (request, response, next) => {
     }
 };
 
-export const consultaTopClientes = async (request, response, next) => {
+export const consultaTopConsultores = async (request, response, next) => {
 
     try {
 
         const [topConsultores] = await pool.query(
-            `SELECT Consultor.nome, count(*) as qtdeConsultorias FROM Reuniao inner join Consultor
-            on Reuniao.idConsultor = Cliente.idConsultor
-            group by idConsultor
-            order by qtdeConsultorias desc
-            limit 5`
+            `SELECT Consultor.nome, Consultor.urlImagemPerfil, COUNT(*) as qtdeConsultorias FROM Reuniao INNER JOIN Consultor
+            ON Reuniao.idConsultor = Cliente.idConsultor
+            GROUP BY Consultor.idConsultor
+            HAVING Reuniao.status = 'concluida'
+            ORDER BY qtdeConsultorias DESC
+            LIMIT 5`
         )
-
-        /*if (consultorias.length === 0) {
-            return response.status(404).json({
-                success: false,
-                message: "Nenhum match encontrado para este consultor."
-            });
-        }*/
 
         return response.status(200).json({
             success: true,
