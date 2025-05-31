@@ -448,6 +448,42 @@ export async function carregarInfoPerfil(id, usertype) {
     })
 }
 
+export async function habilidadesPortifolio (id) {
+    return await fetch(url_consultores + `/habilidades/${id}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return data;
+        }
+        else if (response.status === 201) {
+            return null;
+        }
+        else {
+            console.error("Erro ao carregar info de perfil:", error);
+        }
+    })
+}
+
+export async function mediaPortifolio (id) {
+    return await fetch(url_consultores + `/media/${id}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return data;
+        }
+        else if (response.status === 201) {
+            return null;
+        }
+        else {
+            console.error("Erro ao carregar info de media do consultor:", error);
+        }
+    })
+}
+
 export async function atualizarPerfil(id, usertype, info) {
     try {
         const response = await fetch(url_checks + `/perfil/${id}/${usertype}/refresh`, {

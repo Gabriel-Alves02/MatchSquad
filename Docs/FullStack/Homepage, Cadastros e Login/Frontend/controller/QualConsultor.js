@@ -94,6 +94,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     consultores = await carregarInfoPerfil('-1', '-1');
+
+    console.log('resultado consultores: ', consultores);
+
     renderizarConsultores(consultores);
     verificarCamposFiltro();
     filtrarConsultores();
@@ -106,9 +109,16 @@ form.addEventListener('click', (event) => {
     }
 
     const card = event.target.closest('.card-body');
+    
     if (card) {
         const nomeConsultor = card.querySelector('.card-title')?.innerText.trim();
-        localStorage.setItem("idConsultor", card.getAttribute('data-value'));
+        //localStorage.setItem("idConsultor", card.getAttribute('data-value'));
+        const idConsultor = card.getAttribute('data-value');
+
+        console.log('idCon: ', idConsultor);
+
+        window.open(`./Portifolio.html?id=${idConsultor}`, "_blank");
+
         abrirModalAgendamento(nomeConsultor);
     }
 });
@@ -201,7 +211,7 @@ function renderizarConsultores(lista) {
         const cardHTML = `
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
-                    <div class="card-body" data-value="${consultor.id}">
+                    <div class="card-body" data-value="${consultor.idConsultor}">
                         <img src="${consultor.urlImagemPerfil}" class="img-box" alt="">
                         <br><br>
                         <h5 class="card-title">${consultor.nome}</h5>

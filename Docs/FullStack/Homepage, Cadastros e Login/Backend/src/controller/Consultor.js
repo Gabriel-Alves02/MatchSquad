@@ -105,6 +105,48 @@ export const GetHabilidades = async (request, response, next) => {
     }
 };
 
+
+export const GetHabConsultor = async (request, response, next) => {
+
+    const { id } = request.params;
+
+    try {
+
+        const [habilidades] = await pool.query(
+            `SELECT 
+                GROUP_CONCAT(h.nomeHabilidade SEPARATOR ', ') AS habilidades 
+            FROM
+                habilidade as h 
+            INNER JOIN
+                consultor_habilidades as ch
+            ON 
+                h.idHabilidade = ch.idHabilidade 
+            WHERE
+                ch.idConsultor = ?;`, [id]
+        );
+
+        if (habilidades.length > 0) {
+            return response.status(200).json({
+                success: true,
+                habilidades
+            });
+        }
+
+        return response.status(201).json({
+            success: false,
+            message: "Sem habilidades resgatadas do banco"
+        });
+
+    } catch (error) {
+        console.error('Erro ao buscar habilidades:', error);
+        return response.status(500).json({
+            success: false,
+            message: "Erro interno do servidor"
+        });
+
+    }
+};
+
 export const RecordMeetLog = async (request, response, next) => {
 
     const connection = await pool.getConnection();
@@ -186,37 +228,44 @@ export const RecordMeetLog = async (request, response, next) => {
 
 export const ConsultarMediaConsultor = async (request, response, next) => {
 
-  try {
+    try {
 
-    const { id } = request.params;
+        const { id } = request.params;
 
-    const [mediaConsultor] = await pool.query
-        (
-          `SELECT AVG(avaliacao) FROM Reuniao
-            GROUP BY idConsultor
-            HAVING idConsultor = ?;
-        `, [id]
-        );
+        const [consultor] = await pool.query
+            (
+                `SELECT 
+                    AVG(avaliacao) as media
+                FROM 
+                    Reuniao
+                WHERE
+                    status_situacao = 'realizada'
+                GROUP BY
+                    idConsultor
+                HAVING
+                    idConsultor = ?;
+                `, [id]
+            );
 
-      if (mediaConsultor) {
-        return response.status(200).json
-          ({
+        if (consultor) {
+            return response.status(200).json
+                ({
+                    success: true,
+                    consultor
+                });
+        }
+
+
+        return response.status(201).json({
             success: true,
-            mediaConsultor
-          });
-      }
+            message: "Media não encontrada."
+        });
 
-
-    return response.status(201).json({
-      success: true,
-      message: "Media não encontrada."
-    });
-
-  } catch (error) {
-    console.error('Erro no cadastro:', error);
-    return response.status(500).json({
-      success: false,
-      message: "Erro interno do servidor"
-    });
-  }
+    } catch (error) {
+        console.error('Erro no cadastro:', error);
+        return response.status(500).json({
+            success: false,
+            message: "Erro interno do servidor"
+        });
+    }
 };

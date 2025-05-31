@@ -4,175 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Matchsquad - Bem-vindo</title>
-    <link rel="icon" href="../assets/Icon.png  " type="image/x-icon">
+    <title>Matchsquad - Portifolio</title>
+    <link rel="icon" href="../assets/Icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../assets/style2.css">
     <link rel="stylesheet" href="../assets/style.css">
-    <script src="../controller/ConfigConsultor.js" type="module"></script>
-    <style>
-        body {
-            overflow-x: hidden;
-        }
+    <link rel="stylesheet" href="../assets/style2.css">
+    <link rel="stylesheet" href="../assets/style_portifolio.css">
 
-        .card {
-            margin: 15px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    <script src="../controller/Portifolio.js" type="module"></script>
 
-        .card-title {
-            font-weight: bold;
-        }
 
-        .card p {
-            margin-bottom: 10px;
-        }
-
-        .card button {
-            margin-top: 10px;
-        }
-
-        .btn-disabled {
-            pointer-events: none;
-            background-color: #ccc;
-            color: #666;
-        }
-
-        .profile {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .profile-header {
-            background: linear-gradient(45deg, #1a73e8, #4a90e2);
-            color: white;
-            padding: 20px;
-            border-radius: 10px 10px 0 0;
-            /* Adicione essas propriedades */
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-
-        .profile-pic {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 3px solid white;
-            margin: 20px auto;
-            display: block;
-            background: #ddd;
-        }
-
-        .profile-info {
-            padding: 20px;
-            background: white;
-            border-radius: 0 0 10px 10px;
-        }
-
-        .profile-info h3 {
-            margin: 10px 0;
-            color: #333;
-        }
-
-        .profile-info input {
-            border: none;
-            background: transparent;
-            font-size: 16px;
-            padding: 5px;
-            width: 100%;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .profile-info input:focus {
-            outline: none;
-            border-bottom-color: #1a73e8;
-        }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-            padding: 10px;
-        }
-
-        .gallery img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .gallery img:hover {
-            transform: scale(1.05);
-        }
-
-        .edit-btn {
-            width: 100%;
-            padding: 10px;
-            background: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-
-        .edit-btn:hover {
-            background: #1557b0;
-        }
-
-        .footer {
-            background: #f8f9fa;
-            padding: 20px;
-            border-top: 1px solid #ddd;
-        }
-
-        .footer-links a {
-            color: #666;
-            text-decoration: none;
-            margin-right: 15px;
-        }
-
-        .footer-links a:hover {
-            color: #1a73e8;
-        }
-
-        .social-links a {
-            color: #666;
-            font-size: 24px;
-            margin: 0 10px;
-            transition: color 0.3s;
-        }
-
-        .social-links a:hover {
-            color: #1a73e8;
-        }
-
-        .profile-info textarea {
-            width: 100%;
-            resize: vertical;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        .profile-info textarea:focus {
-            outline: none;
-            border-color: #1a73e8;
-            box-shadow: 0 0 5px rgba(26, 115, 232, 0.5);
-        }
-    </style>
 </head>
 
 <body>
@@ -183,88 +28,69 @@
             <a href="Login.html" class="btn btn-outline-danger" onclick="localStorage.clear()">Deslogar</a>
         </div>
     </nav>
+
+
+    <header class="bg-white py-4 shadow-sm border-bottom">
+        <div class="container d-flex flex-column flex-md-row align-items-center justify-content-center">
+            <div class="profile-avatar mb-3 mb-md-0 mr-md-4">
+                <img src="" id="profile-pic" class="rounded-circle img-fluid border border-primary">
+            </div>
+            <div class="text-center text-md-left profile-info">
+                <h1 class="display-4 text-dark mb-1" id="nome"></h1>
+                <p class="text-muted mb-2" id="bio"></p>
+
+                <div class="d-flex flex-column flex-md-row justify-content-md-start align-items-center mb-3">
+                    <div class="mr-md-3 mb-2 mb-md-0">
+                        <p class="font-weight-bold mb-1 text-dark">Habilidades Principais:</p>
+                        <div id="skills-container" class="skills-header-list">
+                        </div>
+                    </div>
+                    <div>
+                        <p class="font-weight-bold mb-1 text-dark">Avaliação Média:</p>
+                        <div id="average-stars" class="text-warning">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column flex-md-row justify-content-md-start align-items-center">
+                    <div>
+                        <p class="font-weight-bold mb-1 text-dark">Horario de Trabalho:</p>
+                        <div id="horarioTrab"></div>
+                    </div>
+                    <br>
+                    <div>
+                        <span class="font-weight-bold mb-1 text-dark">&nbsp;Antencedência<br>&emsp;para reagendar:</span>
+                        <p><div id="prazoReag"></div> dias</p>
+                    </div>
+                </div>
+            </div>
+    </header>
+
     <br>
 
-    <div style="display: flex; align-items: flex-start;">
-        <!--imagem de perfil-->
-        <div>
-            <h1 style="margin-left: 0.75em;">Nome do consultor</h1>
-            <div style="display: flex; align-items: flex-start;">
-                <h5 style="margin-left: 1.5em;">Habilidade 1</h5>
-                <h5 style="margin-left: 1.5em;">Habilidade 2</h5>
-                <h5 style="margin-left: 1.5em;">Habilidade 3</h5>
-            </div>
-        </div>
+    <div class="container-fluid">
+        <p class="font-weight-bold mb-1 text-dark">Diplomas e Certificados</p>
+        <div class="gallery d-flex flex-wrap" id="gallery"></div>
+    </div>
 
-        <div style="display: flex; align-items: center; flex-direction: column; margin-left: 2.5em; margin-top: 1.25em;">
-            <h5>Média de avaliação</h5>
-            <div>
-                <i class="fas fa-star" style="color: #FFC83D;"></i> <i class="fas fa-star" style="color: #FFC83D;"></i> <i class="fas fa-star" style="color: #FFC83D;"></i> <i class="fas fa-star" style="color: #FFC83D;"></i>
+
+    <div class="modal fade" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="imgModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content bg-transparent border-0">
+                <div class="modal-body p-0 text-center">
+                    <img id="modalImg" src="" class="img-fluid rounded">
+                </div>
             </div>
         </div>
     </div>
 
-    <hr>
 
-        <div class="container">
-            <label>Bio:</label>
-            <p>Bio do consultor...</p>
-        </div>
-
-    <div class="conatiner">
-        <!--certificados-->
-    </div>
-
-    <footer class="footer">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-4">
-                    <br>
-                    <div class="footer-links">
-                        <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">Políticas de Privacidade</a>
-                        <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">Termos de Uso</a>
-                        <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal2">Ajuda</a>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <br>
-                    <h4>Contato</h4>
-                    <p>
-                        (15) 99170-7070 📱
-                    </p>
-                    <h4>Endereço</h4>
-                    <a target="_blank"
-                        href="https://www.google.com/maps/@-23.4826573,-47.4260076,3a,75y,8.66h,90.1t/data=!3m6!1e1!3m4!1s0jnFsJazevJtZaqBOyuL5Q!2e0!7i13312!8i6656?entry=ttu">
-                        Av. Engenheiro Carlos Reinaldo Mendes, 2015<br>
-                        Alto da Boa Vista - Sorocaba/SP
-                    </a>
-                </div>
-                <div class="col-lg-4">
-                    <br>
-                    <div class="social-links">
-                        <a href="https://www.facebook.com/fatecsorocaba/?locale=pt_BR" class="fa fa-facebook"
-                            target="_blank"></a>
-                        <a href="https://www.instagram.com/fatecsorocaba/?hl=en" class="fa fa-instagram"
-                            target="_blank"></a>
-                        <a href="https://www.linkedin.com/groups/2283743/" class="fa fa-linkedin" target="_blank"></a>
-                        <a href="" class="fa fa-twitter" target="_blank"></a>
-                        <a href="https://www.facebook.com/fatecsorocaba/?locale=pt_BR" class="fa fa-tumblr"
-                            target="_blank"></a>
-                    </div>
-                    <br>
-                    <p>
-                        <a target="_blank" href="https://github.com/Gabriel-Alves02/MatchSquad">Matchsquad</a> 2024 -
-                        Fatec (Sorocaba/Sao Paulo)
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!--VLibras -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 
     <div vw class="enabled">
         <div vw-access-button class="active"></div>
@@ -276,6 +102,7 @@
     <script>
         new window.VLibras.Widget('https://vlibras.gov.br/app');
     </script>
+
 </body>
 
 </html>

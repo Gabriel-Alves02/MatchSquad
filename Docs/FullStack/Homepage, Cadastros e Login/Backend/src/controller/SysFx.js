@@ -247,7 +247,8 @@ export const LoadProfile = async (request, response, next) => {
     if (id === '-1' && usertype === '-1') {
       const [perfil] = await pool.query
         (
-          `SELECT 
+          `SELECT
+            c.idConsultor, 
             c.nome,
             c.email,
             c.telefone,

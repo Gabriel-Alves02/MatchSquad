@@ -3,7 +3,7 @@ import cors from 'cors';
 import { CadastrarCliente, Reviewed } from './controller/Cliente.js';
 import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
-import { CadastrarConsultor, GetHabilidades, RecordMeetLog } from './controller/Consultor.js';
+import { CadastrarConsultor, GetHabilidades, RecordMeetLog, GetHabConsultor, ConsultarMediaConsultor } from './controller/Consultor.js';
 import { RegistrarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepetido, CancelaAgendamento } from './controller/PedidoAgendamento.js';
 import { GetCode, GetPrazo, GetName, GetBlockStatus, RefreshBlock, GetIfNicknameIsValid, LoadProfile, RefreshProfile, GoCloudImage, GoCloudCertificateImage, GetPassword, EndUser, RefreshPassword, SubmitComplaint, GetReport } from './controller/SysFx.js';
 import { EnviarEmailRemarcacao, ConfirmacaoEmail, SendAnnouncement } from './service/sendgrid.js';
@@ -45,6 +45,8 @@ app.put('/consultores/agenda/:id', CancelaAgendamento );
 app.put('/clientes/agenda/:id', CancelaAgendamento );
 //app.put('/administrador/denuncias/bloquearUsuario', BloquearUsuario)
 app.get('/consultores/habilidades', GetHabilidades);
+app.get('/consultores/habilidades/:id', GetHabConsultor);
+app.get('/consultores/media/:id', ConsultarMediaConsultor );
 app.get('/consultores/agenda/:idConsultor', BuscarAgenda);
 app.get('/administradores/denuncias', GetComplaints );
 app.get('/consultores/historico/:idConsultor', BuscarSolicitacoes);
