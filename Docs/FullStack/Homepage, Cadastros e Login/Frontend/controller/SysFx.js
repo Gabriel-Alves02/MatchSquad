@@ -63,3 +63,8 @@ export async function senhaInvalida(senhaAntiga, confirmNovaSenha, novaSenha, ty
 
   return true;
 }
+
+export function capitalize(str) {
+    if (typeof str !== 'string' || !str.length) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}

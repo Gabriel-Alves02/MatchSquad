@@ -2,11 +2,14 @@ import { getUserId } from './SysFx.js';
 import { Registrar, agendadoNovamente, carregarInfoPerfil, buscarHabilidades } from '../service/AJAX.js';
 
 let flagHorario = -1;
-let consultores = []; // Inicialize como um array vazio
+let consultores = [];
 const searchBar = document.getElementById('searchBar');
 const filtroHabilidade = document.getElementById('filtroHabilidade');
 const botaoPesquisa = document.getElementById('botaoPesquisa');
 const container = document.getElementById('maingrid');
+
+
+let idConsultor;
 
 document.addEventListener("DOMContentLoaded", async function () {
     await carregarHabilidades();
@@ -109,11 +112,11 @@ form.addEventListener('click', (event) => {
     }
 
     const card = event.target.closest('.card-body');
-    
+
     if (card) {
         const nomeConsultor = card.querySelector('.card-title')?.innerText.trim();
         //localStorage.setItem("idConsultor", card.getAttribute('data-value'));
-        const idConsultor = card.getAttribute('data-value');
+        idConsultor = card.getAttribute('data-value');
 
         console.log('idCon: ', idConsultor);
 
@@ -143,6 +146,11 @@ function abrirModalAgendamento(nome) {
 }
 
 function fecharModal() {
+    document.getElementById('data-agendamento').value = '';
+    document.getElementById('periodo').value = 'manha';
+    document.getElementById('infoAdiantada').value = '';
+    document.getElementById('horario').value = '';
+    document.querySelector('input[name="tipo"][value="online"]').checked = true;
     document.getElementById('modal-agendamento').style.display = 'none';
 }
 
@@ -167,15 +175,16 @@ modalForm.addEventListener('submit', async (event) => {
         return;
     }
 
-    const repetido = await agendadoNovamente(getUserId(1), getUserId(0));
+    const repetido = await agendadoNovamente(getUserId(1), idConsultor);
 
     if (repetido) {
         alert("Você já tem um agendamento com esse consultor!");
+        fecharModal();
         return;
     }
 
     const PedidoAgendamento = {
-        idConsultor: getUserId(0),
+        idConsultor: idConsultor,
         idCliente: getUserId(1),
         infoAdiantada: infoAdiantada,
         data: data,
@@ -205,7 +214,7 @@ async function carregarHabilidades() {
 }
 
 function renderizarConsultores(lista) {
-    container.innerHTML = ''; // Limpa os cards antigos
+    container.innerHTML = '';
 
     lista.forEach((consultor) => {
         const cardHTML = `

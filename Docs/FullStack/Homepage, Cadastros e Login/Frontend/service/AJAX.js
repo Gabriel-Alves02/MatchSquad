@@ -871,10 +871,50 @@ export const comunicarGeral = async (opt, objEmail) => {
     })
         .then((response) => {
             if (response.status >= 200 && response.status < 300) {
-                alert("Email enviado com sucesso.");
+                console.log("Email enviado com sucesso.");
             }
             else {
                 console.log(`Erro do servidor: ${response.status}`);
             }
         })
 };
+
+export async function trocarStatusDenuncia (idDenuncia) {
+
+    return await fetch(url_administrador + `/statusDenuncia/${idDenuncia}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" }
+    })
+        .then((response) => {
+            if (response.status == 200) {
+                console.log("Status desta denuncia agora esta em analise, primeiro contato feito.");
+            }
+            else if (response.status == 201){
+                console.log("Não encontrado o registro")
+            }
+            else {
+                console.log(`Erro do servidor: ${response.status}`);
+            }
+        })
+}
+
+
+export async function finalizarDenuncia (obj,opt) {
+
+    return await fetch(url_administrador + `/vereditoDenuncia/${opt}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(obj)
+    })
+        .then((response) => {
+            if (response.status == 200) {
+                console.log("Denuncia encerrada");
+            }
+            else if (response.status == 201){
+                console.log('Sem denuncia para o id passado');
+            }
+            else {
+                console.log(`Erro do servidor: ${response.status}`);
+            }
+        })
+}

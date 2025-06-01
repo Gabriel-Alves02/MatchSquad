@@ -149,6 +149,13 @@ export const GetBlockStatus = async (request, response, next) => {
       });
     }
 
+    if (bloqStatus[0].bloqueio === -1) {
+      return response.status(200).json({
+        success: true,
+        message: -1
+      });
+    }
+
     return response.status(201).json({
       success: false,
       message: 0
@@ -462,7 +469,7 @@ export const GoCloudCertificateImage = async (req, res) => {
     idLoginUsuario = userIdentity[0].idLogin;
 
     url = await enviarImagemParaBlob(file.buffer, idLoginUsuario, file.originalname, 'certificados');
-    
+
     await connection.query(
       `INSERT INTO Certificados (idConsultor, urlCertificado, descricao) VALUES (?, ?, ?);`,
       [usuario.id, url, file.originalname]

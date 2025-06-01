@@ -1,5 +1,5 @@
 import { carregarMatchsPesquisados, avaliado, denunciar, checkDenuncia } from '../service/AJAX.js';
-import { getUserId } from '../controller/SysFx.js';
+import { getUserId, capitalize } from '../controller/SysFx.js';
 
 const searchBar = document.getElementById('searchBar');
 const filtro = document.getElementById('filtros');
@@ -138,10 +138,6 @@ function formatarData(isoDate) {
     });
 }
 
-function capitalize(str) {
-    if (typeof str !== 'string' || !str.length) return '';
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
 
 let currentConsultoriaId = null;
 

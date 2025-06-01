@@ -1,6 +1,7 @@
 canvas {
     width: 100% !important;
-    height: auto !important;
+    height: 400px !important; /* defina uma altura fixa */
+    display: block;
 }
 
 .historic-input-group {
@@ -457,4 +458,35 @@ h1 {
     .column {
         width: 100%;
     }
+}
+
+.descricao-cell {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.preview-descricao {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1; /* ocupa o máximo possível do espaço disponível */
+}
+
+.descricao-toggle {
+    font-size: 0.9em;
+    padding: 0.25rem 0.5rem;
+    color: #0d6efd;
+    white-space: nowrap;
+}
+
+.modal-dialog-scrollable {
+    max-height: calc(100vh - 3.5rem);
+}
+
+.readonly-description {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 1rem;
 }

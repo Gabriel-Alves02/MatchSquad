@@ -10,7 +10,7 @@ import { EnviarEmailRemarcacao, ConfirmacaoEmail, SendAnnouncement } from './ser
 import { RegistrarReuniao } from './controller/RegistrarReuniao.js';
 import { ConsultarHistorico } from './controller/HistoricoConsultorias.js';
 import { LoadMatchHistory, LoadHistory } from './controller/Historico.js';
-import { GetComplaints } from './controller/Denuncias.js'
+import { GetComplaints, ChangeReportStatus, EndReport } from './controller/Denuncias.js'
 import multer from 'multer';
 
 const storage = multer.memoryStorage();
@@ -43,12 +43,14 @@ app.put('/notifications', ConfirmacaoEmail);
 app.put('/checks/verified', RefreshBlock);
 app.put('/consultores/agenda/:id', CancelaAgendamento );
 app.put('/clientes/agenda/:id', CancelaAgendamento );
-//app.put('/administrador/denuncias/bloquearUsuario', BloquearUsuario)
+//app.put('/administrador/denuncias/banir', BloquearUsuario)
 app.get('/consultores/habilidades', GetHabilidades);
 app.get('/consultores/habilidades/:id', GetHabConsultor);
 app.get('/consultores/media/:id', ConsultarMediaConsultor );
 app.get('/consultores/agenda/:idConsultor', BuscarAgenda);
 app.get('/administradores/denuncias', GetComplaints );
+app.put('/administradores/statusDenuncia/:idDenuncia', ChangeReportStatus );
+app.put('/administradores/vereditoDenuncia/:opt', EndReport );
 app.get('/consultores/historico/:idConsultor', BuscarSolicitacoes);
 app.post('/consultores/agenda/:idConsultor', EnviarEmailRemarcacao);
 app.get('/checks/:nickname', GetIfNicknameIsValid);

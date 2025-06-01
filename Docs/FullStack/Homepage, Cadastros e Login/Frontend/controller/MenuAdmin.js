@@ -5,7 +5,7 @@ let formComunicados = null;
 let radioDestinoEmail = null; 
 let inputEmailEspecificoDiv = null;
 let inputEmailEspecifico = null;
-let modalComunicadosElement = null;
+let modalComunicadosElement;
 
 export function abrirModalComunicados() {
 
@@ -76,9 +76,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 corpo: mensagem,
                 emailEspecifico: emailEspecifico
             };
-
-            console.log("Dados do comunicado:", dadosComunicado);
-            console.log("Destino selecionado:", destinoSelecionado);
 
             await comunicarGeral(destinoSelecionado, dadosComunicado);
 

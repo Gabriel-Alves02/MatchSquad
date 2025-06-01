@@ -238,8 +238,6 @@ export const ConsultarMediaConsultor = async (request, response, next) => {
                     AVG(avaliacao) as media
                 FROM 
                     Reuniao
-                WHERE
-                    status_situacao = 'realizada'
                 GROUP BY
                     idConsultor
                 HAVING

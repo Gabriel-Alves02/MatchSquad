@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Denuncias da Plataforma</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Gerenciamento de Denúncias</title>
     <link rel="icon" href="../assets/Icon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -13,28 +14,161 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../assets/style.css">
     <link rel="stylesheet" href="../assets/style2.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <script src="../controller/ConsultaUsuariosDenunciados.js" type="module"></script>
+    <script src="../../controller/ConsultaUsuariosDenunciados.js" type="module"></script>
+
 </head>
 
 <body>
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a href="MenuAdministrador.html"><img class="navbar-brand" src="../assets/Logo.png" height="54.73px"></a>
+        <br><br><br>
         <div class="ml-auto">
             <a href="MenuAdministrador.html" class="btn btn-outline-primary mr-2">Voltar</a>
             <a href="Login.html" class="btn btn-outline-danger" onclick="localStorage.clear()">Deslogar</a>
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <h2 class="text-center">Todas Denuncias da Plataforma</h2>
-        <div class="table-responsive mt-4" id="tabelaAgendamentos">
+    <div class="container">
+        <h1 style="margin-top: 20px;">
+            Gerenciamento de Denúncias
+        </h1>
+        <br>
+        <div class="historic-input-group d-flex">
+            <select class="form-select me-2" id="filtrosDenuncias">
+                <option value="gravidade">Gravidade</option>
+                <option value="denunciante">Denunciante</option>
+                <option value="sentido">Sentido</option>
+                <option value="denunciado">Denunciado</option>
+                <option value="status">Status</option>
+            </select>
 
+            <input class="form-control" id="searchBarDenuncias" type="search" placeholder="Pesquisar usuários">
         </div>
     </div>
 
+
+    <div class="container">
+        <div class="table-responsive">
+            <table class="table table-bordered" border="1" style="width:100%; border-collapse:collapse">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>idReuniao</th>
+                        <th>Gravidade</th>
+                        <th>Denunciante</th>
+                        <th>Sentido</th>
+                        <th>Denunciado</th>
+                        <th>Descrição</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tabelaDenuncias">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="descricaoModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="descricaoModalLabel">Detalhes da Denúncia</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="descricaoConteudo" class="readonly-description"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modalComunicados" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalComunicadosLabel">Central de Comunicados</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formComunicados">
+                        <div class="mb-2"> <label for="assuntoComunicado" class="form-label mb-1">Assunto:</label>
+                            <input type="text" class="form-control form-control-sm" id="assuntoComunicado" required>
+                        </div>
+                        <div class="mb-2"> <label for="mensagemComunicado" class="form-label mb-1">Conteúdo:</label>
+                            <textarea class="form-control form-control-sm" id="mensagemComunicado" rows="5"
+                                required></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <p class="form-label mb-1">Enviar para:</p>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="destinoEmail" id="destinoEspecifico"
+                                    value="4">
+                                <label class="form-check-label" for="destinoEspecifico">Específico</label>
+                            </div>
+                        </div>
+                        <div class="mb-2" id="inputEmailEspecifico" style="display: none;"> <label for="emailEspecifico"
+                                class="form-label mb-1">E-mail específico:</label> <input type="text"
+                                class="form-control form-control-sm" id="emailEspecifico"
+                                placeholder="exemplo@dominio.com"> </div>
+                        <div class="modal-footer d-flex justify-content-end pt-2 pb-0"> <button type="submit"
+                                class="btn btn-primary btn-sm">Enviar</button> </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modalResolucao" tabindex="-1" aria-labelledby="modalResolucaoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalResolucaoLabel">Marcar como Resolvido</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="mensagemResolucao">Mensagem:</label>
+                    <textarea id="mensagemResolucao" class="form-control" rows="3"
+                        placeholder="Escreva uma mensagem para o usuário..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="confirmarResolucao">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modalBanimento" tabindex="-1" aria-labelledby="modalBanimentoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalBanimentoLabel">Motivo do Banimento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea id="motivoBanimento" class="form-control" rows="4"
+                        placeholder="Descreva o motivo do banimento..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirmarBanimento" type="button" class="btn btn-danger">Banir Usuário</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+
+
 </body>
+
 
 </html>

@@ -1,24 +1,23 @@
 .profile-avatar {
-    /* Define um tamanho fixo para o contêiner da imagem */
-    width: 150px; /* Ou o tamanho que desejar */
-    height: 150px; /* Deve ser igual ao width para um círculo perfeito */
-    overflow: hidden; /* Garante que a imagem cortada não vaze */
-    border-radius: 50%; /* Mantém o formato de círculo do Bootstrap */
-    display: flex; /* Para centralizar a imagem dentro do contêiner */
+
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 50%;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
 #profile-pic {
-    width: 100%; /* Faz a imagem preencher a largura do contêiner */
-    height: 100%; /* Faz a imagem preencher a altura do contêiner */
-    object-fit: cover; /* **Isso é o mais importante:** Faz a imagem cobrir o espaço, cortando as bordas se necessário */
-    object-position: center; /* Centraliza a imagem no contêiner */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
-/* Remova ou ajuste esta media query, pois o tamanho fixo já lida com a responsividade para a imagem */
 @media (min-width: 768px) {
     #profile-pic {
-        width: 100%; /* Já definido acima */
+        width: 100%;
     }
 }

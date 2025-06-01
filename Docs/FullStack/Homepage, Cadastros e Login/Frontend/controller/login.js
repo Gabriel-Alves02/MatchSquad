@@ -25,12 +25,17 @@ form.addEventListener('submit', async (event) => {
             let codigo = null;
             const block = await temBloqueio(idConsultor, 0);
 
+            if (block.message === -1) {
+                alert("Você se encontra banido da nossa plataforma por não seguir os termos de uso!")
+                return;
+            }
+
             if (block.message === 1) {
                 alert('Novos usuários ou usuários desativados, precisam realizar confirmação de código solicitada')
                 do {
                     codigoBanco = await buscarCodigo(idConsultor, '0');
                     codigo = Number(window.prompt("Codigo de confirmação enviado no email:"));
-                    
+
                     if (codigo == null || codigo == "") {
                         break;
                     }
@@ -62,13 +67,17 @@ form.addEventListener('submit', async (event) => {
             let codigo = null;
             const block = await temBloqueio(idCliente, 1);
 
+            if (block.message === -1) {
+                alert("Você se encontra banido da nossa plataforma por não seguir os termos de uso!")
+                return;
+            }
 
             if (block.message === 1) {
                 alert('Novos usuários ou usuários excluídos, precisam realizar confirmação de código!')
                 do {
                     codigoBanco = await buscarCodigo(idCliente, '1');
                     codigo = Number(window.prompt("Codigo de confirmação enviado no email:"));
-                   
+
                     if (codigo == null || codigo == "") {
                         break;
                     }

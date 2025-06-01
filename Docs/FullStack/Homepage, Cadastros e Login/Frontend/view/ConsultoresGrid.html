@@ -57,7 +57,7 @@
     <div id="modal-agendamento" class="modal-agenda">
         <form class="modal-content">
             
-           <span><h2 id="modal-title" style="font-size: 25px;"></h2><span style="color: red;" class="close">Cancelar</span></span>
+           <span><h2 id="modal-title" style="font-size: 25px;"></h2><span style="color: red; cursor: pointer;" class="close">Cancelar</span></span>
             <label for="data-agendamento">Escolha a data:</label>
             <input type="date" id="data-agendamento">
             <br>
@@ -72,6 +72,7 @@
             </div>
             <label><input type="radio" name="tipo" value="online" checked> Online</label>
             <label><input type="radio" name="tipo" value="presencial"> Presencial</label>
+            <label for="infoAdiantada">Adiante informações sobre sua necessidade:</label>
             <textarea id="infoAdiantada"></textarea>
             <br><br>
             <button type="submit">Confirmar</button>

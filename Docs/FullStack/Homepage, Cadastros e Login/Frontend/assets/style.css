@@ -191,7 +191,7 @@ a:active {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #b7c9f7f1;
+    background: #b7c9f7;
     padding: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
@@ -331,7 +331,7 @@ a:active {
 }
 
 .modal-body button:hover {
-    background-color: #198754; /* cor do botão verde */
+    background-color: #198754;
     color: #fff;
     border: 1px solid #198754;
     transform: translateY(-2px);
