@@ -249,7 +249,7 @@ async function renderizarConsultorias(listaDeConsultorias) { // Parâmetro renom
 
         if (consultoria.status_situacao === 'pendente' || consultoria.status_situacao === 'cancelada') {
             if (consultoria.status_situacao === 'pendente') {
-                avalia = `<h5 style="padding: 15px; padding-top: 5px; font-size: 1em; padding-left: 1em font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5>`;
+                avalia = `<h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5>`;
             }
 
             html += `
@@ -302,7 +302,7 @@ async function renderizarConsultorias(listaDeConsultorias) { // Parâmetro renom
                 comentario = ``;
             } else {
                 btnAvaliacao = `<button class="btn btn-primary" type="button" data-action="avaliacao" disabled>Avaliado</button>`;
-                comentario = `<h5 style="padding: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">${consultoria.comentario}</h5>`;
+                comentario = `<h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">${consultoria.comentario}</h5>`;
             }
 
             const temDenuncia = await detectDenuncia(getUserId(1), '1', consultoria.idConsultor);
@@ -336,7 +336,7 @@ async function renderizarConsultorias(listaDeConsultorias) { // Parâmetro renom
                             <h5 class="historic-card-date">
                                 Em ${formatarData(consultoria.data)} ${hora}
                             </h5>
-                            <h5 style="padding-left: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">
+                            <h5 class="historic-card-status">
                                 Status: ${status}
                             </h5>
                             <h5 class="historic-card-status">
