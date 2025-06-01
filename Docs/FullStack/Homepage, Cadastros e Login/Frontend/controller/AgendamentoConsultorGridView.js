@@ -300,7 +300,7 @@ async function renderizarConsultorias(listaDeConsultorias) {
             canceladoDiff = ``;
             if (consultoria.status_situacao === 'pendente') {
                 btnCancelar = `<button class="btn btn-danger" type="button" data-action="cancelar">Cancelar</button>`;
-                canceladoDiff = `<h5 style="padding-bottom: 5px; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5> ${comentarioDisplay}`
+                canceladoDiff = `<h5 style="padding-bottom: 5px; padding-left: 1em; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5> ${comentarioDisplay}`
             }
         }
 

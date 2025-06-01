@@ -249,7 +249,7 @@ async function renderizarConsultorias(listaDeConsultorias) { // Parâmetro renom
 
         if (consultoria.status_situacao === 'pendente' || consultoria.status_situacao === 'cancelada') {
             if (consultoria.status_situacao === 'pendente') {
-                avalia = `<h5 style="padding: 15px; padding-top: 5px; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5>`;
+                avalia = `<h5 style="padding: 15px; padding-top: 5px; font-size: 1em; padding-left: 1em font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5>`;
             }
 
             html += `
