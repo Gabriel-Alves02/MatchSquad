@@ -11,6 +11,7 @@ import { RegistrarReuniao } from './controller/RegistrarReuniao.js';
 import { ConsultarHistorico } from './controller/HistoricoConsultorias.js';
 import { LoadMatchHistory, LoadHistory } from './controller/Historico.js';
 import { GetComplaints, ChangeReportStatus, EndReport } from './controller/Denuncias.js'
+import { QtdeConsultoriasAgendadas, DiasSemanaConsultoriaDetalhado, HistoricoAvaliacaoConsultor } from './controller/DashboardConsultor.js';
 import multer from 'multer';
 
 const storage = multer.memoryStorage();
@@ -80,6 +81,9 @@ app.put("/checks/senha/:id/:usertype/refresh", RefreshPassword)
 app.get("/checks/:id/:usertype/senha", GetPassword);
 app.put("/checks/:id/:usertype/desativar", EndUser);
 
+app.get("/consultores/dashboard/totalAgendamentos/:id", QtdeConsultoriasAgendadas);
+app.get("/consultores/dashboard/demandaDias/:id", DiasSemanaConsultoriaDetalhado);
+app.get("/consultores/dashboard/historicoAvaliacao/:id", HistoricoAvaliacaoConsultor);
 
 
 app.get('/ping', (request,response,next) => {

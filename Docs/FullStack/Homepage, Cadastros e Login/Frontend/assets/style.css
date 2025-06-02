@@ -346,3 +346,33 @@ a:active {
 .btn-close:hover {
     background-color: #e2e6ea;
 }
+
+
+.chart-container {
+    flex: 1 1 45%;
+    max-width: 45%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.chart-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px 0;
+}
+
+
+
+/* Responsivo para celulares */
+@media (max-width: 768px) {
+    .chart-container {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+
+    canvas {
+        max-height: 250px;
+    }
+}

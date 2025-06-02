@@ -266,7 +266,7 @@ export async function temBloqueio(id, usertype) {
     })
 }
 
-//Rever, checar se ainda funciona
+
 export async function agendadoNovamente(idCliente, idConsultor) {
     try {
         const response = await fetch(url_checks + `/${idCliente}/${idConsultor}`);
@@ -917,4 +917,49 @@ export async function finalizarDenuncia (obj,opt) {
                 console.log(`Erro do servidor: ${response.status}`);
             }
         })
+}
+
+export async function obterArrayAgendamentoDashboard (id) {
+    return await fetch(url_consultores + `/dashboard/totalAgendamentos/${id}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return data;
+        }
+        else {
+            console.error("Erro ao carregar info de perfil:", error);
+        }
+    })
+}
+
+export async function obterArrayDemandaDiaAgendamento (id) {
+    return await fetch(url_consultores + `/dashboard/demandaDias/${id}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return data;
+        }
+        else {
+            console.error("Erro ao carregar info de perfil:", error);
+        }
+    })
+}
+
+export async function obterArrayHistAvaliacao (id) {
+    return await fetch(url_consultores + `/dashboard/historicoAvaliacao/${id}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return data;
+        }
+        else {
+            console.error("Erro ao carregar info de perfil:", error);
+        }
+    })
 }

@@ -1,370 +1,276 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MatchSquad</title>
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
     <link rel="icon" href="../assets/Icon.png  " type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
     <link rel="stylesheet" href="../assets/style.css">
 
-    <link rel="stylesheet" href="../assets/style2.css">
-
-    <!--Chartjs-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+
+    <script src="../controller/DashboardConsultor.js" type="module"></script>
+
+
+
 </head>
 
-<body style="background-color: #eef1f5;">
+<body>
+
+    <style>
+        html,
+        body {
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* Container dos gráficos */
+        .dashboard-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        /* Cada gráfico ocupa espaço responsivo */
+        .chart-container {
+            flex: 1 1 400px;
+            /* Cresce, mas respeita largura mínima */
+            max-width: 600px;
+            min-width: 280px;
+            height: 300px;
+        }
+
+        /* Canvas ocupa toda a div responsiva */
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* Ajustes para dispositivos móveis */
+        @media (max-width: 768px) {
+            .chart-container {
+                flex: 1 1 100%;
+                max-width: 100%;
+                height: 250px;
+            }
+
+            .chart-container canvas {
+                height: auto !important;
+            }
+        }
+    </style>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a href="MenuConsultor.html"><img class="navbar-brand" src="../assets/Logo.png" height="54.73px"></a>
         <div class="ml-auto">
             <a href="MenuConsultor.html" class="btn btn-outline-primary mr-2">Voltar</a>
-            <a href="ConfigConsultor.html" class="btn btn-outline-primary mr-2">Configurações</a>
             <a href="Login.html" class="btn btn-outline-danger" onclick="localStorage.clear()">Deslogar</a>
         </div>
     </nav>
 
-    <div class="container" style="background-color: #eef1f5;">
-        <h1 style="text-align: center; padding-top: 10px; padding-bottom: 10px;">Seu Dashboard</h1>
-        <div style="display: flex; flex-wrap: wrap;">
-            <div class="col">
-                <div
-                    style="border-radius: 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2); background-color: aliceblue; flex-direction: column; margin: 15px;">
-                    <h2 style="text-align: center; padding-top: 10px;">10</h2>
-                    <h2 style="text-align: center; padding-bottom: 10px; padding-left: 5px; padding-right: 5px;">
-                        Consultorias agendadas</h2>
-                </div>
-            </div>
-            <div class="col">
-                <div
-                    style="border-radius: 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2); background-color: aliceblue; flex-direction: column; margin: 15px;">
-                    <h2 style="text-align: center; padding-top: 10px;">5</h2>
-                    <h2 style="text-align: center; padding-bottom: 10px; padding-left: 5px; padding-right: 5px;">
-                        Consultorias canceladas</h2>
-                </div>
-            </div>
-            <div class="col">
-                <div
-                    style="border-radius: 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2); background-color: aliceblue; flex-direction: column; margin: 15px;">
-                    <h2 style="text-align: center; padding-top: 10px;">2</h2>
-                    <h2 style="text-align: center; padding-bottom: 10px; padding-left: 5px; padding-right: 5px;">
-                        Consultorias concluídas</h2>
-                </div>
-            </div>
-            <div class="col">
-                <div
-                    style="border-radius: 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2); background-color: aliceblue; flex-direction: column; margin: 15px;">
-                    <h2 style="text-align: center; padding-top: 10px;">4,5 estrelas</h2>
-                    <h2 style="text-align: center; padding-bottom: 10px; padding-left: 5px; padding-right: 5px;">Média
-                        de avaliação</h2>
-                </div>
-            </div>
-            <br>
-            <br>
+    <h1>Meus Dashboards</h1>
+
+    <div class="dashboard-grid">
+        <div class="chart-container">
+            <canvas id="barChart"></canvas>
         </div>
-        <div class="row">
-            <div class="col-12 col-lg-7 mb-4">
-                <canvas id="myChart" style="height: 800px; "></canvas>
-            </div>
-            <div class="col-12 col-lg-5 mb-4">
-                <div class="p-3 shadow rounded h-100" style="background-color: aliceblue;">
-                    <h2 style="text-align: center; padding-top: 10px;">Top 5 clientes com mais consultorias</h2>
-                    <hr style="color: black; height: 1px;">
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="../assets/6.jpg" class="profile-nav" style="width: 30px; height: 30px;">
-                        <h5 class="mb-0">Gabriel - 10 consultorias</h5>
-                    </div>
-                    <hr>
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="../assets/6.jpg" class="profile-nav" style="width: 30px; height: 30px;">
-                        <h5 class="mb-0">Fernando - 8 consultorias</h5>
-                    </div>
-                    <hr>
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="../assets/6.jpg" class="profile-nav" style="width: 30px; height: 30px;">
-                        <h5 class="mb-0">Eduardo - 7 consultorias</h5>
-                    </div>
-                    <hr>
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="../assets/6.jpg" class="profile-nav" style="width: 30px; height: 30px;">
-                        <h5 class="mb-0">Paula - 5 consultorias</h5>
-                    </div>
-                    <hr>
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="../assets/6.jpg" class="profile-nav" style="width: 30px; height: 30px;">
-                        <h5 class="mb-0">Augusto - 4 consultorias</h5>
-                    </div>
-                </div>
-            </div>
+        <div class="chart-container">
+            <canvas id="pieChart"></canvas>
         </div>
-        <!--
-        <div style="width: 1100px;">
-            <canvas id="myChart2"></canvas>
-        </div>
-    -->
-        <div style="display: flex; flex-wrap: wrap;">
-            <div class="col-12 col-lg-6 mb-4">
-                <canvas id="myChart3"></canvas>
-            </div>
-            <div class="col-12 col-lg-6 mb-4">
-                <canvas id="myChart4"></canvas>
-            </div>
+        <div class="chart-container">
+            <canvas id="lineChart"></canvas>
         </div>
     </div>
 
-    <br>
-    <br>
+    <br><br><br>
 
-    <script>
-        const ctx = document.getElementById('myChart');
+    <footer style="background-color: #cbe2f8;">
+        <div class="container-fluid text-center margin">
+            <div class="row">
+                <div class="col-lg-4">
 
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'junho'],
-                datasets: [{
-                    label: 'Consultorias concluídas',
-                    data: [12, 19, 3, 5, 2, 3],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
-
-    <script>
-        const ctx2 = document.getElementById('myChart2');
-
-        new Chart(ctx2, {
-            type: 'line',
-            data: {
-                labels: ['2022', '2023', '2024', '2025'],
-                datasets: [{
-                    label: 'Consultorias concluídas',
-                    data: [12, 19, 3, 5, 2, 3],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
-
-    <script>
-        const ctx3 = document.getElementById('myChart3');
-
-        new Chart(ctx3, {
-            type: 'pie',
-            data: {
-                labels: ['Clientes que voltam', 'Clientes que não voltam'],
-                datasets: [{
-                    data: [45, 55],
-                    borderWidth: 1
-                }]
-            },
-        });
-    </script>
-
-    <script>
-        const ctx4 = document.getElementById('myChart4');
-
-        new Chart(ctx4, {
-            type: 'bar',
-            data: {
-                labels: ['0 estrela', '1 estrela', '2 estrelas', '3 estrelas', '4 estrelas', '5 estrelas'],
-                datasets: [{
-                    label: 'Notas',
-                    data: [0, 1, 4, 2, 8, 28],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
-
-</body>
-
-<footer style="background-color: #cbe2f8;">
-    <div class="container-fluid text-center margin">
-        <div class="row">
-            <div class="col-lg-4">
-
-                <br>
-                <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Politicas de Privacidade
-                </a>
-                <br> <br>
-                <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Termos de Uso
-                    </a=>
-                    <br> <br>
-                    <a href="" data-bs-target="#exampleModal2" data-bs-toggle="modal">
-                        Ajuda
+                    <br>
+                    <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Politicas de Privacidade
                     </a>
+                    <br> <br>
+                    <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Termos de Uso
+                        </a=>
+                        <br> <br>
+                        <a href="" data-bs-target="#exampleModal2" data-bs-toggle="modal">
+                            Ajuda
+                        </a>
+                        <br>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Leia com atenção</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p style="text-align: justify; text-justify: inter-word;">
+                                            CONTRATO DE PRESTAÇÃO DE SERVIÇOS EDUCACIONAIS
+
+                                            IDENTIFICAÇÃO DAS PARTES CONTRATANTES <br><br>
+
+                                            MENTOR: [Nome do Contratante] - [Profissão] – [Especialidade]<br>
+                                            Carteira de Identidade nº [xxx], C.P. F. nº [xxx]<br>
+                                            Logradouro (Residencia ou Escritório) : Rua [xxx], nº [xxx], bairro [xxx],
+                                            Cep
+                                            [xxx], Cidade [xxx] - Estado [xxx];<br><br>
+                                            <br>
+                                            EMPRESA: [Nome da Fantasia], inscrita no C.N.P.J. sob o nº [xxx], e no
+                                            Cadastro
+                                            Estadual sob o nº [xxx].
+                                            Logradouro : Rua [xxx], nº [xxx], bairro [xxx], Cep [xxx], Cidade [xxx] -
+                                            Estado
+                                            [xxx], neste ato representada pelo seu diretor [xxx], Carteira de Identidade
+                                            nº
+                                            [xxx], C.P. F. nº [xxx].<br>
+                                            <br><br>
+                                            As partes acima identificadas têm, entre si, justo e acertado o presente
+                                            Contrato de Prestação de Serviços Educacionais, que se regerá pelas
+                                            cláusulas
+                                            seguintes e pelas condições de preço, forma e termo de pagamento descritas
+                                            no
+                                            presente.<br>
+                                            <br><br>
+                                            DO OBJETO DO CONTRATO<br>
+                                            <br><br>
+                                            Cláusula 1ª. O presente contrato tem como OBJETO, a prestação, pelo MENTOR,
+                                            de
+                                            serviços educacionais, a serem realizados de forma online na plataforma
+                                            MatchSquad, ou em encontro presencial em data e local combinado entre as
+                                            partes..<br>
+                                            <br><br>
+                                            DA OBRIGAÇÂO DO MENTOR<br>
+                                            <br><br>
+                                            Cláusula 2ª. Orientar e estabelecer planejamento incremental aos assuntos
+                                            tratados em mentorias, prestando auxílios as dúvidas, durante o vigor do
+                                            contrato.<br>
+
+                                            .
+                                            .
+                                            .
+                                        </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Fechar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Contato nosso representante:
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p style="text-align: justify; text-justify: inter-word;">
+                                        <p class="lead"> Como posso lhe ajudar?</p>
+                                        📱 (15) 99150-1628
+                                        <br>
+                                        📧 billportoes@matchsquad.com.br
+                                        <br><textarea id="msg"></textarea><br>
+                                        <button class="btn btn-outline-success" type="submit">➤</button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+
+
+                <div class="col-lg-4">
+                    <br>
+                    <h4>Contato</h4>
+                    <p>
+                        (15) 99170-7070 📱
+                    </p>
+                    <br>
+                    <h4>Endereço</h4>
+                    <a target="_blank"
+                        href="https://www.google.com/maps/@-23.4826573,-47.4260076,3a,75y,8.66h,90.1t/data=!3m6!1e1!3m4!1s0jnFsJazevJtZaqBOyuL5Q!2e0!7i13312!8i6656?entry=ttu">Av.
+                        Engenheiro Carlos Reinaldo Mendes, 2015<br>Alto da Boa Vista - Sorocaba/SP</a>
+                    <br><br>
+                </div>
+
+                <div class="col-lg-4" style="align-items: center;">
                     <br>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Leia com atenção</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p style="text-align: justify; text-justify: inter-word;">
-                                        CONTRATO DE PRESTAÇÃO DE SERVIÇOS EDUCACIONAIS
+                    <table>
+                        <tr>
+                            <th>⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</th>
+                            <th style="text-align: center;"> <a
+                                    href="https://www.facebook.com/fatecsorocaba/?locale=pt_BR" class="fa fa-facebook"
+                                    target="_blank"></a></th>
+                            <th>⠀</th>
+                            <th style="text-align: center;"><a href="https://www.instagram.com/fatecsorocaba/?hl=en"
+                                    class="fa fa-instagram" target="_blank"></a></a></th>
+                            <th>⠀</th>
+                            <th style="text-align: center;"><a href="https://www.linkedin.com/groups/2283743/"
+                                    class="fa fa-linkedin" target="_blank"></a></th>
+                            <th>⠀</th>
+                            <th style="text-align: center;"><a href="" class="fa fa-twitter" target="_blank"></a></th>
+                            <th>⠀</th>
+                            <th style="text-align: center;"> <a
+                                    href="https://www.facebook.com/fatecsorocaba/?locale=pt_BR" class="fa fa-tumblr"
+                                    target="_blank"></a></th>
+                            <th>⠀</th>
+                        </tr>
+                    </table>
 
-                                        IDENTIFICAÇÃO DAS PARTES CONTRATANTES <br><br>
-
-                                        MENTOR: [Nome do Contratante] - [Profissão] – [Especialidade]<br>
-                                        Carteira de Identidade nº [xxx], C.P. F. nº [xxx]<br>
-                                        Logradouro (Residencia ou Escritório) : Rua [xxx], nº [xxx], bairro [xxx], Cep
-                                        [xxx], Cidade [xxx] - Estado [xxx];<br><br>
-                                        <br>
-                                        EMPRESA: [Nome da Fantasia], inscrita no C.N.P.J. sob o nº [xxx], e no Cadastro
-                                        Estadual sob o nº [xxx].
-                                        Logradouro : Rua [xxx], nº [xxx], bairro [xxx], Cep [xxx], Cidade [xxx] - Estado
-                                        [xxx], neste ato representada pelo seu diretor [xxx], Carteira de Identidade nº
-                                        [xxx], C.P. F. nº [xxx].<br>
-                                        <br><br>
-                                        As partes acima identificadas têm, entre si, justo e acertado o presente
-                                        Contrato de Prestação de Serviços Educacionais, que se regerá pelas cláusulas
-                                        seguintes e pelas condições de preço, forma e termo de pagamento descritas no
-                                        presente.<br>
-                                        <br><br>
-                                        DO OBJETO DO CONTRATO<br>
-                                        <br><br>
-                                        Cláusula 1ª. O presente contrato tem como OBJETO, a prestação, pelo MENTOR, de
-                                        serviços educacionais, a serem realizados de forma online na plataforma
-                                        MatchSquad, ou em encontro presencial em data e local combinado entre as
-                                        partes..<br>
-                                        <br><br>
-                                        DA OBRIGAÇÂO DO MENTOR<br>
-                                        <br><br>
-                                        Cláusula 2ª. Orientar e estabelecer planejamento incremental aos assuntos
-                                        tratados em mentorias, prestando auxílios as dúvidas, durante o vigor do
-                                        contrato.<br>
-
-                                        .
-                                        .
-                                        .
-                                    </p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Fechar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Contato nosso representante:
-                                    </h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p style="text-align: justify; text-justify: inter-word;">
-                                    <p class="lead"> Como posso lhe ajudar?</p>
-                                    📱 (15) 99150-1628
-                                    <br>
-                                    📧 billportoes@matchsquad.com.br
-                                    <br><textarea name="" id=""></textarea><br>
-                                    <button class="btn btn-outline-success" type="submit">➤</button>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-            </div>
-
-
-
-            <div class="col-lg-4">
-                <br>
-                <h4>Contato</h4>
-                <p>
-                    (15) 99170-7070 📱
-                </p>
-                <br>
-                <h4>Endereço</h4>
-                <a target="_blank"
-                    href="https://www.google.com/maps/@-23.4826573,-47.4260076,3a,75y,8.66h,90.1t/data=!3m6!1e1!3m4!1s0jnFsJazevJtZaqBOyuL5Q!2e0!7i13312!8i6656?entry=ttu">Av.
-                    Engenheiro Carlos Reinaldo Mendes, 2015<br>Alto da Boa Vista - Sorocaba/SP</a>
-                <br><br>
-            </div>
-
-            <div class="col-lg-4" style="align-items: center;">
-                <br>
-
-                <table>
-                    <tr>
-                        <th>⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</th>
-                        <th style="text-align: center;"> <a href="https://www.facebook.com/fatecsorocaba/?locale=pt_BR"
-                                class="fa fa-facebook" target="_blank"></a></th>
-                        <th>⠀</th>
-                        <th style="text-align: center;"><a href="https://www.instagram.com/fatecsorocaba/?hl=en"
-                                class="fa fa-instagram" target="_blank"></a></a></th>
-                        <th>⠀</th>
-                        <th style="text-align: center;"><a href="https://www.linkedin.com/groups/2283743/"
-                                class="fa fa-linkedin" target="_blank"></a></th>
-                        <th>⠀</th>
-                        <th style="text-align: center;"><a href="" class="fa fa-twitter" target="_blank"></a></th>
-                        <th>⠀</th>
-                        <th style="text-align: center;"> <a href="https://www.facebook.com/fatecsorocaba/?locale=pt_BR"
-                                class="fa fa-tumblr" target="_blank"></a></th>
-                        <th>⠀</th>
-                    </tr>
-                </table>
-
-                <br><br>
-                <p><a target="_blank" href="https://github.com/Gabriel-Alves02/MatchSquad">Matchsquad</a> 2024 - Fatec
-                    (Sorocaba/Sao Paulo)</p>
-                <br>
+                    <br><br>
+                    <p>
+                        <atarget="_blank" href="https://github.com/Gabriel-Alves02/MatchSquad">Matchsquad</atarget=>
+                            2024 -
+                            Fatec (Sorocaba/Sao Paulo)
+                    </p>
+                    <br>
+                </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
+
+</body>
 
 </html>
