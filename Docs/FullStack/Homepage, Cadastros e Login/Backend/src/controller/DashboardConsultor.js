@@ -44,8 +44,6 @@ export const QtdeConsultoriasAgendadas = async (request, response, next) => {
     }
 };
 
-
-
 export const DiasSemanaConsultoriaDetalhado = async (request, response, next) => {
     try {
         const { id } = request.params;
@@ -105,7 +103,6 @@ export const DiasSemanaConsultoriaDetalhado = async (request, response, next) =>
     }
 };
 
-
 export const HistoricoAvaliacaoConsultor = async (request, response, next) => {
     try {
         const { id } = request.params;
@@ -154,9 +151,6 @@ export const HistoricoAvaliacaoConsultor = async (request, response, next) => {
 };
 
 
-
-
-
 export const consultaMediaAvaliacao = async (request, response, next) => {
 
     try {
@@ -176,121 +170,6 @@ export const consultaMediaAvaliacao = async (request, response, next) => {
 
     } catch (error) {
         console.error('Erro ao buscar média de avaliações:', error);
-        return response.status(500).json({
-            success: false,
-            message: "Erro interno do servidor"
-        });
-    }
-};
-
-export const consultaTopClientes = async (request, response, next) => {
-
-    try {
-        const { idConsultor } = request.params;
-
-        const [topClientes] = await pool.query(
-            `SELECT Cliente.nome, Cliente.urlImagemPerfil COUNT(*) as qtdeConsultorias FROM Reuniao INNER JOIN Cliente
-            ON Reuniao.idCliente = Cliente.idCliente
-            GROUP BY idCliente
-            HAVING idConsultor = ?
-            ORDER BY qtdeConsultorias DESC
-            LIMIT 5`,
-            [idConsultor]
-        )
-
-        if (topClientes.length === 0) {
-            return response.status(404).json({
-                success: false,
-                message: "Nenhum match encontrado para este consultor."
-            });
-        }
-
-        return response.status(200).json({
-            success: true,
-            topClientes
-        });
-
-    } catch (error) {
-        console.error('Erro ao buscar top cinco clientes com mais consultorias:', error);
-        return response.status(500).json({
-            success: false,
-            message: "Erro interno do servidor"
-        });
-    }
-};
-
-export const consultaClientesVoltam = async (request, response, next) => {
-
-    try {
-        const { idConsultor } = request.params;
-
-        const [qtdeClientesVoltam] = await pool.query(
-            `SELECT COUNT(*) FROM (SELECT COUNT(*) AS qtde FROM Reuniao
-            GROUP BY idCliente
-            HAVING idConsultor = ? AND qtde > 1)`,
-            [idConsultor]
-        )
-
-        return response.status(200).json({
-            success: true,
-            qtdeClientesVoltam
-        });
-
-    } catch (error) {
-        console.error('Erro ao buscar clientes que voltam:', error);
-        return response.status(500).json({
-            success: false,
-            message: "Erro interno do servidor"
-        });
-    }
-};
-
-export const consultaClientesNaoVoltam = async (request, response, next) => {
-
-    try {
-        const { idConsultor } = request.params;
-
-        const [qtdeClientesNaoVoltam] = await pool.query(
-            `SELECT COUNT(*) FROM (SELECT COUNT(*) AS qtde FROM Reuniao
-            GROUP BY idCliente
-            HAVING idConsultor = ? AND qtde = 1)`,
-            [idConsultor]
-        )
-
-        return response.status(200).json({
-            success: true,
-            qtdeClientesNaoVoltam
-        });
-
-    } catch (error) {
-        console.error('Erro ao buscar clientes que não voltam:', error);
-        return response.status(500).json({
-            success: false,
-            message: "Erro interno do servidor"
-        });
-    }
-};
-
-export const qtdeAvaliacao = async (request, response, next) => {
-
-    try {
-        const { idConsultor } = request.params;
-
-        const [qtdeAvaliacao] = await pool.query(
-            `SELECT avaliacao, COUNT(*) FROM Reuniao
-            GROUP BY avaliacao
-            HAVING idConsultor = ?
-            ORDER BY avaliacao ASC`,
-            [idConsultor]
-        )
-
-        return response.status(200).json({
-            success: true,
-            qtdeAvaliacao
-        });
-
-    } catch (error) {
-        console.error('Erro ao buscar quantidade de avaliações:', error);
         return response.status(500).json({
             success: false,
             message: "Erro interno do servidor"

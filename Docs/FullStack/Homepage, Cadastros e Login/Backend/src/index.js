@@ -12,6 +12,8 @@ import { ConsultarHistorico } from './controller/HistoricoConsultorias.js';
 import { LoadMatchHistory, LoadHistory } from './controller/Historico.js';
 import { GetComplaints, ChangeReportStatus, EndReport } from './controller/Denuncias.js'
 import { QtdeConsultoriasAgendadas, DiasSemanaConsultoriaDetalhado, HistoricoAvaliacaoConsultor } from './controller/DashboardConsultor.js';
+import { QtdeUsuariosPorBloqueio, MediasAvaliacaoConsultores, TopConsultoresPorReunioesRealizadas } from './controller/DashboardAdministrador.js';
+
 import multer from 'multer';
 
 const storage = multer.memoryStorage();
@@ -84,6 +86,10 @@ app.put("/checks/:id/:usertype/desativar", EndUser);
 app.get("/consultores/dashboard/totalAgendamentos/:id", QtdeConsultoriasAgendadas);
 app.get("/consultores/dashboard/demandaDias/:id", DiasSemanaConsultoriaDetalhado);
 app.get("/consultores/dashboard/historicoAvaliacao/:id", HistoricoAvaliacaoConsultor);
+
+app.get("/administradores/dashboard/totalDenuncias", QtdeUsuariosPorBloqueio);
+app.get("/administradores/dashboard/mediaAvaliacao", MediasAvaliacaoConsultores);
+app.get("/administradores/dashboard/top5Consultores", TopConsultoresPorReunioesRealizadas);
 
 
 app.get('/ping', (request,response,next) => {

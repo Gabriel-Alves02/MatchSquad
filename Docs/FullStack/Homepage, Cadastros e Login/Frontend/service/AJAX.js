@@ -963,3 +963,50 @@ export async function obterArrayHistAvaliacao (id) {
         }
     })
 }
+
+
+
+export async function obterArrayQtdBloqDashboard () {
+    return await fetch(url_administrador + `/dashboard/totalDenuncias`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return data;
+        }
+        else {
+            console.error("Erro ao carregar info de bloq-dashboard:", error);
+        }
+    })
+}
+
+export async function obterArrayAvgAvaliacaoConsultor () {
+    return await fetch(url_administrador + `/dashboard/mediaAvaliacao`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return data;
+        }
+        else {
+            console.error("Erro ao carregar info de avgAvaliacao-dashboard:", error);
+        }
+    })
+}
+
+export async function obterArrayTop5Consultores () {
+    return await fetch(url_administrador + `/dashboard/top5Consultores`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return data;
+        }
+        else {
+            console.error("Erro ao carregar info de avgAvaliacao-dashboard:", error);
+        }
+    })
+}
