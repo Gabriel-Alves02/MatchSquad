@@ -19,18 +19,18 @@ Denilce de Almeida Oliveira Veloso
 
 O projeto da MatchSquad tem como objetivo inicialmente fomentar o encontro de interessados dos mais variados nichos do empreendedorismo, de pequena a média empresa, buscando unir empresários com novas ideias ou dificuldades de negócio, e experts do ramo da consultoria desejada. 
 
-As dores dos usuários que serão trabalhadas estão embasadas nas dificuldades:
+As dores dos usuários que serão trabalhadas estão embasadas nas seguintes dificuldades:
 * Perspectiva dos Clientes:
     * Dificuldade na procura de um profissinal qualificado;
-    * Falta de informações ou insights para por em prática as ideias;
+    * Falta de informações ou insights para pôr em prática as ideias;
     * Demora no encontro de profissional para ocasiões pontuais;
-    * Confiabilidade na seleção de um profissinal;
+    * Confiabilidade na seleção de um profissional;
 * Perspectiva dos Consultores:
     * Falha de Marketing Pessoal;
     * Oculto pela competitividade dos profissionais já estabelecidos no mercado;
     * Falta de informação de quais são os atuais projetos sendo trabalhados nas empresas;
 
-# Tecnologia Utilizadas
+# Tecnologias Utilizadas
 
 # FrontEnd
 
@@ -58,7 +58,7 @@ Ou subistituir por:
 
 ![image](https://github.com/user-attachments/assets/25365920-2820-4d89-b8d1-2396c8be12a0)
 
-### Diagrama E/R
+### Diagrama Entidade Relacionamento
 
 ![image](https://github.com/user-attachments/assets/dc821c16-4bd4-4a80-bc95-68831da0e964)
 
