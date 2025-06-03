@@ -4,9 +4,9 @@ Alessandro Manrique Junior
 
 Gabriel Alves Coelho
 
-Natã Siloe
+Natã Siloé dos Santos
 
-Pedro Henrique Aranha
+Pedro Henrique Aranha Oliveira
 
 Victor Akira Maejima
 
