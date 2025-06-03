@@ -56,8 +56,8 @@ As dores dos usuários que serão trabalhadas estão embasadas nas dificuldades:
 
 ### Diagrama E/R
 
-![image](https://github.com/user-attachments/assets/94237147-c63b-4104-a456-67a9b299f6d9)
+![image](https://github.com/user-attachments/assets/dc821c16-4bd4-4a80-bc95-68831da0e964)
 
 ### Modelo Lógico
 
-![image](https://github.com/user-attachments/assets/fa2fe216-c96e-4897-92df-a80342cd8a3e)
+![image](https://github.com/user-attachments/assets/cb416d7d-1569-4176-87e8-1decd7497e45)
