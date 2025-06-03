@@ -48,6 +48,10 @@ As dores dos usuários que serão trabalhadas estão embasadas nas dificuldades:
 
 ![image](https://github.com/user-attachments/assets/a37a6f30-aa51-4fa2-b49f-5f079e00648c)
 
+Ou subistituir por:
+
+![image](https://github.com/user-attachments/assets/ad13acd4-73ae-4ba1-9752-39b3e24d93cd)
+
 # Diagramas:
 
 # Casos de Uso:
