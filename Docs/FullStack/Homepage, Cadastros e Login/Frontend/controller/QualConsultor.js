@@ -154,6 +154,19 @@ function fecharModal() {
     document.getElementById('modal-agendamento').style.display = 'none';
 }
 
+//Criação da url da reunião:
+function gerarUrlReuniao() {
+    const sufixoUrl = matchMedia.random().toString(36).substring(2, 10);
+    sufixoUrl = "consultoria_" + sufixoUrl;
+
+    // Essa é a base JaaS (8x8.vc + ID do projeto)
+    const baseUrl = 'https://8x8.vc/vpaas-magic-cookie-6b44b110cace40f8a723c05a52aa3bc8/';
+
+    const urlSala = baseUrl + sufixoUrl;   
+    
+    return urlSala;
+}
+
 const modalForm = document.getElementById('modal-agendamento');
 modalForm.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -169,6 +182,11 @@ modalForm.addEventListener('submit', async (event) => {
     const infoAdiantada = document.getElementById('infoAdiantada').value;
     const radioSelecionado = document.querySelector('input[name="tipo"]:checked');
     const horario = endHour;
+    const urlReuniao = '';
+
+    if (radioSelecionado == 'online') {
+        urlReuniao = gerarUrlReuniao();
+    }
 
     if (!data) {
         alert('Por favor, escolha uma data!');
@@ -191,7 +209,8 @@ modalForm.addEventListener('submit', async (event) => {
         status_situacao: "pendente",
         tipo: radioSelecionado.value,
         periodo: periodo,
-        horario: horario //|| '00:00:00'
+        horario: horario, //|| '00:00:00'
+        link: urlReuniao
     };
 
     Registrar(PedidoAgendamento);

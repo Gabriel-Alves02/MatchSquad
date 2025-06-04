@@ -19,7 +19,8 @@ export const LoadMatchHistory = async (request, response, next) => {
                 re.solucoes, 
                 re.infoSolicitada,
                 r.avaliacao,
-                r.comentario
+                r.comentario,
+                r.link
             FROM 
                 reuniao r
             INNER JOIN 
@@ -72,7 +73,8 @@ export const LoadHistory = async (request, response, next) => {
                 re.solucoes, 
                 re.infoSolicitada,
                 r.avaliacao,
-                r.comentario
+                r.comentario,
+                r.link
             FROM 
                 reuniao r
             INNER JOIN 

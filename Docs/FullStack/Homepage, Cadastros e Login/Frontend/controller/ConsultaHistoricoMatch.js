@@ -248,6 +248,19 @@ async function renderizarConsultorias(listaDeConsultorias) { // Parâmetro renom
                 avalia = `<h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5>`;
             }
 
+            const hoje = new Date();
+
+            if((formatarData(consultoria.data) === formatarData(hoje)) && consultoria.link != '') {
+                btnLink = `<div class="historic-card-buttons" style="margin-bottom: 0.25em;">
+                                <a class="btn btn-primary" type="button" href="${consultoria.link}">Reunião</a>
+                           </div>`
+            }
+            else {
+                btnLink = `<div class="historic-card-buttons" style="margin-bottom: 0.25em; display: none;">
+                                <a class="btn btn-primary" type="button" href="${consultoria.link}">Reunião</a>
+                           </div>`
+            }
+
             html += `
                 <div class="historic-card">
                     <div class="historic-card-header-container">
@@ -277,6 +290,9 @@ async function renderizarConsultorias(listaDeConsultorias) { // Parâmetro renom
                             </h5>
                             ${avalia}
                         </div>
+
+                        ${btnLink}
+
                     </div>
                 </div>
             `;
@@ -300,6 +316,7 @@ async function renderizarConsultorias(listaDeConsultorias) { // Parâmetro renom
                 btnAvaliacao = `<button class="btn btn-primary" type="button" data-action="avaliacao" disabled>Avaliado</button>`;
                 comentario = `<h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">${consultoria.comentario}</h5>`;
             }
+
 
             const temDenuncia = await detectDenuncia(getUserId(1), '1', consultoria.idConsultor);
 

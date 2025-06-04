@@ -8,14 +8,14 @@ export const RegistrarAgendamento = async (request, response, next) => {
 
     try {
 
-        const { idConsultor, idCliente, infoAdiantada, data, status_situacao, tipo, periodo, horario } = request.body;
+        const { idConsultor, idCliente, infoAdiantada, data, status_situacao, tipo, periodo, horario, link } = request.body;
 
         await connection.beginTransaction();
 
         const [result] = await connection.query(
-            `INSERT INTO Reuniao (idConsultor, idCliente, infoAdiantada, data, status_situacao, tipo, periodo, horario) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?);`,
-            [idConsultor, idCliente, infoAdiantada, data, status_situacao, tipo, periodo, horario]
+            `INSERT INTO Reuniao (idConsultor, idCliente, infoAdiantada, data, status_situacao, tipo, periodo, horario, link) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+            [idConsultor, idCliente, infoAdiantada, data, status_situacao, tipo, periodo, horario, link]
         );
 
         await connection.commit();

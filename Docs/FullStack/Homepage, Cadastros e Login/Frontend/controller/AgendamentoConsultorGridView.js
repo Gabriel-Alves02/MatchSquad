@@ -301,6 +301,19 @@ async function renderizarConsultorias(listaDeConsultorias) {
             if (consultoria.status_situacao === 'pendente') {
                 btnCancelar = `<button class="btn btn-danger" type="button" data-action="cancelar">Cancelar</button>`;
                 canceladoDiff = `<h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5> <h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">${comentarioDisplay}</h5>`
+                
+                const hoje = new Date();
+
+                if((formatarData(consultoria.data) === formatarData(hoje)) && consultoria.link != '') {
+                    btnLink = `<div class="historic-card-buttons" style="margin-bottom: 0.25em;">
+                                    <a class="btn btn-primary" type="button" href="${consultoria.link}">Reunião</a>
+                                </div>`;
+                }
+                else {
+                    btnLink = `<div class="historic-card-buttons" style="margin-bottom: 0.25em; display: none;">
+                                    <a class="btn btn-primary" type="button" href="${consultoria.link}">Reunião</a>
+                                </div>`;
+                }
             }
         }
 
@@ -333,6 +346,8 @@ async function renderizarConsultorias(listaDeConsultorias) {
                         <h5 class="historic-card-status">Status: ${status}</h5>
                         ${canceladoDiff}
                     </div>
+
+                    ${btnLink}
                 </div>
             </div>
         `;
