@@ -1,4 +1,4 @@
-import { Cadastrar, carregarHabilidades } from "../service/AJAX.js";
+import { Cadastrar, carregarHabilidades,  buscarNick } from "../service/AJAX.js";
 
 const form = document.getElementById('consultorForm');
 
@@ -28,7 +28,7 @@ document.addEventListener('paste', function (event) {
   }
 });
 
-function validarFormulario() {
+async function validarFormulario() {
 
 
   let nomeusuario = document.getElementById('nome');
@@ -48,6 +48,7 @@ function validarFormulario() {
   let msgconfirmacaoemail = document.getElementById('msgconfirmacaoemail');
   let msgconfirmacaosenha = document.getElementById('msgconfirmacaosenha');
   let msgcpf = document.getElementById('msgcpf');
+  let msgnicknameInvalido = document.getElementById('msgnicknameInvalido');
 
   var nomePattern = /^[A-Za-z\s]+$/;
   var emailPattern = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -76,12 +77,18 @@ function validarFormulario() {
     document.getElementById('telefone').value = '';
   }
 
-  if (!nicknamePattern.test(nicknameusuario.value)) {
+  const nickCheck = await buscarNick(nicknameusuario.value);
+
+  if (!nicknamePattern.test(nicknameusuario.value) || nicknameusuario.value.length < 5 || nicknameusuario.value.length > 25) {
+    msgnicknameInvalido.style.display = 'inline-block';
+    document.getElementById('nickname').value = '';
+  }
+  else if (nickCheck === false) {
     msgnickname.style.display = 'inline-block';
     document.getElementById('nickname').value = '';
   }
 
-  if (testeSenha(senhausuario.value) === false) {
+  if (testeSenha(senhausuario.value) === false || senhausuario.value.length < 8) {
     msgsenha.style.display = 'inline-block';
     document.getElementById('senha').value = '';
   }

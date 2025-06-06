@@ -12,7 +12,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../assets/style.css">
-    <script src="../controller/CadCliente.js" type="module"></script>
+    <!--<script src="../controller/CadCliente.js" type="module"></script>-->
+    <script src="../controller/teste.js"></script>
 </head>
 
 <body id="bodyCad">
@@ -77,12 +78,15 @@
             <label for="nickname" id="msgnickname"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Nickname
                 já selecionado! </label>
+                <label for="nickname" id="msgnicknameInvalido"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Nickname
+                inválido! O nickname não pode conter espaços e deve conter no mínimo 5 e no máximo 25 dígitos.</label>
             <br>
             <label for="senha">Senha: <br><input class="formfill" type="password" id="senha" required onkeyup="limparS()" autocomplete="off"></label>
             <br>
             <label for="senha" id="msgsenha"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Senha
-                inválida! A senha não deve conter números e caracteres sequenciais!</label>
+                inválida! A senha não deve conter números e caracteres sequenciais e deve ter no mínimo 8 dígitos!</label>
             <br>
             <label for="confirmacaoSenha">Confirme a senha: <br><input class="formfill" type="password" id="confirmacaoSenha" required
                 onkeyup="limparCs()" autocomplete="off"></label>
@@ -92,7 +96,7 @@
                 senhas não correspondem!</label>
             <br>
             <br>
-            <button class="btn btn-outline-success" type="submit">Cadastrar</button>
+            <button class="btn btn-outline-success" type="submit" onclick="validarFormulario()">Cadastrar</button>
             <br><br>
         </form>
 
@@ -125,6 +129,7 @@
 
         function limparNi() {
             msgnickname.style.display = 'none';
+            msgnicknameInvalido.style.display = 'none';
         }
 
         function limparS() {
@@ -139,6 +144,7 @@
             msgcpf.style.display = 'none';
             msgcnpj.style.display = 'none';
         }
+
     </script>
 
 

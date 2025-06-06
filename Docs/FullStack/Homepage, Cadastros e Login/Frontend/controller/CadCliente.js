@@ -34,6 +34,7 @@ async function validarFormulario() {
     let msgconfirmacaosenha = document.getElementById('msgconfirmacaosenha');
     let msgcpf = document.getElementById('msgcpf');
     let msgcnpj = document.getElementById('msgcnpj');
+    let msgnicknameInvalido = document.getElementById('msgnicknameInvalido');
 
     let nomePattern = /^[A-Za-z\s]+$/;
     let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -65,12 +66,16 @@ async function validarFormulario() {
 
     const nickCheck = await buscarNick(nicknameusuario.value);
     
-    if (!nicknamePattern.test(nicknameusuario.value) || nickCheck === false) {
+    if (!nicknamePattern.test(nicknameusuario.value) || nicknameusuario.value.length < 5 || nicknameusuario.value.length > 25) {
+        msgnicknameInvalido.style.display = 'inline-block';
+        document.getElementById('nickname').value = '';
+    }
+    else if (nickCheck === false){
         msgnickname.style.display = 'inline-block';
         document.getElementById('nickname').value = '';
     }
 
-    if (testeSenha(senhausuario.value) === false) {
+    if (testeSenha(senhausuario.value) === false || senhausuario.value.length < 8) {
         msgsenha.style.display = 'inline-block';
         document.getElementById('senha').value='';
     }
