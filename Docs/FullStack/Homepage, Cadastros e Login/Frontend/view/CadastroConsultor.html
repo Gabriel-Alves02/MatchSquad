@@ -18,6 +18,20 @@
     <link rel="stylesheet" href="../assets/style.css">
     <script src="../controller/CadConsultor.js" type="module"></script>
 
+    <!--Módulo para funções de validação de cpf e cnpj-->
+    <script src="https://unpkg.com/gerador-validador-cpf/build/gerador-validador-cpf.min.js"></script>
+    <script type="module">
+        import { cpf, cnpj } from 'https://esm.sh/cpf-cnpj-validator';
+
+        window.validarCPF = function (cpfValue) {
+            return cpf.isValid(cpfValue);
+        }
+
+        window.validarCNPJ = function (cnpjValue) {
+            return cnpj.isValid(cnpjValue);
+        }
+    </script>
+
 </head>
 
 <body id="bodyCC">

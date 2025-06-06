@@ -12,7 +12,7 @@ form.addEventListener('submit', (event) => {
     } else {
         console.log("Formulário inválido. Corrija os erros antes de enviar.");
     }
-    
+
 });
 
 async function validarFormulario() {
@@ -46,66 +46,71 @@ async function validarFormulario() {
 
     if (!nomePattern.test(nomeusuario.value)) {
         msgnome.style.display = 'inline-block';
-        document.getElementById('nome').value='';
+        document.getElementById('nome').value = '';
     }
-    
+
     if (!emailPattern.test(emailusuario.value)) {
         msgemail.style.display = 'inline-block';
-        document.getElementById('email').value='';
+        document.getElementById('email').value = '';
     }
     else {
         if (emailusuario.value !== confirmacaoEmail.value) {
             msgconfirmacaoemail.style.display = 'inline-block';
-            document.getElementById('confirmacaoEmail').value='';
+            document.getElementById('confirmacaoEmail').value = '';
         }
     }
 
     if (!phonePattern.test(telefoneusuario.value)) {
         msgphone.style.display = 'inline-block';
-        document.getElementById('telefone').value='';
+        document.getElementById('telefone').value = '';
     }
 
     const nickCheck = await buscarNick(nicknameusuario.value);
-    
+
     if (!nicknamePattern.test(nicknameusuario.value) || nicknameusuario.value.length < 5 || nicknameusuario.value.length > 25) {
         msgnicknameInvalido.style.display = 'inline-block';
         document.getElementById('nickname').value = '';
     }
-    else if (nickCheck === false){
+    else if (nickCheck === false) {
         msgnickname.style.display = 'inline-block';
         document.getElementById('nickname').value = '';
     }
 
     if (testeSenha(senhausuario.value) === false || senhausuario.value.length < 8) {
         msgsenha.style.display = 'inline-block';
-        document.getElementById('senha').value='';
+        document.getElementById('senha').value = '';
     }
     else {
         if (senhausuario.value !== confirmacaoSenha.value) {
             msgconfirmacaosenha.style.display = 'inline-block';
-            document.getElementById('confirmacaoSenha').value='';
+            document.getElementById('confirmacaoSenha').value = '';
         }
     }
 
     cpf_cnpj.value = cpf_cnpj.value.replace(/\D/g, '');
 
     if (cpf_cnpj.value.length === 11) {
-        if (!validacaoCpf(cpf_cnpj.value)) {
+        if (!validarCPF(cpf_cnpj.value)) {
             msgcpf.style.display = 'inline-block';
-            document.getElementById('cpf_cnpj').value='';
+            cpf_cnpj.value = '';
         }
     }
     else if (cpf_cnpj.value.length === 14) {
-        if (!validacaoCnpj(cpf_cnpj.value)) {
+        if (!validarCNPJ(cpf_cnpj.value)) {
             msgcnpj.style.display = 'inline-block';
-            document.getElementById('cpf_cnpj').value='';
+            document.getElementById('cpf_cnpj').value = '';
         }
+    }
+    else {
+        // Documento inválido por tamanho incorreto
+        msgdocumento.style.display = 'inline-block';
+        cpf_cnpj.value = '';
     }
 
     return isValid;
 }
 
-document.addEventListener('paste', function(event) {
+document.addEventListener('paste', function (event) {
     if (event.target.tagName === 'INPUT') {
         event.preventDefault();
     }
@@ -122,7 +127,7 @@ function cadastrarUsuario() {
         cpf_cnpj: document.getElementById('cpf_cnpj').value,
     };
 
-    Cadastrar (dados);
+    Cadastrar(dados);
 }
 
 function testeSenha(senhausuario) {
@@ -139,82 +144,4 @@ function testeSenha(senhausuario) {
         }
     }
     return true;
-}
-
-
-function validacaoCpf(cpf_cnpj) {
-    var soma9 = multiplicarCpf(9, cpf_cnpj, 10);
-    var soma10 = multiplicarCpf(10, cpf_cnpj, 11);
-    var result1 = digitoVerificadorCpf(soma9);
-    var result2 = digitoVerificadorCpf(soma10);
-
-    if (/^(\d)\1{10}$/.test(cpf_cnpj)) {
-        return false;
-    }
-
-    if ((result1 + result2) === cpf_cnpj.substr(9, 2)) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
-function validacaoCnpj(cpf_cnpj) {
-    var soma12 = multiplicarCnpj(cpf_cnpj, [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
-    var soma13 = multiplicarCnpj(cpf_cnpj, [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
-    var result1 = digitoVerificadorCnpj(soma12);
-    var result2 = digitoVerificadorCnpj(soma13);
-
-    if (/^(\d)\1{13}$/.test(cpf_cnpj)) {
-        return false;
-    }
-
-    if ((result1 + result2) === cpf_cnpj.substr(12, 2)) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
-function digitoVerificadorCpf(soma) {
-    var result = (soma * 10) % 11;
-    return result.toString();
-}
-
-function multiplicarCpf(qtdeNumeros, cpf_cnpj, multiplicador) {
-    var primeirosDigitos = cpf_cnpj.substr(0, qtdeNumeros);
-    var soma = 0;
-
-    for (var i = 0; i < primeirosDigitos.length; i++) {
-        var numero = primeirosDigitos.substr(i, 1);
-        soma += numero * multiplicador;
-        multiplicador--;
-    }
-
-    return soma;
-}
-
-function multiplicarCnpj(cpf_cnpj, multiplicadores) {
-    var primeirosDigitos = cpf_cnpj.substr(0, multiplicadores.length);
-    var soma = 0;
-
-    for (var i = 0; i < primeirosDigitos.length; i++) {
-        var numero = primeirosDigitos.substr(i, 1);
-        soma += numero * multiplicadores[i];
-    }
-
-    return soma;
-}
-
-function digitoVerificadorCnpj(soma) {
-    var result = soma % 11;
-    if (result< 2) {
-        return '0';
-    }
-    else {
-        result = 11 - result;
-        return result.toString();
-    };
 }

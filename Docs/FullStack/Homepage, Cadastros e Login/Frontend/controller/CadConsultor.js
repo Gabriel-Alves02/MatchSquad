@@ -1,4 +1,4 @@
-import { Cadastrar, carregarHabilidades,  buscarNick } from "../service/AJAX.js";
+import { Cadastrar, carregarHabilidades, buscarNick } from "../service/AJAX.js";
 
 const form = document.getElementById('consultorForm');
 
@@ -100,13 +100,18 @@ async function validarFormulario() {
     }
   }
 
-  cpf.value = cpf_cnpj.value.replace(/\D/g, '');
+  cpf_cnpj.value = cpf_cnpj.value.replace(/\D/g, '');
 
-  if (cpf.value.length === 11) {
-    if (!validacaoCpf(cpf_cnpj.value)) {
+  if (cpf_cnpj.value.length === 11) {
+    if (!validarCPF(cpf_cnpj.value)) {
       msgcpf.style.display = 'inline-block';
-      document.getElementById('cpf').value = '';
+      cpf_cnpj.value = '';
     }
+  }
+  else {
+    // Documento inválido por tamanho incorreto
+    msgcpf.style.display = 'inline-block';
+    cpf_cnpj.value = '';
   }
 
 
@@ -163,43 +168,6 @@ function testeSenha(senhausuario) {
     }
   }
   return true;
-}
-
-
-function validacaoCpf(cpf_cnpj) {
-  var soma9 = multiplicarCpf(9, cpf_cnpj, 10);
-  var soma10 = multiplicarCpf(10, cpf_cnpj, 11);
-  var result1 = digitoVerificadorCpf(soma9);
-  var result2 = digitoVerificadorCpf(soma10);
-
-  if (/^(\d)\1{10}$/.test(cpf_cnpj)) {
-    return false;
-  }
-
-  if ((result1 + result2) === cpf_cnpj.substr(9, 2)) {
-    return true;
-  }
-  else {
-    return false;
-  }
-}
-
-function digitoVerificadorCpf(soma) {
-  var result = (soma * 10) % 11;
-  return result.toString();
-}
-
-function multiplicarCpf(qtdeNumeros, cpf_cnpj, multiplicador) {
-  var primeirosDigitos = cpf_cnpj.substr(0, qtdeNumeros);
-  var soma = 0;
-
-  for (var i = 0; i < primeirosDigitos.length; i++) {
-    var numero = primeirosDigitos.substr(i, 1);
-    soma += numero * multiplicador;
-    multiplicador--;
-  }
-
-  return soma;
 }
 
 document.addEventListener('DOMContentLoaded', async function () {

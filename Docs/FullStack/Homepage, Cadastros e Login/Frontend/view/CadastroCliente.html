@@ -12,7 +12,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../assets/style.css">
+    
     <script src="../controller/CadCliente.js" type="module"></script>
+
+    <!--Módulo para funções de validação de cpf e cnpj-->
+    <script src="https://unpkg.com/gerador-validador-cpf/build/gerador-validador-cpf.min.js"></script>
+    <script type="module">
+        import { cpf, cnpj } from 'https://esm.sh/cpf-cnpj-validator';
+
+        window.validarCPF = function (cpfValue) {
+            return cpf.isValid(cpfValue);
+        }
+
+        window.validarCNPJ = function (cnpjValue) {
+            return cnpj.isValid(cnpjValue);
+        }
+    </script>
 </head>
 
 <body id="bodyCad">
@@ -24,7 +39,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                
+
                 <li class="nav-item">
                     <a class="nav-link" href="Login.html">Login</a>
                 </li>
@@ -38,13 +53,15 @@
         <br>
         <form id="customerForm">
 
-            <label for="nome">Nome: <br><input class="formfill" type="text" id="nome" required onkeyup="limparN()" autocomplete="off"></label>
+            <label for="nome">Nome: <br><input class="formfill" type="text" id="nome" required onkeyup="limparN()"
+                    autocomplete="off"></label>
             <br>
             <label for="nome" id="msgnome"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Nome
                 inválido! O nome do usuário deve conter apenas letras.</label>
             <br>
-            <label for="cpf_cnpj">CPF ou CNPJ: <br><input class="formfill" type="text" id="cpf_cnpj" required onkeyup="limparC()" autocomplete="off"></label>
+            <label for="cpf_cnpj">CPF ou CNPJ: <br><input class="formfill" type="text" id="cpf_cnpj" required
+                    onkeyup="limparC()" autocomplete="off"></label>
             <br>
             <label for="cpf_cnpj" id="msgcpf"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">CPF
@@ -52,43 +69,51 @@
             <label for="cpf_cnpj" id="msgcnpj"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">CNPJ
                 inválido!</label>
+            <label for="cpf_cnpj" id="msgdocumento"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Documento
+                inválido!</label>
             <br>
             <label for="email">Email: <br><input class="formfill" type="email" id="email" required onkeyup="limparE()"
-                autocomplete="off"></label>
+                    autocomplete="off"></label>
             <br>
             <label for="email" id="msgemail"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Email
                 inválido! O endereço de email deve conter "@"!</label>
             <br>
-            <label for="confirmacaoEmail">Confirme o email: <br><input class="formfill" type="email" id="confirmacaoEmail" required onkeyup="limparCe()" autocomplete="off"></label>
+            <label for="confirmacaoEmail">Confirme o email: <br><input class="formfill" type="email"
+                    id="confirmacaoEmail" required onkeyup="limparCe()" autocomplete="off"></label>
             <br>
             <label for="email" id="msgconfirmacaoemail"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Email
                 não confere!</label>
             <br>
-            <label for="telefone">Telefone: <br><input class="formfill" type="tel" id="telefone" required onkeyup="limparT()" autocomplete="off"></label>
+            <label for="telefone">Telefone: <br><input class="formfill" type="tel" id="telefone" required
+                    onkeyup="limparT()" autocomplete="off"></label>
             <br>
             <label for="telefone" id="msgphone"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Telefone
                 inválido! O telefone deve serguir um dos seguintes padrões: (xx) xxxxx-xxxx ou (xx) xxxx-xxxx!</label>
             <br>
-            <label for="nickname">Nickname: <br><input class="formfill" type="text" placeholder="(Sem espaços)" id="nickname" required onkeyup="limparNi()" autocomplete="off"></label>
+            <label for="nickname">Nickname: <br><input class="formfill" type="text" placeholder="(Sem espaços)"
+                    id="nickname" required onkeyup="limparNi()" autocomplete="off"></label>
             <br>
             <label for="nickname" id="msgnickname"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Nickname
                 já selecionado! </label>
-                <label for="nickname" id="msgnicknameInvalido"
+            <label for="nickname" id="msgnicknameInvalido"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Nickname
                 inválido! O nickname não pode conter espaços e deve conter no mínimo 5 e no máximo 25 dígitos.</label>
             <br>
-            <label for="senha">Senha: <br><input class="formfill" type="password" id="senha" required onkeyup="limparS()" autocomplete="off"></label>
+            <label for="senha">Senha: <br><input class="formfill" type="password" id="senha" required
+                    onkeyup="limparS()" autocomplete="off"></label>
             <br>
             <label for="senha" id="msgsenha"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Senha
-                inválida! A senha não deve conter números e caracteres sequenciais e deve ter no mínimo 8 dígitos!</label>
+                inválida! A senha não deve conter números e caracteres sequenciais e deve ter no mínimo 8
+                dígitos!</label>
             <br>
-            <label for="confirmacaoSenha">Confirme a senha: <br><input class="formfill" type="password" id="confirmacaoSenha" required
-                onkeyup="limparCs()" autocomplete="off"></label>
+            <label for="confirmacaoSenha">Confirme a senha: <br><input class="formfill" type="password"
+                    id="confirmacaoSenha" required onkeyup="limparCs()" autocomplete="off"></label>
             <br>
             <label for="senha" id="msgconfirmacaosenha"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">As
@@ -146,6 +171,7 @@
         function limparC() {
             msgcpf.style.display = 'none';
             msgcnpj.style.display = 'none';
+            msgdocumento.style.display = 'none';
         }
 
     </script>
