@@ -16,7 +16,7 @@
 
 
     <link rel="stylesheet" href="../assets/style.css">
-    <script src="../controller/CadConsultor.js" type="module"></script>
+    <<script src="../controller/CadConsultor.js" type="module"></script>
 
     <!--Módulo para funções de validação de cpf e cnpj-->
     <script src="https://unpkg.com/gerador-validador-cpf/build/gerador-validador-cpf.min.js"></script>
@@ -25,10 +25,6 @@
 
         window.validarCPF = function (cpfValue) {
             return cpf.isValid(cpfValue);
-        }
-
-        window.validarCNPJ = function (cnpjValue) {
-            return cnpj.isValid(cnpjValue);
         }
     </script>
 
@@ -101,7 +97,10 @@
                 inválido!<br></label>
             <label for="endereco">Endereço: <br><input class="formfill" type="text" id="endereco" name="endereco" autocomplete="off"></label>    
             <br>
-            <label for="numero">Número: <br><input class="formfill" type="text" id="numero" name="numero" autocomplete="off"></label>    
+            <label for="numero">Número: <br><input class="formfill" type="text" id="numero" name="numero" onkeyup="limparNumero()" autocomplete="off"></label>
+            <br>    
+            <label for="numero" id="msgnumero"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Número não pode conter letras nem caracteres especiais!</label>
             <br>
             <label for="complemento">Complemento: <br><input class="formfill" type="text" id="complemento" name="complemento" autocomplete="off"></label>    
             <br>
@@ -198,6 +197,10 @@
 
         function limparCep() {
             msgcep.style.display = 'none';
+        }
+
+        function limparNumero() {
+            msgnumero.style.display = 'none';
         }
 
     </script>

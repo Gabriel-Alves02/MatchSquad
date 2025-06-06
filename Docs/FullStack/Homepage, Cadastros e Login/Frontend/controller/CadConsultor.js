@@ -38,7 +38,8 @@ async function validarFormulario() {
   let nicknameusuario = document.getElementById('nickname');
   let senhausuario = document.getElementById('senha');
   let confirmacaoSenha = document.getElementById("confirmacaoSenha");
-  let cpf_cnpj = document.getElementById('cpf');
+  let cpf = document.getElementById('cpf');
+  let numero = document.getElementById('numero');
 
 
   let msgnome = document.getElementById('msgnome');
@@ -50,11 +51,13 @@ async function validarFormulario() {
   let msgconfirmacaosenha = document.getElementById('msgconfirmacaosenha');
   let msgcpf = document.getElementById('msgcpf');
   let msgnicknameInvalido = document.getElementById('msgnicknameInvalido');
+  let msgnumero = document.getElementById('msgnumero');
 
   var nomePattern = /^[A-Za-z\s]+$/;
   var emailPattern = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
   var phonePattern = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
   var nicknamePattern = /^\S+$/;
+  var numeroPattern = /^[0-9]+$/;
 
   let isValid = true;
 
@@ -100,20 +103,24 @@ async function validarFormulario() {
     }
   }
 
-  cpf_cnpj.value = cpf_cnpj.value.replace(/\D/g, '');
+  cpf.value = cpf.value.replace(/\D/g, '');
 
-  if (cpf_cnpj.value.length === 11) {
-    if (!validarCPF(cpf_cnpj.value)) {
+  if (cpf.value.length === 11) {
+    if (!validarCPF(cpf.value)) {
       msgcpf.style.display = 'inline-block';
-      cpf_cnpj.value = '';
+      cpf.value = '';
     }
   }
   else {
     // Documento inválido por tamanho incorreto
     msgcpf.style.display = 'inline-block';
-    cpf_cnpj.value = '';
+    cpf.value = '';
   }
 
+  if (!numeroPattern.test(numero.value)) {
+    msgnumero.style.display = 'inline-block';
+    numero.value = '';
+  }
 
   return isValid;
 }
