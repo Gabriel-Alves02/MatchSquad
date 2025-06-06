@@ -94,15 +94,20 @@
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Telefone
                 inválido! O telefone deve serguir um dos seguintes padrões: (xx) xxxxx-xxxx ou (xx) xxxx-xxxx!</label>
             <br>
-            <label for="nome">CEP: <br><input class="formfill" type="text" id="cep" name="cep" required autocomplete="off"></label>    
+            <label for="cep">CEP: <br><input class="formfill" type="text" id="cep" name="cep" required onkeyup="limparCep()" autocomplete="off"></label>    
             <br>
-            <label for="nome">Endereço: <br><input class="formfill" type="text" id="endereco" name="endereco" required autocomplete="off"></label>    
+            <label for="cep" id="msgcep"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Cep
+                inválido!<br></label>
+            <label for="endereco">Endereço: <br><input class="formfill" type="text" id="endereco" name="endereco" autocomplete="off"></label>    
             <br>
-            <label for="nome">Número: <br><input class="formfill" type="text" id="numero" name="numero" required autocomplete="off"></label>    
+            <label for="numero">Número: <br><input class="formfill" type="text" id="numero" name="numero" autocomplete="off"></label>    
             <br>
-            <label for="nome">Complemento: <br><input class="formfill" type="text" id="complemento" name="complemento" required autocomplete="off"></label>    
+            <label for="complemento">Complemento: <br><input class="formfill" type="text" id="complemento" name="complemento" autocomplete="off"></label>    
             <br>
-            <label for="nome">Bairro: <br><input class="formfill" type="text" id="bairro" name="bairro" required autocomplete="off"></label>    
+            <label for="bairro">Bairro: <br><input class="formfill" type="text" id="bairro" name="bairro" autocomplete="off"></label>    
+            <br>
+            <label for="cidade">Cidade: <br><input class="formfill" type="text" id="cidade" name="cidade" autocomplete="off"></label>    
             <br>
             <br>
             <label for="nickname">Nickname: <br><input class="formfill" type="text" id="nickname" name="nickname"
@@ -189,6 +194,10 @@
 
         function limparC() {
             msgcpf.style.display = 'none';
+        }
+
+        function limparCep() {
+            msgcep.style.display = 'none';
         }
 
     </script>

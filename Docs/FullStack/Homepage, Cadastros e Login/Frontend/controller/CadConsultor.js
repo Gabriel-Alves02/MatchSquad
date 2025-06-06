@@ -170,6 +170,27 @@ function testeSenha(senhausuario) {
   return true;
 }
 
+document.getElementById('cep').addEventListener('input', async function () {
+  let cep = document.getElementById('cep').value;
+  let msgcep = document.getElementById('msgcep');
+
+  if (cep.length === 9) {
+    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const data = await response.json();
+
+    if (data.erro) {
+      console.log("CEP não encontrado ou inválido.");
+      msgcep.style.display = 'inline-block';
+      document.getElementById('cep').value = '';
+      return;
+    }
+
+    document.getElementById('endereco').value = data.logradouro;
+    document.getElementById('bairro').value = data.bairro;
+    document.getElementById('cidade').value = data.localidade;
+  }
+});
+
 document.addEventListener('DOMContentLoaded', async function () {
 
   const consultor = await carregarHabilidades();
