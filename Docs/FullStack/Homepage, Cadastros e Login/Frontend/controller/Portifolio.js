@@ -1,4 +1,4 @@
-import { carregarInfoPerfil, habilidadesPortifolio, mediaPortifolio } from '../service/AJAX.js';
+import { carregarInfoPerfil, habilidadesPortifolio, mediaPortifolio, Registrar, agendadoNovamente, horariosConsultor } from '../service/AJAX.js';
 import { getUserId } from './SysFx.js';
 
 const profilePic = document.getElementById('profile-pic');
@@ -10,24 +10,110 @@ const nome = document.getElementById('nome');
 const bio = document.getElementById('bio');
 const prazo = document.getElementById('prazoReag');
 
+
 let info;
 let idValid;
+let flagHorario = -1;
+const userId = getUserId(1);
 
 
 document.addEventListener('DOMContentLoaded', async function () {
+
+    const periodoSelect = document.getElementById('periodo');
+    const horarioInput = document.getElementById('horario');
+
+    const inputData = document.getElementById("data-agendamento");
+    const hoje = new Date().toISOString().split("T")[0];
+    inputData.min = hoje
 
     const urlParams = new URLSearchParams(window.location.search);
     idValid = urlParams.get('id');
 
     if (!idValid) {
         idValid = getUserId(0);
+
+        console.log('id consultor: ', idValid, 'id cliente', userId);
+
         if (!idValid) {
             console.log('Nao acessado nem por cliente ou consultor');
         }
     }
 
-    info = await carregarInfoPerfil(idValid, 0);
+    configurarLimitesHorario('manha');
 
+    periodoSelect.addEventListener('change', function (e) {
+        const novoPeriodo = e.target.value;
+        configurarLimitesHorario(novoPeriodo);
+        validarHorario();
+    });
+
+    horarioInput.addEventListener('change', function () {
+        validarHorario();
+        flagHorario = 1;
+    });
+    ;
+
+    async function configurarLimitesHorario(periodo) {
+        const horarioInput = document.getElementById('horario');
+        const hourInitEnd = await horariosConsultor(idValid);
+        const horarios = hourInitEnd.user?.[0];
+
+        if (!horarios) {
+            console.warn('Horários do consultor não encontrados');
+            return;
+        }
+
+        // Converte "HH:mm:ss" para "HH:mm"
+        let horarioInicio = horarios.horarioInicio.slice(0, 5);
+        let horarioFim = horarios.horarioFim.slice(0, 5);
+
+        // Limites comerciais fixos
+        const comercialMin = '07:00';
+        const comercialMax = '17:30';
+
+        // Aplica limites comerciais
+        if (horarioInicio < comercialMin) horarioInicio = comercialMin;
+        if (horarioFim > comercialMax) horarioFim = comercialMax;
+
+        let min, max;
+
+        switch (periodo) {
+            case 'manha':
+                min = horarioInicio;
+                max = '12:00';
+                if (max > horarioFim) max = horarioFim;
+                break;
+            case 'tarde':
+                min = '12:00';
+                if (min < horarioInicio) min = horarioInicio;
+                max = horarioFim;
+                break;
+            default:
+                min = horarioInicio;
+                max = horarioFim;
+        }
+
+        horarioInput.min = min;
+        horarioInput.max = max;
+
+        const horarioAtual = horarioInput.value;
+        if (horarioAtual && (horarioAtual < min || horarioAtual > max)) {
+            horarioInput.value = '';
+        }
+
+        console.log(`Limite aplicado: ${min} - ${max} (consultor com horário ${horarios.horarioInicio} - ${horarios.horarioFim})`);
+    }
+
+
+
+    const repetido = await agendadoNovamente(getUserId(1), idValid);
+    if (repetido) {
+        const botaoAgendar = document.getElementById('btn-agendar');
+        botaoAgendar.disabled = true;
+        botaoAgendar.innerText = 'Já agendado';
+    }
+
+    info = await carregarInfoPerfil(idValid, 0);
 
     let userHabilidades = await habilidadesPortifolio(idValid);
 
@@ -104,7 +190,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     ativarZoomEmCertificados();
 
-
 });
 
 
@@ -121,9 +206,6 @@ function ativarZoomEmCertificados() {
         }
     });
 }
-
-
-
 
 function preencherestrelas(value) {
     if (typeof value === 'number' && isFinite(value)) {
@@ -145,4 +227,93 @@ function preencherestrelas(value) {
         return starsHtml;
     }
     return '-';
-}   
+}
+
+
+const modalForm = document.getElementById('modal-agendamento');
+modalForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    let endHour = '';
+    if (flagHorario === 1)
+        endHour = document.getElementById('horario').value;
+    else
+        endHour = '00:00:00';
+
+    const data = document.getElementById('data-agendamento').value;
+    const periodo = document.getElementById('periodo').value;
+    const infoAdiantada = document.getElementById('infoAdiantada').value;
+    const radioSelecionado = document.querySelector('input[name="tipo"]:checked');
+    const horario = endHour;
+
+    //const urlReuniao = '';
+    /*
+    if (radioSelecionado == 'online') {
+        urlReuniao = gerarUrlReuniao();
+    }
+    */
+
+    if (!data) {
+        alert('Por favor, escolha uma data!');
+        return;
+    }
+
+    const repetido = await agendadoNovamente(getUserId(1), idValid);
+    if (repetido) {
+        alert("Você já tem um agendamento com esse consultor!");
+        fecharModal();
+        return;
+    }
+
+    //link: urlReuniao
+
+    const PedidoAgendamento = {
+        idConsultor: idValid,
+        idCliente: getUserId(1),
+        infoAdiantada: infoAdiantada,
+        data: data,
+        status_situacao: "pendente",
+        tipo: radioSelecionado.value,
+        periodo: periodo,
+        horario: horario || '00:00:00'
+    };
+
+    Registrar(PedidoAgendamento);
+    fecharModal();
+});
+
+
+function abrirModalAgendamento() {
+    const modal = document.getElementById('modal-agendamento');
+    const modalTitle = document.getElementById('modal-title');
+
+    const nomeConsultor = document.getElementById('nome')?.innerText.trim();
+
+    modalTitle.innerText = `Agendar com ${nomeConsultor}`;
+    modal.style.display = 'block';
+
+    document.getElementById('data-agendamento').value = '';
+    document.getElementById('periodo').value = 'manha';
+    document.getElementById('infoAdiantada').value = '';
+    document.querySelector('input[name="tipo"][value="online"]').checked = true;
+
+    modal.addEventListener('click', (event) => {
+        if (event.target.classList.contains('close')) {
+            fecharModal();
+        }
+    });
+}
+
+
+function fecharModal() {
+    document.getElementById('data-agendamento').value = '';
+    document.getElementById('periodo').value = 'manha';
+    document.getElementById('infoAdiantada').value = '';
+    document.getElementById('horario').value = '';
+    document.querySelector('input[name="tipo"][value="online"]').checked = true;
+    document.getElementById('modal-agendamento').style.display = 'none';
+}
+
+document.getElementById('btn-agendar').addEventListener('click', function () {
+    abrirModalAgendamento();
+});

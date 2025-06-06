@@ -1010,3 +1010,21 @@ export async function obterArrayTop5Consultores () {
         }
     })
 }
+
+export async function horariosConsultor (idConsultor) {
+    return await fetch(url_checks + `/horarios/${idConsultor}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    }).then(async (response) => {
+        if (response.status === 200) {
+            const data = await response.json();
+            return await data;
+        }
+        else if (response.status === 201) {
+            return null;
+        }
+        else {
+            console.error("Erro ao carregar horarios deste consultor:", error);
+        }
+    })
+}

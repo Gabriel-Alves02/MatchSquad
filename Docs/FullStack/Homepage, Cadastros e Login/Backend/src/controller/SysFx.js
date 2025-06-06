@@ -773,3 +773,36 @@ export const GetReport = async (request, response, next) => {
   }
 
 };
+
+export const GetWorkRange = async (request, response, next) => {
+
+  try {
+
+    const usuario = request.params;
+
+    const [user] = await pool.query(
+      `SELECT horarioInicio, horarioFim FROM Consultor WHERE idConsultor = ?;`, [usuario.idConsultor]
+    );
+
+
+    if (user.length > 0) {
+      return response.status(200).json({
+        success: true,
+        user
+      });
+    }
+
+    return response.status(201).json({
+      success: false,
+      message: "Não encontrado horarios de inicio e final de expediente deste consultor."
+    });
+
+  } catch (error) {
+    console.error('Erro na procura dos dados do consultor >', error);
+    return response.status(500).json({
+      success: false,
+      message: "Erro interno do servidor"
+    });
+  }
+
+};

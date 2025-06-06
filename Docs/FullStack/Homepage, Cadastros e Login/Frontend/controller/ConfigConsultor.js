@@ -31,8 +31,8 @@ let senhaAntiga = document.getElementById('senha');
 let novaSenha = document.getElementById('nova-senha');
 let confirmNovaSenha = document.getElementById('confirma-senha');
 
-// let msgSenhaAntiga = document.getElementById('msgsenhaAntiga');
-// let msgConfirmSenha = document.getElementById('msgconfirmSenha');
+let msgSenhaAntiga = document.getElementById('msgsenhaAntiga');
+let msgConfirmSenha = document.getElementById('msgconfirmSenha');
 
 let salvarBtn2 = document.getElementById('salvar-plus');
 let salvarCertifBtn = document.getElementById('salvar-certif');
@@ -94,7 +94,7 @@ document.querySelector('.profile-info').addEventListener('submit', async (e) => 
   const dadosAtualizados = {
     email: email.value,
     telefone: telefone.value,
-    valorHora: valorHora.value, // forçar separador decimal . em vez de ,
+    valorHora: valorHora.value,
     redeSocial: redeSocial.value,
     horarioInicio: horarioInicio.value, // definir passo de 30min em 30min
     horarioFim: horarioFim.value,
@@ -143,7 +143,7 @@ uploadInput.addEventListener('change', async function () {
 uploadCertif.addEventListener('change', function () {
   const files = this.files;
   arquivosCertificados = [];
-  galeriaCertif.innerHTML = ''; // Limpa a galeria ao mudar seleção
+  galeriaCertif.innerHTML = '';
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
@@ -159,7 +159,7 @@ uploadCertif.addEventListener('change', function () {
     }
 
     // IIFE para capturar o escopo correto
-    (function(file) {
+    (function (file) {
       const reader = new FileReader();
 
       reader.onload = function (e) {
@@ -224,32 +224,32 @@ function habilitarSalvar() {
 }
 
 document.querySelector('.plus-config').addEventListener('submit', async (e) => {
-
   e.preventDefault();
 
-  const test = await senhaInvalida(senhaAntiga, confirmNovaSenha, novaSenha, 0)
+  const resultado = await senhaInvalida(senhaAntiga, confirmNovaSenha, novaSenha, 0);
 
-  if (test) {
+  msgSenhaAntiga.style.display = resultado.senhaIncorreta ? 'inline-block' : 'none';
+  msgConfirmSenha.style.display = resultado.confirmacaoInvalida ? 'inline-block' : 'none';
 
+  if (resultado.valido) {
     const senhaAtualizada = {
       novaSenha: novaSenha.value
     };
 
     salvarBtn2.disabled = true;
 
-    const resp = await atualizarSenha(getUserId(0), 0, senhaAtualizada);
+    const resp = await atualizarSenha (getUserId(0), 0, senhaAtualizada);
 
-    alert(resp.message)
+    alert(resp.message);
 
-    senhaAntiga.value = ''
-    novaSenha.value = ''
-    confirmNovaSenha.value = ''
-
+    senhaAntiga.value = '';
+    novaSenha.value = '';
+    confirmNovaSenha.value = '';
   } else {
     console.log("Formulário inválido. Corrija os erros antes de enviar.");
   }
-
 });
+
 
 
 [senhaAntiga, novaSenha, confirmNovaSenha].forEach(input => {
