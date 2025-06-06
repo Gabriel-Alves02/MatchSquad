@@ -153,7 +153,7 @@ function fecharModal() {
     document.querySelector('input[name="tipo"][value="online"]').checked = true;
     document.getElementById('modal-agendamento').style.display = 'none';
 }
-
+/*
 //Criação da url da reunião:
 function gerarUrlReuniao() {
     const sufixoUrl = matchMedia.random().toString(36).substring(2, 10);
@@ -166,7 +166,7 @@ function gerarUrlReuniao() {
     
     return urlSala;
 }
-
+*/
 const modalForm = document.getElementById('modal-agendamento');
 modalForm.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -182,12 +182,12 @@ modalForm.addEventListener('submit', async (event) => {
     const infoAdiantada = document.getElementById('infoAdiantada').value;
     const radioSelecionado = document.querySelector('input[name="tipo"]:checked');
     const horario = endHour;
-    const urlReuniao = '';
-
+    //const urlReuniao = '';
+    /*
     if (radioSelecionado == 'online') {
         urlReuniao = gerarUrlReuniao();
     }
-
+    */
     if (!data) {
         alert('Por favor, escolha uma data!');
         return;
@@ -209,8 +209,8 @@ modalForm.addEventListener('submit', async (event) => {
         status_situacao: "pendente",
         tipo: radioSelecionado.value,
         periodo: periodo,
-        horario: horario, //|| '00:00:00'
-        link: urlReuniao
+        horario: horario //|| '00:00:00'
+        //link: urlReuniao
     };
 
     Registrar(PedidoAgendamento);
