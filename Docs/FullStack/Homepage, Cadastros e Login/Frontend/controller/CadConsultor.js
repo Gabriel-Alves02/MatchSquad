@@ -178,7 +178,7 @@ function testeSenha(senhausuario) {
 }
 
 document.getElementById('cep').addEventListener('input', async function () {
-  let cep = document.getElementById('cep').value;
+  let cep = document.getElementById('cep').value.replace(/\D/g, '');
   let msgcep = document.getElementById('msgcep');
 
   if (cep.length === 9) {
