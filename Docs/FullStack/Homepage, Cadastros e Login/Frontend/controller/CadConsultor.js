@@ -233,19 +233,16 @@ function getHabilities() {
 }
 
 function testeSenha(senhausuario) {
-  for (let i = 0; i < senhausuario.length - 1; i++) {
-    const currentChar = senhausuario[i];
-    const nextChar = senhausuario[i + 1];
+  const padraoLetras = /[a-zA-Z]/g;
+  const padraoNumeros = /[0-9]/g;
+  const padraoEspeciais = /[^\w\s]/g;
 
-    if (Number(currentChar) + 1 === Number(nextChar)) {
-      return false;
-    }
-
-    if (currentChar.charCodeAt(0) + 1 === nextChar.charCodeAt(0)) {
-      return false;
-    }
+  if (senhausuario.match(padraoLetras) != null && senhausuario.match(padraoNumeros) != null && senhausuario.match(padraoEspeciais) != null) {
+    return true;
   }
-  return true;
+  else {
+    return false;
+  }
 }
 
 document.getElementById('cep').addEventListener('input', async function () {
