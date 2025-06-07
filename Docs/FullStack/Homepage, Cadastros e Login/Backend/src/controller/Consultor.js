@@ -1,5 +1,5 @@
 import { pool } from "../database.js";
-
+import { gerarNum6digitos } from "./SysFx.js";
 
 export const CadastrarConsultor = async (request, response, next) => {
 
@@ -30,11 +30,12 @@ export const CadastrarConsultor = async (request, response, next) => {
             });
         }
 
-        const [resultLogin] = await connection.query(
-            `INSERT INTO Login (nickname, senha) VALUES (?, ?);`,
-            [nickname, senha]
-        );
+        const code = gerarNum6digitos();
 
+        const [resultLogin] = await connection.query(
+            `INSERT INTO Login (nickname, senha, codigoVerificacao, tipo) VALUES (?, ?, ?, ?);`,
+            [nickname, senha, code, 0]
+        );
 
         const [consultorResult] = await connection.query(
             `INSERT INTO Consultor 
@@ -53,13 +54,22 @@ export const CadastrarConsultor = async (request, response, next) => {
         });
 
         await Promise.all(insertHabilidades);
+
+
+
+
+
         await connection.commit();
+
+
 
         return response.status(201).json({
             success: true,
             id: consultorResult.insertId,
             message: "Cadastro realizado com sucesso"
         });
+
+
 
     } catch (error) {
         await connection.rollback();

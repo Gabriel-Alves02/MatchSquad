@@ -36,8 +36,8 @@ export const CadastrarCliente = async (request, response, next) => {
         const code = gerarNum6digitos();
 
         const [resultLogin] = await connection.query(
-            `INSERT INTO Login (nickname, senha, codigoVerificacao) VALUES (?, ?, ?);`,
-            [nickname, senha, code]
+            `INSERT INTO Login (nickname, senha, codigoVerificacao, tipo) VALUES (?, ?, ?, ?);`,
+            [nickname, senha, code, 1]
         );
 
 

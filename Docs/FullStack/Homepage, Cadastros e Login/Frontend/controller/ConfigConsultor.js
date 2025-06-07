@@ -238,7 +238,7 @@ document.querySelector('.plus-config').addEventListener('submit', async (e) => {
 
     salvarBtn2.disabled = true;
 
-    const resp = await atualizarSenha (getUserId(0), 0, senhaAtualizada);
+    const resp = await atualizarSenha(getUserId(0), 0, senhaAtualizada);
 
     alert(resp.message);
 
@@ -259,6 +259,14 @@ document.querySelector('.plus-config').addEventListener('submit', async (e) => {
 function habilitarSalvar2() {
   salvarBtn2.disabled = false;
 }
+
+[senhaAntiga, novaSenha, confirmNovaSenha].forEach(input => {
+  input.addEventListener('input', () => {
+    msgSenhaAntiga.style.display = 'none';
+    msgConfirmSenha.style.display = 'none';
+  });
+});
+
 
 function habilitarSalvar3() {
   salvarCertifBtn.disabled = false;

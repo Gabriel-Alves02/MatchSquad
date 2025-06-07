@@ -348,20 +348,21 @@ export async function verificado(id, usertype) {
     }
 }
 
-export async function buscarNick(nickname) {
+export async function buscarNick_Email(objCheck) {
+
+    console.log(objCheck);
+
     try {
-        const response = await fetch(url_checks + `/${nickname}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" }
+        const response = await fetch(url_checks + `/nickname-email`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(objCheck)
         });
 
-        if (response.status === 200) {
+        if (response.status === 200 || response.status === 201) {
             const data = await response.json();
 
-            return data.valid;
-        } else {
-            console.log(`Erro do servidor: ${response.status}`);
-            return null;
+            return data;
         }
 
     } catch (error) {
@@ -448,7 +449,7 @@ export async function carregarInfoPerfil(id, usertype) {
     })
 }
 
-export async function habilidadesPortifolio (id) {
+export async function habilidadesPortifolio(id) {
     return await fetch(url_consultores + `/habilidades/${id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
@@ -466,7 +467,7 @@ export async function habilidadesPortifolio (id) {
     })
 }
 
-export async function mediaPortifolio (id) {
+export async function mediaPortifolio(id) {
     return await fetch(url_consultores + `/media/${id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
@@ -680,10 +681,10 @@ export const buscarSenha = async (id, usertype) => {
         const data = await response.json();
 
         if (data) {
-            return data.message;
+            return data;
         }
 
-        return { success: false, message: 'Erro: Não foi possivel fazer upload da imagem!' }
+        return { success: false, message: 'Erro: Não foi possivel fazer carregar a senha!' }
 
     } catch (error) {
         console.error('Erro ao buscar senha:', error);
@@ -853,7 +854,7 @@ export const buscarMediaConsultor = async (id) => {
             return data.message;
         }
 
-        return { success : false, message: 'Erro: Não foi possivel buscar media'}
+        return { success: false, message: 'Erro: Não foi possivel buscar media' }
 
     } catch (error) {
         console.error('Erro ao buscar media:', error);
@@ -879,7 +880,7 @@ export const comunicarGeral = async (opt, objEmail) => {
         })
 };
 
-export async function trocarStatusDenuncia (idDenuncia) {
+export async function trocarStatusDenuncia(idDenuncia) {
 
     return await fetch(url_administrador + `/statusDenuncia/${idDenuncia}`, {
         method: "PUT",
@@ -889,7 +890,7 @@ export async function trocarStatusDenuncia (idDenuncia) {
             if (response.status == 200) {
                 console.log("Status desta denuncia agora esta em analise, primeiro contato feito.");
             }
-            else if (response.status == 201){
+            else if (response.status == 201) {
                 console.log("Não encontrado o registro")
             }
             else {
@@ -899,7 +900,7 @@ export async function trocarStatusDenuncia (idDenuncia) {
 }
 
 
-export async function finalizarDenuncia (obj,opt) {
+export async function finalizarDenuncia(obj, opt) {
 
     return await fetch(url_administrador + `/vereditoDenuncia/${opt}`, {
         method: "PUT",
@@ -910,7 +911,7 @@ export async function finalizarDenuncia (obj,opt) {
             if (response.status == 200) {
                 console.log("Denuncia encerrada");
             }
-            else if (response.status == 201){
+            else if (response.status == 201) {
                 console.log('Sem denuncia para o id passado');
             }
             else {
@@ -919,7 +920,7 @@ export async function finalizarDenuncia (obj,opt) {
         })
 }
 
-export async function obterArrayAgendamentoDashboard (id) {
+export async function obterArrayAgendamentoDashboard(id) {
     return await fetch(url_consultores + `/dashboard/totalAgendamentos/${id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
@@ -934,7 +935,7 @@ export async function obterArrayAgendamentoDashboard (id) {
     })
 }
 
-export async function obterArrayDemandaDiaAgendamento (id) {
+export async function obterArrayDemandaDiaAgendamento(id) {
     return await fetch(url_consultores + `/dashboard/demandaDias/${id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
@@ -949,7 +950,7 @@ export async function obterArrayDemandaDiaAgendamento (id) {
     })
 }
 
-export async function obterArrayHistAvaliacao (id) {
+export async function obterArrayHistAvaliacao(id) {
     return await fetch(url_consultores + `/dashboard/historicoAvaliacao/${id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
@@ -966,7 +967,7 @@ export async function obterArrayHistAvaliacao (id) {
 
 
 
-export async function obterArrayQtdBloqDashboard () {
+export async function obterArrayQtdBloqDashboard() {
     return await fetch(url_administrador + `/dashboard/totalDenuncias`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
@@ -981,7 +982,7 @@ export async function obterArrayQtdBloqDashboard () {
     })
 }
 
-export async function obterArrayAvgAvaliacaoConsultor () {
+export async function obterArrayAvgAvaliacaoConsultor() {
     return await fetch(url_administrador + `/dashboard/mediaAvaliacao`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
@@ -996,7 +997,7 @@ export async function obterArrayAvgAvaliacaoConsultor () {
     })
 }
 
-export async function obterArrayTop5Consultores () {
+export async function obterArrayTop5Consultores() {
     return await fetch(url_administrador + `/dashboard/top5Consultores`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
@@ -1011,7 +1012,7 @@ export async function obterArrayTop5Consultores () {
     })
 }
 
-export async function horariosConsultor (idConsultor) {
+export async function horariosConsultor(idConsultor) {
     return await fetch(url_checks + `/horarios/${idConsultor}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }

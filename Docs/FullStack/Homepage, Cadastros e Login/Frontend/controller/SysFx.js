@@ -23,14 +23,15 @@ export function deactivateUser(id, usertype) {
 }
 
 export async function senhaInvalida(senhaAntigaInput, confirmInput, novaInput, tipo) {
+  
   const senhaAtual = senhaAntigaInput.value;
   const novaSenha = novaInput.value;
   const confirmaSenha = confirmInput.value;
 
-  const senhaCorreta = await buscarSenha(getUserId(tipo)); // função que valida senha antiga
+  const senhaCorreta = await buscarSenha(getUserId(tipo), 0);
 
-  const senhaIncorreta = senhaAtual !== senhaCorreta;
-  const confirmacaoInvalida = novaSenha.length < 5 || novaSenha !== confirmaSenha;
+  const senhaIncorreta = senhaAtual !== senhaCorreta.message;
+  const confirmacaoInvalida = novaSenha.length < 8 || novaSenha !== confirmaSenha;
 
   return {
     senhaIncorreta,

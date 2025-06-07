@@ -218,32 +218,52 @@ export const RefreshBlock = async (request, response, next) => {
 
 };
 
-export const GetIfNicknameIsValid = async (request, response) => {
+export const GetIfNickEmailIsValid = async (request, response) => {
 
   try {
-    const user = request.params;
+    const newUser = request.body;
 
     const [rows] = await pool.query(
-      'SELECT COUNT(*) as total FROM Login WHERE nickname = ?;',
-      [user.nickname]
+      `
+      SELECT 1 as tipo_duplicidade FROM Login WHERE nickname = ?
+      UNION ALL
+      SELECT 2 as tipo_duplicidade FROM Consultor WHERE email = ?
+      UNION ALL
+      SELECT 2 as tipo_duplicidade FROM Cliente WHERE email = ?;
+      `,
+      [newUser.nickname, newUser.email, newUser.email]
     );
 
-    if (rows[0].total === 0) {
-      return response.status(200).json({ valid: true });
+    let returnCode = 0;
+
+    const foundTypes = new Set();
+
+    rows.forEach(row => {
+      foundTypes.add(row.tipo_duplicidade);
+    });
+
+    if (foundTypes.has(1) && foundTypes.has(2)) {
+      returnCode = 3; // Ambos repetidos
+    } else if (foundTypes.has(1)) {
+      returnCode = 1; // Nickname repetido
+    } else if (foundTypes.has(2)) {
+      returnCode = 2; // Email repetido
     }
 
-    return response.status(200).json({ valid: false });
+    if (returnCode === 0) {
+      return response.status(200).json({ valid: true, code: returnCode, message: "Cadastro válido!" });
+    } else {
+      return response.status(201).json({ valid: false, code: returnCode, message: "Dados já cadastrados!" });
+    }
 
   } catch (error) {
-    console.error("Erro ao verificar nickname:", error);
+    console.error("Erro ao verificar nickname-email:", error);
     return response.status(500).json({
       success: false,
       message: "Problema interno no servidor!"
     });
   }
-
 };
-
 
 export const LoadProfile = async (request, response, next) => {
 

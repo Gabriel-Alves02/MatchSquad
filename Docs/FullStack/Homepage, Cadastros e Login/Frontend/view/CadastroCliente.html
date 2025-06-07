@@ -13,9 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../assets/style.css">
 
-    <script src="../controller/teste.js"></script>
-    
-    <!--<script src="../controller/CadCliente.js" type="module"></script>-->
+    <script src="../controller/CadCliente.js" type="module"></script>
 
     <!--Módulo para funções de validação de cpf e cnpj-->
     <script src="https://unpkg.com/gerador-validador-cpf/build/gerador-validador-cpf.min.js"></script>
@@ -77,6 +75,9 @@
             <br>
             <label for="email">Email: <br><input class="formfill" type="email" id="email" required onkeyup="limparE()"
                     autocomplete="off"></label>
+            <label for="email" id="msgEmailOriginal"
+                style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">E-mail
+                inválido ou já registrado em nosso sistema!</label>
             <br>
             <label for="email" id="msgemail"
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Email
@@ -89,7 +90,7 @@
                 style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Email
                 não confere!</label>
             <br>
-            <label for="telefone">Telefone: <br><input class="formfill" type="tel" id="telefone" required
+            <label for="telefone">Celular: <br><input class="formfill" type="tel" id="telefone" required
                     onkeyup="limparT()" autocomplete="off"></label>
             <br>
             <label for="telefone" id="msgphone"

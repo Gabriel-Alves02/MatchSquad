@@ -16,7 +16,7 @@ form.addEventListener('submit', (event) => {
 
   if (validarFormulario()) {
     cadastrarUsuario();
-    window.location.href = "../index.html";
+    window.location.href = "./login.html";
   } else {
     console.log("Formulário inválido. Corrija os erros antes de enviar.");
   }
