@@ -370,12 +370,12 @@ export const RefreshProfile = async (request, response, next) => {
     await connection.beginTransaction();
 
     if (usertype === '0') {
-      await connection.query(`UPDATE Consultor SET email = ?, telefone = ?, valorHora = ?,redeSocial = ?,horarioInicio = ?,horarioFim = ?,prazoMinReag = ?,bio = ? WHERE idConsultor = ?;`,
-        [info.email, info.telefone, info.valorHora, info.redeSocial, info.horarioInicio, info.horarioFim, info.prazoMinReag, info.bio, id]);
+      await connection.query(`UPDATE Consultor SET nome = ?, email = ?, telefone = ?, valorHora = ?,redeSocial = ?,horarioInicio = ?,horarioFim = ?,prazoMinReag = ?,bio = ? WHERE idConsultor = ?;`,
+        [info.nome, info.email, info.telefone, info.valorHora, info.redeSocial, info.horarioInicio, info.horarioFim, info.prazoMinReag, info.bio, id]);
       flag = 1;
     } else if (usertype === '1') {
-      await connection.query(`UPDATE Cliente SET email = ?, telefone = ?, redeSocial = ?, bio = ? WHERE idCliente = ?;`,
-        [info.email, info.telefone, info.redeSocial, info.bio, id]);
+      await connection.query(`UPDATE Cliente SET nome = ?, email = ?, telefone = ?, redeSocial = ?, bio = ? WHERE idCliente = ?;`,
+        [info.nome, info.email, info.telefone, info.redeSocial, info.bio, id]);
       flag = 1;
     }
 

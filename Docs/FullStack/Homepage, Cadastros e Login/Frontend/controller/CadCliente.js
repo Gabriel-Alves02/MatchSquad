@@ -1,4 +1,4 @@
-import { Cadastrar, buscarNick_Email } from "../service/AJAX.js";
+import { Cadastrar, confirmacaoEmail, buscarNick_Email } from "../service/AJAX.js";
 
 const form = document.getElementById('customerForm');
 
@@ -236,8 +236,15 @@ function cadastrarUsuario() {
         cpf_cnpj: document.getElementById('cpf_cnpj').value,
     };
 
+    let msgEmail = {
+        id: '-1',
+        usertype: '-1',
+        email: document.getElementById('email').value
+    };
+
     // Descomente e chame sua função de cadastro real quando for a hora
     // Cadastrar(dados);
+    // await confirmacaoEmail(msgEmail);
 }
 
 function testeSenha(senhausuario) {

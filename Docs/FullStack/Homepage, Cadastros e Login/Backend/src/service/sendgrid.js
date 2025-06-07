@@ -70,7 +70,7 @@ export async function ConfirmacaoEmail(req, res) {
 
 
     try {
-
+        //Esta entrando pelo login
         if (email === '-1') {
 
             if (usertype === '0' && id !== '-1') {
@@ -107,7 +107,7 @@ export async function ConfirmacaoEmail(req, res) {
             return res.status(201).json({ success: true, message: "CAIU NO RETURN do nickname-senha" });
 
         } else {
-
+            //Esta entrando pelo Esqueci a Senha
             let flag = 0;
 
             [search] = await connection.query(
@@ -115,7 +115,7 @@ export async function ConfirmacaoEmail(req, res) {
             );
 
             if (search.length > 0) {
-                await pool.query(`UPDATE Consultor SET bloqueio = ? WHERE idConsultor = ?;`, ['1', search[0].idConsultor]);
+                await connection.query(`UPDATE Consultor SET bloqueio = ? WHERE idConsultor = ?;`, ['1', search[0].idConsultor]);
             }
 
             if (search.length === 0) {
@@ -125,7 +125,7 @@ export async function ConfirmacaoEmail(req, res) {
                     `SELECT idCliente FROM Cliente WHERE email = ?;`, [email]
                 );
 
-                await pool.query(`UPDATE Cliente SET bloqueio = ? WHERE idCliente = ?;`, ['1', search[0].idCliente]);
+                await connection.query(`UPDATE Cliente SET bloqueio = ? WHERE idCliente = ?;`, ['1', search[0].idCliente]);
 
                 if (search.length === 0)
                     return res.status(201).json({ success: false, message: "Erro: E-mail passado não esta na base de dados!" });
@@ -136,7 +136,7 @@ export async function ConfirmacaoEmail(req, res) {
                     `SELECT idLogin FROM Consultor WHERE idConsultor = ?;`, [search[0].idConsultor]
                 );
 
-                await pool.query(`UPDATE Login SET codigoVerificacao = ?, senha = ? WHERE idLogin = ?;`, [newNum, newNum, logMail[0].idLogin]);
+                await connection.query(`UPDATE Login SET codigoVerificacao = ?, senha = ? WHERE idLogin = ?;`, [newNum, newNum, logMail[0].idLogin]);
                 await connection.commit();
 
                 const [user] = await connection.query(
@@ -163,7 +163,7 @@ export async function ConfirmacaoEmail(req, res) {
                     `SELECT idLogin FROM Cliente WHERE idCliente = ?;`, [search[0].idCliente]
                 );
 
-                await pool.query(`UPDATE Login SET codigoVerificacao = ?, senha =? WHERE idLogin = ?;`, [newNum, newNum, logMail[0].idLogin]);
+                await connection.query(`UPDATE Login SET codigoVerificacao = ?, senha =? WHERE idLogin = ?;`, [newNum, newNum, logMail[0].idLogin]);
                 await connection.commit();
 
                 const [user] = await connection.query(

@@ -6,8 +6,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     consultores = await carregarInfoPerfil('-1', '-1');
 
-    console.log('cons vindo do back: ', consultores);
-
     try {
         let html = "";
 

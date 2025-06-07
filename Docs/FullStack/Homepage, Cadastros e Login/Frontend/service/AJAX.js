@@ -35,11 +35,8 @@ export const userType = async (info) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ "nickname": info })
     }).then((response) => {
-        if (response.status >= 200 && response.status < 300) {
+        if (response.status == 200 || response.status == 201) {
             return (response.json());
-        }
-        else if (response.status === 401) {
-            alert("Usuário Inexistente");
         }
         else {
             console.log(`ERRO: ${response.status}`);
@@ -47,7 +44,6 @@ export const userType = async (info) => {
     })
 };
 
-//ADAPTAR PARA ATRIB NOVO STATUS 1
 export const getUser = async (objUser, opt) => {
 
     return await fetch(url_cliente + '/login', {
@@ -55,13 +51,13 @@ export const getUser = async (objUser, opt) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(objUser)
     }).then((response) => {
-        if (response.status >= 200 && response.status < 300) {
+        if (response.status == 200) {
             if (opt === '1') {
                 location.replace("./ConfigCliente.html");
             } else {
                 location.replace("./Menu.html");
             }
-        } else if (response.status === 401) {
+        } else if (response.status === 201) {
             alert("Credenciais inválidas");
         }
         else {
@@ -71,7 +67,6 @@ export const getUser = async (objUser, opt) => {
 };
 
 
-//ADAPTAR PARA ATRIB NOVO STATUS 0
 export const getAdmin = async (objAdmin) => {
 
     return await fetch(url_administrador + '/login', {
@@ -79,19 +74,17 @@ export const getAdmin = async (objAdmin) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(objAdmin)
     }).then((response) => {
-        if (response.status >= 200 && response.status < 300) {
+        if (response.status == 200) {
             location.replace("./MenuAdministrador.html");
         }
-        else if (response.status === 401) {
-            alert("Credenciais inválidas");
+        else if (response.status === 201) {
+            alert("Senha inválida para este usuário!");
         }
         else {
             console.log(`Erro do servidor: ${response.status}`);
         }
     })
 };
-
-//ADAPTAR PARA ATRIB NOVO STATUS 3 = ADMIN
 
 export const getUserConsultor = async (objConsultor, opt) => {
 
@@ -100,15 +93,15 @@ export const getUserConsultor = async (objConsultor, opt) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(objConsultor)
     }).then((response) => {
-        if (response.status >= 200 && response.status < 300) {
+        if (response.status == 200) {
             if (opt === '1') {
                 location.replace("./ConfigConsultor.html");
             } else {
                 location.replace("./MenuConsultor.html");
             }
         }
-        else if (response.status === 401) {
-            alert("Credenciais inválidas");
+        else if (response.status === 201) {
+            alert("Senha inválida para este usuário!");
         }
         else {
             console.log(`Erro do servidor: ${response.status}`);
@@ -284,7 +277,7 @@ export async function agendadoNovamente(idCliente, idConsultor) {
     }
 }
 
-export async function enviarRemarcacao(info) {
+export async function confirmacaoEmail (info) {
     try {
 
         const response = await fetch('http://localhost:8000/notifications', {
@@ -293,7 +286,7 @@ export async function enviarRemarcacao(info) {
             body: JSON.stringify(info)
         }).then((response) => {
             if (response.status >= 200 && response.status < 300) {
-                alert("Sua mudança no agendamento já foi notificada para o cliente. Enviado por e-mail para que ele fique ciente!");
+                console.log('Tudo correu bem no envio do e-mail');
             }
             else {
                 console.log(`Erro do servidor: ${response.status}`);
@@ -485,7 +478,7 @@ export async function mediaPortifolio(id) {
     })
 }
 
-export async function atualizarPerfil(id, usertype, info) {
+export async function atualizarPerfil (id, usertype, info) {
     try {
         const response = await fetch(url_checks + `/perfil/${id}/${usertype}/refresh`, {
             method: "PUT",

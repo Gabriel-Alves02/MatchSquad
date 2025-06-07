@@ -16,7 +16,7 @@ export const Login = async (request, response, next) => {
             });
         }
 
-        return response.status(401).json({
+        return response.status(201).json({
             success: false,
             message: "Credenciais inválidas"
         });
@@ -38,6 +38,13 @@ export const UserType = async (request, response, next) => {
         const { nickname } = request.body;
 
         const [user] = await pool.query(`SELECT tipo, idLogin FROM Login WHERE nickname = ?`, [nickname]);
+
+        if (user.length === 0) {
+            return response.status(201).json({
+                success: false,
+                message: "-1"
+            });
+        }
 
 
         if (user[0].tipo === 0) {
@@ -67,11 +74,6 @@ export const UserType = async (request, response, next) => {
                 message: "3",
             });
         }
-
-        return response.status(401).json({
-            success: false,
-            message: "Não usuário com este nickname!"
-        });
 
 
     } catch (error) {

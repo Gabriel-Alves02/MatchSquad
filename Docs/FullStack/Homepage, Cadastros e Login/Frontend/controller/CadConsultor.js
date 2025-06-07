@@ -1,4 +1,4 @@
-import { Cadastrar, carregarHabilidades, buscarNick } from "../service/AJAX.js";
+import { Cadastrar, carregarHabilidades, buscarNick, confirmacaoEmail } from "../service/AJAX.js";
 
 const form = document.getElementById('consultorForm');
 
@@ -40,7 +40,6 @@ async function validarFormulario() {
   let confirmacaoSenha = document.getElementById("confirmacaoSenha");
   let cpf = document.getElementById('cpf');
   let numero = document.getElementById('numero');
-
 
   let msgnome = document.getElementById('msgnome');
   let msgemail = document.getElementById('msgemail');
@@ -141,9 +140,16 @@ function cadastrarUsuario() {
     habilidades: listaHab
   }
 
-  console.log(objConsultor)
+  console.log(objConsultor);
+
+  let msgEmail = {
+    id: '-1',
+    usertype: '-1',
+    email: document.getElementById('email').value
+  };
 
   Cadastrar(objConsultor);
+  // await confirmacaoEmail(msgEmail);
 }
 
 function getHabilities() {

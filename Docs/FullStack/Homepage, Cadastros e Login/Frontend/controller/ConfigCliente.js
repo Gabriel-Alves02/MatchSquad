@@ -54,6 +54,7 @@ document.querySelector('.profile-info').addEventListener('submit', async (e) => 
   e.preventDefault();
 
   const dadosAtualizados = {
+    nome: nome.value,
     email: email.value,
     telefone: telefone.value,
     redeSocial: redeSocial.value,
@@ -109,7 +110,7 @@ document.getElementById('excluir-conta').addEventListener('click', async (e) => 
 
 
 
-[email, telefone, redeSocial, bio].forEach(input => {
+[nome, email, telefone, redeSocial, bio].forEach(input => {
   input.addEventListener('input', habilitarSalvar);
 });
 

@@ -92,6 +92,7 @@ document.querySelector('.profile-info').addEventListener('submit', async (e) => 
   e.preventDefault();
 
   const dadosAtualizados = {
+    nome: nome.value,
     email: email.value,
     telefone: telefone.value,
     valorHora: valorHora.value,
