@@ -194,16 +194,47 @@ function cadastrarUsuario() {
 
   let listaHab = getHabilities();
 
-  let objConsultor =
-  {
-    nome: document.getElementById('nome').value,
-    cpf: document.getElementById('cpf').value,
-    email: document.getElementById('email').value,
-    telefone: document.getElementById('telefone').value,
-    nickname: document.getElementById('nickname').value,
-    senha: document.getElementById('senha').value,
-    habilidades: listaHab
+  const valorSelecionado = document.querySelector('input[name="modalidade"]:checked').value;
+
+  if (valorSelecionado === 'presencial' || valorSelecionado === 'presencial_e_online') {
+    let objConsultor =
+    {
+      nome: document.getElementById('nome').value,
+      cpf: document.getElementById('cpf').value,
+      email: document.getElementById('email').value,
+      telefone: document.getElementById('telefone').value,
+      nickname: document.getElementById('nickname').value,
+      senha: document.getElementById('senha').value,
+      cep: document.getElementById('cep').value,
+      endereco: document.getElementById('endereco').value,
+      numero: document.getElementById('numero').value,
+      bairro: document.getElementById('bairro').value,
+      complemento: document.getElementById('complemento').value,
+      cidade: document.getElementById('cidade').value,
+      modalidade: valorSelecionado,
+      habilidades: listaHab
+    }
   }
+  else {
+    let objConsultor =
+    {
+      nome: document.getElementById('nome').value,
+      cpf: document.getElementById('cpf').value,
+      email: document.getElementById('email').value,
+      telefone: document.getElementById('telefone').value,
+      nickname: document.getElementById('nickname').value,
+      senha: document.getElementById('senha').value,
+      cep: null,
+      endereco: null,
+      numero: null,
+      bairro: null,
+      complemento: null,
+      cidade: null,
+      modalidade: valorSelecionado,
+      habilidades: listaHab
+    }
+  }
+
 
   console.log(objConsultor);
 
@@ -244,27 +275,6 @@ function testeSenha(senhausuario) {
     return false;
   }
 }
-
-document.getElementById('cep').addEventListener('input', async function () {
-  let cep = document.getElementById('cep').value.replace(/\D/g, '');
-  let msgcep = document.getElementById('msgcep');
-
-  if (cep.length === 9) {
-    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-    const data = await response.json();
-
-    if (data.erro) {
-      console.log("CEP não encontrado ou inválido.");
-      msgcep.style.display = 'inline-block';
-      document.getElementById('cep').value = '';
-      return;
-    }
-
-    document.getElementById('endereco').value = data.logradouro;
-    document.getElementById('bairro').value = data.bairro;
-    document.getElementById('cidade').value = data.localidade;
-  }
-});
 
 document.addEventListener('DOMContentLoaded', async function () {
 
