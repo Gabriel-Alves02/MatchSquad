@@ -7,9 +7,9 @@ export const CadastrarConsultor = async (request, response, next) => {
 
     try {
 
-        const { nome, cpf, email, telefone, nickname, senha, habilidades } = request.body;
+        const { nome, cpf, email, telefone, nickname, senha, habilidades, cep, endereco, numero, complemento, bairro, cidade, modalidade } = request.body;
 
-        if (!nome || !cpf || !email || !telefone || !nickname || !senha || !habilidades) {
+        if (!nome || !cpf || !email || !telefone || !nickname || !senha || !habilidades || !modalidade) {
             return response.status(400).json({
                 success: false,
                 message: "Todos os campos são obrigatórios"
@@ -39,9 +39,9 @@ export const CadastrarConsultor = async (request, response, next) => {
 
         const [consultorResult] = await connection.query(
             `INSERT INTO Consultor 
-            (nome, cpf, email, telefone, idLogin) 
-            VALUES (?, ?, ?, ?, ?);`,
-            [nome, cpf, email, telefone, resultLogin.insertId]
+            (nome, cpf, email, telefone, idLogin, cep, endereco, numero, bairro, cidade) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+            [nome, cpf, email, telefone, resultLogin.insertId, cep, endereco, numero, bairro, cidade, complemento, modalidade]
         );
 
         const insertHabilidades = habilidades.map(async (idHabilidade) => {
