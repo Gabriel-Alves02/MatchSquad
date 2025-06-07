@@ -66,8 +66,6 @@
                 <br>
                 <label for="cpf">CPF: <br><input class="formfill" type="text" id="cpf" name="cpf" required
                         onkeyup="limparC()" autocomplete="off"></label>
-                <label for="cpf">CPF: <br><input class="formfill" type="text" id="cpf" name="cpf" required
-                        onkeyup="limparC()" autocomplete="off"></label>
                 <br>
                 <label for="cpf" id="msgcpf"
                     style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">CPF
@@ -85,8 +83,6 @@
                 <br>
                 <label for="confirmacaoEmail">Confirme o email: <br><input class="formfill" type="email"
                         id="confirmacaoEmail" required onkeyup="limparCe()" autocomplete="off"></label>
-                <label for="confirmacaoEmail">Confirme o email: <br><input class="formfill" type="email"
-                        id="confirmacaoEmail" required onkeyup="limparCe()" autocomplete="off"></label>
                 <br>
                 <label for="email" id="msgconfirmacaoemail"
                     style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Email
@@ -100,31 +96,46 @@
                     inválido! O telefone deve serguir um dos seguintes padrões: (xx) xxxxx-xxxx ou (xx)
                     xxxx-xxxx!</label>
                 <br>
-                <label for="cep">CEP: <br><input class="formfill" type="text" id="cep" name="cep" required
-                        onkeyup="limparCep()" autocomplete="off"></label>
+                <label>Modalidade de consultorias:</label>
                 <br>
-                <label for="cep" id="msgcep"
-                    style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Cep
-                    inválido!<br></label>
-                <label for="endereco">Endereço: <br><input class="formfill" type="text" id="endereco" name="endereco"
-                        autocomplete="off"></label>
+                <label><input type="radio" name="modalidade" value="online" checked> Online</label>
                 <br>
-                <label for="numero">Número: <br><input class="formfill" type="text" id="numero" name="numero"
-                        onkeyup="limparNumero()" autocomplete="off"></label>
+                <label><input type="radio" name="modalidade" value="presencial"> Presencial</label>
                 <br>
-                <label for="numero" id="msgnumero"
-                    style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Número
-                    não pode conter letras nem caracteres especiais!</label>
+                <label><input type="radio" name="modalidade" value="presencial_e_online"> Presencial e online</label>
                 <br>
-                <label for="complemento">Complemento: <br><input class="formfill" type="text" id="complemento"
-                        name="complemento" autocomplete="off"></label>
-                <br>
-                <label for="bairro">Bairro: <br><input class="formfill" type="text" id="bairro" name="bairro"
-                        autocomplete="off"></label>
-                <br>
-                <label for="cidade">Cidade: <br><input class="formfill" type="text" id="cidade" name="cidade"
-                        autocomplete="off"></label>
-                <br>
+                <div id="grupoendereco" style="display: none;">
+                    <br>
+                    <label>Informe os dados do endereço onde você atenderá as consultorias:</label>
+                    <br>
+                    <br>
+                    <label for="cep">CEP: <br><input class="formfill" type="text" id="cep" name="cep" required
+                            onkeyup="limparCep()" autocomplete="off"></label>
+                    <br>
+                    <label for="cep" id="msgcep"
+                        style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Cep
+                        inválido!<br></label>
+                    <label for="endereco">Endereço: <br><input class="formfill" type="text" id="endereco"
+                            name="endereco" autocomplete="off"></label>
+                    <br>
+                    <label for="numero">Número: <br><input class="formfill" type="text" id="numero" name="numero"
+                            onkeyup="limparNumero()" autocomplete="off"></label>
+                    <br>
+                    <label for="numero" id="msgnumero"
+                        style="color: red; background-color: white; border-radius: 5px; margin: 5px 3px 5px 3px; padding: 4px; display: none;">Número
+                        não pode conter letras nem caracteres especiais!</label>
+                    <br>
+                    <label for="complemento">Complemento: <br><input class="formfill" type="text" id="complemento"
+                            name="complemento" autocomplete="off"></label>
+                    <br>
+                    <label for="bairro">Bairro: <br><input class="formfill" type="text" id="bairro" name="bairro"
+                            autocomplete="off"></label>
+                    <br>
+                    <label for="cidade">Cidade: <br><input class="formfill" type="text" id="cidade" name="cidade"
+                            autocomplete="off"></label>
+                    <br>
+                    <br>
+                </div>
                 <br>
                 <label for="nickname">Nickname: <br><input class="formfill" type="text" id="nickname" name="nickname"
                         placeholder="(Sem Espaços)" required onkeyup="limparNi()" autocomplete="off"></label>
@@ -137,8 +148,6 @@
                     inválido! O nickname não pode conter espaços e deve conter no mínimo 5 e no máximo 25
                     dígitos.</label>
                 <br>
-                <label for="senha">Senha: <br><input class="formfill" type="password" id="senha" required
-                        onkeyup="limparS()" autocomplete="off"></label>
                 <label for="senha">Senha: <br><input class="formfill" type="password" id="senha" required
                         onkeyup="limparS()" autocomplete="off"></label>
                 <br>
