@@ -20,394 +20,416 @@
 </head>
 
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <img class="navbar-brand" src="assets/Logo.png"></img>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
+    <div class="conteudo">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <img class="navbar-brand" src="assets/Logo.png"></img>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
 
-                <li class="nav-item">
-                    <a class="nav-link" href="view/Login.html">Login</a>
-                </li>
-            </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="view/Login.html">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <br>
+
+        <div class="container mt-1">
+            <p class="cx_Top-Right">Novo na Matchsquad? Se cadastre abaixo como:<br>
+                <a href="view/CadastroCliente.html"><button class="btn btn-outline-success" style="margin-right: 16px;"
+                        type="submit">Cliente busca Consultor</button></a>
+                <a href="view/CadastroConsultor.html"><button class="btn btn-outline-success btnConsultor"
+                        style="margin: 15px;" type="submit">Consultor busca Cliente</button></a>
+            </p>
         </div>
-    </nav>
 
-    <br>
+        <div class="container mt-5">
+            <!-- Conteúdo Principal -->
+            <h1 class="text-primary">Bem-vindo a Matchsquad!</h1>
+            <p style="text-align: right;">🧩Já são 1.000.000 de matches!🧩</p>
+            <p class="lead">Está procurando como deslanchar seu negócio?...<br>
+            <p style="text-align: center;" class="lead">Encontrou! Os melhores profissionais se encontram aqui ;)</p>
+            </p>
 
-    <div class="container mt-1">
-        <p class="cx_Top-Right">Novo na Matchsquad? Se cadastre abaixo como:<br>
-            <a href="view/CadastroCliente.html"><button class="btn btn-outline-success" style="margin-right: 16px;"
-                    type="submit">Cliente busca Consultor</button></a>
-            <a href="view/CadastroConsultor.html"><button class="btn btn-outline-success btnConsultor"
-                    style="margin: 15px;" type="submit">Consultor busca Cliente</button></a>
-        </p>
-    </div>
-
-    <div class="container mt-5">
-        <!-- Conteúdo Principal -->
-        <h1 class="text-primary">Bem-vindo a Matchsquad!</h1>
-        <p style="text-align: right;">🧩Já são 1.000.000 de matches!🧩</p>
-        <p class="lead">Está procurando como deslanchar seu negócio?...<br>
-        <p style="text-align: center;" class="lead">Encontrou! Os melhores profissionais se encontram aqui ;)</p>
-        </p>
-
-        <!-- <section>
+            <!-- <section>
             <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Qual o seu interesse?" aria-label="Search"
                     id="searchbar">
                 <button class="btn btn-outline-success" type="submit">🔎</button>
             </form>
         </section> -->
-    </div>
+        </div>
 
-    <div id="carouselExample" class="carousel slide">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="assets/Slide_1.png" class="d-block w-100" alt="...">
+        <div id="carouselExample" class="carousel slide">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="assets/Slide_1.png" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/Slide_2.png" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/Slide_3.png" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/Slide_4.png" class="d-block w-100" alt="...">
+                </div>
             </div>
-            <div class="carousel-item">
-                <img src="assets/Slide_2.png" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="assets/Slide_3.png" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="assets/Slide_4.png" class="d-block w-100" alt="...">
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        <div class="flex-container-title-profissional">
+            <p class="profissional-title">Conheça nossos profissionais</p>
+        </div>
+
+        <div class="container mt-5">
+
+            <div class="row" id="maingrid">
+
             </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
 
-    <div class="flex-container-title-profissional">
-        <p class="profissional-title">Conheça nossos profissionais</p>
-    </div>
-
-    <div class="container mt-5">
-
-        <div class="row" id="maingrid">
-
+        <div class="flex-container-title-profissional">
+            <p class="profissional-title">Faça parte você também da MatchSquad!</p>
         </div>
-    </div>
 
-    <div class="flex-container-title-profissional">
-        <p class="profissional-title">Faça parte você também da MatchSquad!</p>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
 
 
 
-    <!--VLibras -->
+        <!--VLibras -->
 
-    <div vw class="enabled">
-        <div vw-access-button class="active"></div>
-        <div vw-plugin-wrapper>
-            <div class="vw-plugin-top-wrapper"></div>
+        <div vw class="enabled">
+            <div vw-access-button class="active"></div>
+            <div vw-plugin-wrapper>
+                <div class="vw-plugin-top-wrapper"></div>
+            </div>
         </div>
+        <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+        <script>
+            new window.VLibras.Widget('https://vlibras.gov.br/app');
+        </script>
+
     </div>
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script>
-        new window.VLibras.Widget('https://vlibras.gov.br/app');
-    </script>
-</body>
 
-<footer style="background-color: #cbe2f8;">
-    <div class="container-fluid text-center margin">
-        <div class="row">
-            <div class="col-lg-4">
+    <footer style="background-color: #cbe2f8;">
+        <div class="container-fluid text-center margin">
+            <div class="row">
+                <div class="col-lg-4">
 
-                <br>
-                <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Politicas de Privacidade
-                </a>
-                <br> <br>
-                <a href="" data-bs-toggle="modal" data-bs-target="#exampleModalTermos">
-                    Termos de Uso
-                    </a=>
-                    <br> <br>
-                    <a href="" data-bs-target="#exampleModal2" data-bs-toggle="modal">
-                        Ajuda
+                    <br>
+                    <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Politicas de Privacidade
                     </a>
+                    <br> <br>
+                    <a href="" data-bs-toggle="modal" data-bs-target="#exampleModalTermos">
+                        Termos de Uso
+                        </a=>
+                        <br> <br>
+                        <a href="" data-bs-target="#exampleModal2" data-bs-toggle="modal">
+                            Ajuda
+                        </a>
+                        <br>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Leia com atenção</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p style="text-align: justify; text-justify: inter-word;">
+                                            Política de Privacidade:
+                                            <br>
+                                            <br>
+                                            Esta política de privacidade apresenta como a MatchSquad (doravante, "nós")
+                                            coleta,
+                                            utiliza e compartilha as informações pessoais dos usuários que visitam ou
+                                            utilizam a plataforma MatchSquad (doravante, "site"). Ao utilizar o site,
+                                            você
+                                            consente com as práticas descritas nesta política.
+                                            <br>
+                                            <br>
+                                            Informações que coletamos:
+                                            <br>
+                                            <br>
+                                            Coletamos informações pessoais dos usuários tais como nome, endereço de
+                                            e-mail,
+                                            documentos (cpf e cnpj), número de telefone, informações fornecidas
+                                            voluntariamente e outros dados.
+                                            <br>
+                                            <br>
+                                            Como utilizamos as informações:
+                                            <br>
+                                            <br>
+                                            As informações pessoais coletadas em nosso site são utilizadas para
+                                            processamento de transações, envio de comunicados e melhoria da comunicação
+                                            e
+                                            experiência do usuário na plataforma.
+                                            <br>
+                                            <br>
+                                            Como compartilhamos as informações:
+                                            <br>
+                                            <br>
+                                            Podemos compartilhar as informações coletadas com as seguintes instituições:
+                                            <br>
+                                            <br>
+                                            Fornecedores de serviços: Para envio de comunicados e armazenamento de dados
+                                            para uso na plataforma MatchSquad.
+                                            <br>
+                                            <br>
+                                            Poder Judiciário: Em resposta a ordens judiciais ou outras solicitações
+                                            legais.
+                                            <br>
+                                            <br>
+                                            Outras entidades: Em caso de fusões, aquisições ou demais transações
+                                            corporativas.
+                                            <br>
+                                            <br>
+                                            Direito dos Usuários:
+                                            <br>
+                                            <br>
+                                            Você tem direito a: Acessar suas informações pessoais, solicitar correção de
+                                            informações incorretas, solicitar a remoção de suas informações da
+                                            plataforma,
+                                            revogar o consentimento para tratamento de suas informações e outros
+                                            direitos
+                                            previstos na Lei Geral de Proteção de Dados (LGPD) (Lei n° 13.709/2018).
+                                            <br>
+                                            <br>
+                                            Contato:
+                                            <br>
+                                            <br>
+                                            Para exercer seus direitos ou obter mais informações entre em contato
+                                            conosco
+                                            através de matchsquad.brasil@gmail.com.
+                                            <br>
+                                            <br>
+                                            Atualizações:
+                                            <br>
+                                            <br>
+                                            Esta Política de Privacidade pode ser atualizada de tempos em tempos.
+                                            <br>
+                                            <br>
+                                            Conclusão:
+                                            <br>
+                                            <br>
+                                            Ao usar o site, você concorda com esta Política de Privacidade. É de grande
+                                            importância ler e compreender esta política antes de utilizar o site.
+                                        </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Fechar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModalTermos" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Leia com atenção</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p style="text-align: justify; text-justify: inter-word;">
+                                            Termos de Uso
+                                            <br>
+                                            <br>
+                                            Este texto tem como objetivo apresentar os termos de uso da MatchSquad
+                                            (doravante "site"). Ao utilizar o site você concorda em estar sujeito aos
+                                            termos de uso. Leia-os com atenção antes de utilizar o site.
+                                            <br>
+                                            <br>
+                                            Propriedade Intelectual:
+                                            <br>
+                                            <br>
+                                            Todo o conteúdo do site, exceto imagens de certificados, fotos de perfil e
+                                            demais dados pessoais dos usuários, é de propriedade da MatchSquad. Imagens
+                                            de
+                                            certificados, fotos de perfil e demais dados pessoais são de propriedade dos
+                                            determinados usuários. Você não tem autorização para copiar, reproduzir,
+                                            distribuir, adaptar ou utilizar o conteúdo da plataforma sem a expressa e
+                                            formal
+                                            autorização concedida pela MatchSquad.
+                                            <br>
+                                            <br>
+                                            Resposabilidades do Usuário:
+                                            <br>
+                                            <br>
+                                            O usuário é reponsável por:
+                                            <br>
+                                            <br>
+                                            Fornecer informações completas e autênticas durante seu cadastro.
+                                            <br>
+                                            <br>
+                                            Manter suas informações utilizadas para acesso seguras.
+                                            <br>
+                                            <br>
+                                            Não utilizar a plataforma para fins ilegais ou violar o direito de teceiros.
+                                            <br>
+                                            <br>
+                                            Manter postura de respeito pelos demais usuários da plataforma.
+                                            <br>
+                                            <br>
+                                            Privacidade e Dados Pessoais:
+                                            <br>
+                                            <br>
+                                            A MatchSquad coleta dados pessoais fornecidos por você, conforme apresentado
+                                            em
+                                            nossa Política de Privacidade. Ao utilizar o site, você concorda com a
+                                            coleta e
+                                            utilização dos seus dados pessoais conforme apresentado na Política de
+                                            Privacidade.
+                                            <br>
+                                            <br>
+                                            Alterações:
+                                            <br>
+                                            <br>
+                                            Os termos de uso podem ser altreados a qualquer momento. Ao continuar
+                                            utilizando
+                                            a plataforma, você concorda com as referidas alterações.
+                                            <br>
+                                            <br>
+                                            Lei Aplicável e Jurisdição:
+                                            <br>
+                                            <br>
+                                            Os termos aqui descritos são regidos pelas leis do Brasil e qualquer disputa
+                                            que
+                                            surja em conexão com este texto será submetida à jurisdição dos tribunais
+                                            competentes de Sorocaba - São Paulo.
+                                            <br>
+                                            <br>
+                                            Contato:
+                                            <br>
+                                            <br>
+                                            Para qualquer dúvida ou informação, você pode entrar em contato conosco
+                                            através
+                                            do edereço matchsquad.brasil@gmail.com.
+                                            <br>
+                                            <br>
+                                            A MatchSquad não se responsabiliza por opereções de pagamento, emissão de
+                                            recibo
+                                            e demais trasações financeiras.
+                                            <br>
+                                            <br>
+                                            Ao utilizar a plataforma MatchSquad você concorda com os termos de uso.
+                                        </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Fechar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Precisa de ajuda?
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p style="text-align: justify; text-justify: inter-word;">
+                                        <p class="lead"> Contate-nos em um de nossos canais:</p>
+                                        📱 (15) 99150-1628
+                                        <br>
+                                        📧 matchsquad.brasil@gmail.com
+
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Fechar</button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+
+
+                <div class="col-lg-4">
+                    <br>
+                    <h4>Contato</h4>
+                    <p>
+                        (15) 99170-7070 📱
+                    </p>
+                    <br>
+                    <h4>Endereço</h4>
+                    <a target="_blank"
+                        href="https://www.google.com/maps/@-23.4826573,-47.4260076,3a,75y,8.66h,90.1t/data=!3m6!1e1!3m4!1s0jnFsJazevJtZaqBOyuL5Q!2e0!7i13312!8i6656?entry=ttu">Av.
+                        Engenheiro Carlos Reinaldo Mendes, 2015<br>Alto da Boa Vista - Sorocaba/SP</a>
+                    <br><br>
+                </div>
+
+                <div class="col-lg-4" style="align-items: center;">
                     <br>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Leia com atenção</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p style="text-align: justify; text-justify: inter-word;">
-                                        Política de Privacidade:
-                                        <br>
-                                        <br>
-                                        Esta política de privacidade apresenta como a MatchSquad (doravante, "nós")
-                                        coleta,
-                                        utiliza e compartilha as informações pessoais dos usuários que visitam ou
-                                        utilizam a plataforma MatchSquad (doravante, "site"). Ao utilizar o site, você
-                                        consente com as práticas descritas nesta política.
-                                        <br>
-                                        <br>
-                                        Informações que coletamos:
-                                        <br>
-                                        <br>
-                                        Coletamos informações pessoais dos usuários tais como nome, endereço de e-mail,
-                                        documentos (cpf e cnpj), número de telefone, informações fornecidas
-                                        voluntariamente e outros dados.
-                                        <br>
-                                        <br>
-                                        Como utilizamos as informações:
-                                        <br>
-                                        <br>
-                                        As informações pessoais coletadas em nosso site são utilizadas para
-                                        processamento de transações, envio de comunicados e melhoria da comunicação e
-                                        experiência do usuário na plataforma.
-                                        <br>
-                                        <br>
-                                        Como compartilhamos as informações:
-                                        <br>
-                                        <br>
-                                        Podemos compartilhar as informações coletadas com as seguintes instituições:
-                                        <br>
-                                        <br>
-                                        Fornecedores de serviços: Para envio de comunicados e armazenamento de dados
-                                        para uso na plataforma MatchSquad.
-                                        <br>
-                                        <br>
-                                        Poder Judiciário: Em resposta a ordens judiciais ou outras solicitações legais.
-                                        <br>
-                                        <br>
-                                        Outras entidades: Em caso de fusões, aquisições ou demais transações
-                                        corporativas.
-                                        <br>
-                                        <br>
-                                        Direito dos Usuários:
-                                        <br>
-                                        <br>
-                                        Você tem direito a: Acessar suas informações pessoais, solicitar correção de
-                                        informações incorretas, solicitar a remoção de suas informações da plataforma,
-                                        revogar o consentimento para tratamento de suas informações e outros direitos
-                                        previstos na Lei Geral de Proteção de Dados (LGPD) (Lei n° 13.709/2018).
-                                        <br>
-                                        <br>
-                                        Contato:
-                                        <br>
-                                        <br>
-                                        Para exercer seus direitos ou obter mais informações entre em contato conosco
-                                        através de matchsquad.brasil@gmail.com.
-                                        <br>
-                                        <br>
-                                        Atualizações:
-                                        <br>
-                                        <br>
-                                        Esta Política de Privacidade pode ser atualizada de tempos em tempos.
-                                        <br>
-                                        <br>
-                                        Conclusão:
-                                        <br>
-                                        <br>
-                                        Ao usar o site, você concorda com esta Política de Privacidade. É de grande
-                                        importância ler e compreender esta política antes de utilizar o site.
-                                    </p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Fechar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <table>
+                        <tr>
+                            <th>⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</th>
+                            <th style="text-align: center;"> <a
+                                    href="https://www.facebook.com/fatecsorocaba/?locale=pt_BR" class="fa fa-facebook"
+                                    target="_blank"></a></th>
+                            <th>⠀</th>
+                            <th style="text-align: center;"><a href="https://www.instagram.com/fatecsorocaba/?hl=en"
+                                    class="fa fa-instagram" target="_blank"></a></a></th>
+                            <th>⠀</th>
+                            <th style="text-align: center;"><a href="https://www.linkedin.com/groups/2283743/"
+                                    class="fa fa-linkedin" target="_blank"></a></th>
+                            <th>⠀</th>
+                            <th style="text-align: center;"><a href="" class="fa fa-twitter" target="_blank"></a></th>
+                            <th>⠀</th>
+                            <th style="text-align: center;"> <a
+                                    href="https://www.facebook.com/fatecsorocaba/?locale=pt_BR" class="fa fa-tumblr"
+                                    target="_blank"></a></th>
+                            <th>⠀</th>
+                        </tr>
+                    </table>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModalTermos" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Leia com atenção</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p style="text-align: justify; text-justify: inter-word;">
-                                        Termos de Uso
-                                        <br>
-                                        <br>
-                                        Este texto tem como objetivo apresentar os termos de uso da MatchSquad
-                                        (doravante "site"). Ao utilizar o site você concorda em estar sujeito aos
-                                        termos de uso. Leia-os com atenção antes de utilizar o site.
-                                        <br>
-                                        <br>
-                                        Propriedade Intelectual:
-                                        <br>
-                                        <br>
-                                        Todo o conteúdo do site, exceto imagens de certificados, fotos de perfil e
-                                        demais dados pessoais dos usuários, é de propriedade da MatchSquad. Imagens de
-                                        certificados, fotos de perfil e demais dados pessoais são de propriedade dos
-                                        determinados usuários. Você não tem autorização para copiar, reproduzir,
-                                        distribuir, adaptar ou utilizar o conteúdo da plataforma sem a expressa e formal
-                                        autorização concedida pela MatchSquad.
-                                        <br>
-                                        <br>
-                                        Resposabilidades do Usuário:
-                                        <br>
-                                        <br>
-                                        O usuário é reponsável por:
-                                        <br>
-                                        <br>
-                                        Fornecer informações completas e autênticas durante seu cadastro.
-                                        <br>
-                                        <br>
-                                        Manter suas informações utilizadas para acesso seguras.
-                                        <br>
-                                        <br>
-                                        Não utilizar a plataforma para fins ilegais ou violar o direito de teceiros.
-                                        <br>
-                                        <br>
-                                        Manter postura de respeito pelos demais usuários da plataforma.
-                                        <br>
-                                        <br>
-                                        Privacidade e Dados Pessoais:
-                                        <br>
-                                        <br>
-                                        A MatchSquad coleta dados pessoais fornecidos por você, conforme apresentado em
-                                        nossa Política de Privacidade. Ao utilizar o site, você concorda com a coleta e
-                                        utilização dos seus dados pessoais conforme apresentado na Política de
-                                        Privacidade.
-                                        <br>
-                                        <br>
-                                        Alterações:
-                                        <br>
-                                        <br>
-                                        Os termos de uso podem ser altreados a qualquer momento. Ao continuar utilizando
-                                        a plataforma, você concorda com as referidas alterações.
-                                        <br>
-                                        <br>
-                                        Lei Aplicável e Jurisdição:
-                                        <br>
-                                        <br>
-                                        Os termos aqui descritos são regidos pelas leis do Brasil e qualquer disputa que
-                                        surja em conexão com este texto será submetida à jurisdição dos tribunais
-                                        competentes de Sorocaba - São Paulo.
-                                        <br>
-                                        <br>
-                                        Contato:
-                                        <br>
-                                        <br>
-                                        Para qualquer dúvida ou informação, você pode entrar em contato conosco através
-                                        do edereço matchsquad.brasil@gmail.com.
-                                        <br>
-                                        <br>
-                                        A MatchSquad não se responsabiliza por opereções de pagamento, emissão de recibo
-                                        e demais trasações financeiras.
-                                        <br>
-                                        <br>
-                                        Ao utilizar a plataforma MatchSquad você concorda com os termos de uso.
-                                    </p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Fechar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Precisa de ajuda?
-                                    </h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p style="text-align: justify; text-justify: inter-word;">
-                                    <p class="lead"> Contate-nos em um de nossos canais:</p>
-                                    📱 (15) 99150-1628
-                                    <br>
-                                    📧 matchsquad.brasil@gmail.com
-            
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Fechar</button>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-            </div>
-
-
-
-            <div class="col-lg-4">
-                <br>
-                <h4>Contato</h4>
-                <p>
-                    (15) 99170-7070 📱
-                </p>
-                <br>
-                <h4>Endereço</h4>
-                <a target="_blank"
-                    href="https://www.google.com/maps/@-23.4826573,-47.4260076,3a,75y,8.66h,90.1t/data=!3m6!1e1!3m4!1s0jnFsJazevJtZaqBOyuL5Q!2e0!7i13312!8i6656?entry=ttu">Av.
-                    Engenheiro Carlos Reinaldo Mendes, 2015<br>Alto da Boa Vista - Sorocaba/SP</a>
-                <br><br>
-            </div>
-
-            <div class="col-lg-4" style="align-items: center;">
-                <br>
-
-                <table>
-                    <tr>
-                        <th>⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</th>
-                        <th style="text-align: center;"> <a href="https://www.facebook.com/fatecsorocaba/?locale=pt_BR"
-                                class="fa fa-facebook" target="_blank"></a></th>
-                        <th>⠀</th>
-                        <th style="text-align: center;"><a href="https://www.instagram.com/fatecsorocaba/?hl=en"
-                                class="fa fa-instagram" target="_blank"></a></a></th>
-                        <th>⠀</th>
-                        <th style="text-align: center;"><a href="https://www.linkedin.com/groups/2283743/"
-                                class="fa fa-linkedin" target="_blank"></a></th>
-                        <th>⠀</th>
-                        <th style="text-align: center;"><a href="" class="fa fa-twitter" target="_blank"></a></th>
-                        <th>⠀</th>
-                        <th style="text-align: center;"> <a href="https://www.facebook.com/fatecsorocaba/?locale=pt_BR"
-                                class="fa fa-tumblr" target="_blank"></a></th>
-                        <th>⠀</th>
-                    </tr>
-                </table>
-
-                <br><br>
-                <p>
-                    <atarget="_blank" href="https://github.com/Gabriel-Alves02/MatchSquad">Matchsquad</atarget=> 2024 -
-                        Fatec (Sorocaba/Sao Paulo)
-                </p>
-                <br>
+                    <br><br>
+                    <p>
+                        <atarget="_blank" href="https://github.com/Gabriel-Alves02/MatchSquad">Matchsquad</atarget=>
+                            2024 -
+                            Fatec (Sorocaba/Sao Paulo)
+                    </p>
+                    <br>
+                </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
+
+</body>
 
 </html>

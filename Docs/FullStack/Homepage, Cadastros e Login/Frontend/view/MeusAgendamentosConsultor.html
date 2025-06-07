@@ -21,113 +21,117 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a href="MenuConsultor.html"><img class="navbar-brand" src="../assets/Logo.png" height="54.73px"></a>
-        <div class="ml-auto">
-            <a href="MenuConsultor.html" class="btn btn-outline-primary mr-2">Voltar</a>
-            <a href="ConfigConsultor.html" class="btn btn-outline-primary mr-2">Configurações</a>
-            <a href="Login.html" class="btn btn-outline-danger" onclick="localStorage.clear()">Logout</a>
+    <div class="conteudo">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a href="MenuConsultor.html"><img class="navbar-brand" src="../assets/Logo.png" height="54.73px"></a>
+            <div class="ml-auto">
+                <a href="MenuConsultor.html" class="btn btn-outline-primary mr-2">Voltar</a>
+                <a href="ConfigConsultor.html" class="btn btn-outline-primary mr-2">Configurações</a>
+                <a href="Login.html" class="btn btn-outline-danger" onclick="localStorage.clear()">Logout</a>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="title-info">
+                Histórico de Consultorias
+            </div>
+            <div class="historic-input-group">
+                <input class="form-control me-2" id="searchBar" type="search" placeholder="Pesquisar">
+                <br>
+                <select class="form-select" id="filtros">
+                    <option value="cliente">Cliente</option>
+                    <option value="data">Data</option>
+                    <option value="status">Realizadas</option>
+                    <option value="melhor_avaliado">Melhor avaliado</option>
+                </select>
+            </div>
         </div>
-    </nav>
 
-    <div class="container">
-        <div class="title-info">
-            Histórico de Consultorias
+        <br>
+
+        <div class="container" id="listaMatchs">
+
         </div>
-        <div class="historic-input-group">
-            <input class="form-control me-2" id="searchBar" type="search" placeholder="Pesquisar">
-            <br>
-            <select class="form-select" id="filtros">
-                <option value="cliente">Cliente</option>
-                <option value="data">Data</option>
-                <option value="status">Realizadas</option>
-                <option value="melhor_avaliado">Melhor avaliado</option>
-            </select>
-        </div>
-    </div>
 
-    <br>
-
-    <div class="container" id="listaMatchs">
-
-    </div>
-
-    <div class="modal fade" id="modalRelatorio" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalRelatorioLabel">Registro da Consultoria</h5>
-                </div>
-                <div class="modal-body">
-                    <form id="formRegistroReuniao">
-                        <div class="mb-3">
-                            <label for="assunto" class="form-label"><strong>Assunto abordado:</strong></label>
-                            <textarea id="assunto" class="form-control mb-3" rows="2" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="solucoes" class="form-label"><strong>Soluções apresentadas:</strong></label>
-                            <textarea id="solucoes" class="form-control mb-3" rows="2" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="infoSolicitada" class="form-label"><strong>Informações
-                                    solicitadas:</strong></label>
-                            <textarea id="infoSolicitada" class="form-control mb-3" rows="2" required></textarea>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" id="enviarRegistro" class="btn btn-primary">Registrar Reunião</button>
-                        </div>
-                    </form>
+        <div class="modal fade" id="modalRelatorio" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalRelatorioLabel">Registro da Consultoria</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formRegistroReuniao">
+                            <div class="mb-3">
+                                <label for="assunto" class="form-label"><strong>Assunto abordado:</strong></label>
+                                <textarea id="assunto" class="form-control mb-3" rows="2" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="solucoes" class="form-label"><strong>Soluções apresentadas:</strong></label>
+                                <textarea id="solucoes" class="form-control mb-3" rows="2" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="infoSolicitada" class="form-label"><strong>Informações
+                                        solicitadas:</strong></label>
+                                <textarea id="infoSolicitada" class="form-control mb-3" rows="2" required></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" id="enviarRegistro" class="btn btn-primary">Registrar
+                                    Reunião</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="modal fade" id="modalDenuncia" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalAvaliacaoLabel">Denunciar Consultor</h5>
-                </div>
-                <div class="modal-body">
-                    <form id="formDenuncia">
-                        <div class="mb-3">
-                            <label for="gravidade" class="form-label">Lembre-se que ao denunciar, as medidas legais
-                                cabíveis serão tomadas para apurar o caso com ambos participantes.</label>
-                            <select class="form-select" id="gravidade" required>
-                                <option value="">Selecione a gravidade da denuncia</option>
-                                <option value="0">1 - Baixa</option>
-                                <option value="1">2 - Moderada</option>
-                                <option value="2">3 - Grave</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="comentarioDenuncia" class="form-label">Descrição do ocorrido</label>
-                            <textarea class="form-control" id="comentarioDenuncia" rows="3"
-                                placeholder="Deixe seu comentário..." required></textarea>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" id="enviar" class="btn btn-primary">Enviar Avaliação</button>
-                        </div>
-                    </form>
+        <div class="modal fade" id="modalDenuncia" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalAvaliacaoLabel">Denunciar Consultor</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formDenuncia">
+                            <div class="mb-3">
+                                <label for="gravidade" class="form-label">Lembre-se que ao denunciar, as medidas legais
+                                    cabíveis serão tomadas para apurar o caso com ambos participantes.</label>
+                                <select class="form-select" id="gravidade" required>
+                                    <option value="">Selecione a gravidade da denuncia</option>
+                                    <option value="0">1 - Baixa</option>
+                                    <option value="1">2 - Moderada</option>
+                                    <option value="2">3 - Grave</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="comentarioDenuncia" class="form-label">Descrição do ocorrido</label>
+                                <textarea class="form-control" id="comentarioDenuncia" rows="3"
+                                    placeholder="Deixe seu comentário..." required></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" id="enviar" class="btn btn-primary">Enviar Avaliação</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div vw class="enabled">
-        <div vw-access-button class="active"></div>
-        <div vw-plugin-wrapper>
-            <div class="vw-plugin-top-wrapper"></div>
+        <div vw class="enabled">
+            <div vw-access-button class="active"></div>
+            <div vw-plugin-wrapper>
+                <div class="vw-plugin-top-wrapper"></div>
+            </div>
         </div>
+        <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+        <script>
+            new window.VLibras.Widget('https://vlibras.gov.br/app');
+        </script>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
+
     </div>
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script>
-        new window.VLibras.Widget('https://vlibras.gov.br/app');
-    </script>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
 
     <footer style="background-color: #cbe2f8;">
         <div class="container-fluid text-center margin">
