@@ -277,29 +277,7 @@ export async function agendadoNovamente(idCliente, idConsultor) {
     }
 }
 
-export async function confirmacaoEmail (info) {
-    try {
-
-        const response = await fetch('http://localhost:8000/notifications', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(info)
-        }).then((response) => {
-            if (response.status >= 200 && response.status < 300) {
-                console.log('Tudo correu bem no envio do e-mail');
-            }
-            else {
-                console.log(`Erro do servidor: ${response.status}`);
-            }
-        })
-
-    } catch (error) {
-        console.error("Erro no envio de remarcação:", error);
-    }
-}
-
-
-export async function enviarCodigo(id, usertype, email) {
+export async function enviarCodigo (id, usertype, email) {
     try {
 
         const response = await fetch('http://localhost:8000/notifications', {

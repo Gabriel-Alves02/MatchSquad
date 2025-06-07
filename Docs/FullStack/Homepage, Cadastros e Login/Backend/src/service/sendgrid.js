@@ -10,7 +10,6 @@ export async function EnviarEmailRemarcacao(req, res) {
     const { clienteEmail, consultorEmail, novaData, nomeCliente, novoHorario, id } = req.body;
 
     let infoHora = ''
-    let nome = nomeCliente.split(' - ')[1];
     let dataBr = formatarData(novaData)
 
     const [dia, mes, ano] = dataBr.split('/');
@@ -25,8 +24,8 @@ export async function EnviarEmailRemarcacao(req, res) {
         to: clienteEmail,
         from: "matchsquad.brasil@gmail.com",
         subject: `Matchsquad - Consultoria remarcada!`,
-        text: `Olá ${nome}, sua consultoria foi remarcada para o dia ${formatarData(novaData)}${infoHora}.`,
-        html: `<strong> Olá ${nome},</strong><br>Sua consultoria foi remarcada para o dia <b> ${formatarData(novaData)}${infoHora}</b>.`,
+        text: `Olá ${nomeCliente}, sua consultoria foi remarcada para o dia ${formatarData(novaData)}${infoHora}.`,
+        html: `<strong> Olá ${nomeCliente},</strong><br>Sua consultoria foi remarcada para o dia <b> ${formatarData(novaData)}${infoHora}</b>.`,
     };
 
     const msg2 = {
@@ -68,6 +67,7 @@ export async function ConfirmacaoEmail(req, res) {
     let msg;
     let search;
 
+    console.log('recebido no back:', usuario);
 
     try {
         //Esta entrando pelo login

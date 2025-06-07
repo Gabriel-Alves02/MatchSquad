@@ -244,10 +244,10 @@ export const GetIfNickEmailIsValid = async (request, response) => {
 
     if (foundTypes.has(1) && foundTypes.has(2)) {
       returnCode = 3; // Ambos repetidos
+    } else if (foundTypes.has(2)) {
+      returnCode = 2; //  Email repetido
     } else if (foundTypes.has(1)) {
       returnCode = 1; // Nickname repetido
-    } else if (foundTypes.has(2)) {
-      returnCode = 2; // Email repetido
     }
 
     if (returnCode === 0) {
@@ -258,6 +258,7 @@ export const GetIfNickEmailIsValid = async (request, response) => {
 
   } catch (error) {
     console.error("Erro ao verificar nickname-email:", error);
+
     return response.status(500).json({
       success: false,
       message: "Problema interno no servidor!"

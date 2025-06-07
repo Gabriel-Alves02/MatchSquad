@@ -134,6 +134,6 @@ modalSenha.addEventListener('submit', (event) => {
         </div>
     `;
 
-    enviarCodigo('-1', '-1', email);
+    enviarCodigo ('-1', '-1', email);
 
 });

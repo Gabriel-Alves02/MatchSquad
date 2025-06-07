@@ -1,16 +1,15 @@
-import { Cadastrar, confirmacaoEmail, buscarNick_Email } from "../service/AJAX.js";
+import { Cadastrar, enviarCodigo, buscarNick_Email } from "../service/AJAX.js";
 
 const form = document.getElementById('customerForm');
 
 form.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    // Chama validarFormulario que agora é assíncrona
+
     validarFormulario().then(isValid => {
         if (isValid) {
             cadastrarUsuario();
-            // Descomente esta linha quando o cadastro for bem-sucedido e você quiser redirecionar
-            // window.location.href = "./login.html";
+            window.location.href = "./login.html";
         } else {
             console.log("Formulário inválido. Corrija os erros antes de enviar.");
         }
@@ -219,14 +218,14 @@ function limparC() {
 }
 
 
-// --- Funções Auxiliares (mantidas como estão) ---
-document.addEventListener('paste', function (event) {
-    if (event.target.tagName === 'INPUT') {
-        event.preventDefault();
-    }
-});
+// document.addEventListener('paste', function (event) {
+//     if (event.target.tagName === 'INPUT') {
+//         event.preventDefault();
+//     }
+// });
 
-function cadastrarUsuario() {
+async function cadastrarUsuario() {
+
     let dados = {
         nome: document.getElementById('nome').value,
         email: document.getElementById('email').value,
@@ -236,15 +235,8 @@ function cadastrarUsuario() {
         cpf_cnpj: document.getElementById('cpf_cnpj').value,
     };
 
-    let msgEmail = {
-        id: '-1',
-        usertype: '-1',
-        email: document.getElementById('email').value
-    };
-
-    // Descomente e chame sua função de cadastro real quando for a hora
-    // Cadastrar(dados);
-    // await confirmacaoEmail(msgEmail);
+    await Cadastrar(dados);
+    await enviarCodigo ('-1','-1', document.getElementById('email').value);
 }
 
 function testeSenha(senhausuario) {
