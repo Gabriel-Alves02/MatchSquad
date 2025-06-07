@@ -36,6 +36,7 @@ async function validarFormulario() {
     let msgcpf = document.getElementById('msgcpf');
     let msgcnpj = document.getElementById('msgcnpj');
     let msgnicknameInvalido = document.getElementById('msgnicknameInvalido');
+    let msgdocumento = document.getElementById('msgdocumento');
 
     let nomePattern = /^[A-Za-z\s]+$/;
     let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -92,7 +93,7 @@ async function validarFormulario() {
     if (cpf_cnpj.value.length === 11) {
         if (!validarCPF(cpf_cnpj.value)) {
             msgcpf.style.display = 'inline-block';
-            cpf_cnpj.value = '';
+            document.getElementById('cpf_cnpj').value = '';
         }
     }
     else if (cpf_cnpj.value.length === 14) {
@@ -104,7 +105,7 @@ async function validarFormulario() {
     else {
         // Documento inválido por tamanho incorreto
         msgdocumento.style.display = 'inline-block';
-        cpf_cnpj.value = '';
+        document.getElementById('cpf_cnpj').value = '';
     }
 
     return isValid;

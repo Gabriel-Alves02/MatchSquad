@@ -12,8 +12,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../assets/style.css">
+
+    <script src="../controller/teste.js"></script>
     
-    <script src="../controller/CadCliente.js" type="module"></script>
+    <!--<script src="../controller/CadCliente.js" type="module"></script>-->
 
     <!--Módulo para funções de validação de cpf e cnpj-->
     <script src="https://unpkg.com/gerador-validador-cpf/build/gerador-validador-cpf.min.js"></script>
@@ -120,7 +122,7 @@
                 senhas não correspondem!</label>
             <br>
             <br>
-            <button class="btn btn-outline-success" type="submit">Cadastrar</button>
+            <button class="btn btn-outline-success" type="submit" onclick="validarFormulario()">Cadastrar</button>
             <br><br>
         </form>
 
