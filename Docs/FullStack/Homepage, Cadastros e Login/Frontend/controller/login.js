@@ -17,6 +17,8 @@ form.addEventListener('submit', async (event) => {
             senha: document.getElementById('senha').value
         };
 
+        console.log('test msg: ', test.message);
+
         if (test.message === '-1') {
             alert('Este nickname não existe para nenhum usuário!');
             return;

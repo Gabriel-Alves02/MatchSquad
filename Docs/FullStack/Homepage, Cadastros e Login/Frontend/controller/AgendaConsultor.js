@@ -1,7 +1,10 @@
 import { getUserId } from './SysFx.js';
-import { buscarNome, buscarPrazo, enviarRemarcacao, carregarAgendamentos, agendamentoCancelado } from '../service/AJAX.js';
+import { buscarNome, buscarPrazo, confirmacaoEmail, carregarAgendamentos, agendamentoCancelado, confirmarReuniao } from '../service/AJAX.js';
 import { createPopper } from '../node_modules/@popperjs/core/dist/esm/popper.js';
 
+
+
+const idConsultor = getUserId(0);
 
 document.addEventListener('DOMContentLoaded', async function () {
 
@@ -13,17 +16,22 @@ document.addEventListener('DOMContentLoaded', async function () {
         selectable: true,
         displayEventTime: false,
         editable: true,
+        dayMaxEvents: true,
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
         validRange: {
             start: moment().format('YYYY-MM-DD')
         },
-        editable: true,
         eventClick: async function (info) {
 
             try {
-                let resp = confirm(`Deseja cancelar o agendamento ?\nCliente: ${info.event._def.title} \nPeriodo: ${info.event.extendedProps.periodo}`);
+                let resp = confirm(`Deseja cancelar o agendamento ?\nCliente: ${info.event._def.title} \nPeriodo: ${info.event.extendedProps.periodo} \nStatus: ${info.event.extendedProps.status}`);
 
                 if (resp) {
-                    await agendamentoCancelado(info.event.extendedProps.idReuniao);
+                    await agendamentoCancelado (info.event.extendedProps.idReuniao);
                     alert("Agendamento excluido com sucesso!");
                     info.event.remove();
                 }
@@ -49,10 +57,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             let novoHorario = '';
             let payload = '';
 
-            confirmBtn.onclick = () => {
-                const fullHorario = inputHorario.value;
+            confirmBtn.onclick = async () => {
 
-                console.log('novoHorario: ', novoHorario)
+                const fullHorario = inputHorario.value;
 
                 modal.style.display = 'none';
 
@@ -65,12 +72,13 @@ document.addEventListener('DOMContentLoaded', async function () {
                     id: info.event.extendedProps.idReuniao
                 };
 
-                console.log(payload)
+                console.log(payload);
 
-                enviarRemarcacao(payload);
+                await confirmacaoEmail (payload);
+                window.location.reload();
             };
 
-            
+
         },
         eventDidMount: async function (info) {
 
@@ -83,6 +91,12 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             if (diffEmDias < prazoReag.message) {
                 info.event.setProp('editable', false);
+
+                if (info.event.extendedProps.status !== 'confirmada') {
+                    await confirmarReuniao (info.event.extendedProps.idReuniao);
+                    info.event.extendedProps.status = 'confirmada';
+                    window.location.reload();
+                }
             } else {
                 info.event.setProp('editable', true);
             }
@@ -110,8 +124,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
     calendar.render();
-
-    const idConsultor = getUserId(0);
 
     if (idConsultor) {
 

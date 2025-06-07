@@ -72,6 +72,7 @@
         .modal-content button:hover {
             background-color: #0056b3;
         }
+
     </style>
 
 
@@ -92,6 +93,15 @@
             <div id='calendar'></div>
             <br>
         </form>
+    </div>
+
+
+    <div id="timeModal" class="modal-time">
+        <div class="modal-content">
+            <h3>Prefência para horário? (Opcional)</h3>
+            <input type="time" id="horarioInput" step="1800">
+            <button id="confirmHorario">Confirmar</button>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -138,9 +148,7 @@
                     </a>
                     <br>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
+                    <div class="modal fade" id="exampleModal" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">

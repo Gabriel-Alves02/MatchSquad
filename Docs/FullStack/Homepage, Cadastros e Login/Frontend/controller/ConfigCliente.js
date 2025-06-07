@@ -18,8 +18,9 @@ let senhaAntiga = document.getElementById('senha');
 let novaSenha = document.getElementById('nova-senha');
 let confirmNovaSenha = document.getElementById('confirma-senha');
 
-// let msgSenhaAntiga = document.getElementById('msgsenhaAntiga');
-// let msgConfirmSenha = document.getElementById('msgconfirmSenha');
+let msgSenhaAntiga = document.getElementById('msgsenhaAntiga');
+let msgSenhaNova = document.getElementById('msgnovaSenha');
+let msgConfirmSenha = document.getElementById('msgconfirmSenha');
 
 let salvarBtn2 = document.getElementById('salvar-plus');
 
@@ -119,14 +120,18 @@ function habilitarSalvar() {
 }
 
 
-document.querySelector('.plus-config').addEventListener('submit', async (e) => {
 
+document.querySelector('.plus-config').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const test = await senhaInvalida(senhaAntiga, confirmNovaSenha, novaSenha, 1);
+  const resultado = await senhaInvalida(senhaAntiga, confirmNovaSenha, novaSenha, 1);
 
-  if (test) {
+  msgSenhaAntiga.style.display = resultado.senhaIncorreta ? 'inline-block' : 'none';
+  msgSenhaNova.style.display = resultado.tamanhoIncorreto ? 'inline-block' : 'none';
+  msgConfirmSenha.style.display = resultado.confirmacaoInvalida ? 'inline-block' : 'none';
 
+
+  if (resultado.valido) {
     const senhaAtualizada = {
       novaSenha: novaSenha.value
     };
@@ -135,18 +140,16 @@ document.querySelector('.plus-config').addEventListener('submit', async (e) => {
 
     const resp = await atualizarSenha(getUserId(1), 1, senhaAtualizada);
 
-    alert(resp.message)
+    alert(resp.message);
 
-    senhaAntiga.value = ''
-    novaSenha.value = ''
-    confirmNovaSenha.value = ''
-
+    senhaAntiga.value = '';
+    novaSenha.value = '';
+    confirmNovaSenha.value = '';
   } else {
     console.log("Formulário inválido. Corrija os erros antes de enviar.");
   }
-
-
 });
+
 
 
 [senhaAntiga, novaSenha, confirmNovaSenha].forEach(input => {

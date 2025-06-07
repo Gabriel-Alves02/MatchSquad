@@ -1,3 +1,4 @@
+import { info } from "console";
 import { pool } from "../database.js";
 import { EnviarCancelamentoAgendamento } from "../service/sendgrid.js"
 
@@ -51,7 +52,7 @@ export const BuscarAgenda = async (request, response, next) => {
             FROM Reuniao r JOIN Cliente c 
             ON r.idCliente = c.idCliente
             JOIN Consultor con ON r.idConsultor = con.idConsultor
-            WHERE r.idConsultor = ? AND r.data >= CURRENT_DATE AND r.status_situacao = 'pendente';`,
+            WHERE r.idConsultor = ? AND r.data >= CURRENT_DATE AND r.status_situacao IN ('pendente', 'confirmada');`,
             [idConsultor]
         );
 
@@ -203,13 +204,24 @@ export const AtualizaData = async (novaData, novoHorario, id) => {
 
     const connection = await pool.getConnection();
 
+    let periodo = 'manha';
+
     try {
 
         await connection.beginTransaction();
 
+        const infoData = new Date(`${novaData}T${novoHorario}:00`);
+
+        console.log('infoData', infoData, 'tipo data: ', typeof infoData);
+
+        if (infoData.getHours() > 12){
+            console.log('entrou no if');
+            periodo = 'tarde';
+        }
+
         const [result] = await connection.query(
-            `UPDATE Reuniao SET status_situacao = ?, data = ?, horario = ? WHERE idReuniao = ?;`,
-            ['pendente', novaData, novoHorario, id]
+            `UPDATE Reuniao SET status_situacao = ?, data = ?, horario = ?, periodo = ? WHERE idReuniao = ?;`,
+            ['pendente', novaData, novoHorario, periodo, id]
         );
 
         await connection.commit();
@@ -226,6 +238,51 @@ export const AtualizaData = async (novaData, novoHorario, id) => {
         console.error('Erro ao buscar agendamentos na tabela de reunião:', error);
         await connection.rollback();
         return;
+
+    } finally {
+        connection.release();
+    }
+};
+
+export const Confirmed = async (req, res, next) => {
+
+    const connection = await pool.getConnection();
+
+    try {
+
+        const info = req.params;
+
+        await connection.beginTransaction();
+
+        const [result] = await connection.query(
+            `UPDATE Reuniao SET status_situacao = ? WHERE idReuniao = ?;`,
+            ['confirmada', info.idReuniao]
+        );
+
+        // Não vai checar que status tinha antes de alterar (Cuidado no uso)
+
+        await connection.commit();
+
+        if (result.changedRows > 0) {
+
+            return res.status(200).json({
+                success: true,
+                message: "Confirmado com sucesso!"
+            });
+        }
+
+        return res.status(201).json({
+            success: false,
+            message: "Não encontrado a Reunião!"
+        });
+
+    } catch (error) {
+        console.error('Erro ao buscar agendamentos na tabela de reunião:', error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Erro interno do servidor"
+        });
 
     } finally {
         connection.release();

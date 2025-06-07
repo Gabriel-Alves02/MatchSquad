@@ -16,7 +16,7 @@ export async function EnviarEmailRemarcacao(req, res) {
     const [dia, mes, ano] = dataBr.split('/');
     const dataIso = `${ano}-${mes}-${dia}`;
 
-    await AtualizaData(dataIso, novoHorario, id);
+    await AtualizaData (dataIso, novoHorario, id);
 
     if (!(novoHorario === '00:00'))
         infoHora += ` no horário ${novoHorario}`

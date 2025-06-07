@@ -58,7 +58,7 @@ export const getUser = async (objUser, opt) => {
                 location.replace("./Menu.html");
             }
         } else if (response.status === 201) {
-            alert("Credenciais inválidas");
+            alert("Senha inválida para este usuário!");
         }
         else {
             console.log(`Erro do servidor: ${response.status}`);
@@ -478,7 +478,7 @@ export async function mediaPortifolio(id) {
     })
 }
 
-export async function atualizarPerfil (id, usertype, info) {
+export async function atualizarPerfil(id, usertype, info) {
     try {
         const response = await fetch(url_checks + `/perfil/${id}/${usertype}/refresh`, {
             method: "PUT",
@@ -1021,4 +1021,23 @@ export async function horariosConsultor(idConsultor) {
             console.error("Erro ao carregar horarios deste consultor:", error);
         }
     })
+}
+
+export async function confirmarReuniao (idReuniao) {
+    try {
+        const response = await fetch(url_consultores + `/reuniao-confirmed/${idReuniao}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" }
+        }).then((response) => {
+            if (response.status == 200) {
+                console.log("Status da reunião alterado com sucesso!");
+            }
+            else {
+                console.log(`Erro do servidor: ${response.status}`);
+            }
+        })
+
+    } catch (error) {
+        console.error("Erro na verificação:", error);
+    }
 }

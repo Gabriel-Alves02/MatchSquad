@@ -72,8 +72,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 dataReuniao: dataReuniaoDenunciada
             };
 
-            console.log("Dados da denúncia:", dadosDenuncia);
-
             await denunciar(getUserId(0), '0', dadosDenuncia);
 
             modalDenunciaInstance.hide();

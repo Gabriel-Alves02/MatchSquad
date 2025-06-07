@@ -32,6 +32,7 @@ let novaSenha = document.getElementById('nova-senha');
 let confirmNovaSenha = document.getElementById('confirma-senha');
 
 let msgSenhaAntiga = document.getElementById('msgsenhaAntiga');
+let msgSenhaNova = document.getElementById('msgnovaSenha');
 let msgConfirmSenha = document.getElementById('msgconfirmSenha');
 
 let salvarBtn2 = document.getElementById('salvar-plus');
@@ -230,6 +231,7 @@ document.querySelector('.plus-config').addEventListener('submit', async (e) => {
   const resultado = await senhaInvalida(senhaAntiga, confirmNovaSenha, novaSenha, 0);
 
   msgSenhaAntiga.style.display = resultado.senhaIncorreta ? 'inline-block' : 'none';
+  msgSenhaNova.style.display = resultado.tamanhoIncorreto ? 'inline-block' : 'none';
   msgConfirmSenha.style.display = resultado.confirmacaoInvalida ? 'inline-block' : 'none';
 
   if (resultado.valido) {
