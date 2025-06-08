@@ -3,6 +3,8 @@ import { getUserId, deactivateUser, senhaInvalida } from './SysFx.js';
 
 let info;
 
+const modalidade = getModalidade() //função que vai retornar a modalidade proveniente do banco de dados
+
 const uploadInput = document.getElementById('upload-pic');
 const profilePic = document.getElementById('profile-pic');
 
@@ -65,6 +67,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     profilePic.src = urlImagemPerfil;
   }
 
+  marcarModalidade(modalidade);
+
   if (info[0].urlsCertificados !== null && info[0].urlsCertificados.length > 0) {
 
     let certificados = info[0].urlsCertificados.split(',');
@@ -81,6 +85,52 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   }
 
+  const radios = document.querySelectorAll('input[name="modalidade"]');
+
+  radios.forEach(radio => {
+    radio.addEventListener('change', function () {
+      const valorSelecionado = document.querySelector('input[name="modalidade"]:checked').value;
+
+      if (valorSelecionado === 'presencial' || valorSelecionado === 'presencial_e_online') {
+        document.getElementById('grupoendereco').style.display = 'inline-block';
+      }
+      else {
+        document.getElementById('grupoendereco').style.display = 'none';
+        document.getElementById('cep').value = '';
+        document.getElementById('endereco').value = '';
+        document.getElementById('bairro').value = '';
+        document.getElementById('cidade').value = '';
+        document.getElementById('numero').value = '';
+        document.getElementById('complemento').value = '';
+        limparCep();
+      }
+    });
+  });
+
+  document.getElementById('cep').addEventListener('input', async function () {
+    let cep = document.getElementById('cep').value.replace(/\D/g, '');
+    let msgcep = document.getElementById('msgcep');
+
+    if (cep.length === 8) {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await response.json();
+
+      if (data.erro) {
+        console.log("CEP não encontrado ou inválido.");
+        msgcep.style.display = 'inline-block';
+        document.getElementById('cep').value = '';
+        document.getElementById('endereco').value = '';
+        document.getElementById('bairro').value = '';
+        document.getElementById('cidade').value = '';
+        return;
+      }
+
+      document.getElementById('endereco').value = data.logradouro;
+      document.getElementById('bairro').value = data.bairro;
+      document.getElementById('cidade').value = data.localidade;
+    }
+  });
+
 });
 
 document.addEventListener('paste', function (event) {
@@ -92,17 +142,45 @@ document.addEventListener('paste', function (event) {
 document.querySelector('.profile-info').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const dadosAtualizados = {
-    nome: nome.value,
-    email: email.value,
-    telefone: telefone.value,
-    valorHora: valorHora.value,
-    redeSocial: redeSocial.value,
-    horarioInicio: horarioInicio.value, // definir passo de 30min em 30min
-    horarioFim: horarioFim.value,
-    prazoMinReag: prazo.value,
-    bio: bio.value
-  };
+  let dadosAtualizados;
+
+  if (valorSelecionado === 'presencial' || valorSelecionado === 'presencial_e_online') {
+    dadosAtualizados = {
+      nome: nome.value,
+      email: email.value,
+      telefone: telefone.value,
+      valorHora: valorHora.value,
+      redeSocial: redeSocial.value,
+      horarioInicio: horarioInicio.value, // definir passo de 30min em 30min
+      horarioFim: horarioFim.value,
+      prazoMinReag: prazo.value,
+      modalidade: valorSelecionado,
+      cep: document.getElementById('cep').value,
+      endereco: document.getElementById('edereco').value,
+      numero: document.getElementById('numero').value,
+      bairro: document.getElementById('bairro').value,
+      cidade: document.getElementById('cidade').value,
+      bio: bio.value
+    };
+  }
+  else {
+    dadosAtualizados = {
+      nome: nome.value,
+      email: email.value,
+      telefone: telefone.value,
+      valorHora: valorHora.value,
+      redeSocial: redeSocial.value,
+      horarioInicio: horarioInicio.value, // definir passo de 30min em 30min
+      horarioFim: horarioFim.value,
+      prazoMinReag: prazo.value,
+      cep: null,
+      endereco: null,
+      numero: null,
+      bairro: null,
+      cidade: null,
+      bio: bio.value
+    };
+  }
 
   salvarBtn.disabled = true;
 
@@ -273,4 +351,14 @@ function habilitarSalvar2() {
 
 function habilitarSalvar3() {
   salvarCertifBtn.disabled = false;
+}
+
+function marcarModalidade(valor) {
+  const radiobuttons = document.getElementsByName('modalidade');
+  radiobuttons.forEach(radiobutton => {
+    if (radiobutton.value === modalidade) {
+      radiobutton.checked = true;
+      radiobutton.dispatchEvent(new Event("change"));
+    }
+  })
 }
