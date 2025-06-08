@@ -154,53 +154,86 @@ export const AgendamentoRepetido = async (request, response, next) => {
     }
 };
 
-export const CancelaAgendamento = async (request, response, next) => {
-
-    const connection = await pool.getConnection();
+export const CancelaAgendamento = async (request, response) => {
+    let connection;
 
     try {
-        const reuniao = request.params;
+
+        connection = await pool.getConnection();
+        const { id } = request.params;
+
+        if (!id) {
+            return response.status(400).json({
+                success: false,
+                message: "ID da reunião não fornecido."
+            });
+        }
 
         await connection.beginTransaction();
 
-        const [result] = await connection.query(
-            `UPDATE Reuniao SET status_situacao = ? WHERE idReuniao = ?;`,
-            ['cancelada', reuniao.id]
+        const [updateResult] = await connection.query(
+            `UPDATE Reuniao SET status_situacao = 'cancelada' WHERE idReuniao = ?;`,
+            [id]
+        );
+
+        if (updateResult.changedRows === 0) {
+            await connection.rollback();
+            return response.status(201).json({
+                success: false,
+                message: "Reunião não encontrada ou já estava cancelada."
+            });
+        }
+
+        const [reuniaoDetalhes] = await connection.query(
+            `SELECT
+                r.data,
+                r.infoAdiantada,
+                co.email as emailConsultor,
+                cli.email as emailCliente
+            FROM Reuniao r
+            INNER JOIN Consultor co ON co.idConsultor = r.idConsultor
+            INNER JOIN Cliente cli ON cli.idCliente = r.idCliente
+            WHERE r.idReuniao = ?;`,
+            [id]
         );
 
         await connection.commit();
 
-        if (result.changedRows > 0) {
+        if (reuniaoDetalhes.length > 0) {
+            const { data, assunto, emailConsultor, emailCliente } = reuniaoDetalhes[0];
 
-            const [info] = await pool.query(`UPDATE Reuniao SET status_situacao = ? WHERE idReuniao = ?;`,
-                [reuniao.id])
+            const dataFormatada = new Date(data).toLocaleDateString('pt-BR');
+            const assuntoEmail = assunto || "Consultoria";
 
-            //EnviarCancelamentoAgendamento(email,assunto,data)
+            await EnviarCancelamentoAgendamento([emailConsultor, emailCliente], assuntoEmail, dataFormatada);
 
-            return response.status(200).json({
-                success: true,
-                message: "Cancelado com sucesso!"
-            });
+        } else {
+            console.warn(`Detalhes da reunião (ID: ${id}) não encontrados após cancelamento. E-mails de notificação não enviados.`);
         }
 
         return response.status(200).json({
             success: true,
-            message: "Não encontrado a Reunião!" //id passado foi invalido
+            message: "Agendamento cancelado com sucesso e e-mails de notificação enviados."
         });
 
     } catch (error) {
-        console.error('Erro ao buscar agendamentos na tabela de reunião:', error);
+
+        if (connection) {
+            await connection.rollback();
+        }
+        console.error('Erro ao cancelar agendamento:', error);
         return response.status(500).json({
             success: false,
-            message: "Erro interno do servidor"
+            message: "Erro interno do servidor ao cancelar agendamento."
         });
-
     } finally {
-        connection.release();
+        if (connection) {
+            connection.release();
+        }
     }
 };
 
-export const AtualizaData = async (novaData, novoHorario, id) => {
+export const AtualizaData = async (novaData, novoHorario, idReuniao) => {
 
     const connection = await pool.getConnection();
 
@@ -214,14 +247,14 @@ export const AtualizaData = async (novaData, novoHorario, id) => {
 
         console.log('infoData', infoData, 'tipo data: ', typeof infoData);
 
-        if (infoData.getHours() > 12){
+        if (infoData.getHours() > 12) {
             console.log('entrou no if');
             periodo = 'tarde';
         }
 
         const [result] = await connection.query(
-            `UPDATE Reuniao SET status_situacao = ?, data = ?, horario = ?, periodo = ? WHERE idReuniao = ?;`,
-            ['pendente', novaData, novoHorario, periodo, id]
+            `UPDATE Reuniao SET status_situacao = 'pendente', data = ?, horario = ?, periodo = ? WHERE idReuniao = ?;`,
+            [novaData, novoHorario, periodo, idReuniao]
         );
 
         await connection.commit();
@@ -255,8 +288,8 @@ export const Confirmed = async (req, res, next) => {
         await connection.beginTransaction();
 
         const [result] = await connection.query(
-            `UPDATE Reuniao SET status_situacao = ? WHERE idReuniao = ?;`,
-            ['confirmada', info.idReuniao]
+            `UPDATE Reuniao SET status_situacao = 'confirmada' WHERE idReuniao = ?;`,
+            [info.idReuniao]
         );
 
         // Não vai checar que status tinha antes de alterar (Cuidado no uso)

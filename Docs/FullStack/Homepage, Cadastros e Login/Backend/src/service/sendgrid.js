@@ -5,9 +5,9 @@ import { AtualizaData } from "../controller/PedidoAgendamento.js";
 
 sgMail.setApiKey(process.env.SENDGRID_KEY);
 
-export async function EnviarEmailRemarcacao(req, res) {
+export async function EnviarEmailRemarcacao (req, res) {
 
-    const { clienteEmail, consultorEmail, novaData, nomeCliente, novoHorario, id } = req.body;
+    const { clienteEmail, consultorEmail, novaData, nomeCliente, novoHorario, idReuniao } = req.body;
 
     let infoHora = ''
     let dataBr = formatarData(novaData)
@@ -15,7 +15,7 @@ export async function EnviarEmailRemarcacao(req, res) {
     const [dia, mes, ano] = dataBr.split('/');
     const dataIso = `${ano}-${mes}-${dia}`;
 
-    await AtualizaData (dataIso, novoHorario, id);
+    await AtualizaData (dataIso, novoHorario, idReuniao);
 
     if (!(novoHorario === '00:00'))
         infoHora += ` no horário ${novoHorario}`
@@ -146,7 +146,7 @@ export async function ConfirmacaoEmail(req, res) {
                 msg = {
                     to: email,
                     from: "matchsquad.brasil@gmail.com",
-                    subject: `Matchsquad - Recuperação da Conta`,
+                    subject: `Matchsquad - Acesso a Conta`,
                     text: `Para o usuário de nickname ${user[0].nickname}. Copie o código de segurança abaixo como senha. \n\n ${user[0].senha}\n\n Não se esqueça de alterar a senha em configurações posteriormente, por questões de segurança!`,
                     html: `<p>Para o usuário de nickname ${user[0].nickname}. Copie o código de segurança abaixo como senha. <br><br> ${user[0].senha}<br><br> <strong>Não se esqueça de alterar a senha em configurações posteriormente, por questões de segurança!</strong></p>`,
                 };
@@ -173,7 +173,7 @@ export async function ConfirmacaoEmail(req, res) {
                 msg = {
                     to: email,
                     from: "matchsquad.brasil@gmail.com",
-                    subject: `Matchsquad - Recuperação da Conta`,
+                    subject: `Matchsquad - Acesso a Conta`,
                     text: `Para o usuário de nickname ${user[0].nickname}. Copie o código de segurança abaixo como senha. \n\n ${newNum}\n\n Não se esqueça de alterar a senha em configurações posteriormente, por questões de segurança!`,
                     html: `<p>Para o usuário de nickname ${user[0].nickname}. Copie o código de segurança abaixo como senha. <br><br> ${newNum}<br><br> <strong>Não se esqueça de alterar a senha em configurações posteriormente, por questões de segurança!</strong></p>`,
                 };
@@ -197,23 +197,22 @@ export async function ConfirmacaoEmail(req, res) {
 
 }
 
-export async function EnviarCancelamentoAgendamento(Email, Assunto, Data) {
+export async function EnviarCancelamentoAgendamento(Emails, Assunto, Data) {
 
     const msg = {
-        to: Email,
+        to: Emails,
         from: "matchsquad.brasil@gmail.com",
-        subject: `Matchsquad - Consultoria cancelada!`,
-        html: `<p><strong> Olá! Estamos fazendo contato para relatar que houve o cancelamento da consultoria agendada ${Assunto} que estava para data ${Data}. </strong><br>
-                Solicite um novo agendamento na matchsquad.com.br a qualquer momento ;) </p>`
+        subject: `Matchsquad - Agendamento cancelado!`,
+        html: `<p><strong> Olá! Estamos fazendo contato para relatar que houve o cancelamento de seu agendamento (${Data}) sobre ${Assunto}. Nossos consultores estão aguardando o seu retorno, e Matchsquad agradece a compreensão! </strong><br>
+                Solicite um agendamento novamente em nossa plataforma a qualquer momento ;) </p>`
     };
 
     try {
         //await sgMail.send(msg);
-        console.log("E-mail enviado com sucesso!", msg);
-        res.status(200).json({ success: true, message: "E-mail enviado com sucesso" });
+        console.log("E-mail de cancelamento enviado com sucesso!", msg);
+
     } catch (error) {
-        console.error("Erro ao enviar e-mail:", error.response?.body || error);
-        res.status(500).json({ success: false, message: "Falha ao enviar e-mail" });
+        console.error("Erro ao enviar e-mail:", error);
     }
 
 }

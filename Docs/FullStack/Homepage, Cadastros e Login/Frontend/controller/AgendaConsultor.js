@@ -1,5 +1,5 @@
 import { getUserId } from './SysFx.js';
-import { buscarNome, buscarPrazo, confirmacaoEmail, carregarAgendamentos, agendamentoCancelado, confirmarReuniao } from '../service/AJAX.js';
+import { buscarNome, buscarPrazo, confirmacaoEmailRemarcado, carregarAgendamentos, agendamentoCancelado, confirmarReuniao } from '../service/AJAX.js';
 import { createPopper } from '../node_modules/@popperjs/core/dist/esm/popper.js';
 
 
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            right: 'dayGridMonth'
         },
         validRange: {
             start: moment().format('YYYY-MM-DD')
@@ -69,12 +69,12 @@ document.addEventListener('DOMContentLoaded', async function () {
                     novaData: novaData,
                     nomeCliente: evento.title,
                     novoHorario: fullHorario,
-                    id: info.event.extendedProps.idReuniao
+                    idReuniao: info.event.extendedProps.idReuniao
                 };
 
                 console.log(payload);
 
-                await confirmacaoEmail (payload);
+                await confirmacaoEmailRemarcado (payload);
                 window.location.reload();
             };
 
@@ -94,7 +94,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                 if (info.event.extendedProps.status !== 'confirmada') {
                     await confirmarReuniao (info.event.extendedProps.idReuniao);
-                    info.event.extendedProps.status = 'confirmada';
                     window.location.reload();
                 }
             } else {

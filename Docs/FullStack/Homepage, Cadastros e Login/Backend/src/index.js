@@ -44,9 +44,8 @@ app.post('/clientes/registrarReuniao', RegistrarReuniao);
 app.put('/clientes/avaliacao', Reviewed );
 app.put('/notifications', ConfirmacaoEmail);
 app.put('/checks/verified', RefreshBlock);
-app.put('/consultores/agenda/:id', CancelaAgendamento );
+app.put('/checks/agenda/:id', CancelaAgendamento ); // Antes tinha para cliente e consultor, foi unificado
 app.put('/consultores/reuniao-confirmed/:idReuniao', Confirmed );
-app.put('/clientes/agenda/:id', CancelaAgendamento );
 //app.put('/administrador/denuncias/banir', BloquearUsuario)
 app.get('/consultores/habilidades', GetHabilidades);
 app.get('/consultores/habilidades/:id', GetHabConsultor);
@@ -56,7 +55,7 @@ app.get('/administradores/denuncias', GetComplaints );
 app.put('/administradores/statusDenuncia/:idDenuncia', ChangeReportStatus );
 app.put('/administradores/vereditoDenuncia/:opt', EndReport );
 app.get('/consultores/historico/:idConsultor', BuscarSolicitacoes);
-app.post('/consultores/agenda/:idConsultor', EnviarEmailRemarcacao);
+app.post('/consultores/agenda', EnviarEmailRemarcacao);
 app.post('/checks/nickname-email', GetIfNickEmailIsValid);
 app.get('/checks/horarios/:idConsultor', GetWorkRange );
 app.get('/checks/:id/:usertype/name', GetName);

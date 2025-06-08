@@ -126,6 +126,22 @@ export const Registrar = async (pedido) => {
     })
 };
 
+export const confirmacaoEmailRemarcado = async (info) => {
+
+    return await fetch(url_consultores + `/agenda`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(info)
+    }).then((response) => {
+        if (response.status == 200 || response.status == 201) {
+            return (response.json());
+        }
+        else {
+            console.log(`ERRO: ${response.status}`);
+        }
+    })
+};
+
 export async function carregarAgendamentos(id) {
 
     return await fetch(url_consultores + `/agenda/${id}`, {
@@ -342,13 +358,12 @@ export async function buscarNick_Email(objCheck) {
     }
 }
 
-export async function agendamentoCancelado(id) {
+export async function agendamentoCancelado (id) {
     try {
 
-        const response = await fetch(url_consultores + `/agenda/${id}`, {
+        const response = await fetch(url_checks + `/agenda/${id}`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ "id": `${id}` })
+            headers: { "Content-Type": "application/json" }
         }).then((response) => {
             if (response.status == 200) {
                 console.log("Cancelado com sucesso!");
@@ -363,30 +378,6 @@ export async function agendamentoCancelado(id) {
     }
 }
 
-export async function canceladoReuniao(id) {
-    try {
-
-        if (!id) {
-            throw new Error("Erro na identificação da Reuniao");
-        }
-
-        const response = await fetch(url_cliente + `/agenda/${id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ "id": `${id}` })
-        }).then((response) => {
-            if (response.status == 200) {
-                console.log("Cancelado com sucesso!");
-            }
-            else {
-                console.log(`Erro do servidor: ${response.status}`);
-            }
-        })
-
-    } catch (error) {
-        console.error("Erro geral no cancelamento do agendamento:", error);
-    }
-}
 
 export const RegistrarReuniao = async (objRegistro) => {
     return await fetch(url_cliente + '/registrarReuniao', {
