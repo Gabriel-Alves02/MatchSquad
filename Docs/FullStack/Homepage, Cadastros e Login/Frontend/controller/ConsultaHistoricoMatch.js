@@ -247,20 +247,20 @@ async function renderizarConsultorias(listaDeConsultorias) { // Parâmetro renom
             if (consultoria.status_situacao === 'pendente') {
                 avalia = `<h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5>`;
             }
-            /*
+            
             const hoje = new Date();
 
             if((formatarData(consultoria.data) === formatarData(hoje)) && consultoria.link != '') {
                 btnLink = `<div class="historic-card-buttons" style="margin-bottom: 0.25em;">
-                                <a class="btn btn-primary" type="button" href="${consultoria.link}">Reunião</a>
+                                <a class="btn btn-primary" type="button" href="${consultoria.link}" target="_blank" rel="noopener noreferrer">Reunião</a>
                            </div>`
             }
             else {
                 btnLink = `<div class="historic-card-buttons" style="margin-bottom: 0.25em; display: none;">
-                                <a class="btn btn-primary" type="button" href="${consultoria.link}">Reunião</a>
+                                <a class="btn btn-primary" type="button" href="${consultoria.link}" target="_blank" rel="noopener noreferrer">Reunião</a>
                            </div>`
             }
-            */
+            
             html += `
                 <div class="historic-card">
                     <div class="historic-card-header-container">

@@ -246,12 +246,12 @@ modalForm.addEventListener('submit', async (event) => {
     const radioSelecionado = document.querySelector('input[name="tipo"]:checked');
     const horario = endHour;
 
-    //const urlReuniao = '';
-    /*
-    if (radioSelecionado == 'online') {
+    let urlReuniao = null;
+
+    if (radioSelecionado.value === 'online') {
         urlReuniao = gerarUrlReuniao();
     }
-    */
+
 
     if (!data) {
         alert('Por favor, escolha uma data!');
@@ -265,8 +265,6 @@ modalForm.addEventListener('submit', async (event) => {
         return;
     }
 
-    //link: urlReuniao
-
     const PedidoAgendamento = {
         idConsultor: idValid,
         idCliente: getUserId(1),
@@ -275,6 +273,7 @@ modalForm.addEventListener('submit', async (event) => {
         status_situacao: "pendente",
         tipo: radioSelecionado.value,
         periodo: periodo,
+        link: urlReuniao,
         horario: horario || '00:00:00'
     };
 
@@ -282,6 +281,17 @@ modalForm.addEventListener('submit', async (event) => {
     fecharModal();
 });
 
+function gerarUrlReuniao() {
+    let sufixoUrl = Math.random().toString(36).substring(2, 10);
+    sufixoUrl = "consultoria_" + sufixoUrl;
+
+    // Essa é a base JaaS (8x8.vc + ID do projeto)
+    const baseUrl = 'https://8x8.vc/vpaas-magic-cookie-6b44b110cace40f8a723c05a52aa3bc8/';
+
+    const urlSala = baseUrl + sufixoUrl;
+
+    return urlSala;
+}
 
 function abrirModalAgendamento() {
     const modal = document.getElementById('modal-agendamento');
