@@ -277,6 +277,8 @@ async function renderizarConsultorias(listaDeConsultorias) {
         let canceladoDiff = '';
         let comentarioDisplay = consultoria.comentario ? `<h5 style="padding: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">Comentário: ${consultoria.comentario}</h5>` : `<h5 style="padding: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">Sem comentário</h5>`;
 
+        let btnLink = '';
+
         if (isRealizada) {
             if (temDenuncia) {
                 btnDenuncia = `<button class="btn btn-primary" type="button" data-action="denunciar" disabled>Denunciado</button>`;
@@ -304,11 +306,6 @@ async function renderizarConsultorias(listaDeConsultorias) {
 
                 if((formatarData(consultoria.data) === formatarData(hoje)) && consultoria.link != '') {
                     btnLink = `<div class="historic-card-buttons" style="margin-bottom: 0.25em;">
-                                    <a class="btn btn-primary" type="button" href="${consultoria.link}" target="_blank" rel="noopener noreferrer">Reunião</a>
-                                </div>`;
-                }
-                else {
-                    btnLink = `<div class="historic-card-buttons" style="margin-bottom: 0.25em; display: none;">
                                     <a class="btn btn-primary" type="button" href="${consultoria.link}" target="_blank" rel="noopener noreferrer">Reunião</a>
                                 </div>`;
                 }

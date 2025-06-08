@@ -243,6 +243,8 @@ async function renderizarConsultorias(listaDeConsultorias) { // Parâmetro renom
         let hora = (consultoria.horario === '00:00:00') ? '' : consultoria.horario.substring(0, 5);
         let avalia = '';
 
+        let btnLink = '';
+
         if (consultoria.status_situacao === 'pendente' || consultoria.status_situacao === 'cancelada') {
             if (consultoria.status_situacao === 'pendente') {
                 avalia = `<h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5>`;
@@ -252,11 +254,6 @@ async function renderizarConsultorias(listaDeConsultorias) { // Parâmetro renom
 
             if((formatarData(consultoria.data) === formatarData(hoje)) && consultoria.link != '') {
                 btnLink = `<div class="historic-card-buttons" style="margin-bottom: 0.25em;">
-                                <a class="btn btn-primary" type="button" href="${consultoria.link}" target="_blank" rel="noopener noreferrer">Reunião</a>
-                           </div>`
-            }
-            else {
-                btnLink = `<div class="historic-card-buttons" style="margin-bottom: 0.25em; display: none;">
                                 <a class="btn btn-primary" type="button" href="${consultoria.link}" target="_blank" rel="noopener noreferrer">Reunião</a>
                            </div>`
             }
