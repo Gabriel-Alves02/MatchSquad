@@ -10,6 +10,8 @@ const nome = document.getElementById('nome');
 const bio = document.getElementById('bio');
 const prazo = document.getElementById('prazoReag');
 
+const botaoAgendar = document.getElementById('btn-agendar');
+
 
 let info;
 let idValid;
@@ -31,8 +33,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     if (!idValid) {
         idValid = getUserId(0);
-
-        console.log('id consultor: ', idValid, 'id cliente', userId);
+        botaoAgendar.style.display = 'none';
+        const btnVoltar = document.getElementById('btnVoltar');
+        btnVoltar.href = 'MenuConsultor.html';
 
         if (!idValid) {
             console.log('Nao acessado nem por cliente ou consultor');
@@ -107,10 +110,10 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
     const repetido = await agendadoNovamente(getUserId(1), idValid);
+
     if (repetido) {
-        const botaoAgendar = document.getElementById('btn-agendar');
         botaoAgendar.disabled = true;
-        botaoAgendar.innerText = 'Já agendado';
+        botaoAgendar.innerHTML = '<i class="fas fa-calendar-xmark"></i> Já agendado';
     }
 
     info = await carregarInfoPerfil(idValid, 0);

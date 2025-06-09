@@ -163,7 +163,7 @@ export const CancelaAgendamento = async (request, response) => {
         const { id } = request.params;
 
         if (!id) {
-            return response.status(400).json({
+            return response.status(201).json({
                 success: false,
                 message: "ID da reunião não fornecido."
             });
@@ -205,7 +205,7 @@ export const CancelaAgendamento = async (request, response) => {
             const dataFormatada = new Date(data).toLocaleDateString('pt-BR');
             const assuntoEmail = assunto || "Consultoria";
 
-            await EnviarCancelamentoAgendamento([emailConsultor, emailCliente], assuntoEmail, dataFormatada);
+            await EnviarCancelamentoAgendamento ([emailConsultor, emailCliente], assuntoEmail, dataFormatada);
 
         } else {
             console.warn(`Detalhes da reunião (ID: ${id}) não encontrados após cancelamento. E-mails de notificação não enviados.`);
@@ -225,6 +225,86 @@ export const CancelaAgendamento = async (request, response) => {
         return response.status(500).json({
             success: false,
             message: "Erro interno do servidor ao cancelar agendamento."
+        });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+};
+
+export const ConfirmaAgendamento = async (request, response) => {
+    let connection;
+
+    try {
+
+        connection = await pool.getConnection();
+
+        const { id } = request.params;
+
+        if (!id) {
+            return response.status(201).json({
+                success: false,
+                message: "ID da reunião não fornecido."
+            });
+        }
+
+        await connection.beginTransaction();
+
+        const [updateResult] = await connection.query(
+            `UPDATE Reuniao SET status_situacao = 'confirmada' WHERE idReuniao = ?;`,
+            [id]
+        );
+
+        if (updateResult.changedRows === 0) {
+            await connection.rollback();
+            return response.status(201).json({
+                success: false,
+                message: "Reunião não encontrada ou já estava confirmada."
+            });
+        }
+
+        const [reuniaoDetalhes] = await connection.query(
+            `SELECT
+                r.data,
+                r.infoAdiantada,
+                co.email as emailConsultor,
+                cli.email as emailCliente
+            FROM Reuniao r
+            INNER JOIN Consultor co ON co.idConsultor = r.idConsultor
+            INNER JOIN Cliente cli ON cli.idCliente = r.idCliente
+            WHERE r.idReuniao = ?;`,
+            [id]
+        );
+
+        await connection.commit();
+
+        if (reuniaoDetalhes.length > 0) {
+            const { data, assunto, emailConsultor, emailCliente } = reuniaoDetalhes[0];
+
+            const dataFormatada = new Date(data).toLocaleDateString('pt-BR');
+            const assuntoEmail = assunto || "Consultoria";
+
+            await EnviarConfirmacaoAgendamento ([emailConsultor, emailCliente], assuntoEmail, dataFormatada);
+
+        } else {
+            console.warn(`Detalhes da reunião (ID: ${id}) não encontrados após confirmação. E-mails de notificação não enviados.`);
+        }
+
+        return response.status(200).json({
+            success: true,
+            message: "Agendamento cancelado com sucesso e e-mails de notificação enviados."
+        });
+
+    } catch (error) {
+
+        if (connection) {
+            await connection.rollback();
+        }
+        console.error('Erro ao confirmar agendamento:', error);
+        return response.status(500).json({
+            success: false,
+            message: "Erro interno do servidor ao confirmar agendamento."
         });
     } finally {
         if (connection) {

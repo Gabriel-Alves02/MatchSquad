@@ -1,4 +1,4 @@
-import { carregarMatchsConsultor, agendamentoCancelado, denunciar, checkDenuncia, registrarReuniao } from '../service/AJAX.js';
+import { carregarMatchsConsultor, agendamentoCancelado, agendamentoConfirmado, denunciar, checkDenuncia, registrarReuniao } from '../service/AJAX.js';
 import { getUserId } from '../controller/SysFx.js';
 
 const searchBar = document.getElementById('searchBar');
@@ -187,11 +187,13 @@ document.addEventListener('click', async function (event) {
                         window.location.reload();
                     }
                     break;
-                // Adicione o caso 'confirmar' se precisar de alguma ação no JS
                 case 'confirmar':
-                    // Lógica para confirmar (se houver)
-                    console.log(`Confirmar consultoria com ID: ${id}`);
-                    break;
+                    let result = confirm(`Deseja confirmar mesmo este agendamento?`);
+                    if (result) {
+                        await agendamentoConfirmado (currentConsultoriaId);
+                        alert("Agendamento confirmado com sucesso!");
+                        window.location.reload();
+                    }
             }
         }
     }

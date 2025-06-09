@@ -1,307 +1,411 @@
-import { Cadastrar, carregarHabilidades, buscarNick, confirmacaoEmail } from "../service/AJAX.js";
+import { Cadastrar, carregarHabilidades, buscarNick_Email, enviarCodigo } from "../service/AJAX.js";
+import { cpf } from 'https://esm.sh/cpf-cnpj-validator';
 
-const form = document.getElementById('consultorForm');
+let form, grupoEndereco, radiosModalidade;
+let nomeusuario, emailusuario, telefoneusuario, nicknameusuario, senhausuario;
+let confirmacaoEmail, confirmacaoSenha, cpfInput, cepInput, enderecoInput;
+let numeroInput, complementoInput, bairroInput, cidadeInput;
+let msgnome, msgemail, msgphone, msgnickname, msgsenha, msgconfirmacaoemail;
+let msgconfirmacaosenha, msgcpf, msgcep, msgnumero;
+
+const nomePattern = /^[A-Za-z\s]+$/;
+const emailPattern = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+const phonePattern = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
+const nicknamePattern = /^\S+$/;
+const numeroPattern = /^[0-9]+$/;
 
 let htmlHab = '';
 
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-
-  let listaHab = getHabilities();
-
-  if (listaHab.length > 3 || listaHab.length <= 0) {
-    alert('Por favor, selecione até no máximo 3 de suas melhores expertises')
-    return;
-  }
-
-  if (validarFormulario()) {
-    cadastrarUsuario();
-    window.location.href = "./login.html";
-  } else {
-    console.log("Formulário inválido. Corrija os erros antes de enviar.");
-  }
-
-});
-
-document.addEventListener('paste', function (event) {
-  if (event.target.tagName === 'INPUT') {
-    event.preventDefault();
-  }
-});
-
-async function validarFormulario() {
-  // --- 1. Esconder todas as mensagens de erro no início da validação ---
-  // Isso garante que mensagens de validações anteriores sejam limpas.
-  // Verifique se todos os seus elementos de mensagem de erro no HTML têm um ID começando com 'msg'.
-  const errorMessages = document.querySelectorAll('[id^="msg"]');
-  errorMessages.forEach(msg => msg.style.display = 'none');
-
-  let nomeusuario = document.getElementById('nome');
-  let emailusuario = document.getElementById('email');
-  let telefoneusuario = document.getElementById('telefone');
-  let nicknameusuario = document.getElementById('nickname');
-  let senhausuario = document.getElementById('senha');
-  let confirmacaoSenha = document.getElementById("confirmacaoSenha");
-  let cpf = document.getElementById('cpf');
-  let numero = document.getElementById('numero');
-
-  let msgnome = document.getElementById('msgnome');
-  let msgemail = document.getElementById('msgemail');
-  let msgphone = document.getElementById('msgphone');
-  let msgnickname = document.getElementById('msgnickname');
-  let msgsenha = document.getElementById('msgsenha');
-  let msgconfirmacaoemail = document.getElementById('msgconfirmacaoemail');
-  let msgconfirmacaosenha = document.getElementById('msgconfirmacaosenha');
-  let msgcpf = document.getElementById('msgcpf');
-  let msgnicknameInvalido = document.getElementById('msgnicknameInvalido');
-  let msgnumero = document.getElementById('msgnumero');
-
-  var nomePattern = /^[A-Za-z\s]+$/;
-  var emailPattern = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-  var phonePattern = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
-  var nicknamePattern = /^\S+$/;
-  var numeroPattern = /^[0-9]+$/;
-
-  let isValid = true;
-
-  if (!nomePattern.test(nomeusuario.value)) {
-    msgnome.style.display = 'inline-block';
-    document.getElementById('nome').value = '';
-    isValid = false;
-  }
-
-  if (!emailPattern.test(emailusuario.value)) {
-    msgemail.style.display = 'inline-block';
-    document.getElementById('email').value = '';
-    isValid = false;
-  } else {
-    if (emailusuario.value !== confirmacaoEmail.value) {
-      msgconfirmacaoemail.style.display = 'inline-block';
-      document.getElementById('confirmacaoEmail').value = '';
-      isValid = false;
+function limparErro(elementId) {
+    const msgElement = document.getElementById(`msg${elementId}`);
+    if (msgElement) {
+        msgElement.style.display = 'none';
     }
-  }
-
-  if (!phonePattern.test(telefoneusuario.value)) {
-    msgphone.style.display = 'inline-block';
-    document.getElementById('telefone').value = '';
-    isValid = false;
-  }
-
-  const nickCheck = await buscarNick(nicknameusuario.value);
-
-  if (!nicknamePattern.test(nicknameusuario.value) || nicknameusuario.value.length < 5 || nicknameusuario.value.length > 25) {
-    msgnicknameInvalido.style.display = 'inline-block';
-    document.getElementById('nickname').value = '';
-    isValid = false;
-  }
-  else if (nickCheck === false) {
-    msgnickname.style.display = 'inline-block';
-    document.getElementById('nickname').value = '';
-    isValid = false;
-  }
-
-  if (testeSenha(senhausuario.value) === false || senhausuario.value.length < 8) {
-    msgsenha.style.display = 'inline-block';
-    document.getElementById('senha').value = '';
-    isValid = false;
-  }
-  else {
-    if (senhausuario.value !== confirmacaoSenha.value) {
-      msgconfirmacaosenha.style.display = 'inline-block';
-      document.getElementById('confirmacaoSenha').value = '';
-      isValid = false;
-    }
-  }
-
-  cpf.value = cpf.value.replace(/\D/g, '');
-
-  if (cpf.value.length === 11) {
-    if (!validarCPF(cpf.value)) {
-      msgcpf.style.display = 'inline-block';
-      cpf.value = '';
-      isValid = false;
-    }
-  }
-  else {
-    // Documento inválido por tamanho incorreto
-    msgcpf.style.display = 'inline-block';
-    cpf.value = '';
-    isValid = false;
-  }
-
-  if (!numeroPattern.test(numero.value)) {
-    msgnumero.style.display = 'inline-block';
-    numero.value = '';
-    isValid = false;
-  }
-
-  // Se alguma validação local já falhou, não é necessário fazer a chamada AJAX
-  if (!isValid) {
-    return false;
-  }
-
-  try {
-    // A função buscarNick_Email retorna um objeto { valid, code, message }
-    const responseData = await buscarNick_Email(objCheck);
-
-    console.log('Resposta da API (buscarNick_Email):', responseData);
-
-    if (!responseData.valid) {
-      // Se a API indicar que não é válido, definimos isValid para false e exibimos a mensagem correta
-      isValid = false;
-
-      switch (responseData.code) {
-        case 1: // Nickname repetido
-          msgnickname.style.display = 'inline-block';
-          nicknameusuario.value = '';
-          nicknameusuario.focus();
-          break;
-        case 2: // Email repetido
-          msgEmailOriginal.style.display = 'inline-block';
-          emailusuario.value = '';
-          confirmacaoEmail.value = '';
-          emailusuario.focus();
-          break;
-        case 3: // Ambos (nickname e email) repetidos
-          msgnickname.style.display = 'inline-block';
-          msgEmailOriginal.style.display = 'inline-block';
-          nicknameusuario.value = '';
-          emailusuario.value = '';
-          confirmacaoEmail.value = '';
-          nicknameusuario.focus(); // Ou emailusuario.focus()
-          break;
-        default:
-          // Caso um code inesperado seja retornado
-          alert("Ocorreu um erro desconhecido na validação. Tente novamente.");
-          break;
-      }
-    }
-  } catch (error) {
-    console.error("Erro ao verificar unicidade de nickname/email:", error);
-    // Em caso de erro na comunicação com a API (servidor offline, erro de rede),
-    // considere o formulário inválido e mostre uma mensagem genérica.
-    alert("Ocorreu um erro ao conectar com o servidor para verificar os dados. Tente novamente mais tarde.");
-    isValid = false;
-  }
-
-
-  return isValid;
 }
 
+function testeSenha(senha) {
+    for (let i = 0; i < senha.length - 1; i++) {
+        const currentChar = senha[i];
+        const nextChar = senha[i + 1];
 
-function cadastrarUsuario() {
-
-  let listaHab = getHabilities();
-
-  const valorSelecionado = document.querySelector('input[name="modalidade"]:checked').value;
-
-  if (valorSelecionado === 'presencial' || valorSelecionado === 'presencial_e_online') {
-    let objConsultor =
-    {
-      nome: document.getElementById('nome').value,
-      cpf: document.getElementById('cpf').value,
-      email: document.getElementById('email').value,
-      telefone: document.getElementById('telefone').value,
-      nickname: document.getElementById('nickname').value,
-      senha: document.getElementById('senha').value,
-      cep: document.getElementById('cep').value,
-      endereco: document.getElementById('endereco').value,
-      numero: document.getElementById('numero').value,
-      bairro: document.getElementById('bairro').value,
-      complemento: document.getElementById('complemento').value,
-      cidade: document.getElementById('cidade').value,
-      modalidade: valorSelecionado,
-      habilidades: listaHab
+        if (Number(currentChar) + 1 === Number(nextChar)) {
+            return false;
+        }
     }
-  }
-  else {
-    let objConsultor =
-    {
-      nome: document.getElementById('nome').value,
-      cpf: document.getElementById('cpf').value,
-      email: document.getElementById('email').value,
-      telefone: document.getElementById('telefone').value,
-      nickname: document.getElementById('nickname').value,
-      senha: document.getElementById('senha').value,
-      cep: null,
-      endereco: null,
-      numero: null,
-      bairro: null,
-      complemento: null,
-      cidade: null,
-      modalidade: valorSelecionado,
-      habilidades: listaHab
+    return true;
+}
+
+async function validarFormulario() {
+    const errorMessages = document.querySelectorAll('[id^="msg"]');
+    errorMessages.forEach(msg => msg.style.display = 'none');
+
+    let isValid = true;
+
+    if (!nomePattern.test(nomeusuario.value)) {
+        msgnome.style.display = 'inline-block';
+        nomeusuario.value = '';
+        isValid = false;
     }
-  }
 
+    if (!emailPattern.test(emailusuario.value)) {
+        msgemail.style.display = 'inline-block';
+        emailusuario.value = '';
+        msgemail.innerHTML = 'E-mail inválido';
+        isValid = false;
+    } else if (emailusuario.value !== confirmacaoEmail.value) {
+        msgconfirmacaoemail.style.display = 'inline-block';
+        confirmacaoEmail.value = '';
+        isValid = false;
+    }
 
-  console.log(objConsultor);
+    if (!phonePattern.test(telefoneusuario.value)) {
+        msgphone.style.display = 'inline-block';
+        telefoneusuario.value = '';
+        isValid = false;
+    }
 
-  let msgEmail = {
-    id: '-1',
-    usertype: '-1',
-    email: document.getElementById('email').value
-  };
+    if (!nicknamePattern.test(nicknameusuario.value) || nicknameusuario.value.length < 5 || nicknameusuario.value.length > 25) {
+        msgnickname.style.display = 'inline-block';
+        nicknameusuario.value = '';
+        msgnickname.innerHTML = 'Nickname deve ter no mínimo 5 e no máximo 25 caracteres';
+        isValid = false;
+    }
 
-  Cadastrar(objConsultor);
-  // await confirmacaoEmail(msgEmail);
+    const objCheck = {
+        nickname: nicknameusuario.value,
+        email: emailusuario.value
+    };
+    const nickEmailCheck = await buscarNick_Email(objCheck);
+
+    if (nickEmailCheck.code === 2 || nickEmailCheck.code === 3) {
+        msgemail.style.display = 'inline-block';
+        emailusuario.value = '';
+        confirmacaoEmail.value = '';
+        msgemail.innerHTML = 'E-mail já utilizado em nossa plataforma!';
+        isValid = false;
+    }
+
+    if (nickEmailCheck.code === 1 || nickEmailCheck.code === 3) {
+        msgnickname.style.display = 'inline-block';
+        nicknameusuario.value = '';
+        msgnickname.innerHTML = 'Nickname já utilizado em nossa plataforma!';
+        isValid = false;
+    }
+
+    if (!testeSenha(senhausuario.value) || senhausuario.value.length < 8) {
+        msgsenha.style.display = 'inline-block';
+        senhausuario.value = '';
+        isValid = false;
+    } else if (senhausuario.value !== confirmacaoSenha.value) {
+        msgconfirmacaosenha.style.display = 'inline-block';
+        confirmacaoSenha.value = '';
+        isValid = false;
+    }
+
+    const rawCpfValue = cpfInput.value.replace(/\D/g, '');
+
+    if (!cpf.isValid(rawCpfValue)) {
+        msgcpf.style.display = 'inline-block';
+        cpfInput.value = '';
+        msgcpf.innerHTML = 'CPF inválido!';
+        isValid = false;
+    }
+
+    const valorSelecionado = document.querySelector('input[name="modalidade"]:checked').value;
+    if (valorSelecionado === 'presencial' || valorSelecionado === 'presencial_e_online') {
+        const rawCepValue = cepInput.value.replace(/\D/g, '');
+
+        if (rawCepValue.length !== 8) {
+            msgcep.style.display = 'inline-block';
+            cepInput.value = '';
+            msgcep.innerHTML = 'CEP deve ter 8 dígitos!';
+            isValid = false;
+        }
+
+        if (!numeroPattern.test(numeroInput.value) || numeroInput.value.trim() === '') {
+            msgnumero.style.display = 'inline-block';
+            numeroInput.value = '';
+            isValid = false;
+        }
+        if (enderecoInput.value.trim() === '') {
+            isValid = false;
+        }
+        if (bairroInput.value.trim() === '') {
+            isValid = false;
+        }
+        if (cidadeInput.value.trim() === '') {
+            isValid = false;
+        }
+    }
+
+    return isValid;
 }
 
 function getHabilities() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const selecionados = [];
 
-  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-  const selecionados = [];
-
-  checkboxes.forEach(checkbox => {
-    if (checkbox.checked) {
-      selecionados.push(checkbox.value);
-    }
-  });
-
-  return selecionados;
-
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            selecionados.push(checkbox.value);
+        }
+    });
+    return selecionados;
 }
 
-function testeSenha(senhausuario) {
-  const padraoLetras = /[a-zA-Z]/g;
-  const padraoNumeros = /[0-9]/g;
-  const padraoEspeciais = /[^\w\s]/g;
+async function cadastrarUsuario() {
+    let listaHab = getHabilities();
+    const valorSelecionado = document.querySelector('input[name="modalidade"]:checked').value;
 
-  if (senhausuario.match(padraoLetras) != null && senhausuario.match(padraoNumeros) != null && senhausuario.match(padraoEspeciais) != null) {
-    return true;
-  }
-  else {
-    return false;
-  }
+    let objConsultor;
+
+    if (valorSelecionado === 'presencial' || valorSelecionado === 'presencial_e_online') {
+        objConsultor = {
+            nome: nomeusuario.value,
+            cpf: cpfInput.value,
+            email: emailusuario.value,
+            telefone: telefoneusuario.value,
+            nickname: nicknameusuario.value,
+            senha: senhausuario.value,
+            cep: cepInput.value,
+            endereco: enderecoInput.value,
+            numero: numeroInput.value,
+            bairro: bairroInput.value,
+            complemento: complementoInput.value,
+            cidade: cidadeInput.value,
+            modalidade: valorSelecionado,
+            habilidades: listaHab
+        };
+    } else {
+        objConsultor = {
+            nome: nomeusuario.value,
+            cpf: cpfInput.value,
+            email: emailusuario.value,
+            telefone: telefoneusuario.value,
+            nickname: nicknameusuario.value,
+            senha: senhausuario.value,
+            cep: null,
+            endereco: null,
+            numero: null,
+            bairro: null,
+            complemento: null,
+            cidade: null,
+            modalidade: valorSelecionado,
+            habilidades: listaHab
+        };
+    }
+
+    await Cadastrar(objConsultor);
+    await enviarCodigo ('-1','-1', emailusuario.value);
+    window.location.href = "./login.html";
+    
+}
+
+async function handleCepInput() {
+    let cep = cepInput.value.replace(/\D/g, '');
+    limparErro('cep');
+
+    enderecoInput.value = '';
+    bairroInput.value = '';
+    cidadeInput.value = '';
+
+    if (cep.length === 8) {
+        try {
+            const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+            const data = await response.json();
+
+            if (data.erro) {
+                console.log("CEP não encontrado ou inválido.");
+                msgcep.style.display = 'inline-block';
+                cepInput.value = '';
+                msgcep.innerHTML = 'CEP não encontrado ou inválido.';
+                return;
+            }
+
+            enderecoInput.value = data.logradouro;
+            bairroInput.value = data.bairro;
+            cidadeInput.value = data.localidade;
+            numeroInput.focus();
+        } catch (error) {
+            console.error("Erro ao buscar CEP:", error);
+            msgcep.style.display = 'inline-block';
+            msgcep.innerHTML = 'Erro ao buscar CEP. Tente novamente.';
+            cepInput.value = '';
+        }
+    }
+}
+
+function aplicarMascaraTelefone(input) {
+    input.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '');
+        let formattedValue = '';
+
+        if (value.length > 0) {
+            formattedValue += '(' + value.substring(0, 2);
+        }
+        if (value.length > 2) {
+            if (value.length > 10) {
+                formattedValue += ') ' + value.substring(2, 7);
+            } else {
+                formattedValue += ') ' + value.substring(2, 6);
+            }
+        }
+        if (value.length > 6) {
+            if (value.length > 10) {
+                formattedValue += '-' + value.substring(7, 11);
+            } else {
+                formattedValue += '-' + value.substring(6, 10);
+            }
+        }
+        e.target.value = formattedValue;
+    });
+}
+
+function aplicarMascaraCep(input) {
+    input.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '');
+        let formattedValue = '';
+
+        if (value.length > 0) {
+            formattedValue += value.substring(0, 5);
+        }
+        if (value.length > 5) {
+            formattedValue += '-' + value.substring(5, 8);
+        }
+        e.target.value = formattedValue;
+    });
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
+    form = document.getElementById('consultorForm');
+    grupoEndereco = document.getElementById('grupoendereco');
+    radiosModalidade = document.querySelectorAll('input[name="modalidade"]');
 
-  const consultor = await carregarHabilidades();
+    nomeusuario = document.getElementById('nome');
+    emailusuario = document.getElementById('email');
+    telefoneusuario = document.getElementById('telefone');
+    nicknameusuario = document.getElementById('nickname');
+    senhausuario = document.getElementById('senha');
+    confirmacaoEmail = document.getElementById('confirmacaoEmail');
+    confirmacaoSenha = document.getElementById("confirmacaoSenha");
+    cpfInput = document.getElementById('cpf');
+    cepInput = document.getElementById('cep');
+    enderecoInput = document.getElementById('endereco');
+    numeroInput = document.getElementById('numero');
+    complementoInput = document.getElementById('complemento');
+    bairroInput = document.getElementById('bairro');
+    cidadeInput = document.getElementById('cidade');
 
-  try {
+    msgnome = document.getElementById('msgnome');
+    msgemail = document.getElementById('msgemail');
+    msgphone = document.getElementById('msgphone');
+    msgnickname = document.getElementById('msgnickname');
+    msgsenha = document.getElementById('msgsenha');
+    msgconfirmacaoemail = document.getElementById('msgconfirmacaoemail');
+    msgconfirmacaosenha = document.getElementById('msgconfirmacaosenha');
+    msgcpf = document.getElementById('msgcpf');
+    msgcep = document.getElementById('msgcep');
+    msgnumero = document.getElementById('msgnumero');
 
-    (consultor.habilidades).forEach((habilidade) => {
+    cepInput.removeAttribute('required');
+    enderecoInput.removeAttribute('required');
+    numeroInput.removeAttribute('required');
+    bairroInput.removeAttribute('required');
+    cidadeInput.removeAttribute('required');
 
-      console.log(habilidade)
+    radiosModalidade.forEach(radio => {
+        radio.addEventListener('change', function () {
+            const valorSelecionado = document.querySelector('input[name="modalidade"]:checked').value;
 
-      htmlHab += `
+            if (valorSelecionado === 'presencial' || valorSelecionado === 'presencial_e_online') {
+                grupoEndereco.style.display = 'block';
+                cepInput.setAttribute('required', 'required');
+                enderecoInput.setAttribute('required', 'required');
+                numeroInput.setAttribute('required', 'required');
+                bairroInput.setAttribute('required', 'required');
+                cidadeInput.setAttribute('required', 'required');
+            } else {
+                grupoEndereco.style.display = 'none';
+                cepInput.value = '';
+                enderecoInput.value = '';
+                numeroInput.value = '';
+                complementoInput.value = '';
+                bairroInput.value = '';
+                cidadeInput.value = '';
 
-                <div class="col-4 text-center">
-                    <input type="checkbox" id="${habilidade.nomeHabilidade}" name="${habilidade.nomeHabilidade}" value="${habilidade.idHabilidade}" />
-                    <label for="${habilidade.nomeHabilidade}">
-                        ${habilidade.nomeHabilidade}
-                    </label>
-                </div>
+                cepInput.removeAttribute('required');
+                enderecoInput.removeAttribute('required');
+                numeroInput.removeAttribute('required');
+                bairroInput.removeAttribute('required');
+                cidadeInput.removeAttribute('required');
 
-            `;
+                limparErro('cep');
+                limparErro('numero');
+            }
+        });
     });
 
-    // Insere no container de habilidades (ex: um elemento com id 'habilidadesContainer')
-    document.getElementById('habilidadesContainer').innerHTML = htmlHab;
+    nomeusuario.addEventListener('keyup', () => limparErro('nome'));
+    emailusuario.addEventListener('keyup', () => limparErro('email'));
+    confirmacaoEmail.addEventListener('keyup', () => limparErro('confirmacaoemail'));
+    telefoneusuario.addEventListener('keyup', () => limparErro('phone'));
+    cpfInput.addEventListener('keyup', () => limparErro('cpf'));
+    nicknameusuario.addEventListener('keyup', () => limparErro('nickname'));
+    senhausuario.addEventListener('keyup', () => limparErro('senha'));
+    confirmacaoSenha.addEventListener('keyup', () => limparErro('confirmacaosenha'));
+    cepInput.addEventListener('keyup', handleCepInput); // Use a função nomeada
+    numeroInput.addEventListener('keyup', () => limparErro('numero'));
 
-  } catch (error) {
-    console.error("Erro ao carregar habilidades:", error);
-  }
+    const habilidadesContainer = document.getElementById('habilidadesContainer');
+    if (habilidadesContainer) {
+        try {
+            const consultor = await carregarHabilidades();
+            if (consultor && consultor.habilidades) {
+                consultor.habilidades.forEach((habilidade) => {
+                    htmlHab += `
+                        <div class="col-4 text-center">
+                            <input type="checkbox" id="${habilidade.nomeHabilidade}" name="${habilidade.nomeHabilidade}" value="${habilidade.idHabilidade}" />
+                            <label for="${habilidade.nomeHabilidade}">
+                                ${habilidade.nomeHabilidade}
+                            </label>
+                        </div>
+                    `;
+                });
+                habilidadesContainer.innerHTML = htmlHab;
+            } else {
+                console.warn("Nenhuma habilidade encontrada ou formato inesperado.");
+            }
+        } catch (error) {
+            console.error("Erro ao carregar habilidades:", error);
+        }
+    } else {
+        console.error("Elemento 'habilidadesContainer' não encontrado.");
+    }
+
+    aplicarMascaraTelefone(telefoneusuario);
+    aplicarMascaraCep(cepInput);
+
+    const initialSelectedModalidade = document.querySelector('input[name="modalidade"]:checked').value;
+    if (initialSelectedModalidade !== 'presencial' && initialSelectedModalidade !== 'presencial_e_online') {
+        grupoEndereco.style.display = 'none';
+    }
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        let listaHab = getHabilities();
+
+        if (listaHab.length > 3 || listaHab.length <= 0) {
+            alert('Por favor, selecione até no máximo 3 de suas melhores expertises');
+            return;
+        }
+
+        const formValido = await validarFormulario();
+
+        if (formValido) {
+            await cadastrarUsuario();
+        } else {
+            console.log("Formulário inválido. Corrija os erros antes de enviar.");
+        }
+    });
 });

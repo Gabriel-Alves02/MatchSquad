@@ -10,17 +10,22 @@ export const Cadastrar = async (objUser) => {
 
     let improviseAdaptOvercome = possuiHabilidades ? "/cadConsultor" : "/cadCliente";
 
+    console.log('result: ', improviseAdaptOvercome);
+
     return await fetch(url_cliente + improviseAdaptOvercome, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(objUser)
     })
         .then((response) => {
-            if (response.status >= 200 && response.status < 300) {
+            if (response.status >= 200) {
                 alert("Cadastro realizado com sucesso. Enviado e-mail para confirmação enviado");
             }
-            else if (response.status === 409) {
-                alert("Usuário já cadastrado");
+            else if (response.status === 202) {
+                alert("CPF já cadastrado");
+            }
+            else if (response.status === 201) {
+                alert("ERRO: Campos não foram preenchidos corretamente, ou contém dados inválidos!");
             }
             else {
                 console.log(`Erro do servidor: ${response.status}`);
@@ -293,7 +298,7 @@ export async function agendadoNovamente(idCliente, idConsultor) {
     }
 }
 
-export async function enviarCodigo (id, usertype, email) {
+export async function enviarCodigo(id, usertype, email) {
     try {
 
         const response = await fetch('http://localhost:8000/notifications', {
@@ -337,7 +342,7 @@ export async function verificado(id, usertype) {
 
 export async function buscarNick_Email(objCheck) {
 
-    console.log(objCheck);
+    console.log('passou isso pro ajax: ', objCheck);
 
     try {
         const response = await fetch(url_checks + `/nickname-email`, {
@@ -358,10 +363,10 @@ export async function buscarNick_Email(objCheck) {
     }
 }
 
-export async function agendamentoCancelado (id) {
+export async function agendamentoCancelado(id) {
     try {
 
-        const response = await fetch(url_checks + `/agenda/${id}`, {
+        const response = await fetch(url_checks + `/agenda/${id}/cancela`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" }
         }).then((response) => {
@@ -378,6 +383,26 @@ export async function agendamentoCancelado (id) {
     }
 }
 
+
+export async function agendamentoConfirmado(id) {
+
+    try {
+        const response = await fetch(url_checks + `/agenda/${id}/confirma`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" }
+        }).then((response) => {
+            if (response.status == 200) {
+                console.log("Confirmado com sucesso!");
+            }
+            else {
+                console.log(`Erro do servidor: ${response.status}`);
+            }
+        })
+
+    } catch (error) {
+        console.error("Erro geral no cancelamento do agendamento:", error);
+    }
+}
 
 export const RegistrarReuniao = async (objRegistro) => {
     return await fetch(url_cliente + '/registrarReuniao', {
@@ -992,7 +1017,7 @@ export async function horariosConsultor(idConsultor) {
     })
 }
 
-export async function confirmarReuniao (idReuniao) {
+export async function confirmarReuniao(idReuniao) {
     try {
         const response = await fetch(url_consultores + `/reuniao-confirmed/${idReuniao}`, {
             method: "PUT",

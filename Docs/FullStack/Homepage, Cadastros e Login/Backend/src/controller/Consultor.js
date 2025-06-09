@@ -1,19 +1,60 @@
 import { pool } from "../database.js";
 import { gerarNum6digitos } from "./SysFx.js";
 
+
 export const CadastrarConsultor = async (request, response, next) => {
 
     const connection = await pool.getConnection();
 
     try {
+        let {
+            nome,
+            cpf,
+            email,
+            telefone,
+            nickname,
+            senha,
+            habilidades,
+            cep,
+            endereco,
+            numero,
+            complemento,
+            bairro,
+            cidade,
+            modalidade
+        } = request.body;
 
-        const { nome, cpf, email, telefone, nickname, senha, habilidades, cep, endereco, numero, complemento, bairro, cidade, modalidade } = request.body;
+        cpf = cpf.replace(/\D/g, '');
+
+        if (cpf.length !== 11) {
+            return response.status(201).json({
+                success: false,
+                message: "CPF inválido. Deve conter 11 dígitos numéricos."
+            });
+        }
 
         if (!nome || !cpf || !email || !telefone || !nickname || !senha || !habilidades || !modalidade) {
-            return response.status(400).json({
+            return response.status(201).json({
                 success: false,
-                message: "Todos os campos são obrigatórios"
+                message: "Campos obrigatórios gerais (nome, cpf, email, telefone, nickname, senha, habilidades, modalidade) não preenchidos."
             });
+        }
+
+        if (modalidade === 'presencial' || modalidade === 'presencial_e_online') {
+            if (!cep || !endereco || !numero || !bairro || !cidade) {
+                return response.status(201).json({
+                    success: false,
+                    message: "Para modalidades 'presencial' ou 'presencial_e_online', os campos de endereço (CEP, Endereço, Número, Bairro, Cidade) são obrigatórios."
+                });
+            }
+
+            cep = cep.replace(/\D/g, '');
+            if (cep.length !== 8) {
+                return response.status(201).json({
+                    success: false,
+                    message: "CEP inválido. Deve conter 8 dígitos numéricos."
+                });
+            }
         }
 
         await connection.beginTransaction();
@@ -26,7 +67,7 @@ export const CadastrarConsultor = async (request, response, next) => {
             await connection.rollback();
             return response.status(409).json({
                 success: false,
-                message: "CPF já cadastrado"
+                message: "CPF já cadastrado."
             });
         }
 
@@ -37,51 +78,60 @@ export const CadastrarConsultor = async (request, response, next) => {
             [nickname, senha, code, 0]
         );
 
+        const valorBloqueio = 1;
+
+        const valoresConsultor = [
+            nome,
+            cpf,
+            email,
+            telefone,
+            resultLogin.insertId,
+            modalidade,
+            (modalidade === 'presencial' || modalidade === 'presencial_e_online') ? cep : null,
+            (modalidade === 'presencial' || modalidade === 'presencial_e_online') ? endereco : null,
+            (modalidade === 'presencial' || modalidade === 'presencial_e_online') ? numero : null,
+            (modalidade === 'presencial' || modalidade === 'presencial_e_online') ? bairro : null,
+            (modalidade === 'presencial' || modalidade === 'presencial_e_online') ? complemento : null,
+            (modalidade === 'presencial' || modalidade === 'presencial_e_online') ? cidade : null,
+            valorBloqueio
+        ];
+
         const [consultorResult] = await connection.query(
-            `INSERT INTO Consultor 
-            (nome, cpf, email, telefone, idLogin, cep, endereco, numero, bairro, cidade) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
-            [nome, cpf, email, telefone, resultLogin.insertId, cep, endereco, numero, bairro, cidade, complemento, modalidade]
+            `INSERT INTO Consultor
+             (nome, cpf, email, telefone, idLogin, modalidadeTrab, cep, endereco, numeroCasa, bairro, complemento, cidade, bloqueio)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+            valoresConsultor
         );
 
         const insertHabilidades = habilidades.map(async (idHabilidade) => {
             await connection.query(
-                `INSERT INTO Consultor_Habilidades 
-                (idConsultor, idHabilidade) 
-                VALUES (?, ?)`,
+                `INSERT INTO Consultor_Habilidades
+                 (idConsultor, idHabilidade)
+                 VALUES (?, ?)`,
                 [consultorResult.insertId, Number(idHabilidade)]
             );
         });
 
         await Promise.all(insertHabilidades);
 
-
-
-
-
         await connection.commit();
 
-
-
-        return response.status(201).json({
+        return response.status(200).json({
             success: true,
             id: consultorResult.insertId,
             message: "Cadastro realizado com sucesso"
         });
 
-
-
     } catch (error) {
         await connection.rollback();
-        console.error('Erro no cadastro:', error);
+        console.error('Erro no cadastro do consultor:', error);
         return response.status(500).json({
             success: false,
-            message: "Erro interno do servidor"
+            message: "Erro interno do servidor ao cadastrar consultor."
         });
     } finally {
         connection.release();
     }
-
 };
 
 

@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         editable: true,
         dayMaxEvents: true,
         headerToolbar: {
-            left: 'prev,next today',
+            left: 'next today',
             center: 'title',
             right: 'dayGridMonth'
         },

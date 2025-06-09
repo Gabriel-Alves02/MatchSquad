@@ -217,6 +217,26 @@ export async function EnviarCancelamentoAgendamento(Emails, Assunto, Data) {
 
 }
 
+export async function EnviarConfirmacaoAgendamento (Emails, Assunto, Data) {
+
+    const msg = {
+        to: Emails,
+        from: "matchsquad.brasil@gmail.com",
+        subject: `Matchsquad - Agendamento confirmado!`,
+        html: `<p><strong> Olá! Estamos fazendo contato para confirmar seu agendamento (${Data}) - ${Assunto}. Te vemos lá! </strong><br>
+                Qualquer dúvidas estamos a disposição ;) </p>`
+    };
+
+    try {
+        //await sgMail.send(msg);
+        console.log("E-mail de confirmação enviado com sucesso!", msg);
+
+    } catch (error) {
+        console.error("Erro ao enviar e-mail:", error);
+    }
+
+}
+
 export async function SendAnnouncement(req, res) {
 
     const opt = req.params;
