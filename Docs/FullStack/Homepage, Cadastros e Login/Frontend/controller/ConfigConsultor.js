@@ -2,6 +2,7 @@ import { carregarInfoPerfil, atualizarPerfil, atualizarSenha, uploadImagemPerfil
 import { getUserId, deactivateUser, senhaInvalida } from './SysFx.js';
 
 let info;
+let valorSelecionado;
 
 const limparImagensBtn = document.getElementById('limpar-imagens-btn');
 
@@ -24,8 +25,8 @@ let redeSocial = document.getElementById('rede-social');
 let horarioInicio = document.getElementById('hora-inicial');
 let horarioFim = document.getElementById('hora-final');
 let bio = document.getElementById('bio');
-let prazo = document.getElementById('prazo'); // input type=range
-let prazoSpan = document.getElementById('prazo-valor'); // span que mostra o numero
+let prazo = document.getElementById('prazo');
+let prazoSpan = document.getElementById('prazo-valor');
 
 let salvarBtn = document.getElementById('salvar');
 
@@ -45,19 +46,25 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   info = await carregarInfoPerfil(getUserId(0), 0);
 
-  prazo.value = info[0].prazoMinReag;
-  prazoSpan.textContent = info[0].prazoMinReag;
+  if (!info) {
+    console.error("Perfil do consultor não encontrado.");
+    //window.location.href = '/';
+    return;
+  }
 
-  nome.value = info[0].nome
-  email.value = info[0].email
-  telefone.value = info[0].telefone
-  valorHora.value = info[0].valorHora
-  redeSocial.value = info[0].redeSocial
-  horarioInicio.value = info[0].horarioInicio
-  horarioFim.value = info[0].horarioFim
-  bio.value = info[0].bio
+  prazo.value = info.prazoMinReag;
+  prazoSpan.textContent = info.prazoMinReag;
 
-  let urlImagemPerfil = info[0].urlImagemPerfil
+  nome.value = info.nome;
+  email.value = info.email;
+  telefone.value = info.telefone;
+  valorHora.value = info.valorHora;
+  redeSocial.value = info.redeSocial;
+  horarioInicio.value = info.horarioInicio;
+  horarioFim.value = info.horarioFim;
+  bio.value = info.bio;
+
+  let urlImagemPerfil = info.urlImagemPerfil;
 
   const localStorageUrl = localStorage.getItem('profilePicUrl');
 
@@ -67,10 +74,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     profilePic.src = urlImagemPerfil;
   }
 
-
-  if (info[0].urlsCertificados !== null && info[0].urlsCertificados.length > 0) {
-
-    let certificados = info[0].urlsCertificados.split(',');
+  if (info.urlsCertificados !== null && info.urlsCertificados.length > 0) {
+    let certificados = info.urlsCertificados.split(',');
 
     certificados.forEach(url => {
       const imgContainer = document.createElement('div');
@@ -81,19 +86,40 @@ document.addEventListener('DOMContentLoaded', async function () {
       imgContainer.appendChild(img);
       galeriaCertif.appendChild(imgContainer);
     });
-
   }
 
+
   const radios = document.querySelectorAll('input[name="modalidade"]');
+  const modalidadeCarregada = info.modalidadeTrab;
+
+
+  if (modalidadeCarregada === 'presencial' || modalidadeCarregada === 'presencial_e_online') {
+    document.getElementById('grupoendereco').style.display = 'inline-block';
+    document.getElementById('cep').value = info.cep || '';
+    document.getElementById('endereco').value = info.endereco || '';
+    document.getElementById('numero').value = info.numeroCasa || '';
+    document.getElementById('complemento').value = info.complemento || '';
+    document.getElementById('bairro').value = info.bairro || '';
+    document.getElementById('cidade').value = info.cidade || '';
+  } else {
+    document.getElementById('grupoendereco').style.display = 'none';
+    document.getElementById('cep').value = '';
+    document.getElementById('endereco').value = '';
+    document.getElementById('numero').value = '';
+    document.getElementById('complemento').value = '';
+    document.getElementById('bairro').value = '';
+    document.getElementById('cidade').value = '';
+  }
+
+
+  marcarModalidade(modalidadeCarregada);
 
   radios.forEach(radio => {
     radio.addEventListener('change', function () {
-      const valorSelecionado = document.querySelector('input[name="modalidade"]:checked').value;
-
+      valorSelecionado = this.value;
       if (valorSelecionado === 'presencial' || valorSelecionado === 'presencial_e_online') {
         document.getElementById('grupoendereco').style.display = 'inline-block';
-      }
-      else {
+      } else {
         document.getElementById('grupoendereco').style.display = 'none';
         document.getElementById('cep').value = '';
         document.getElementById('endereco').value = '';
@@ -101,7 +127,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.getElementById('cidade').value = '';
         document.getElementById('numero').value = '';
         document.getElementById('complemento').value = '';
-        limparCep();
       }
     });
   });
@@ -141,6 +166,10 @@ document.addEventListener('paste', function (event) {
 document.querySelector('.profile-info').addEventListener('submit', async (e) => {
   e.preventDefault();
 
+  // Garante que 'valorSelecionado' esteja sempre atualizado com o rádio selecionado
+  const selectedRadio = document.querySelector('input[name="modalidade"]:checked');
+  valorSelecionado = selectedRadio ? selectedRadio.value : 'online'; // Padrão 'online' se nada estiver selecionado
+
   let dadosAtualizados;
 
   if (valorSelecionado === 'presencial' || valorSelecionado === 'presencial_e_online') {
@@ -150,31 +179,34 @@ document.querySelector('.profile-info').addEventListener('submit', async (e) => 
       telefone: telefone.value,
       valorHora: valorHora.value,
       redeSocial: redeSocial.value,
-      horarioInicio: horarioInicio.value, // definir passo de 30min em 30min
+      horarioInicio: horarioInicio.value,
       horarioFim: horarioFim.value,
       prazoMinReag: prazo.value,
-      modalidade: valorSelecionado,
+      modalidade: valorSelecionado, // Nome da propriedade que o backend espera ('modalidade')
       cep: document.getElementById('cep').value,
-      endereco: document.getElementById('edereco').value,
-      numero: document.getElementById('numero').value,
+      endereco: document.getElementById('endereco').value,
+      numero: document.getElementById('numero').value, // Frontend envia como 'numero'
+      complemento: document.getElementById('complemento').value,
       bairro: document.getElementById('bairro').value,
       cidade: document.getElementById('cidade').value,
       bio: bio.value
     };
-  }
-  else {
+  } else {
+    // Se a modalidade não for presencial, envia nulo para os campos de endereço
     dadosAtualizados = {
       nome: nome.value,
       email: email.value,
       telefone: telefone.value,
       valorHora: valorHora.value,
       redeSocial: redeSocial.value,
-      horarioInicio: horarioInicio.value, // definir passo de 30min em 30min
+      horarioInicio: horarioInicio.value,
       horarioFim: horarioFim.value,
       prazoMinReag: prazo.value,
+      modalidade: valorSelecionado, // Nome da propriedade que o backend espera ('modalidade')
       cep: null,
       endereco: null,
       numero: null,
+      complemento: null,
       bairro: null,
       cidade: null,
       bio: bio.value
@@ -183,10 +215,12 @@ document.querySelector('.profile-info').addEventListener('submit', async (e) => 
 
   salvarBtn.disabled = true;
 
+  console.log('Dados para salvar: \n', dadosAtualizados);
+
   const resp = await atualizarPerfil(getUserId(0), 0, dadosAtualizados);
 
-  alert(resp.message)
-
+  alert(resp.message);
+  salvarBtn.disabled = false; // Reabilita o botão após a resposta
 });
 
 
@@ -209,6 +243,7 @@ uploadInput.addEventListener('change', async function () {
 
       if (resp) {
         profilePic.src = resp.url;
+        localStorage.setItem('profilePicUrl', resp.url); // Salva a URL no localStorage
       } else {
         console.error('>', resp.message);
       }
@@ -237,7 +272,6 @@ uploadCertif.addEventListener('change', function () {
       continue;
     }
 
-    // IIFE para capturar o escopo correto
     (function (file) {
       const reader = new FileReader();
 
@@ -294,9 +328,18 @@ document.getElementById('excluir-conta').addEventListener('click', async (e) => 
 
 });
 
-[email, valorHora, telefone, redeSocial, horarioInicio, horarioFim, bio, prazo].forEach(input => {
-  input.addEventListener('input', habilitarSalvar);
+[nome, email, valorHora, telefone, redeSocial, horarioInicio, horarioFim, bio, prazo,
+  document.getElementById('cep'), document.getElementById('endereco'),
+  document.getElementById('numero'), document.getElementById('complemento'), // Adicionado complemento
+  document.getElementById('bairro'), document.getElementById('cidade')].forEach(input => {
+    input.addEventListener('input', habilitarSalvar);
+  });
+
+// Adiciona event listeners para os radio buttons para habilitar o botão salvar
+document.querySelectorAll('input[name="modalidade"]').forEach(radio => {
+  radio.addEventListener('change', habilitarSalvar);
 });
+
 
 function habilitarSalvar() {
   salvarBtn.disabled = false;
@@ -352,24 +395,14 @@ function habilitarSalvar3() {
   salvarCertifBtn.disabled = false;
 }
 
-function marcarModalidade(valor) {
-  const radiobuttons = document.getElementsByName('modalidade');
-  radiobuttons.forEach(radiobutton => {
-    if (radiobutton.value === modalidade) {
-      radiobutton.checked = true;
-      radiobutton.dispatchEvent(new Event("change"));
-    }
-  })
-}
-
 limparImagensBtn.addEventListener('click', async function () {
   const confirmacao = confirm('Tem certeza que deseja limpar TODAS as suas imagens (perfil e certificados) da nuvem? Esta ação é irreversível.');
 
   if (confirmacao) {
     try {
       const userId = getUserId(0);
-    
-      const resp = await limparImagensNaNuvem (userId, 0);
+
+      const resp = await limparImagensNaNuvem(userId, 0);
 
       if (resp.success) {
         alert('Imagens limpas com sucesso da nuvem!');
@@ -387,3 +420,14 @@ limparImagensBtn.addEventListener('click', async function () {
     }
   }
 });
+
+function marcarModalidade(valor) {
+    const radiobuttons = document.getElementsByName('modalidade');
+    radiobuttons.forEach(radiobutton => {
+        if (radiobutton.value === valor) {
+            radiobutton.checked = true;
+            // **Alteração Importante:** Dispara o evento 'change' para ativar a lógica de visibilidade
+            radiobutton.dispatchEvent(new Event("change"));
+        }
+    });
+}

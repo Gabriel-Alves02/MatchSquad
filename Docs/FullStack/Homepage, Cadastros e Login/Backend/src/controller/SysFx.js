@@ -325,13 +325,13 @@ export const LoadProfile = async (request, response, next) => {
                     c.horarioFim,
                     c.prazoMinReag,
                     c.bio,
-                    c.modalidadeTrab,  -- Adicionado
-                    c.cep,             -- Adicionado
-                    c.endereco,        -- Adicionado
-                    c.numeroCasa,      -- Adicionado
-                    c.bairro,          -- Adicionado
-                    c.complemento,     -- Adicionado
-                    c.cidade,          -- Adicionado
+                    c.modalidadeTrab,   -- <--- ATENÇÃO AQUI: Nome da coluna no DB
+                    c.cep,
+                    c.endereco,
+                    c.numeroCasa,       -- <--- ATENÇÃO AQUI: Nome da coluna no DB
+                    c.bairro,
+                    c.complemento,
+                    c.cidade,
                     GROUP_CONCAT(ce.urlCertificado SEPARATOR ',') AS urlsCertificados
                 FROM
                     Consultor c
@@ -347,26 +347,13 @@ export const LoadProfile = async (request, response, next) => {
       if (perfil.length > 0) {
         return response.status(200).json({
           success: true,
-          perfil
-        });
-      }
-
-    } else if (usertype === '1') {
-      const [perfil] = await pool.query(
-        `SELECT nome,email,telefone,redeSocial,urlImagemPerfil,bio FROM Cliente WHERE idCliente = ?;`,
-        [id]
-      );
-
-      if (perfil.length > 0) {
-        return response.status(200).json({
-          success: true,
-          perfil
+          perfil: perfil[0]
         });
       }
     }
 
-    return response.status(404).json({ // Changed from 201 to 404 Not Found
-      success: false, // Changed success to false to indicate an error
+    return response.status(201).json({
+      success: false,
       message: "Perfil não encontrado."
     });
 
@@ -384,7 +371,6 @@ export const RefreshProfile = async (request, response, next) => {
   const connection = await pool.getConnection();
 
   try {
-
     const { id, usertype } = request.params;
     const info = request.body;
     let flag = 0;
@@ -392,12 +378,51 @@ export const RefreshProfile = async (request, response, next) => {
     await connection.beginTransaction();
 
     if (usertype === '0') {
-      await connection.query(`UPDATE Consultor SET nome = ?, email = ?, telefone = ?, valorHora = ?,redeSocial = ?,horarioInicio = ?,horarioFim = ?,prazoMinReag = ?,bio = ? WHERE idConsultor = ?;`,
-        [info.nome, info.email, info.telefone, info.valorHora, info.redeSocial, info.horarioInicio, info.horarioFim, info.prazoMinReag, info.bio, id]);
+      await connection.query(
+        `UPDATE Consultor SET 
+                nome = ?, 
+                email = ?, 
+                telefone = ?, 
+                valorHora = ?,
+                redeSocial = ?,
+                horarioInicio = ?,
+                horarioFim = ?,
+                prazoMinReag = ?,
+                bio = ?,
+                modalidadeTrab = ?,       
+                endereco = ?,             
+                numeroCasa = ?,           
+                cidade = ?,               
+                bairro = ?,               
+                complemento = ?,          
+                cep = ?                   
+                WHERE idConsultor = ?;`,
+        [
+          info.nome,
+          info.email,
+          info.telefone,
+          info.valorHora,
+          info.redeSocial,
+          info.horarioInicio,
+          info.horarioFim,
+          info.prazoMinReag,
+          info.bio,
+          info.modalidade,
+          info.endereco,
+          info.numero,
+          info.cidade,
+          info.bairro,
+          info.complemento,
+          info.cep,
+          id
+        ]
+      );
       flag = 1;
     } else if (usertype === '1') {
-      await connection.query(`UPDATE Cliente SET nome = ?, email = ?, telefone = ?, redeSocial = ?, bio = ? WHERE idCliente = ?;`,
-        [info.nome, info.email, info.telefone, info.redeSocial, info.bio, id]);
+      await connection.query(
+        `UPDATE Cliente SET nome = ?, email = ?, telefone = ?, redeSocial = ?, bio = ? WHERE idCliente = ?;`,
+        [info.nome, info.email, info.telefone, info.redeSocial, info.bio, id]
+      );
       flag = 1;
     }
 
@@ -416,14 +441,14 @@ export const RefreshProfile = async (request, response, next) => {
     });
 
   } catch (error) {
+    console.error("Erro ao atualizar perfil do consultor:", error); // Adicionei um console.error para depuração
     return response.status(500).json({
       success: false,
-      message: "Erro interno de servidor"
+      message: "Erro interno de servidor ao atualizar perfil."
     });
   } finally {
     connection.release();
   }
-
 };
 
 export const GoCloudImage = async (req, res) => {
@@ -600,7 +625,7 @@ export const WipeCloud = async (req, res) => {
 
     }
 
-    await excluirImagensDoBlob (idLoginUsuario);
+    await excluirImagensDoBlob(idLoginUsuario);
 
     await connection.commit();
 
