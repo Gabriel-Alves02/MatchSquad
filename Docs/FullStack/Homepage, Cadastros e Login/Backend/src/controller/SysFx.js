@@ -1,4 +1,4 @@
-import { enviarImagemParaBlob } from '../azureBlob.js';
+import { enviarImagemParaBlob, excluirImagensDoBlob } from '../azureBlob.js';
 import path from 'path';
 import { pool } from "../database.js";
 
@@ -267,61 +267,81 @@ export const GetIfNickEmailIsValid = async (request, response) => {
 };
 
 export const LoadProfile = async (request, response, next) => {
-
   try {
-
     const { id, usertype } = request.params;
 
     if (id === '-1' && usertype === '-1') {
-      const [perfil] = await pool.query
-        (
-          `SELECT
-            c.idConsultor, 
-            c.nome,
-            c.email,
-            c.telefone,
-            c.valorHora,
-            c.urlImagemPerfil,
-            c.redeSocial,
-            c.horarioInicio,
-            c.horarioFim,
-            c.prazoMinReag,
-            c.bio,
-            GROUP_CONCAT(h.nomeHabilidade SEPARATOR ', ') AS habilidades
-        FROM 
-            Consultor c
-        INNER JOIN 
-            Consultor_Habilidades ch ON ch.idConsultor = c.idConsultor
-        INNER JOIN 
-            Habilidade h ON h.idHabilidade = ch.idHabilidade
-        GROUP BY 
-            c.idConsultor;
-        `
-        );
+      const [perfil] = await pool.query(
+        `SELECT
+                    c.idConsultor,
+                    c.nome,
+                    c.email,
+                    c.telefone,
+                    c.valorHora,
+                    c.urlImagemPerfil,
+                    c.redeSocial,
+                    c.horarioInicio,
+                    c.horarioFim,
+                    c.prazoMinReag,
+                    c.bio,
+                    c.modalidadeTrab,  -- Adicionado
+                    c.cep,             -- Adicionado
+                    c.endereco,        -- Adicionado
+                    c.numeroCasa,      -- Adicionado
+                    c.bairro,          -- Adicionado
+                    c.complemento,     -- Adicionado
+                    c.cidade,          -- Adicionado
+                    GROUP_CONCAT(h.nomeHabilidade SEPARATOR ', ') AS habilidades
+                FROM
+                    Consultor c
+                INNER JOIN
+                    Consultor_Habilidades ch ON ch.idConsultor = c.idConsultor
+                INNER JOIN
+                    Habilidade h ON h.idHabilidade = ch.idHabilidade
+                GROUP BY
+                    c.idConsultor;
+                `
+      );
 
       if (perfil.length > 0) {
-        return response.status(200).json
-          ({
-            success: true,
-            perfil
-          });
+        return response.status(200).json({
+          success: true,
+          perfil
+        });
       }
-
     }
 
 
     if (usertype === '0') {
       const [perfil] = await pool.query(
-        `SELECT 
-          c.nome,c.email,c.telefone,c.valorHora,c.urlImagemPerfil,c.redeSocial,c.horarioInicio,c.horarioFim,c.prazoMinReag,c.bio, GROUP_CONCAT(ce.urlCertificado SEPARATOR ',') AS urlsCertificados
-        FROM
-          Consultor c
-        LEFT JOIN
-          Certificados ce ON c.idConsultor = ce.idConsultor
-        WHERE
-          c.idConsultor = ?
-        GROUP BY
-          c.idConsultor;`, [id]
+        `SELECT
+                    c.nome,
+                    c.email,
+                    c.telefone,
+                    c.valorHora,
+                    c.urlImagemPerfil,
+                    c.redeSocial,
+                    c.horarioInicio,
+                    c.horarioFim,
+                    c.prazoMinReag,
+                    c.bio,
+                    c.modalidadeTrab,  -- Adicionado
+                    c.cep,             -- Adicionado
+                    c.endereco,        -- Adicionado
+                    c.numeroCasa,      -- Adicionado
+                    c.bairro,          -- Adicionado
+                    c.complemento,     -- Adicionado
+                    c.cidade,          -- Adicionado
+                    GROUP_CONCAT(ce.urlCertificado SEPARATOR ',') AS urlsCertificados
+                FROM
+                    Consultor c
+                LEFT JOIN
+                    Certificados ce ON c.idConsultor = ce.idConsultor
+                WHERE
+                    c.idConsultor = ?
+                GROUP BY
+                    c.idConsultor;`,
+        [id]
       );
 
       if (perfil.length > 0) {
@@ -333,7 +353,8 @@ export const LoadProfile = async (request, response, next) => {
 
     } else if (usertype === '1') {
       const [perfil] = await pool.query(
-        `SELECT nome,email,telefone,redeSocial,urlImagemPerfil,bio FROM Cliente WHERE idCliente = ?;`, [id]
+        `SELECT nome,email,telefone,redeSocial,urlImagemPerfil,bio FROM Cliente WHERE idCliente = ?;`,
+        [id]
       );
 
       if (perfil.length > 0) {
@@ -344,16 +365,16 @@ export const LoadProfile = async (request, response, next) => {
       }
     }
 
-    return response.status(201).json({
-      success: true,
+    return response.status(404).json({ // Changed from 201 to 404 Not Found
+      success: false, // Changed success to false to indicate an error
       message: "Perfil não encontrado."
     });
 
   } catch (error) {
-    console.error('Erro no cadastro:', error);
+    console.error('Erro ao carregar perfil:', error);
     return response.status(500).json({
       success: false,
-      message: "Erro interno do servidor"
+      message: "Erro interno do servidor ao carregar perfil."
     });
   }
 };
@@ -511,6 +532,89 @@ export const GoCloudCertificateImage = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Problema interno no servidor ao enviar certificado!"
+    });
+  } finally {
+    connection.release();
+  }
+};
+
+export const WipeCloud = async (req, res) => {
+
+  const connection = await pool.getConnection();
+
+  try {
+
+    const usuario = req.params;
+
+    if (!usuario.id || !usuario.usertype) {
+      return res.status(201).json({
+        success: false,
+        message: 'ID do usuário e tipo de usuário são obrigatórios.'
+      });
+
+    }
+
+    let idLoginUsuario = null;
+
+    await connection.beginTransaction();
+
+    if (usuario.usertype === '0') {
+
+      const [userIdentity] = await connection.query(
+        `SELECT idLogin FROM Consultor WHERE idConsultor = ? ;`, [usuario.id]
+      );
+
+      if (userIdentity.length === 0) {
+
+        await connection.rollback();
+        return res.status(201).json({ success: false, message: 'Consultor não encontrado.' });
+
+      }
+
+      idLoginUsuario = userIdentity[0].idLogin;
+
+      await connection.query(`UPDATE Consultor SET urlImagemPerfil = 'https://matchsquadb.blob.core.windows.net/usuarios/no_avatar.png' WHERE idConsultor = ?;`, [usuario.id]);
+      await connection.query(`DELETE FROM Certificados WHERE idConsultor = ?;`, [usuario.id]);
+
+    } else if (usuario.usertype === '1') {
+
+      const [userIdentity] = await connection.query(
+        `SELECT idLogin FROM Cliente WHERE idCliente = ?;`, [usuario.id]
+      );
+
+      if (userIdentity.length === 0) {
+
+        await connection.rollback();
+        return res.status(201).json({ success: false, message: 'Cliente não encontrado.' });
+
+      }
+
+      idLoginUsuario = userIdentity[0].idLogin;
+
+      await connection.query(`UPDATE Cliente SET urlImagemPerfil = 'https://matchsquadb.blob.core.windows.net/usuarios/no_avatar.png' WHERE idCliente = ?;`, [usuario.id]);
+
+    } else {
+
+      await connection.rollback();
+      return res.status(201).json({ success: false, message: 'Tipo de usuário inválido.' });
+
+    }
+
+    await excluirImagensDoBlob (idLoginUsuario);
+
+    await connection.commit();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Imagens excluídas com sucesso!'
+    });
+
+  } catch (error) {
+    console.error("Erro ao limpar imagens do usuário:", error);
+    await connection.rollback();
+    return res.status(500).json({
+      success: false,
+      message: "Problema interno no servidor ao limpar imagens!"
     });
   } finally {
     connection.release();

@@ -139,7 +139,7 @@ export const AgendamentoRepetido = async (request, response, next) => {
             });
         }
 
-        return response.status(409).json({
+        return response.status(201).json({
             success: true,
             message: "Tem agendamento deste cliente para este consultor. Não pode agendar!"
         });

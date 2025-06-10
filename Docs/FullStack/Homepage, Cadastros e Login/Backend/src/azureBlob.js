@@ -37,17 +37,53 @@ export const enviarImagemParaBlob = async (fileBuffer, idLogin, originalName, su
     }
 };
 
+export const excluirImagensDoBlob = async (idLogin) => {
+    try {
+        const prefix = `${idLogin}/`;
+
+        let blobsDeletedCount = 0;
+
+        for await (const blob of containerClient.listBlobsFlat({ prefix: prefix })) {
+            const blobName = blob.name;
+
+            if (blobName && !blobName.endsWith('/')) {
+                const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+                try {
+                    await blockBlobClient.delete();
+                    console.log(`Blob excluído: ${blobName}`);
+                    blobsDeletedCount++;
+                } catch (deleteError) {
+                    if (deleteError.code === 'BlobNotFound') {
+                        console.warn(`Aviso: Blob '${blobName}' não encontrado durante a exclusão. Pode já ter sido excluído.`);
+                    } else {
+                        throw deleteError;
+                    }
+                }
+            } else {
+                console.log(`Ignorando item que parece ser um diretório virtual: ${blobName}`);
+            }
+        }
+        console.log(`${blobsDeletedCount} blobs excluídos para o usuário ${idLogin}.`);
+
+        return { success: true, message: `${blobsDeletedCount} imagens excluídas.` };
+
+    } catch (error) {
+        console.error("Erro fatal ao listar ou processar blobs para exclusão:", error);
+        throw error;
+    }
+};
+
 function formatarDataHora() {
-  const data = new Date();
+    const data = new Date();
 
-  const dia = String(data.getDate()).padStart(2, '0');
-  const mes = String(data.getMonth() + 1).padStart(2, '0');
-  const ano = data.getFullYear();
+    const dia = String(data.getDate()).padStart(2, '0');
+    const mes = String(data.getMonth() + 1).padStart(2, '0');
+    const ano = data.getFullYear();
 
-  const hora = String(data.getHours()).padStart(2, '0');
-  const minuto = String(data.getMinutes()).padStart(2, '0');
-  const segundo = String(data.getSeconds()).padStart(2, '0');
-  const ms = String(data.getMilliseconds()).padStart(3, '0');
+    const hora = String(data.getHours()).padStart(2, '0');
+    const minuto = String(data.getMinutes()).padStart(2, '0');
+    const segundo = String(data.getSeconds()).padStart(2, '0');
+    const ms = String(data.getMilliseconds()).padStart(3, '0');
 
-  return `${dia}-${mes}-${ano}_${hora}-${minuto}-${segundo}-${ms}`;
+    return `${dia}-${mes}-${ano}_${hora}-${minuto}-${segundo}-${ms}`;
 }

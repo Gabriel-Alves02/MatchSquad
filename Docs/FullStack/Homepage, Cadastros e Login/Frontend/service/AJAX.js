@@ -10,8 +10,6 @@ export const Cadastrar = async (objUser) => {
 
     let improviseAdaptOvercome = possuiHabilidades ? "/cadConsultor" : "/cadCliente";
 
-    console.log('result: ', improviseAdaptOvercome);
-
     return await fetch(url_cliente + improviseAdaptOvercome, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -286,7 +284,7 @@ export async function agendadoNovamente(idCliente, idConsultor) {
         const response = await fetch(url_checks + `/${idCliente}/${idConsultor}`);
         const data = await response.json();
 
-        if (response.status === 200 || response.status === 409) {
+        if (response.status === 200 || response.status === 201) {
             return data.success;
         } else {
             throw new Error("Erro ao buscar cliente");
@@ -561,6 +559,27 @@ export async function uploadCertificado(id, file) {
     } catch (error) {
         console.error('Erro ao enviar certificado:', error);
         return { success: false, message: 'Erro de rede ou servidor.' };
+    }
+}
+
+export async function limparImagensNaNuvem (id, usertype) {
+    try {
+        const response = await fetch(url_checks + `/perfil/${id}/${usertype}/limparImagens`, {
+            method: 'DELETE',
+            headers: {'Content-Type': 'application/json'}
+        });
+
+        const data = await response.json();
+
+        if (data) {
+            return data;
+        } else {
+            return { success: false, message: data.message || 'Erro desconhecido ao limpar imagens.' };
+        }
+
+    } catch (error) {
+        console.error('Erro de rede ao tentar limpar imagens:', error);
+        return { success: false, message: 'Erro de rede ou servidor ao limpar imagens.' };
     }
 }
 

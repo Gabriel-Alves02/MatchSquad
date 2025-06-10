@@ -14,7 +14,7 @@ let modalAvaliacaoInstance;
 let modalDenunciaInstance;
 
 document.addEventListener('DOMContentLoaded', async function () {
-    
+
     modalRelatorioInstance = new bootstrap.Modal(document.getElementById('modalRelatorio'));
     modalAvaliacaoInstance = new bootstrap.Modal(document.getElementById('modalAvaliacao'));
     modalDenunciaInstance = new bootstrap.Modal(document.getElementById('modalDenuncia'));
@@ -63,8 +63,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 comentario: comentario.trim()
             };
 
-            const response = await avaliado(dadosAvaliacao); // Assumindo que 'avaliado' retorna uma resposta
-            if (response && response.success) { // Verifique se a avaliação foi bem-sucedida
+            const response = await avaliado(dadosAvaliacao);
+            if (response && response.success) {
                 alert("Avaliação enviada com sucesso!");
                 modalAvaliacaoInstance.hide();
                 window.location.reload();
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             };
 
             const response = await denunciar(getUserId(1), '1', dadosDenuncia);
-            if (response && response.success) { 
+            if (response && response.success) {
                 alert("Denúncia enviada com sucesso!");
                 modalDenunciaInstance.hide();
                 window.location.reload();
@@ -201,6 +201,8 @@ async function renderizarConsultorias(listaDeConsultorias) {
     let html = '';
     for (const consultoria of listaDeConsultorias) {
 
+        console.log(consultoria);
+
         consultoriasMap.set(consultoria.idReuniao.toString(), consultoria);
 
         let estrelas = preencherestrelas(consultoria.avaliacao);
@@ -211,7 +213,7 @@ async function renderizarConsultorias(listaDeConsultorias) {
 
         const hoje = new Date();
         const dataReuniao = new Date(consultoria.data);
-        const isToday = dataReuniao.setHours(0,0,0,0) === hoje.setHours(0,0,0,0);
+        const isToday = dataReuniao.setHours(0, 0, 0, 0) === hoje.setHours(0, 0, 0, 0);
 
 
         if (consultoria.status_situacao === 'pendente' || consultoria.status_situacao === 'cancelada') {
@@ -233,6 +235,7 @@ async function renderizarConsultorias(listaDeConsultorias) {
                         <div class="historic-card-buttons">
                             <button class="btn btn-primary" type="button" disabled>Relatório</button>
                             <button class="btn btn-primary" type="button" disabled>Ver avaliação</button>
+                            <button class="btn btn-primary" type="button" disabled>Denunciar</button>
                         </div>
                     </div>
                     <br>
@@ -250,6 +253,9 @@ async function renderizarConsultorias(listaDeConsultorias) {
                             <h5 class="historic-card-status">
                                 Status: ${status}
                             </h5>
+                            <h6 class="historic-card-status">
+                                ${capitalize(consultoria.tipo)}
+                            </h6>
                             ${avalia}
                         </div>
                         ${btnLink}
@@ -303,6 +309,9 @@ async function renderizarConsultorias(listaDeConsultorias) {
                             <h5 class="historic-card-status">
                                 Status: ${status}
                             </h5>
+                            <h6 class="historic-card-status">
+                                ${capitalize(consultoria.tipo)}
+                            </h6>
                             <h5 class="historic-card-status">
                                 Avaliação: ${estrelas}
                             </h5>

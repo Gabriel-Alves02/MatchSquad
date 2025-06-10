@@ -1,7 +1,9 @@
-import { carregarInfoPerfil, atualizarPerfil, atualizarSenha, uploadImagemPerfil, buscarSenha, userType } from '../service/AJAX.js';
+import { carregarInfoPerfil, atualizarPerfil, atualizarSenha, uploadImagemPerfil, limparImagensNaNuvem, buscarSenha, userType } from '../service/AJAX.js';
 import { getUserId, deactivateUser, senhaInvalida } from './SysFx.js';
 
 let info;
+
+const limparImagensBtn = document.getElementById('limpar-imagens-btn');
 
 const uploadInput = document.getElementById('upload-pic');
 const profilePic = document.getElementById('profile-pic');
@@ -159,3 +161,27 @@ document.querySelector('.plus-config').addEventListener('submit', async (e) => {
 function habilitarSalvar2() {
   salvarBtn2.disabled = false;
 }
+
+limparImagensBtn.addEventListener('click', async function () {
+  const confirmacao = confirm('Tem certeza que deseja limpar TODAS as suas imagens da nuvem? Esta ação é irreversível.');
+
+  if (confirmacao) {
+    try {
+      const userId = getUserId(1);
+    
+      const resp = await limparImagensNaNuvem (userId, 1);
+
+      if (resp.success) {
+        alert('Imagens limpas com sucesso da nuvem!');
+        profilePic.src = '';
+        localStorage.removeItem('urlImagemPerfil');
+        window.location.reload();
+      } else {
+        alert(`Erro ao limpar imagens: ${resp.message}`);
+      }
+    } catch (error) {
+      console.error('Erro ao tentar limpar imagens:', error);
+      alert('Ocorreu um erro ao tentar limpar as imagens. Tente novamente.');
+    }
+  }
+});

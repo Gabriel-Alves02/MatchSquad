@@ -82,7 +82,7 @@ form.addEventListener('submit', async (event) => {
             if (block.message === 1) {
                 alert('Novos usuários ou usuários excluídos, precisam realizar confirmação de código!')
                 do {
-                    codigoBanco = await buscarCodigo(idCliente, '1');
+                    codigoBanco = await buscarCodigo (idCliente, '1');
                     codigo = Number(window.prompt("Codigo de confirmação enviado no email:"));
 
                     if (codigo == null || codigo == "") {

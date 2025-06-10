@@ -1,9 +1,9 @@
-import { carregarInfoPerfil, atualizarPerfil, atualizarSenha, uploadImagemPerfil, uploadCertificado, buscarSenha, userType } from '../service/AJAX.js';
+import { carregarInfoPerfil, atualizarPerfil, atualizarSenha, uploadImagemPerfil, uploadCertificado, limparImagensNaNuvem, buscarSenha, userType } from '../service/AJAX.js';
 import { getUserId, deactivateUser, senhaInvalida } from './SysFx.js';
 
 let info;
 
-const modalidade = getModalidade() //função que vai retornar a modalidade proveniente do banco de dados
+const limparImagensBtn = document.getElementById('limpar-imagens-btn');
 
 const uploadInput = document.getElementById('upload-pic');
 const profilePic = document.getElementById('profile-pic');
@@ -67,7 +67,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     profilePic.src = urlImagemPerfil;
   }
 
-  marcarModalidade(modalidade);
 
   if (info[0].urlsCertificados !== null && info[0].urlsCertificados.length > 0) {
 
@@ -362,3 +361,29 @@ function marcarModalidade(valor) {
     }
   })
 }
+
+limparImagensBtn.addEventListener('click', async function () {
+  const confirmacao = confirm('Tem certeza que deseja limpar TODAS as suas imagens (perfil e certificados) da nuvem? Esta ação é irreversível.');
+
+  if (confirmacao) {
+    try {
+      const userId = getUserId(0);
+    
+      const resp = await limparImagensNaNuvem (userId, 0);
+
+      if (resp.success) {
+        alert('Imagens limpas com sucesso da nuvem!');
+        profilePic.src = '';
+        galeriaCertif.innerHTML = '';
+        localStorage.removeItem('certificadosPreview');
+        localStorage.removeItem('urlImagemPerfil');
+        window.location.reload();
+      } else {
+        alert(`Erro ao limpar imagens: ${resp.message}`);
+      }
+    } catch (error) {
+      console.error('Erro ao tentar limpar imagens:', error);
+      alert('Ocorreu um erro ao tentar limpar as imagens. Tente novamente.');
+    }
+  }
+});

@@ -1,5 +1,5 @@
 import { carregarInfoPerfil, habilidadesPortifolio, mediaPortifolio, Registrar, agendadoNovamente, horariosConsultor } from '../service/AJAX.js';
-import { getUserId } from './SysFx.js';
+import { getUserId, capitalize } from './SysFx.js';
 
 const profilePic = document.getElementById('profile-pic');
 const galeriaCertif = document.getElementById('gallery');
@@ -8,6 +8,8 @@ const averageStarsContainer = document.getElementById('average-stars');
 const horarioTrab = document.getElementById('horarioTrab');
 const nome = document.getElementById('nome');
 const bio = document.getElementById('bio');
+const endereco = document.getElementById('endereco');
+const modalidade = document.getElementById('modalidade');
 const prazo = document.getElementById('prazoReag');
 
 const botaoAgendar = document.getElementById('btn-agendar');
@@ -104,10 +106,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             horarioInput.value = '';
         }
 
-        console.log(`Limite aplicado: ${min} - ${max} (consultor com horário ${horarios.horarioInicio} - ${horarios.horarioFim})`);
     }
-
-
 
     const repetido = await agendadoNovamente(getUserId(1), idValid);
 
@@ -126,6 +125,23 @@ document.addEventListener('DOMContentLoaded', async function () {
         horarioTrab.innerHTML = "Inicia às: " + info[0].horarioInicio + "<br> Término às: " + info[0].horarioFim;
         let calcPrazo = (Number(info[0].prazoMinReag) + 1);
         prazo.innerHTML = `${calcPrazo}`;
+
+        let modCorrect = info[0].modalidadeTrab;
+        if (modCorrect == 'presencial_e_online') {
+            modCorrect = modCorrect.replace(/_/g, ' ');
+        }
+        modalidade.innerHTML = capitalize(modCorrect);
+
+        if (info[0].modalidadeTrab != 'online') {
+
+            let cepFormatado = '';
+            if (info[0].cep) {
+                cepFormatado = (info[0].cep).substring(0, 5) + '-' + (info[0].cep).substring(5, 8);
+            }
+
+            endereco.innerHTML = ` ${info[0].endereco}, ${info[0].numeroCasa}<br>
+                    ${info[0].bairro}, ${info[0].cidade} (${cepFormatado})`;
+        }
 
         let urlImagemPerfil = info[0].urlImagemPerfil;
         const localStorageUrl = localStorage.getItem('profilePicUrl');
