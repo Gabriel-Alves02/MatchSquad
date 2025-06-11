@@ -4,7 +4,7 @@ import { CadastrarCliente, Reviewed } from './controller/Cliente.js';
 import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
 import { CadastrarConsultor, GetHabilidades, RecordMeetLog, GetHabConsultor, ConsultarMediaConsultor } from './controller/Consultor.js';
-import { RegistrarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepetido, CancelaAgendamento, ConfirmaAgendamento, Confirmed } from './controller/PedidoAgendamento.js';
+import { RegistrarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepetido, CancelaAgendamento, ConfirmaAgendamento, ConcluiAgendamento } from './controller/PedidoAgendamento.js';
 import { GetCode, GetPrazo, GetName, GetBlockStatus, RefreshBlock, GetIfNickEmailIsValid, LoadProfile, RefreshProfile, GoCloudImage, GoCloudCertificateImage, WipeCloud, GetPassword, EndUser, RefreshPassword, SubmitComplaint, GetReport, GetWorkRange } from './controller/SysFx.js';
 import { EnviarEmailRemarcacao, ConfirmacaoEmail, SendAnnouncement } from './service/sendgrid.js';
 import { RegistrarReuniao } from './controller/RegistrarReuniao.js';
@@ -46,7 +46,7 @@ app.put('/notifications', ConfirmacaoEmail);
 app.put('/checks/verified', RefreshBlock);
 app.put('/checks/agenda/:id/cancela', CancelaAgendamento ); // Antes tinha para cliente e consultor, foi unificado
 app.put('/checks/agenda/:id/confirma', ConfirmaAgendamento );
-app.put('/consultores/reuniao-confirmed/:idReuniao', Confirmed );
+app.put('/consultores/reuniao-concluida/:idReuniao', ConcluiAgendamento );
 //app.put('/administrador/denuncias/banir', BloquearUsuario)
 app.get('/consultores/habilidades', GetHabilidades);
 app.get('/consultores/habilidades/:id', GetHabConsultor);

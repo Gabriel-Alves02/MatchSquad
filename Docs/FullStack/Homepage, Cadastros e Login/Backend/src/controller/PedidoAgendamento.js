@@ -357,7 +357,7 @@ export const AtualizaData = async (novaData, novoHorario, idReuniao) => {
     }
 };
 
-export const Confirmed = async (req, res, next) => {
+export const ConcluiAgendamento = async (req, res, next) => {
 
     const connection = await pool.getConnection();
 
@@ -368,12 +368,10 @@ export const Confirmed = async (req, res, next) => {
         await connection.beginTransaction();
 
         const [result] = await connection.query(
-            `UPDATE Reuniao SET status_situacao = 'confirmada' WHERE idReuniao = ?;`,
+            `UPDATE Reuniao SET status_situacao = 'concluida' WHERE idReuniao = ?;`,
             [info.idReuniao]
         );
-
-        // Não vai checar que status tinha antes de alterar (Cuidado no uso)
-
+        
         await connection.commit();
 
         if (result.changedRows > 0) {

@@ -25,20 +25,26 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const periodoSelect = document.getElementById('periodo');
     const horarioInput = document.getElementById('horario');
-
+    const navbarLogo = document.getElementById('navbarLogo');
     const inputData = document.getElementById("data-agendamento");
-    const hoje = new Date().toISOString().split("T")[0];
-    inputData.min = hoje
+
+    const hoje = new Date();
+    const amanha = new Date(hoje);
+    amanha.setDate(hoje.getDate() + 1);
+    const amanhaFormatado = amanha.toISOString().split("T")[0];
+    inputData.min = amanhaFormatado;
 
     const urlParams = new URLSearchParams(window.location.search);
     idValid = urlParams.get('id');
+
+    console.log('idValid: ',idValid);
 
     if (!idValid) {
         idValid = getUserId(0);
         botaoAgendar.style.display = 'none';
         const btnVoltar = document.getElementById('btnVoltar');
         btnVoltar.href = 'MenuConsultor.html';
-
+        navbarLogo.href = 'MenuConsultor.html';
         if (!idValid) {
             console.log('Nao acessado nem por cliente ou consultor');
         }
@@ -49,11 +55,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     periodoSelect.addEventListener('change', function (e) {
         const novoPeriodo = e.target.value;
         configurarLimitesHorario(novoPeriodo);
-        validarHorario();
     });
 
     horarioInput.addEventListener('change', function () {
-        validarHorario();
         flagHorario = 1;
     });
     ;
@@ -68,15 +72,12 @@ document.addEventListener('DOMContentLoaded', async function () {
             return;
         }
 
-        // Converte "HH:mm:ss" para "HH:mm"
         let horarioInicio = horarios.horarioInicio.slice(0, 5);
         let horarioFim = horarios.horarioFim.slice(0, 5);
 
-        // Limites comerciais fixos
         const comercialMin = '07:00';
         const comercialMax = '17:30';
 
-        // Aplica limites comerciais
         if (horarioInicio < comercialMin) horarioInicio = comercialMin;
         if (horarioFim > comercialMax) horarioFim = comercialMax;
 
@@ -117,33 +118,40 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     info = await carregarInfoPerfil(idValid, 0);
 
+    let urlImagemPerfil = info.urlImagemPerfil;
+
+    console.log(urlImagemPerfil);
+
+
     let userHabilidades = await habilidadesPortifolio(idValid);
 
-    if (info && info.length > 0) {
-        nome.innerHTML = info[0].nome;
-        bio.innerHTML = info[0].bio;
-        horarioTrab.innerHTML = "Inicia às: " + info[0].horarioInicio + "<br> Término às: " + info[0].horarioFim;
-        let calcPrazo = (Number(info[0].prazoMinReag) + 1);
+    if (info) {
+        nome.innerHTML = info.nome;
+        bio.innerHTML = info.bio;
+        horarioTrab.innerHTML = "Inicia às: " + info.horarioInicio + "<br> Término às: " + info.horarioFim;
+        let calcPrazo = (Number(info.prazoMinReag) + 1);
         prazo.innerHTML = `${calcPrazo}`;
 
-        let modCorrect = info[0].modalidadeTrab;
+        let modCorrect = info.modalidadeTrab;
         if (modCorrect == 'presencial_e_online') {
             modCorrect = modCorrect.replace(/_/g, ' ');
         }
         modalidade.innerHTML = capitalize(modCorrect);
 
-        if (info[0].modalidadeTrab != 'online') {
+        if (info.modalidadeTrab != 'online') {
 
             let cepFormatado = '';
-            if (info[0].cep) {
-                cepFormatado = (info[0].cep).substring(0, 5) + '-' + (info[0].cep).substring(5, 8);
+            if (info.cep) {
+                cepFormatado = (info.cep).substring(0, 5) + '-' + (info.cep).substring(5, 8);
             }
 
-            endereco.innerHTML = ` ${info[0].endereco}, ${info[0].numeroCasa}<br>
-                    ${info[0].bairro}, ${info[0].cidade} (${cepFormatado})`;
+            endereco.innerHTML = ` ${info.endereco}, ${info.numeroCasa}<br>
+                    ${info.bairro}, ${info.cidade} (${cepFormatado})`;
         }
 
-        let urlImagemPerfil = info[0].urlImagemPerfil;
+        console.log(info.urlImagemPerfil);
+
+
         const localStorageUrl = localStorage.getItem('profilePicUrl');
 
         if (localStorageUrl) {
@@ -180,7 +188,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     } else {
         if (!(Number.isNaN(res.consultor[0].media))) {
             avg = Number(res.consultor[0].media) || 0;
-            console.log('media: ', avg);
         }
 
     }
@@ -189,9 +196,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         averageStarsContainer.innerHTML = preencherestrelas(avg);
     }
 
-    if (info[0].urlsCertificados !== null && info[0].urlsCertificados.length > 0) {
+    if (info.urlsCertificados !== null && info.urlsCertificados.length > 0) {
 
-        let certificados = info[0].urlsCertificados.split(',');
+        let certificados = info.urlsCertificados.split(',');
 
         certificados.forEach(url => {
             const imgContainer = document.createElement('div');
@@ -205,7 +212,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             galeriaCertif.appendChild(imgContainer);
         });
     }
-
 
     ativarZoomEmCertificados();
 
@@ -267,9 +273,9 @@ modalForm.addEventListener('submit', async (event) => {
 
     let urlReuniao = null;
 
-    if (radioSelecionado.value === 'online') {
-        urlReuniao = gerarUrlReuniao();
-    }
+    // if (radioSelecionado.value === 'online') {
+    //     urlReuniao = gerarUrlReuniao();
+    // }
 
 
     if (!data) {
@@ -278,6 +284,7 @@ modalForm.addEventListener('submit', async (event) => {
     }
 
     const repetido = await agendadoNovamente(getUserId(1), idValid);
+
     if (repetido) {
         alert("Você já tem um agendamento com esse consultor!");
         fecharModal();
@@ -298,19 +305,9 @@ modalForm.addEventListener('submit', async (event) => {
 
     Registrar(PedidoAgendamento);
     fecharModal();
+    window.location.reload();
 });
 
-function gerarUrlReuniao() {
-    let sufixoUrl = Math.random().toString(36).substring(2, 10);
-    sufixoUrl = "consultoria_" + sufixoUrl;
-
-    // Essa é a base JaaS (8x8.vc + ID do projeto)
-    const baseUrl = 'https://8x8.vc/vpaas-magic-cookie-6b44b110cace40f8a723c05a52aa3bc8/';
-
-    const urlSala = baseUrl + sufixoUrl;
-
-    return urlSala;
-}
 
 function abrirModalAgendamento() {
     const modal = document.getElementById('modal-agendamento');

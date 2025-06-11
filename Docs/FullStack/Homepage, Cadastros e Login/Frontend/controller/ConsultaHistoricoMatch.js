@@ -1,4 +1,4 @@
-import { carregarMatchsPesquisados, avaliado, denunciar, checkDenuncia } from '../service/AJAX.js';
+import { carregarMatchsPesquisados, avaliado, denunciar, checkDenuncia, agendamentoCancelado } from '../service/AJAX.js';
 import { getUserId, capitalize } from '../controller/SysFx.js';
 
 const searchBar = document.getElementById('searchBar');
@@ -146,17 +146,21 @@ function formatarData(isoDate) {
     });
 }
 
-document.addEventListener('click', function (event) {
-    const consultoriaItem = event.target.closest('.historic-card-consultoria');
+let currentConsultoriaId = null;
+
+document.addEventListener('click', async function (event) {
+
+    const consultoriaItem = event.target.closest('.historic-card-consultoria, .historic-card');
 
     if (consultoriaItem) {
         const id = consultoriaItem.getAttribute('data-id');
+        currentConsultoriaId = id;
+
 
         if (event.target.matches('button[data-action="relatorio"]')) {
             const relatorio = consultoriasMap.get(id);
 
             if (relatorio) {
-                // Preenche o modal e o exibe
                 document.getElementById('assunto').value = relatorio.assunto || '';
                 document.getElementById('solucoes').value = relatorio.solucoes || '';
                 document.getElementById('infoSolicitada').value = relatorio.infoSolicitada || '';
@@ -167,7 +171,6 @@ document.addEventListener('click', function (event) {
         } else if (event.target.matches('button[data-action="avaliacao"]')) {
 
             document.getElementById('formAvaliacao').setAttribute('data-id-reuniao', id);
-
             document.getElementById('notaAvaliacao').value = '';
             document.getElementById('comentarioAvaliacao').value = '';
             modalAvaliacaoInstance.show();
@@ -176,13 +179,19 @@ document.addEventListener('click', function (event) {
             document.getElementById('gravidade').value = '';
             document.getElementById('comentarioDenuncia').value = '';
             modalDenunciaInstance.show();
+        } else if (event.target.matches('button[data-action="cancelar"]')) {
+            let resp = confirm(`Deseja cancelar mesmo este agendamento?`);
+            if (resp) {
+                await agendamentoCancelado (currentConsultoriaId);
+                alert("Agendamento cancelado com sucesso!");
+                window.location.reload();
+            }
         }
     }
 });
 
 async function detectDenuncia(idCliente, tipoUsuario, idConsultor) {
     const response = await checkDenuncia(idCliente, tipoUsuario, idConsultor);
-    // Assumindo que checkDenuncia retorna true/false ou um objeto com success: true/false
     return response === true || (response && response.success === true);
 }
 
@@ -201,14 +210,13 @@ async function renderizarConsultorias(listaDeConsultorias) {
     let html = '';
     for (const consultoria of listaDeConsultorias) {
 
-        console.log(consultoria);
-
         consultoriasMap.set(consultoria.idReuniao.toString(), consultoria);
 
         let estrelas = preencherestrelas(consultoria.avaliacao);
         let status = capitalize(consultoria.status_situacao);
         let hora = (consultoria.horario && consultoria.horario !== '00:00:00') ? consultoria.horario.substring(0, 5) : '';
         let avalia = '';
+        let cancelar = '';
         let btnLink = '';
 
         const hoje = new Date();
@@ -219,6 +227,7 @@ async function renderizarConsultorias(listaDeConsultorias) {
         if (consultoria.status_situacao === 'pendente' || consultoria.status_situacao === 'cancelada') {
             if (consultoria.status_situacao === 'pendente') {
                 avalia = `<h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5>`;
+                cancelar = `<button class="btn btn-primary" type="button" data-action="cancelar" >Cancelar</button>`;
             }
 
             if (isToday && consultoria.link && consultoria.link !== '') {
@@ -233,9 +242,7 @@ async function renderizarConsultorias(listaDeConsultorias) {
                             Consultoria com ${consultoria.nome}
                         </h1>
                         <div class="historic-card-buttons">
-                            <button class="btn btn-primary" type="button" disabled>Relatório</button>
-                            <button class="btn btn-primary" type="button" disabled>Ver avaliação</button>
-                            <button class="btn btn-primary" type="button" disabled>Denunciar</button>
+                            ${cancelar}
                         </div>
                     </div>
                     <br>
@@ -262,7 +269,7 @@ async function renderizarConsultorias(listaDeConsultorias) {
                     </div>
                 </div>
             `;
-        } else { // status_situacao === 'realizada'
+        } else {
             let btnAvaliacao;
             let btnDenuncia = `<button class="btn btn-outline-danger" type="button" data-action="denunciar">Denunciar</button>`;
             let comentarioExibido = '';
@@ -339,7 +346,6 @@ function aplicarFiltros() {
 
     switch (tipoFiltro) {
         case 'consultor':
-            // Já filtrado pela searchBar, se houver
             break;
         case 'data':
             consultoriasFiltradas.sort((a, b) => new Date(b.data) - new Date(a.data));

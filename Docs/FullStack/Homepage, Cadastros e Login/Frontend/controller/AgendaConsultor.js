@@ -18,9 +18,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         editable: true,
         dayMaxEvents: true,
         headerToolbar: {
-            left: 'next today',
+            left: 'prev next today',
             center: 'title',
-            right: 'dayGridMonth'
+            right: ''
         },
         validRange: {
             start: moment().format('YYYY-MM-DD')

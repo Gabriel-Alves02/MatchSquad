@@ -121,7 +121,7 @@ export const Registrar = async (pedido) => {
         body: JSON.stringify(pedido)
     }).then((response) => {
         if (response.status >= 200 && response.status < 300) {
-            alert("Cadastro realizado com sucesso. Enviado e-mail para confirmação enviado");
+            alert("Solicitação enviada com sucesso. Comunicaremos o consultos!");
         }
         else {
             console.log(`Erro do servidor: ${response.status}`);
@@ -381,16 +381,15 @@ export async function agendamentoCancelado(id) {
     }
 }
 
-
-export async function agendamentoConfirmado(id) {
-
+export async function agendamentoConcluido (id) {
     try {
-        const response = await fetch(url_checks + `/agenda/${id}/confirma`, {
+
+        const response = await fetch(url_checks + `/agenda/${id}/concluido`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" }
         }).then((response) => {
             if (response.status == 200) {
-                console.log("Confirmado com sucesso!");
+                console.log("Concluido com sucesso!");
             }
             else {
                 console.log(`Erro do servidor: ${response.status}`);
@@ -401,6 +400,7 @@ export async function agendamentoConfirmado(id) {
         console.error("Erro geral no cancelamento do agendamento:", error);
     }
 }
+
 
 export const RegistrarReuniao = async (objRegistro) => {
     return await fetch(url_cliente + '/registrarReuniao', {
@@ -416,7 +416,7 @@ export const RegistrarReuniao = async (objRegistro) => {
     })
 }
 
-export async function carregarInfoPerfil(id, usertype) {
+export async function carregarInfoPerfil (id, usertype) {
     return await fetch(url_checks + `/perfil/${id}/${usertype}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
@@ -1036,9 +1036,28 @@ export async function horariosConsultor(idConsultor) {
     })
 }
 
-export async function confirmarReuniao(idReuniao) {
+export async function concluirReuniao (idReuniao) {
     try {
-        const response = await fetch(url_consultores + `/reuniao-confirmed/${idReuniao}`, {
+        const response = await fetch(url_consultores + `/reuniao-concluida/${idReuniao}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" }
+        }).then((response) => {
+            if (response.status == 200) {
+                console.log("Status da reunião alterado com sucesso!");
+            }
+            else {
+                console.log(`Erro do servidor: ${response.status}`);
+            }
+        })
+
+    } catch (error) {
+        console.error("Erro na verificação:", error);
+    }
+}
+
+export async function confirmarReuniao (idReuniao) {
+    try {
+        const response = await fetch(url_checks + `/agenda/${idReuniao}/confirma`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" }
         }).then((response) => {

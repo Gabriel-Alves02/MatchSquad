@@ -1,4 +1,4 @@
-import { carregarMatchsConsultor, agendamentoCancelado, agendamentoConfirmado, denunciar, checkDenuncia, registrarReuniao } from '../service/AJAX.js';
+import { carregarMatchsConsultor, agendamentoCancelado, confirmarReuniao, concluirReuniao, denunciar, checkDenuncia, registrarReuniao } from '../service/AJAX.js';
 import { getUserId } from '../controller/SysFx.js';
 
 const searchBar = document.getElementById('searchBar');
@@ -13,7 +13,7 @@ let modalRelatorioInstance = null;
 let modalDenunciaInstance = null;
 
 document.addEventListener('DOMContentLoaded', async function () {
-    // Inicializa as instâncias dos modais Bootstrap uma única vez
+
     modalRelatorioInstance = new bootstrap.Modal(document.getElementById('modalRelatorio'));
     modalDenunciaInstance = new bootstrap.Modal(document.getElementById('modalDenuncia'));
 
@@ -73,8 +73,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 dataReuniao: dataReuniaoDenunciada
             };
 
-            console.log("Dados da denúncia:", dadosDenuncia);
-
             try {
                 await denunciar(getUserId(0), '0', dadosDenuncia);
                 modalDenunciaInstance.hide();
@@ -108,8 +106,14 @@ document.addEventListener('DOMContentLoaded', async function () {
                 infoSolicitada: infoSolicitada.trim()
             };
 
+            if (!dadosRegistro.idReuniao || !dadosRegistro.assunto || !dadosRegistro.solucoes || !dadosRegistro.infoSolicitada) {
+                alert("Por favor, preencha todos os campos obrigatórios.");
+                return;
+            }
+
             try {
                 await registrarReuniao(dadosRegistro);
+                await concluirReuniao(idReuniaoAtual);
                 modalRelatorioInstance.hide();
                 window.location.reload();
             } catch (error) {
@@ -154,10 +158,10 @@ let currentConsultoriaId = null;
 
 document.addEventListener('click', async function (event) {
     if (event.target.matches('button[data-action]')) {
-        const consultoriaItem = event.target.closest('.historic-card-consultoria'); // Alterado para a classe correta
+        const consultoriaItem = event.target.closest('.historic-card-consultoria');
         if (consultoriaItem) {
             const id = consultoriaItem.getAttribute('data-id');
-            currentConsultoriaId = id; // Define o ID da consultoria atual para uso posterior
+            currentConsultoriaId = id;
 
             const action = event.target.getAttribute('data-action');
             const consultoria = allConsultorias.find(c => c.idReuniao.toString() === id);
@@ -190,7 +194,7 @@ document.addEventListener('click', async function (event) {
                 case 'confirmar':
                     let result = confirm(`Deseja confirmar mesmo este agendamento?`);
                     if (result) {
-                        await agendamentoConfirmado (currentConsultoriaId);
+                        await confirmarReuniao(currentConsultoriaId);
                         alert("Agendamento confirmado com sucesso!");
                         window.location.reload();
                     }
@@ -206,7 +210,7 @@ function abrirModalRelatorio(assunto, solucoes, infoSolicitada, idReuniao, statu
     const infoSolicitadaField = document.getElementById('infoSolicitada');
     const enviarRegistroBtn = document.getElementById('enviarRegistro');
     const modalTitle = document.getElementById('modalRelatorioLabel');
-    const formRegistroReuniao = document.getElementById('formRegistroReuniao'); // Garante que formRegistroReuniao está acessível aqui
+    const formRegistroReuniao = document.getElementById('formRegistroReuniao');
 
     assuntoField.value = '';
     solucoesField.value = '';
@@ -244,7 +248,7 @@ function modalDenuncia() {
 
 async function detectDenuncia(idConsultor, tipoUsuario, idCliente) {
     const response = await checkDenuncia(idConsultor, tipoUsuario, idCliente);
-    return response === true; // Garante que retorna um booleano
+    return response === true;
 }
 
 async function renderizarConsultorias(listaDeConsultorias) {
@@ -264,52 +268,50 @@ async function renderizarConsultorias(listaDeConsultorias) {
         let estrelas = preencherestrelas(consultoria.avaliacao);
         let status = capitalize(consultoria.status_situacao);
         let hora = (consultoria.horario === '00:00:00') ? '' : consultoria.horario.substring(0, 5);
-        let avalia = ''; // Não usado, pode ser removido
 
-        const isRealizada = consultoria.status_situacao === 'realizada';
-        const hasRegistro = consultoria.assunto && consultoria.solucoes && consultoria.infoSolicitada;
-
-        const temDenuncia = await detectDenuncia(getUserId(0), '0', consultoria.idCliente);
-        let btnDenuncia;
-        let btnRegistro;
+        let btnDenuncia = '';
+        let btnRegistro = '';
         let btnCancelar = '';
         let btnConfirmar = '';
         let canceladoDiff = '';
         let comentarioDisplay = consultoria.comentario ? `<h5 style="padding: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">Comentário: ${consultoria.comentario}</h5>` : `<h5 style="padding: 15px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif;">Sem comentário</h5>`;
 
-        let btnLink = '';
+        const temDenuncia = await detectDenuncia(getUserId(0), '0', consultoria.idCliente);
 
-        if (isRealizada) {
-            if (temDenuncia) {
-                btnDenuncia = `<button class="btn btn-primary" type="button" data-action="denunciar" disabled>Denunciado</button>`;
-            } else {
-                btnDenuncia = `<button class="btn btn-outline-danger" type="button" data-action="denunciar">Denunciar</button>`;
-            }
+        //let btnLink = '';
 
-            if (hasRegistro) {
-                btnRegistro = `<button class="btn btn-primary" type="button" data-action="relatorio">Ver Relatório</button>`;
-            } else {
-                btnRegistro = `<button class="btn btn-success" type="button" data-action="registrar">Registrar</button>`;
-            }
+        if (consultoria.status_situacao === 'pendente') {
+            btnCancelar = `<button class="btn btn-danger" type="button" data-action="cancelar">Cancelar</button>`;
+            btnConfirmar = `<button class="btn btn-primary" type="button" data-action="confirmar">Confirmar</button>`;
 
-            canceladoDiff = `<h5 style="padding-bottom: 5px; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">&emsp;Avaliação: ${estrelas}</h5> ${comentarioDisplay}`
+            canceladoDiff = `<h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5> <h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">${comentarioDisplay}</h5>`;
 
-        } else {
-            btnRegistro = ``;
-            btnDenuncia = ``;
-            canceladoDiff = ``;
-            if (consultoria.status_situacao === 'pendente') {
-                btnCancelar = `<button class="btn btn-danger" type="button" data-action="cancelar">Cancelar</button>`;
-                btnConfirmar = `<button class="btn btn-primary" type="button" data-action="confirmar">Confirmar</button>`;
-                canceladoDiff = `<h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5> <h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">${comentarioDisplay}</h5>`
-            }
-            if (consultoria.status_situacao === 'confirmada') {
-                btnCancelar = `<button class="btn btn-danger" type="button" data-action="cancelar">Cancelar</button>`;
-                btnConfirmar = `<button class="btn btn-primary" type="button" data-action="confirmar" disabled>Confirmado</button>`;
-                canceladoDiff = `<h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5> <h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">${comentarioDisplay}</h5>`
-            }
+            btnDenuncia = '';
+            btnRegistro = '';
+
+        } else if (consultoria.status_situacao === 'confirmada') {
+            btnCancelar = `<button class="btn btn-danger" type="button" data-action="cancelar">Cancelar</button>`;
+            btnConfirmar = `<button class="btn btn-primary" type="button" data-action="confirmar" disabled>Confirmado</button>`;
+            btnRegistro = '';
+            btnDenuncia = '';
+            canceladoDiff = `<h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5> <h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">${comentarioDisplay}</h5>`;
+
+        } else if (consultoria.status_situacao === 'realizada' || consultoria.status_situacao === 'concluida') {
+            const hasRegistro = consultoria.assunto && consultoria.solucoes && consultoria.infoSolicitada;
+            btnRegistro = hasRegistro ? `<button class="btn btn-primary" type="button" data-action="relatorio">Ver Relatório</button>` : `<button class="btn btn-success" type="button" data-action="registrar">Registrar</button>`;
+
+            btnDenuncia = temDenuncia ? `<button class="btn btn-primary" type="button" data-action="denunciar" disabled>Denunciado</button>` : `<button class="btn btn-outline-danger" type="button" data-action="denunciar">Denunciar</button>`;
+
+            canceladoDiff = `<h5 style="padding-bottom: 5px; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">&emsp;Avaliação: ${estrelas}</h5> ${comentarioDisplay}`;
+
+        } else if (consultoria.status_situacao === 'cancelada') {
+            btnRegistro = '';
+            btnCancelar = '';
+            btnConfirmar = '';
+            btnDenuncia = '';
+            canceladoDiff = `<h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5> <h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">${comentarioDisplay}</h5>`;
+
         }
-
         consultoriasMap.set(consultoria.idReuniao.toString(), {
             assunto: consultoria.assunto,
             solucoes: consultoria.solucoes,
@@ -365,6 +367,8 @@ function aplicarFiltros() {
             break;
         case 'status':
             consultoriasFiltradas = consultoriasFiltradas.filter(c => c.status_situacao === 'realizada');
+        case 'status2':
+            consultoriasFiltradas = consultoriasFiltradas.filter(c => c.status_situacao === 'pendente');
             break;
         case 'melhor_avaliado':
             consultoriasFiltradas.sort((a, b) => b.avaliacao - a.avaliacao);

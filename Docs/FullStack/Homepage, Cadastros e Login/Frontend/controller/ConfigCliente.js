@@ -27,15 +27,16 @@ let msgConfirmSenha = document.getElementById('msgconfirmSenha');
 let salvarBtn2 = document.getElementById('salvar-plus');
 
 document.addEventListener('DOMContentLoaded', async function () {
+
   info = await carregarInfoPerfil(getUserId(1), 1);
 
-  nome.value = info[0].nome
-  email.value = info[0].email
-  telefone.value = info[0].telefone
-  redeSocial.value = info[0].redeSocial
-  bio.value = info[0].bio
+  nome.value = info.nome
+  email.value = info.email
+  telefone.value = info.telefone
+  redeSocial.value = info.redeSocial
+  bio.value = info.bio
 
-  let urlImagemPerfil = info[0].urlImagemPerfil
+  let urlImagemPerfil = info.urlImagemPerfil
 
   const localStorageUrl = localStorage.getItem('profilePicUrl');
 
@@ -79,6 +80,7 @@ uploadInput.addEventListener('change', async function () {
   if (file) {
 
     const reader = new FileReader();
+
     reader.onload = function (e) {
       profilePic.src = e.target.result;
     }

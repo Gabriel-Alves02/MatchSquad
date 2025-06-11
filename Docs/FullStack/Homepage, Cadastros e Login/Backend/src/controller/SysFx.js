@@ -352,6 +352,30 @@ export const LoadProfile = async (request, response, next) => {
       }
     }
 
+        if (usertype === '1') {
+      const [perfil] = await pool.query(
+        `SELECT
+                    c.nome,
+                    c.email,
+                    c.telefone,
+                    c.urlImagemPerfil,
+                    c.redeSocial,
+                    c.bio
+          FROM
+                    Cliente c
+          WHERE
+                    c.idCliente = ? ;`,
+        [id]
+      );
+
+      if (perfil.length > 0) {
+        return response.status(200).json({
+          success: true,
+          perfil: perfil[0]
+        });
+      }
+    }
+
     return response.status(201).json({
       success: false,
       message: "Perfil não encontrado."
