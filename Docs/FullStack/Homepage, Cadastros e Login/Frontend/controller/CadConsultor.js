@@ -386,7 +386,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 consultor.habilidades.forEach((habilidade) => {
                     htmlHab += `
                         <div class="col-4 text-center">
-                            <input type="checkbox" id="${habilidade.nomeHabilidade}" name="${habilidade.nomeHabilidade}" value="${habilidade.idHabilidade}" />
+                            <input class="form-check-input" type="checkbox" id="${habilidade.nomeHabilidade}" name="${habilidade.nomeHabilidade}" value="${habilidade.idHabilidade}" />
                             <label for="${habilidade.nomeHabilidade}">
                                 ${habilidade.nomeHabilidade}
                             </label>
