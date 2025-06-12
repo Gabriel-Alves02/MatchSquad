@@ -1,8 +1,8 @@
-import { Cadastrar, carregarHabilidades, buscarNick_Email, enviarCodigo } from "../service/AJAX.js";
+import { Cadastrar, carregarHabilidades, buscarNick_Email, buscarPFPJ, enviarCodigoPosCadastro } from "../service/AJAX.js";
 import { cpf } from 'https://esm.sh/cpf-cnpj-validator';
 
 let form, grupoEndereco, radiosModalidade;
-let nomeusuario, emailusuario, telefoneusuario, nicknameusuario, senhausuario;
+let nomeusuario, emailusuario, telefoneusuario, nicknameusuario, senhausuario, msgcadastropessoa;
 let confirmacaoEmail, confirmacaoSenha, cpfInput, cepInput, enderecoInput;
 let numeroInput, complementoInput, bairroInput, cidadeInput;
 let msgnome, msgemail, msgphone, msgnickname, msgsenha, msgconfirmacaoemail;
@@ -24,14 +24,14 @@ function limparErro(elementId) {
 }
 
 function testeSenha(senha) {
-    for (let i = 0; i < senha.length - 1; i++) {
-        const currentChar = senha[i];
-        const nextChar = senha[i + 1];
-
-        if (Number(currentChar) + 1 === Number(nextChar)) {
-            return false;
-        }
+    if (/(012|123|234|345|456|567|678|789)/.test(senha)) {
+        return false;
     }
+
+    if (/(987|876|765|654|543|432|321|210)/.test(senha)) {
+        return false;
+    }
+
     return true;
 }
 
@@ -45,6 +45,27 @@ async function validarFormulario() {
         msgnome.style.display = 'inline-block';
         nomeusuario.value = '';
         isValid = false;
+    }
+
+    const rawCpf = cpfInput.value.replace(/\D/g, '');
+
+    if (rawCpf.length === 11) {
+        if (!cpf.isValid(rawCpf)) {
+            msgcpf.style.display = 'inline-block';
+            cpfInput.value = '';
+            isValid = false;
+        }
+    } 
+
+    const resp = await buscarPFPJ (rawCpf);
+
+    console.log(resp);
+
+    if (resp.code === 1) {
+        isValid = false;
+        msgcadastropessoa.style.display = 'inline-block';
+        cpfInput.value = '';
+        cpfInput.focus();
     }
 
     if (!emailPattern.test(emailusuario.value)) {
@@ -196,9 +217,9 @@ async function cadastrarUsuario() {
     }
 
     await Cadastrar(objConsultor);
-    await enviarCodigo ('-1','-1', emailusuario.value);
+    await enviarCodigoPosCadastro('-1', '-1', emailusuario.value);
     window.location.href = "./login.html";
-    
+
 }
 
 async function handleCepInput() {
@@ -306,6 +327,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     msgcpf = document.getElementById('msgcpf');
     msgcep = document.getElementById('msgcep');
     msgnumero = document.getElementById('msgnumero');
+    msgcadastropessoa = document.getElementById('msgcadastropessoa');
 
     cepInput.removeAttribute('required');
     enderecoInput.removeAttribute('required');
@@ -384,6 +406,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     aplicarMascaraTelefone(telefoneusuario);
     aplicarMascaraCep(cepInput);
+    aplicarMascaraCpf(cpfInput);
 
     const initialSelectedModalidade = document.querySelector('input[name="modalidade"]:checked').value;
     if (initialSelectedModalidade !== 'presencial' && initialSelectedModalidade !== 'presencial_e_online') {
@@ -409,3 +432,27 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 });
+
+
+function aplicarMascaraCpf(input) {
+    input.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for dígito
+        let formattedValue = '';
+
+        // Aplica a máscara de CPF: XXX.XXX.XXX-XX
+        if (value.length > 0) {
+            formattedValue = value.substring(0, 3);
+        }
+        if (value.length > 3) {
+            formattedValue += '.' + value.substring(3, 6);
+        }
+        if (value.length > 6) {
+            formattedValue += '.' + value.substring(6, 9);
+        }
+        if (value.length > 9) {
+            formattedValue += '-' + value.substring(9, 11);
+        }
+
+        e.target.value = formattedValue;
+    });
+}

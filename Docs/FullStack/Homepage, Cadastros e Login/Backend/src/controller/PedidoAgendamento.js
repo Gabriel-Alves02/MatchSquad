@@ -1,6 +1,6 @@
 import { info } from "console";
 import { pool } from "../database.js";
-import { EnviarCancelamentoAgendamento } from "../service/sendgrid.js"
+import { EnviarCancelamentoAgendamento, EnviarConfirmacaoAgendamento } from "../service/sendgrid.js"
 
 
 export const RegistrarAgendamento = async (request, response, next) => {
@@ -237,13 +237,11 @@ export const ConfirmaAgendamento = async (request, response) => {
     let connection;
 
     try {
-
         connection = await pool.getConnection();
-
         const { id } = request.params;
 
         if (!id) {
-            return response.status(201).json({
+            return response.status(400).json({
                 success: false,
                 message: "ID da reunião não fornecido."
             });
@@ -251,14 +249,17 @@ export const ConfirmaAgendamento = async (request, response) => {
 
         await connection.beginTransaction();
 
+        const jitsiLink = gerarUrlReuniao();
+
+
         const [updateResult] = await connection.query(
-            `UPDATE Reuniao SET status_situacao = 'confirmada' WHERE idReuniao = ?;`,
-            [id]
+            `UPDATE Reuniao SET status_situacao = 'confirmada', link = ? WHERE idReuniao = ?;`,
+            [jitsiLink, id]
         );
 
         if (updateResult.changedRows === 0) {
             await connection.rollback();
-            return response.status(201).json({
+            return response.status(404).json({
                 success: false,
                 message: "Reunião não encontrada ou já estava confirmada."
             });
@@ -267,9 +268,12 @@ export const ConfirmaAgendamento = async (request, response) => {
         const [reuniaoDetalhes] = await connection.query(
             `SELECT
                 r.data,
-                r.infoAdiantada,
-                co.email as emailConsultor,
-                cli.email as emailCliente
+                r.horario,
+                r.link,
+                co.nome AS nomeConsultor,
+                co.email AS emailConsultor,
+                cli.nome AS nomeCliente,
+                cli.email AS emailCliente
             FROM Reuniao r
             INNER JOIN Consultor co ON co.idConsultor = r.idConsultor
             INNER JOIN Cliente cli ON cli.idCliente = r.idCliente
@@ -280,12 +284,32 @@ export const ConfirmaAgendamento = async (request, response) => {
         await connection.commit();
 
         if (reuniaoDetalhes.length > 0) {
-            const { data, assunto, emailConsultor, emailCliente } = reuniaoDetalhes[0];
+            const {
+                data,
+                horario,
+                link,
+                nomeConsultor,
+                emailConsultor,
+                nomeCliente,
+                emailCliente,
+            } = reuniaoDetalhes[0];
 
             const dataFormatada = new Date(data).toLocaleDateString('pt-BR');
-            const assuntoEmail = assunto || "Consultoria";
+            const horarioFormatado = horario ? horario.substring(0, 5) : '';
+            const assuntoEmail = "Consultoria";
 
-            await EnviarConfirmacaoAgendamento ([emailConsultor, emailCliente], assuntoEmail, dataFormatada);
+            
+            await EnviarConfirmacaoAgendamento (
+                [emailConsultor, emailCliente], 
+                assuntoEmail,
+                dataFormatada,
+                horarioFormatado, 
+                nomeConsultor,    
+                nomeCliente,      
+                link
+            );
+
+            console.log(`Email de confirmação enviado para ${emailConsultor} e ${emailCliente} com link do Jitsi.`);
 
         } else {
             console.warn(`Detalhes da reunião (ID: ${id}) não encontrados após confirmação. E-mails de notificação não enviados.`);
@@ -293,11 +317,11 @@ export const ConfirmaAgendamento = async (request, response) => {
 
         return response.status(200).json({
             success: true,
-            message: "Agendamento cancelado com sucesso e e-mails de notificação enviados."
+            message: "Agendamento confirmado com sucesso e e-mails de notificação enviados.",
+            jitsiLink: jitsiLink
         });
 
     } catch (error) {
-
         if (connection) {
             await connection.rollback();
         }
@@ -399,3 +423,14 @@ export const ConcluiAgendamento = async (req, res, next) => {
         connection.release();
     }
 };
+
+function gerarUrlReuniao() {
+    let sufixoUrl = Math.random().toString(36).substring(2, 10);
+    sufixoUrl = "consultoria_" + sufixoUrl;
+
+    const baseUrl = 'https://8x8.vc/vpaas-magic-cookie-6b44b110cace40f8a723c05a52aa3bc8/';
+
+    const urlSala = baseUrl + sufixoUrl;
+
+    return urlSala;
+}

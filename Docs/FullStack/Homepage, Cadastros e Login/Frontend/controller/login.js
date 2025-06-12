@@ -1,4 +1,4 @@
-import { getUser, getUserConsultor, userType, buscarCodigo, temBloqueio, enviarCodigo, verificado, getAdmin } from "../service/AJAX.js";
+import { getUser, getUserConsultor, userType, buscarCodigo, buscarSenha, temBloqueio, enviarCodigo, verificado, getAdmin } from "../service/AJAX.js";
 import { getUserId } from "./SysFx.js";
 
 const form = document.getElementById('loginForm');
@@ -16,8 +16,6 @@ form.addEventListener('submit', async (event) => {
             nickname: username,
             senha: document.getElementById('senha').value
         };
-
-        console.log('test msg: ', test.message);
 
         if (test.message === '-1') {
             alert('Este nickname não existe para nenhum usuário!');
@@ -50,8 +48,16 @@ form.addEventListener('submit', async (event) => {
                     if (codigoBanco.message === codigo) {
                         alert("Parabéns! Conta verificada com sucesso.");
                         verificado(idConsultor, 0);
-                        getUserConsultor(objLogin, '1');
-                        break;
+                        const resp = await buscarSenha(idConsultor, 0);
+
+                        if (resp.message == codigo) {
+                            getUserConsultor(objLogin, '1');
+                            break;
+                        } else {
+                            getUserConsultor(objLogin, '-1');
+                            break;
+                        }
+
                     }
 
                     if (codigoBanco.message !== codigo) {
@@ -82,7 +88,7 @@ form.addEventListener('submit', async (event) => {
             if (block.message === 1) {
                 alert('Novos usuários ou usuários excluídos, precisam realizar confirmação de código!')
                 do {
-                    codigoBanco = await buscarCodigo (idCliente, '1');
+                    codigoBanco = await buscarCodigo(idCliente, '1');
                     codigo = Number(window.prompt("Codigo de confirmação enviado no email:"));
 
                     if (codigo == null || codigo == "") {
@@ -91,8 +97,16 @@ form.addEventListener('submit', async (event) => {
                     if (codigoBanco.message === codigo) {
                         alert("Parabéns! Conta verificada com sucesso.");
                         verificado(idCliente, 1);
-                        getUser(objLogin, '1');
-                        break;
+
+                        const resp = await buscarSenha(idCliente, 1);
+
+                        if (resp.message == codigo) {
+                            getUser(objLogin, '1');
+                            break;
+                        } else {
+                            getUser(objLogin, '-1');
+                            break;
+                        }
                     }
 
                     if (codigoBanco.message !== codigo) {
@@ -134,6 +148,6 @@ modalSenha.addEventListener('submit', (event) => {
         </div>
     `;
 
-    enviarCodigo ('-1', '-1', email);
+    enviarCodigo('-1', '-1', email);
 
 });

@@ -266,6 +266,38 @@ export const GetIfNickEmailIsValid = async (request, response) => {
   }
 };
 
+export const GetIfPFPJIsValid = async (request, response) => {
+  try {
+    const documento  = request.body;
+
+    const [rows] = await pool.query(
+      `
+      SELECT 1 FROM Consultor WHERE cpf = ?
+      UNION
+      SELECT 1 FROM Cliente WHERE cpf_cnpj = ?
+      `,
+      [documento.pfpj, documento.pfpj]
+    );
+
+    const jaExiste = rows.length > 0;
+
+    return response.status(200).json({
+      valid: !jaExiste,
+      code: jaExiste ? 1 : 0,
+      message: jaExiste ? "CPF ou CNPJ já cadastrado" : "CPF ou CNPJ liberado"
+    });
+
+  } catch (error) {
+    console.error("Erro ao verificar CPF/CNPJ:", error);
+
+    return response.status(500).json({
+      success: false,
+      message: "Problema interno no servidor!"
+    });
+  }
+};
+
+
 export const LoadProfile = async (request, response, next) => {
   try {
     const { id, usertype } = request.params;
@@ -352,7 +384,7 @@ export const LoadProfile = async (request, response, next) => {
       }
     }
 
-        if (usertype === '1') {
+    if (usertype === '1') {
       const [perfil] = await pool.query(
         `SELECT
                     c.nome,

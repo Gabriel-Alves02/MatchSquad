@@ -19,8 +19,8 @@ export const Cadastrar = async (objUser) => {
             if (response.status >= 200) {
                 alert("Cadastro realizado com sucesso. Enviado e-mail para confirmação enviado");
             }
-            else if (response.status === 202) {
-                alert("CPF já cadastrado");
+            else if (response.status === 409) {
+                alert("Este CPF | CNPJ já esta cadastrado");
             }
             else if (response.status === 201) {
                 alert("ERRO: Campos não foram preenchidos corretamente, ou contém dados inválidos!");
@@ -304,8 +304,35 @@ export async function enviarCodigo(id, usertype, email) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ "id": `${id}`, "usertype": `${usertype}`, "email": `${email}` })
         }).then((response) => {
-            if (response.status >= 200 && response.status < 300) {
+            if (response.status == 200) {
                 console.log("Enviado com sucesso!");
+            }
+            else if (response.status == 201) {
+                console.log("E-mail passado não esta na base de dados!");
+            }
+            else {
+                console.log(`Erro do servidor: ${response.status}`);
+            }
+        })
+
+    } catch (error) {
+        console.error("Erro no envio do código de verificação:", error);
+    }
+}
+
+export async function enviarCodigoPosCadastro (id, usertype, email) {
+    try {
+
+        const response = await fetch('http://localhost:8000/notifications/cadastrado', {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ "id": `${id}`, "usertype": `${usertype}`, "email": `${email}` })
+        }).then((response) => {
+            if (response.status == 200) {
+                console.log("Enviado com sucesso!");
+            }
+            else if (response.status == 201) {
+                console.log("E-mail passado não esta na base de dados!");
             }
             else {
                 console.log(`Erro do servidor: ${response.status}`);
@@ -340,8 +367,6 @@ export async function verificado(id, usertype) {
 
 export async function buscarNick_Email(objCheck) {
 
-    console.log('passou isso pro ajax: ', objCheck);
-
     try {
         const response = await fetch(url_checks + `/nickname-email`, {
             method: "POST",
@@ -356,7 +381,28 @@ export async function buscarNick_Email(objCheck) {
         }
 
     } catch (error) {
-        console.error("Erro em buscar o nickname:", error);
+        console.error("Erro em buscar o nickname e email:", error);
+        return null;
+    }
+}
+
+export async function buscarPFPJ(PFPJ) {
+
+    try {
+        const response = await fetch(url_checks + `/cpf-cnpj`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({"pfpj":PFPJ})
+        });
+
+        if (response.status === 200) {
+            const data = await response.json();
+
+            return data;
+        }
+
+    } catch (error) {
+        console.error("Erro em buscar o CPF ou CNPJ:", error);
         return null;
     }
 }
@@ -381,7 +427,7 @@ export async function agendamentoCancelado(id) {
     }
 }
 
-export async function agendamentoConcluido (id) {
+export async function agendamentoConcluido(id) {
     try {
 
         const response = await fetch(url_checks + `/agenda/${id}/concluido`, {
@@ -416,7 +462,7 @@ export const RegistrarReuniao = async (objRegistro) => {
     })
 }
 
-export async function carregarInfoPerfil (id, usertype) {
+export async function carregarInfoPerfil(id, usertype) {
     return await fetch(url_checks + `/perfil/${id}/${usertype}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
@@ -562,11 +608,11 @@ export async function uploadCertificado(id, file) {
     }
 }
 
-export async function limparImagensNaNuvem (id, usertype) {
+export async function limparImagensNaNuvem(id, usertype) {
     try {
         const response = await fetch(url_checks + `/perfil/${id}/${usertype}/limparImagens`, {
             method: 'DELETE',
-            headers: {'Content-Type': 'application/json'}
+            headers: { 'Content-Type': 'application/json' }
         });
 
         const data = await response.json();
@@ -1036,7 +1082,7 @@ export async function horariosConsultor(idConsultor) {
     })
 }
 
-export async function concluirReuniao (idReuniao) {
+export async function concluirReuniao(idReuniao) {
     try {
         const response = await fetch(url_consultores + `/reuniao-concluida/${idReuniao}`, {
             method: "PUT",
@@ -1055,7 +1101,7 @@ export async function concluirReuniao (idReuniao) {
     }
 }
 
-export async function confirmarReuniao (idReuniao) {
+export async function confirmarReuniao(idReuniao) {
     try {
         const response = await fetch(url_checks + `/agenda/${idReuniao}/confirma`, {
             method: "PUT",
