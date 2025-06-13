@@ -808,7 +808,6 @@ export async function avaliado(info) {
 
 export async function denunciar(id, usertype, info) {
 
-
     try {
         const response = await fetch(url_checks + `/${id}/${usertype}/denuncia`, {
             method: "POST",
@@ -825,7 +824,7 @@ export async function denunciar(id, usertype, info) {
         return 'Falha na submissão da denuncia'
 
     } catch (error) {
-        return alert('Erro ao submter a denuncia: ', error);
+        return alert('Erro ao submeter a denuncia: ', error);
     }
 }
 

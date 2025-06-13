@@ -224,7 +224,7 @@ async function renderizarConsultorias(listaDeConsultorias) {
         const isToday = dataReuniao.setHours(0, 0, 0, 0) === hoje.setHours(0, 0, 0, 0);
 
 
-        if (consultoria.status_situacao === 'pendente' || consultoria.status_situacao === 'cancelada') {
+        if (consultoria.status_situacao === 'pendente' || consultoria.status_situacao === 'cancelada' || consultoria.status_situacao === 'confirmada') {
             if (consultoria.status_situacao === 'pendente') {
                 avalia = `<h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5>`;
                 cancelar = `<button class="btn btn-primary" type="button" data-action="cancelar" >Cancelar</button>`;
@@ -269,7 +269,7 @@ async function renderizarConsultorias(listaDeConsultorias) {
                     </div>
                 </div>
             `;
-        } else {
+        } else if (consultoria.status_situacao === 'concluida') {
             let btnAvaliacao;
             let btnDenuncia = `<button class="btn btn-outline-danger" type="button" data-action="denunciar">Denunciar</button>`;
             let comentarioExibido = '';
@@ -351,10 +351,7 @@ function aplicarFiltros() {
             consultoriasFiltradas.sort((a, b) => new Date(b.data) - new Date(a.data));
             break;
         case 'status':
-            consultoriasFiltradas = consultoriasFiltradas.filter(c => c.status_situacao === 'realizada');
-            break;
-        case 'melhor_avaliado':
-            consultoriasFiltradas.sort((a, b) => b.avaliacao - a.avaliacao);
+            consultoriasFiltradas = consultoriasFiltradas.filter(c => c.status_situacao === 'confirmada');
             break;
         default:
             console.log('Filtro desconhecido:', tipoFiltro);

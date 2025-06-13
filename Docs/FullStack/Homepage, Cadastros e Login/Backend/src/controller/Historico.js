@@ -64,6 +64,7 @@ export const LoadHistory = async (request, response, next) => {
             `SELECT 
                 r.idReuniao,
                 r.idCliente,
+                r.infoAdiantada,
                 c.nome, 
                 c.urlImagemPerfil, 
                 r.data, 

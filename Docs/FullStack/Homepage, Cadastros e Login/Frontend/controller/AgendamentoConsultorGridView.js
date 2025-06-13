@@ -265,6 +265,7 @@ async function renderizarConsultorias(listaDeConsultorias) {
 
     let html = '';
     for (const consultoria of listaDeConsultorias) {
+
         let estrelas = preencherestrelas(consultoria.avaliacao);
         let status = capitalize(consultoria.status_situacao);
         let hora = (consultoria.horario === '00:00:00') ? '' : consultoria.horario.substring(0, 5);
@@ -296,7 +297,7 @@ async function renderizarConsultorias(listaDeConsultorias) {
             btnDenuncia = '';
             canceladoDiff = `<h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5> <h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">${comentarioDisplay}</h5>`;
 
-        } else if (consultoria.status_situacao === 'realizada' || consultoria.status_situacao === 'concluida') {
+        } else if (consultoria.status_situacao === 'concluida') {
             const hasRegistro = consultoria.assunto && consultoria.solucoes && consultoria.infoSolicitada;
             btnRegistro = hasRegistro ? `<button class="btn btn-primary" type="button" data-action="relatorio">Ver Relatório</button>` : `<button class="btn btn-success" type="button" data-action="registrar">Registrar</button>`;
 
@@ -321,7 +322,7 @@ async function renderizarConsultorias(listaDeConsultorias) {
         html += `
             <div class="historic-card-consultoria" data-id="${consultoria.idReuniao.toString()}">
                 <div class="historic-card-header-container">
-                    <h1 class="historic-card-title">Consultoria com ${consultoria.nome}</h1>
+                    <h1 class="historic-card-title">Consultoria com ${consultoria.nome.split(' ')[0]}</h1>
                     <div class="historic-card-buttons">
                         ${btnRegistro}
                         ${btnCancelar}
@@ -336,6 +337,7 @@ async function renderizarConsultorias(listaDeConsultorias) {
                         <h5 class="historic-card-user-name">${consultoria.nome}</h5>
                     </div>
                     <div>
+                        <h5 class="historic-card-info">&nbsp;&nbsp;&nbsp;${consultoria.infoAdiantada}</h5>
                         <h5 class="historic-card-date">Em ${formatarData(consultoria.data)} ${hora}</h5>
                         <h5 class="historic-card-status">Status: ${status}</h5>
                         ${canceladoDiff}
@@ -366,7 +368,8 @@ function aplicarFiltros() {
             consultoriasFiltradas.sort((a, b) => new Date(b.data) - new Date(a.data));
             break;
         case 'status':
-            consultoriasFiltradas = consultoriasFiltradas.filter(c => c.status_situacao === 'realizada');
+            consultoriasFiltradas = consultoriasFiltradas.filter(c => c.status_situacao == 'confirmada');
+            break;
         case 'status2':
             consultoriasFiltradas = consultoriasFiltradas.filter(c => c.status_situacao === 'pendente');
             break;
