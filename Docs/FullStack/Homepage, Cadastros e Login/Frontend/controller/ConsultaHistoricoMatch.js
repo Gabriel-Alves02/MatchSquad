@@ -225,7 +225,7 @@ async function renderizarConsultorias(listaDeConsultorias) {
 
 
         if (consultoria.status_situacao === 'pendente' || consultoria.status_situacao === 'cancelada' || consultoria.status_situacao === 'confirmada') {
-            if (consultoria.status_situacao === 'pendente') {
+            if (consultoria.status_situacao === 'pendente'  || consultoria.status_situacao === 'confirmada') {
                 avalia = `<h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">Avaliação: ${estrelas}</h5>`;
                 cancelar = `<button class="btn btn-primary" type="button" data-action="cancelar" >Cancelar</button>`;
             }
@@ -278,7 +278,6 @@ async function renderizarConsultorias(listaDeConsultorias) {
                 btnAvaliacao = `<button class="btn btn-primary" type="button" data-action="avaliacao">Avaliar</button>`;
             } else {
                 btnAvaliacao = `<button class="btn btn-primary" type="button" data-action="avaliacao" disabled>Avaliado</button>`;
-                // Exibe o comentário apenas se houver um
                 if (consultoria.comentario && consultoria.comentario.trim() !== '') {
                     comentarioExibido = `<h5 style="padding: 1em; padding-top: 0.25em; padding-bottom: 0.25em; font-size: 1em; font-family: Arial, Helvetica, sans-serif;">Comentário: ${consultoria.comentario}</h5>`;
                 }

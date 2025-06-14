@@ -60,7 +60,7 @@ export const DiasSemanaConsultoriaDetalhado = async (request, response, next) =>
             'quarta-feira',
             'quinta-feira',
             'sexta-feira',
-            'sábado' // <-- COM ACENTO AQUI
+            'sábado'
         ];
 
         const contagem = {
@@ -69,7 +69,7 @@ export const DiasSemanaConsultoriaDetalhado = async (request, response, next) =>
             'quarta-feira': 0,
             'quinta-feira': 0,
             'sexta-feira': 0,
-            'sábado': 0, // <-- COM ACENTO AQUI
+            'sábado': 0,
             'domingo': 0
         };
 

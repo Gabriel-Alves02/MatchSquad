@@ -12,7 +12,6 @@ const botaoPesquisa = document.getElementById('botaoPesquisa');
 const container = document.getElementById('maingrid');
 
 let idConsultor;
-// endereco não precisa ser global, é usado apenas na renderização
 
 document.addEventListener("DOMContentLoaded", async function () {
     await carregarHabilidades();
@@ -21,11 +20,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     console.log(consultores);
 
-    popularFiltroCidades(consultores); // Chamar para popular as cidades
+    popularFiltroCidades(consultores);
     renderizarConsultores(consultores);
 
     verificarCamposFiltro();
-    // Chamar filtrarConsultores() para aplicar quaisquer filtros iniciais (e.g., se houver valores pré-selecionados)
     filtrarConsultores();
 });
 
@@ -68,10 +66,8 @@ function popularFiltroCidades(listaConsultores) {
     });
 
     const selectCidade = document.getElementById('filtroCidade');
-    // Limpar opções existentes, exceto a primeira "Todas as cidades"
     selectCidade.innerHTML = '<option value="">Todas as cidades</option>';
 
-    // Adicionar cidades ordenadas
     Array.from(cidades).sort().forEach(cidade => {
         const opt = document.createElement('option');
         opt.value = cidade;
@@ -97,11 +93,8 @@ function renderizarConsultores(lista) {
         }
         modCorrect = capitalize(modCorrect);
 
-        // Apenas mostra o endereço se a modalidade não for 'online'
         if (consultor.modalidadeTrab !== 'online') {
             enderecoDisplay = consultor.cidade ? `${consultor.cidade}` : '';
-            // Se quiser bairro também, descomente a linha abaixo e ajuste:
-            // enderecoDisplay = `${consultor.bairro ? consultor.bairro + ', ' : ''}${consultor.cidade}`;
         }
 
         let bioDescr = consultor.bio;
@@ -136,34 +129,32 @@ function verificarCamposFiltro() {
     const modalidadeSelecionada = filtroModalidade.value; // Novo
     const cidadeSelecionada = filtroCidade.value; // Novo
 
-    // O botão de pesquisa estará desabilitado se TODOS os campos de filtro estiverem vazios/selecionados como "Todas"
     botaoPesquisa.disabled = (textoBusca === '' && habilidadeSelecionada === '' && modalidadeSelecionada === '' && cidadeSelecionada === '');
 }
 
-// Event listeners para os novos filtros
 filtroModalidade.addEventListener('change', () => {
     filtrarConsultores();
-    verificarCamposFiltro(); // Atualiza o estado do botão
+    verificarCamposFiltro();
 });
 
 filtroCidade.addEventListener('change', () => {
     filtrarConsultores();
-    verificarCamposFiltro(); // Atualiza o estado do botão
+    verificarCamposFiltro();
 });
 
-// Event listeners já existentes
+
 botaoPesquisa.addEventListener('click', () => {
     filtrarConsultores();
 });
 
 filtroHabilidade.addEventListener('change', () => {
     filtrarConsultores();
-    verificarCamposFiltro(); // Atualiza o estado do botão
+    verificarCamposFiltro();
 });
 
 searchBar.addEventListener('input', () => {
     verificarCamposFiltro();
-    filtrarConsultores(); // Adicionado para filtrar ao digitar
+    filtrarConsultores();
 });
 
 
@@ -178,17 +169,15 @@ function filtrarConsultores() {
             const nomeMatch = c.nome.toLowerCase().includes(textoBusca);
             const habilidadeMatch = habilidadeSelecionada === '' || c.habilidades.includes(habilidadeSelecionada);
 
-            // Lógica para filtro de modalidade
+
             let modalidadeMatch = true;
             if (modalidadeSelecionada === 'online') {
                 modalidadeMatch = c.modalidadeTrab === 'online' || c.modalidadeTrab === 'presencial_e_online';
             } else if (modalidadeSelecionada === 'presencial') {
-                // Considera "presencial" e "presencial_e_online" como "presencial / ambos"
+
                 modalidadeMatch = c.modalidadeTrab !== 'online';
             }
-            // Se modalidadeSelecionada for '', modalidadeMatch permanece true (todas as modalidades)
 
-            // Lógica para filtro de cidade
             let cidadeMatch = true;
             if (cidadeSelecionada !== '') {
                 cidadeMatch = c.cidade && c.cidade.toLowerCase() === cidadeSelecionada.toLowerCase();
@@ -196,7 +185,7 @@ function filtrarConsultores() {
 
             return nomeMatch && habilidadeMatch && modalidadeMatch && cidadeMatch;
         })
-        .sort((a, b) => a.nome.localeCompare(b.nome)); // ordenação alfabética por nome
+        .sort((a, b) => a.nome.localeCompare(b.nome));
 
     renderizarConsultores(resultadoFiltrado);
 }

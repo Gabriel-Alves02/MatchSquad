@@ -8,7 +8,6 @@ let allConsultorias = [];
 let displayedConsultorias = [];
 let consultoriasMap = new Map();
 
-// Variáveis para as instâncias dos modais Bootstrap
 let modalRelatorioInstance = null;
 let modalDenunciaInstance = null;
 
@@ -362,7 +361,7 @@ function aplicarFiltros() {
     const tipoFiltro = filtro.value;
 
     switch (tipoFiltro) {
-        case 'cliente': // Manter caso 'cliente' para filtro de nome, se preferir.
+        case 'cliente':
             break;
         case 'data':
             consultoriasFiltradas.sort((a, b) => new Date(b.data) - new Date(a.data));

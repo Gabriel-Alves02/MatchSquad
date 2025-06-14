@@ -1,4 +1,4 @@
-import { carregarInfoPerfil, habilidadesPortifolio, mediaPortifolio, Registrar, agendadoNovamente, horariosConsultor } from '../service/AJAX.js';
+import { carregarInfoPerfil, habilidadesPortifolio, mediaPortifolio, Registrar, agendadoNovamente, horariosConsultor, atualizarAgendamento } from '../service/AJAX.js';
 import { getUserId, capitalize } from './SysFx.js';
 
 const profilePic = document.getElementById('profile-pic');
@@ -11,7 +11,6 @@ const bio = document.getElementById('bio');
 const endereco = document.getElementById('endereco');
 const modalidade = document.getElementById('modalidade');
 const prazo = document.getElementById('prazoReag');
-
 const botaoAgendar = document.getElementById('btn-agendar');
 
 
@@ -19,6 +18,8 @@ let info;
 let idValid;
 let flagHorario = -1;
 const userId = getUserId(1);
+let agendamentoExistente = null;
+let idAgendamentoParaAtualizar = null; 
 
 
 document.addEventListener('DOMContentLoaded', async function () {
@@ -36,8 +37,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const urlParams = new URLSearchParams(window.location.search);
     idValid = urlParams.get('id');
-
-    console.log('idValid: ',idValid);
 
     if (!idValid) {
         idValid = getUserId(0);
@@ -60,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     horarioInput.addEventListener('change', function () {
         flagHorario = 1;
     });
-    ;
+
 
     async function configurarLimitesHorario(periodo) {
         const horarioInput = document.getElementById('horario');
@@ -109,19 +108,38 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     }
 
-    const repetido = await agendadoNovamente(getUserId(1), idValid);
 
-    if (repetido) {
-        botaoAgendar.disabled = true;
-        botaoAgendar.innerHTML = '<i class="fas fa-calendar-xmark"></i> Já agendado';
+    async function atualizarEstadoBotaoAgendar() {
+        const resultadoVerificacao = await agendadoNovamente(getUserId(1), idValid);
+        console.log('resultadoVerificacao da API (atualizarEstadoBotaoAgendar):', resultadoVerificacao);
+
+        if (resultadoVerificacao && resultadoVerificacao.success && resultadoVerificacao.agendamento) {
+            if (resultadoVerificacao.agendamento.status_situacao === 'pendente') {
+                agendamentoExistente = resultadoVerificacao.agendamento;
+                idAgendamentoParaAtualizar = agendamentoExistente.idReuniao;
+                botaoAgendar.innerHTML = '<i class="fas fa-calendar-check"></i> Editar Agendamento';
+                botaoAgendar.classList.add('btn-edit-agendamento');
+                botaoAgendar.disabled = false;
+            } else {
+                botaoAgendar.disabled = true;
+                botaoAgendar.innerHTML = '<i class="fas fa-calendar-xmark"></i> Reunião confirmada';
+                agendamentoExistente = null;
+                idAgendamentoParaAtualizar = null;
+            }
+        } else {
+            botaoAgendar.disabled = false;
+            botaoAgendar.innerHTML = '<i class="fas fa-calendar-alt"></i> Agendar';
+            botaoAgendar.classList.remove('btn-edit-agendamento');
+            agendamentoExistente = null;
+            idAgendamentoParaAtualizar = null;
+        }
     }
+
+    await atualizarEstadoBotaoAgendar();
 
     info = await carregarInfoPerfil(idValid, 0);
 
     let urlImagemPerfil = info.urlImagemPerfil;
-
-    console.log(urlImagemPerfil);
-
 
     let userHabilidades = await habilidadesPortifolio(idValid);
 
@@ -146,11 +164,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
 
             endereco.innerHTML = ` ${info.endereco}, ${info.numeroCasa}<br>
-                    ${info.bairro}, ${info.cidade} (${cepFormatado})`;
+                        ${info.bairro}, ${info.cidade} (${cepFormatado})`;
         }
-
-        console.log(info.urlImagemPerfil);
-
 
         const localStorageUrl = localStorage.getItem('profilePicUrl');
 
@@ -217,6 +232,42 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 });
 
+function configurarModalidadeAgendamento(modalidadeTrab) {
+    const radioOnlineLabel = document.getElementById('label-online');
+    const radioPresencialLabel = document.getElementById('label-presencial');
+    const radioOnlineInput = document.querySelector('input[name="tipo"][value="online"]');
+    const radioPresencialInput = document.querySelector('input[name="tipo"][value="presencial"]');
+
+    if (!radioOnlineLabel || !radioPresencialLabel || !radioOnlineInput || !radioPresencialInput) {
+        console.error("Elementos dos radio buttons não encontrados no DOM. Verifique o HTML do modal.");
+        return;
+    }
+
+    radioOnlineLabel.style.display = 'none';
+    radioPresencialLabel.style.display = 'none';
+
+    switch (modalidadeTrab) {
+        case 'online':
+            radioOnlineLabel.style.display = 'inline-block';
+            radioOnlineInput.checked = true;
+            break;
+        case 'presencial':
+            radioPresencialLabel.style.display = 'inline-block';
+            radioPresencialInput.checked = true;
+            break;
+        case 'presencial_e_online':
+            radioOnlineLabel.style.display = 'inline-block';
+            radioPresencialLabel.style.display = 'inline-block';
+            radioOnlineInput.checked = true;
+            break;
+        default:
+            console.warn('Modalidade de trabalho desconhecida:', modalidadeTrab);
+            radioOnlineLabel.style.display = 'inline-block';
+            radioPresencialLabel.style.display = 'inline-block';
+            radioOnlineInput.checked = true;
+            break;
+    }
+}
 
 function ativarZoomEmCertificados() {
     document.addEventListener('click', function (e) {
@@ -239,13 +290,10 @@ function preencherestrelas(value) {
 
         for (let i = 1; i <= 5; i++) {
             if (i <= roundedValue) {
-                // Estrela cheia
                 starsHtml += `<i class="fas fa-star" style="color: #FFC83D;"></i>`;
             } else if (i - 0.5 === roundedValue) {
-                // Meia estrela
                 starsHtml += `<i class="fas fa-star-half-alt" style="color: #FFC83D;"></i>`;
             } else {
-                // Estrela vazia
                 starsHtml += `<i class="far fa-star" style="color: #FFC83D;"></i>`;
             }
         }
@@ -254,16 +302,16 @@ function preencherestrelas(value) {
     return '-';
 }
 
-
 const modalForm = document.getElementById('modal-agendamento');
 modalForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     let endHour = '';
-    if (flagHorario === 1)
+    if (flagHorario === 1) {
         endHour = document.getElementById('horario').value;
-    else
+    } else {
         endHour = '00:00:00';
+    }
 
     const data = document.getElementById('data-agendamento').value;
     const periodo = document.getElementById('periodo').value;
@@ -271,25 +319,17 @@ modalForm.addEventListener('submit', async (event) => {
     const radioSelecionado = document.querySelector('input[name="tipo"]:checked');
     const horario = endHour;
 
-    let urlReuniao = null;
-
-    // if (radioSelecionado.value === 'online') {
-    //     urlReuniao = gerarUrlReuniao();
-    // }
-
+    if (!radioSelecionado) {
+        alert('Por favor, selecione a modalidade de agendamento (Online ou Presencial).');
+        return;
+    }
 
     if (!data) {
         alert('Por favor, escolha uma data!');
         return;
     }
 
-    const repetido = await agendadoNovamente(getUserId(1), idValid);
-
-    if (repetido) {
-        alert("Você já tem um agendamento com esse consultor!");
-        fecharModal();
-        return;
-    }
+    let urlReuniao = null;
 
     const PedidoAgendamento = {
         idConsultor: idValid,
@@ -300,19 +340,29 @@ modalForm.addEventListener('submit', async (event) => {
         tipo: radioSelecionado.value,
         periodo: periodo,
         link: urlReuniao,
-        horario: horario || '00:00:00'
+        horario: horario
     };
 
-    Registrar(PedidoAgendamento);
-    fecharModal();
-    window.location.reload();
+    try {
+        if (idAgendamentoParaAtualizar) {
+            await atualizarAgendamento(idAgendamentoParaAtualizar, PedidoAgendamento);
+            alert("Agendamento atualizado com sucesso!");
+        } else {
+            await Registrar(PedidoAgendamento);
+            alert("Agendamento realizado com sucesso!");
+        }
+    } catch (error) {
+        console.error("Erro na operação de agendamento:", error);
+        alert("Ocorreu um erro ao processar o agendamento. Tente novamente.");
+    } finally {
+        fecharModal();
+    }
 });
 
 
 function abrirModalAgendamento() {
     const modal = document.getElementById('modal-agendamento');
     const modalTitle = document.getElementById('modal-title');
-
     const nomeConsultor = document.getElementById('nome')?.innerText.trim();
 
     modalTitle.innerText = `Agendar com ${nomeConsultor}`;
@@ -321,13 +371,45 @@ function abrirModalAgendamento() {
     document.getElementById('data-agendamento').value = '';
     document.getElementById('periodo').value = 'manha';
     document.getElementById('infoAdiantada').value = '';
-    document.querySelector('input[name="tipo"][value="online"]').checked = true;
+    document.getElementById('horario').value = '';
 
-    modal.addEventListener('click', (event) => {
-        if (event.target.classList.contains('close')) {
-            fecharModal();
+    if (info && info.modalidadeTrab) {
+        configurarModalidadeAgendamento(info.modalidadeTrab);
+    } else {
+        const radioOnlineInput = document.querySelector('input[name="tipo"][value="online"]');
+        if (radioOnlineInput) radioOnlineInput.checked = true;
+    }
+
+    if (agendamentoExistente) {
+        modalTitle.innerText = `Editar Agendamento com ${nomeConsultor}`;
+        document.getElementById('data-agendamento').value = agendamentoExistente.data;
+        document.getElementById('periodo').value = agendamentoExistente.periodo;
+        document.getElementById('infoAdiantada').value = agendamentoExistente.infoAdiantada;
+        document.getElementById('horario').value = agendamentoExistente.horario ? agendamentoExistente.horario.slice(0, 5) : '';
+
+        const tipoRadio = document.querySelector(`input[name="tipo"][value="${agendamentoExistente.tipo}"]`);
+        if (tipoRadio) {
+            tipoRadio.checked = true;
         }
-    });
+    } else {
+        const radioOnlineInput = document.querySelector('input[name="tipo"][value="online"]');
+        if (radioOnlineInput) radioOnlineInput.checked = true;
+    }
+
+    const closeButton = modal.querySelector('.close');
+    if (closeButton) {
+        closeButton.onclick = function () {
+            fecharModal();
+            atualizarEstadoBotaoAgendar();
+        };
+    }
+
+    modal.onclick = function (event) {
+        if (event.target === modal) { 
+            fecharModal();
+            atualizarEstadoBotaoAgendar();
+        }
+    };
 }
 
 
@@ -339,6 +421,7 @@ function fecharModal() {
     document.querySelector('input[name="tipo"][value="online"]').checked = true;
     document.getElementById('modal-agendamento').style.display = 'none';
 }
+
 
 document.getElementById('btn-agendar').addEventListener('click', function () {
     abrirModalAgendamento();

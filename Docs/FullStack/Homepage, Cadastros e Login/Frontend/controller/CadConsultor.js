@@ -375,7 +375,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     nicknameusuario.addEventListener('keyup', () => limparErro('nickname'));
     senhausuario.addEventListener('keyup', () => limparErro('senha'));
     confirmacaoSenha.addEventListener('keyup', () => limparErro('confirmacaosenha'));
-    cepInput.addEventListener('keyup', handleCepInput); // Use a função nomeada
+    cepInput.addEventListener('keyup', handleCepInput);
     numeroInput.addEventListener('keyup', () => limparErro('numero'));
 
     const habilidadesContainer = document.getElementById('habilidadesContainer');
@@ -436,10 +436,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 function aplicarMascaraCpf(input) {
     input.addEventListener('input', function (e) {
-        let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for dígito
+        let value = e.target.value.replace(/\D/g, '');
         let formattedValue = '';
 
-        // Aplica a máscara de CPF: XXX.XXX.XXX-XX
         if (value.length > 0) {
             formattedValue = value.substring(0, 3);
         }

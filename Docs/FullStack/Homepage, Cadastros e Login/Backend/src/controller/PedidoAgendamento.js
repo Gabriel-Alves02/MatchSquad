@@ -40,6 +40,50 @@ export const RegistrarAgendamento = async (request, response, next) => {
 
 };
 
+export const AlterarAgendamento = async (request, response, next) => {
+
+    const connection = await pool.getConnection();
+
+    try {
+        const { idReuniao } = request.params;
+        const { idCliente, idConsultor, infoAdiantada, data, status_situacao, tipo, periodo, link, horario } = request.body;
+
+        await connection.beginTransaction();
+
+        const [result] = await pool.query(
+            `UPDATE Reuniao
+             SET infoAdiantada = ?, data = ?, status_situacao = ?, tipo = ?, periodo = ?, horario = ?, link = ?
+             WHERE idReuniao = ?`,
+            [infoAdiantada, data, status_situacao, tipo, periodo, horario, link, idReuniao]
+        );
+
+        await connection.commit();
+
+        if (result.affectedRows === 0) {
+            return response.status(201).json({
+                success: false,
+                message: "Não foi possivel atualizar a reunião!"
+            });
+        }
+
+        return response.status(200).json({
+            success: true,
+            message: "Reunião alterada."
+        });
+
+    } catch (error) {
+        await connection.rollback();
+        console.error('Erro no cadastro:', error);
+        return response.status(500).json({
+            success: false,
+            message: "Erro interno do servidor"
+        });
+    } finally {
+        connection.release();
+    }
+
+};
+
 
 export const BuscarAgenda = async (request, response, next) => {
 
@@ -57,8 +101,6 @@ export const BuscarAgenda = async (request, response, next) => {
         );
 
         // Só carrega agendamento que: sejam do consultor logado, que sejam do dia atual ou futuro e que estejam pendentes.
-
-        // AO ACERTAR O MECANISMO, SERA REFINADO O SQL PARA "ORDER BY data, periodo"
 
         if (agendamentos.length === 0) {
             return response.status(201).json({
@@ -117,31 +159,30 @@ export const BuscarSolicitacoes = async (request, response, next) => {
 
 
 export const AgendamentoRepetido = async (request, response, next) => {
-
     try {
         const { idCliente, idConsultor } = request.params;
 
         const [agenda] = await pool.query(
-            `SELECT idReuniao
-                FROM
-                    Reuniao
-                WHERE 
-                    idConsultor = ? AND idCliente = ? 
-                    AND 
-                    (status_situacao = 'pendente' OR status_situacao = 'confirmada');`,
+            `SELECT idReuniao, infoAdiantada, data, status_situacao, tipo, periodo, horario, link
+             FROM Reuniao
+             WHERE idConsultor = ? AND idCliente = ?
+             AND (status_situacao = 'pendente' OR status_situacao = 'confirmada');`,
             [idConsultor, idCliente]
         );
+
 
         if (agenda.length === 0) {
             return response.status(200).json({
                 success: false,
-                message: "Não tem agendamento repetido. Pode agendar!"
+                message: "Não tem agendamento repetido. Pode agendar!",
+                agendamento: null
             });
         }
 
-        return response.status(201).json({
+        return response.status(200).json({
             success: true,
-            message: "Tem agendamento deste cliente para este consultor. Não pode agendar!"
+            message: "Tem agendamento deste cliente para este consultor. Você pode editá-lo.",
+            agendamento: agenda[0]
         });
 
     } catch (error) {
@@ -150,7 +191,6 @@ export const AgendamentoRepetido = async (request, response, next) => {
             success: false,
             message: "Erro interno do servidor"
         });
-
     }
 };
 
@@ -205,7 +245,7 @@ export const CancelaAgendamento = async (request, response) => {
             const dataFormatada = new Date(data).toLocaleDateString('pt-BR');
             const assuntoEmail = assunto || "Consultoria";
 
-            await EnviarCancelamentoAgendamento ([emailConsultor, emailCliente], assuntoEmail, dataFormatada);
+            await EnviarCancelamentoAgendamento([emailConsultor, emailCliente], assuntoEmail, dataFormatada);
 
         } else {
             console.warn(`Detalhes da reunião (ID: ${id}) não encontrados após cancelamento. E-mails de notificação não enviados.`);
@@ -298,18 +338,16 @@ export const ConfirmaAgendamento = async (request, response) => {
             const horarioFormatado = horario ? horario.substring(0, 5) : '';
             const assuntoEmail = "Consultoria";
 
-            
-            await EnviarConfirmacaoAgendamento (
-                [emailConsultor, emailCliente], 
+
+            await EnviarConfirmacaoAgendamento(
+                [emailConsultor, emailCliente],
                 assuntoEmail,
                 dataFormatada,
-                horarioFormatado, 
-                nomeConsultor,    
-                nomeCliente,      
+                horarioFormatado,
+                nomeConsultor,
+                nomeCliente,
                 link
             );
-
-            console.log(`Email de confirmação enviado para ${emailConsultor} e ${emailCliente} com link do Jitsi.`);
 
         } else {
             console.warn(`Detalhes da reunião (ID: ${id}) não encontrados após confirmação. E-mails de notificação não enviados.`);
@@ -395,7 +433,7 @@ export const ConcluiAgendamento = async (req, res, next) => {
             `UPDATE Reuniao SET status_situacao = 'concluida' WHERE idReuniao = ?;`,
             [info.idReuniao]
         );
-        
+
         await connection.commit();
 
         if (result.changedRows > 0) {

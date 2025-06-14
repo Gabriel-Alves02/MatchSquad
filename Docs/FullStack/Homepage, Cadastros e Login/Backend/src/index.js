@@ -4,7 +4,7 @@ import { CadastrarCliente, Reviewed } from './controller/Cliente.js';
 import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
 import { CadastrarConsultor, GetHabilidades, RecordMeetLog, GetHabConsultor, ConsultarMediaConsultor } from './controller/Consultor.js';
-import { RegistrarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepetido, CancelaAgendamento, ConfirmaAgendamento, ConcluiAgendamento } from './controller/PedidoAgendamento.js';
+import { RegistrarAgendamento, AlterarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepetido, CancelaAgendamento, ConfirmaAgendamento, ConcluiAgendamento } from './controller/PedidoAgendamento.js';
 import { GetCode, GetPrazo, GetName, GetBlockStatus, RefreshBlock, GetIfNickEmailIsValid, GetIfPFPJIsValid, LoadProfile, RefreshProfile, GoCloudImage, GoCloudCertificateImage, WipeCloud, GetPassword, EndUser, RefreshPassword, SubmitComplaint, GetReport, GetWorkRange } from './controller/SysFx.js';
 import { EnviarEmailRemarcacao, ConfirmacaoEmail, ConfirmacaoEmailPosCadastro, SendAnnouncement } from './service/sendgrid.js';
 import { RegistrarReuniao } from './controller/RegistrarReuniao.js';
@@ -41,6 +41,7 @@ app.post('/administradores/login', Login);
 app.post('/clientes/agendamento', RegistrarAgendamento);
 app.post('/notifications', EnviarEmailRemarcacao)
 app.post('/clientes/registrarReuniao', RegistrarReuniao);
+app.put('/clientes/reagendar/:idReuniao', AlterarAgendamento );
 app.put('/clientes/avaliacao', Reviewed );
 app.put('/notifications', ConfirmacaoEmail);
 app.put('/notifications/cadastrado', ConfirmacaoEmailPosCadastro);

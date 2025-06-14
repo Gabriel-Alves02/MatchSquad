@@ -172,7 +172,7 @@ async function validarFormulario() {
         const responseData = await buscarNick_Email(objCheck);
 
         if (responseData.code === 1 || responseData.code === 2 || responseData.code === 3) {
-            isValid = false; // Define como inválido se encontrar um conflito
+            isValid = false;
 
             switch (responseData.code) {
                 case 1:
@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Opcional: Para impedir colar em todos os inputs
+    // Para impedir colar em todos os inputs
     // document.addEventListener('paste', function (event) {
     //     if (event.target.tagName === 'INPUT') {
     //         event.preventDefault();

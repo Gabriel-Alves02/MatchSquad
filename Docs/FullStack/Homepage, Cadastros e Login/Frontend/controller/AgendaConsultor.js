@@ -94,7 +94,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                 if (info.event.extendedProps.status !== 'confirmada') {
                     await confirmarReuniao (info.event.extendedProps.idReuniao);
-                    // função de gerar um link valido e utilizavel do jitsi meet, que sera enviado por email (sendgrid)
                     window.location.reload();
                 }
             } else {

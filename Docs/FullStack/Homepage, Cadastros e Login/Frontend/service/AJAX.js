@@ -285,7 +285,7 @@ export async function agendadoNovamente(idCliente, idConsultor) {
         const data = await response.json();
 
         if (response.status === 200 || response.status === 201) {
-            return data.success;
+            return data;
         } else {
             throw new Error("Erro ao buscar cliente");
         }
@@ -293,6 +293,27 @@ export async function agendadoNovamente(idCliente, idConsultor) {
     } catch (error) {
         console.error("Erro Interno:", error);
         return;
+    }
+}
+
+export async function atualizarAgendamento (idReuniao, dados) {
+    try {
+        const response = await fetch(url_cliente + `/reagendar/${idReuniao}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dados)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Erro ao atualizar agendamento');
+        }
+
+        return await response.json();
+
+    } catch (error) {
+        console.error("Erro na função AtualizarAgendamento:", error);
+        throw error;
     }
 }
 
@@ -1063,7 +1084,7 @@ export async function obterArrayTop5Consultores() {
     })
 }
 
-export async function horariosConsultor(idConsultor) {
+export async function horariosConsultor (idConsultor) {
     return await fetch(url_checks + `/horarios/${idConsultor}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }

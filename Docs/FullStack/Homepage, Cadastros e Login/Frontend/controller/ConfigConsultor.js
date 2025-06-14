@@ -166,9 +166,8 @@ document.addEventListener('paste', function (event) {
 document.querySelector('.profile-info').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  // Garante que 'valorSelecionado' esteja sempre atualizado com o rádio selecionado
   const selectedRadio = document.querySelector('input[name="modalidade"]:checked');
-  valorSelecionado = selectedRadio ? selectedRadio.value : 'online'; // Padrão 'online' se nada estiver selecionado
+  valorSelecionado = selectedRadio ? selectedRadio.value : 'online';
 
   let dadosAtualizados;
 
@@ -182,17 +181,17 @@ document.querySelector('.profile-info').addEventListener('submit', async (e) => 
       horarioInicio: horarioInicio.value,
       horarioFim: horarioFim.value,
       prazoMinReag: prazo.value,
-      modalidade: valorSelecionado, // Nome da propriedade que o backend espera ('modalidade')
+      modalidade: valorSelecionado,
       cep: document.getElementById('cep').value,
       endereco: document.getElementById('endereco').value,
-      numero: document.getElementById('numero').value, // Frontend envia como 'numero'
+      numero: document.getElementById('numero').value,
       complemento: document.getElementById('complemento').value,
       bairro: document.getElementById('bairro').value,
       cidade: document.getElementById('cidade').value,
       bio: bio.value
     };
   } else {
-    // Se a modalidade não for presencial, envia nulo para os campos de endereço
+
     dadosAtualizados = {
       nome: nome.value,
       email: email.value,
@@ -202,7 +201,7 @@ document.querySelector('.profile-info').addEventListener('submit', async (e) => 
       horarioInicio: horarioInicio.value,
       horarioFim: horarioFim.value,
       prazoMinReag: prazo.value,
-      modalidade: valorSelecionado, // Nome da propriedade que o backend espera ('modalidade')
+      modalidade: valorSelecionado,
       cep: null,
       endereco: null,
       numero: null,
@@ -220,7 +219,7 @@ document.querySelector('.profile-info').addEventListener('submit', async (e) => 
   const resp = await atualizarPerfil(getUserId(0), 0, dadosAtualizados);
 
   alert(resp.message);
-  salvarBtn.disabled = false; // Reabilita o botão após a resposta
+  salvarBtn.disabled = false;
 });
 
 
@@ -243,7 +242,7 @@ uploadInput.addEventListener('change', async function () {
 
       if (resp) {
         profilePic.src = resp.url;
-        localStorage.setItem('profilePicUrl', resp.url); // Salva a URL no localStorage
+        localStorage.setItem('profilePicUrl', resp.url);
       } else {
         console.error('>', resp.message);
       }
@@ -292,7 +291,7 @@ uploadCertif.addEventListener('change', function () {
       };
 
       reader.readAsDataURL(file);
-    })(file); // chamada imediata com o `file` atual
+    })(file);
   }
 });
 
@@ -330,12 +329,11 @@ document.getElementById('excluir-conta').addEventListener('click', async (e) => 
 
 [nome, email, valorHora, telefone, redeSocial, horarioInicio, horarioFim, bio, prazo,
   document.getElementById('cep'), document.getElementById('endereco'),
-  document.getElementById('numero'), document.getElementById('complemento'), // Adicionado complemento
+  document.getElementById('numero'), document.getElementById('complemento'),
   document.getElementById('bairro'), document.getElementById('cidade')].forEach(input => {
     input.addEventListener('input', habilitarSalvar);
   });
 
-// Adiciona event listeners para os radio buttons para habilitar o botão salvar
 document.querySelectorAll('input[name="modalidade"]').forEach(radio => {
   radio.addEventListener('change', habilitarSalvar);
 });
@@ -426,7 +424,6 @@ function marcarModalidade(valor) {
     radiobuttons.forEach(radiobutton => {
         if (radiobutton.value === valor) {
             radiobutton.checked = true;
-            // **Alteração Importante:** Dispara o evento 'change' para ativar a lógica de visibilidade
             radiobutton.dispatchEvent(new Event("change"));
         }
     });

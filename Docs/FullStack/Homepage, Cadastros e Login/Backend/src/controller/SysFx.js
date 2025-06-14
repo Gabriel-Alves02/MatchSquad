@@ -497,7 +497,7 @@ export const RefreshProfile = async (request, response, next) => {
     });
 
   } catch (error) {
-    console.error("Erro ao atualizar perfil do consultor:", error); // Adicionei um console.error para depuração
+    console.error("Erro ao atualizar perfil do consultor:", error);
     return response.status(500).json({
       success: false,
       message: "Erro interno de servidor ao atualizar perfil."
