@@ -349,7 +349,7 @@ modalForm.addEventListener('submit', async (event) => {
             alert("Agendamento atualizado com sucesso!");
         } else {
             await Registrar(PedidoAgendamento);
-            alert("Agendamento realizado com sucesso!");
+            window.location.reload();
         }
     } catch (error) {
         console.error("Erro na operação de agendamento:", error);

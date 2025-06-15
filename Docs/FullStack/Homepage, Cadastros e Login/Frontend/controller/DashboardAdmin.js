@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const top5 = await obterArrayTop5Consultores();
 
+    console.log(top5);
+
     const valorMaximo = Math.max(...top5.data);
     const suggestedMax = Math.ceil(valorMaximo / 5) * 5;
 

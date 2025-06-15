@@ -109,7 +109,7 @@ document.getElementById('excluir-conta').addEventListener('click', async (e) => 
 
   e.preventDefault();
 
-  deactivateUser (getUserId(1), 1);
+  deactivateUser(getUserId(1), 1);
 
 });
 
@@ -128,12 +128,29 @@ function habilitarSalvar() {
 document.querySelector('.plus-config').addEventListener('submit', async (e) => {
   e.preventDefault();
 
+  msgSenhaAntiga.style.display = 'none';
+  msgSenhaNova.style.display = 'none';
+  msgConfirmSenha.style.display = 'none';
+
   const resultado = await senhaInvalida(senhaAntiga, confirmNovaSenha, novaSenha, 1);
 
-  msgSenhaAntiga.style.display = resultado.senhaIncorreta ? 'inline-block' : 'none';
-  msgSenhaNova.style.display = resultado.tamanhoIncorreto ? 'inline-block' : 'none';
-  msgConfirmSenha.style.display = resultado.confirmacaoInvalida ? 'inline-block' : 'none';
+  if (resultado.senhaIncorreta) {
+    msgSenhaAntiga.style.display = 'inline-block';
+    msgSenhaAntiga.innerHTML = 'Senha antiga incorreta.';
+    senhaAntiga.value = '';
+  }
 
+  if (resultado.tamanhoIncorreto) {
+    msgSenhaNova.style.display = 'inline-block';
+    msgSenhaNova.innerHTML = resultado.mensagemNovaSenha;
+    novaSenha.value = '';
+  }
+
+  if (resultado.confirmacaoInvalida) {
+    msgConfirmSenha.style.display = 'inline-block';
+    msgConfirmSenha.innerHTML = 'As senhas não coincidem.';
+    confirmNovaSenha.value = '';
+  }
 
   if (resultado.valido) {
     const senhaAtualizada = {
@@ -149,11 +166,20 @@ document.querySelector('.plus-config').addEventListener('submit', async (e) => {
     senhaAntiga.value = '';
     novaSenha.value = '';
     confirmNovaSenha.value = '';
+    salvarBtn2.disabled = false;
   } else {
     console.log("Formulário inválido. Corrija os erros antes de enviar.");
+    salvarBtn2.disabled = false;
   }
 });
 
+[senhaAntiga, novaSenha, confirmNovaSenha].forEach(input => {
+  input.addEventListener('input', () => {
+    msgSenhaAntiga.style.display = 'none';
+    msgSenhaNova.style.display = 'none';
+    msgConfirmSenha.style.display = 'none';
+  });
+});
 
 
 [senhaAntiga, novaSenha, confirmNovaSenha].forEach(input => {
@@ -170,8 +196,8 @@ limparImagensBtn.addEventListener('click', async function () {
   if (confirmacao) {
     try {
       const userId = getUserId(1);
-    
-      const resp = await limparImagensNaNuvem (userId, 1);
+
+      const resp = await limparImagensNaNuvem(userId, 1);
 
       if (resp.success) {
         alert('Imagens limpas com sucesso da nuvem!');

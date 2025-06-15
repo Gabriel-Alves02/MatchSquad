@@ -814,6 +814,50 @@ export const GetPassword = async (request, response, next) => {
   }
 };
 
+export const GetEmail = async (request, response, next) => {
+
+  try {
+
+    const { id, usertype } = request.params;
+
+    if (usertype === '0') {
+      const [perfil] = await pool.query(
+        `SELECT email FROM Consultor WHERE idConsultor = ?;`, [id]
+      );
+
+      if (perfil.length > 0) {
+        return response.status(200).json({
+          success: true,
+          message: perfil[0].email
+        });
+      }
+    } else if (usertype === '1') {
+      const [perfil] = await pool.query(
+        `SELECT email FROM Cliente WHERE idCliente = ?;`, [id]
+      );
+
+      if (perfil.length > 0) {
+        return response.status(200).json({
+          success: true,
+          message: perfil[0].email
+        });
+      }
+    }
+
+    return response.status(201).json({
+      success: true,
+      message: "Email não encontrado."
+    });
+
+  } catch (error) {
+    console.error('Erro na busca do email:', error);
+    return response.status(500).json({
+      success: false,
+      message: "Erro interno do servidor"
+    });
+  }
+};
+
 export const EndUser = async (request, response, next) => {
 
   const connection = await pool.getConnection();

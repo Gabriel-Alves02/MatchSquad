@@ -1,5 +1,5 @@
 import { getUserId } from './SysFx.js';
-import { buscarNome, buscarPrazo, confirmacaoEmailRemarcado, carregarAgendamentos, agendamentoCancelado, confirmarReuniao } from '../service/AJAX.js';
+import { buscarNome, buscarPrazo, confirmacaoEmailRemarcado, carregarAgendamentos, agendamentoCancelado, confirmarReuniao, concluirReuniao } from '../service/AJAX.js';
 import { createPopper } from '../node_modules/@popperjs/core/dist/esm/popper.js';
 
 
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         editable: true,
         dayMaxEvents: true,
         headerToolbar: {
-            left: 'prev next today',
+            left: 'prev next today', //CASO SOLICITADO: Traduzir o button de "Today" para "Hoje" (português)
             center: 'title',
             right: ''
         },
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 let resp = confirm(`Deseja cancelar o agendamento ?\nCliente: ${info.event._def.title} \nPeriodo: ${info.event.extendedProps.periodo} \nStatus: ${info.event.extendedProps.status}`);
 
                 if (resp) {
-                    await agendamentoCancelado (info.event.extendedProps.idReuniao);
+                    await agendamentoCancelado(info.event.extendedProps.idReuniao);
                     alert("Agendamento excluido com sucesso!");
                     info.event.remove();
                 }
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                 console.log(payload);
 
-                await confirmacaoEmailRemarcado (payload);
+                await confirmacaoEmailRemarcado(payload);
                 window.location.reload();
             };
 
@@ -83,7 +83,19 @@ document.addEventListener('DOMContentLoaded', async function () {
         eventDidMount: async function (info) {
 
             let hoje = new Date();
-            let eventoData = new Date(info.event.start);
+            const [horas, minutos] = info.event.extendedProps.horario.split(':').map(Number);
+            let eventoDataHora = new Date(info.event.start);
+            eventoDataHora.setHours(horas, minutos, 0, 0);
+
+            if (eventoDataHora <= hoje) {
+                if (info.event.extendedProps.status !== 'concluida') {
+                    await concluirReuniao(info.event.extendedProps.idReuniao);
+                    window.location.reload();
+                }
+                info.event.setProp('editable', false);
+                info.el.classList.add('event-concluded');
+                return;
+            }
 
             let diffEmDias = Math.floor((eventoData - hoje) / (1000 * 60 * 60 * 24));
 
@@ -93,7 +105,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 info.event.setProp('editable', false);
 
                 if (info.event.extendedProps.status !== 'confirmada') {
-                    await confirmarReuniao (info.event.extendedProps.idReuniao);
+                    await confirmarReuniao(info.event.extendedProps.idReuniao);
                     window.location.reload();
                 }
             } else {

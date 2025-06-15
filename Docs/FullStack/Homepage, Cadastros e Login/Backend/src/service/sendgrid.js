@@ -198,7 +198,7 @@ export async function ConfirmacaoEmail(req, res) {
 
 }
 
-export async function ConfirmacaoEmailPosCadastro(req, res) {
+export async function ConfirmacaoEmailPosCadastro (req, res) {
 
     const usuario = req.body;
 

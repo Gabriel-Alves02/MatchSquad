@@ -8,7 +8,7 @@ let numeroInput, complementoInput, bairroInput, cidadeInput;
 let msgnome, msgemail, msgphone, msgnickname, msgsenha, msgconfirmacaoemail;
 let msgconfirmacaosenha, msgcpf, msgcep, msgnumero;
 
-const nomePattern = /^[A-Za-z\s]+$/;
+const nomePattern = /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/;
 const emailPattern = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 const phonePattern = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
 const nicknamePattern = /^\S+$/;
@@ -55,9 +55,9 @@ async function validarFormulario() {
             cpfInput.value = '';
             isValid = false;
         }
-    } 
+    }
 
-    const resp = await buscarPFPJ (rawCpf);
+    const resp = await buscarPFPJ(rawCpf);
 
     console.log(resp);
 
@@ -407,6 +407,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     aplicarMascaraTelefone(telefoneusuario);
     aplicarMascaraCep(cepInput);
     aplicarMascaraCpf(cpfInput);
+
+    if (telefoneusuario.value) {
+        const eventoFake = { target: telefoneusuario };
+        telefoneusuario.dispatchEvent(new Event('input', { bubbles: true })); // ou:
+        aplicarMascaraTelefoneFormatado(telefoneusuario); // veja abaixo
+    }
 
     const initialSelectedModalidade = document.querySelector('input[name="modalidade"]:checked').value;
     if (initialSelectedModalidade !== 'presencial' && initialSelectedModalidade !== 'presencial_e_online') {

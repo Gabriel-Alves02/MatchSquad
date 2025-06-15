@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const dadosBackend =
     {
         bar: {
-            labels: ['Pendentes', 'Realizadas', 'Canceladas', 'Total'],
+            labels: ['Pendentes', 'Confirmadas', 'Concluidas', 'Canceladas', 'Total'],
             datasets: [{
                 label: '',
                 data: infoStatus.data,

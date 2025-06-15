@@ -8,7 +8,7 @@ let confirmacaoEmail, confirmacaoSenha, cpfCnpjInput;
 let msgnome, msgemail, msgconfirmacaoemail, msgphone, msgnickname, msgnicknameInvalido;
 let msgsenha, msgconfirmacaosenha, msgcpf, msgcnpj, msgdocumento, msgcadastropessoa, msgEmailOriginal;
 
-const nomePattern = /^[A-Za-z\s]+$/;
+const nomePattern = /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/;
 const emailPattern = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 const phonePattern = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
 const nicknamePattern = /^\S+$/;
@@ -275,6 +275,12 @@ document.addEventListener('DOMContentLoaded', function () {
     aplicarMascaraTelefone(telefoneusuario);
     aplicarMascaraCpfCnpj(cpfCnpjInput);
 
+    if (telefoneusuario.value) {
+        const eventoFake = { target: telefoneusuario };
+        telefoneusuario.dispatchEvent(new Event('input', { bubbles: true })); // ou:
+        aplicarMascaraTelefoneFormatado(telefoneusuario); // veja abaixo
+    }
+
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
@@ -294,3 +300,4 @@ document.addEventListener('DOMContentLoaded', function () {
     //     }
     // });
 });
+

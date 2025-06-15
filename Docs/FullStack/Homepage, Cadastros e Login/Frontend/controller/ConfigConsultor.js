@@ -344,34 +344,62 @@ function habilitarSalvar() {
 }
 
 document.querySelector('.plus-config').addEventListener('submit', async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const resultado = await senhaInvalida(senhaAntiga, confirmNovaSenha, novaSenha, 0);
+    msgSenhaAntiga.style.display = 'none';
+    msgSenhaNova.style.display = 'none';
+    msgConfirmSenha.style.display = 'none';
 
-  msgSenhaAntiga.style.display = resultado.senhaIncorreta ? 'inline-block' : 'none';
-  msgSenhaNova.style.display = resultado.tamanhoIncorreto ? 'inline-block' : 'none';
-  msgConfirmSenha.style.display = resultado.confirmacaoInvalida ? 'inline-block' : 'none';
 
-  if (resultado.valido) {
-    const senhaAtualizada = {
-      novaSenha: novaSenha.value
-    };
+    const resultado = await senhaInvalida(senhaAntiga, confirmNovaSenha, novaSenha, 0);
 
-    salvarBtn2.disabled = true;
+    if (resultado.senhaIncorreta) {
+        msgSenhaAntiga.style.display = 'inline-block';
+        msgSenhaAntiga.innerHTML = 'Senha antiga incorreta.';
+        senhaAntiga.value = '';
+    }
 
-    const resp = await atualizarSenha(getUserId(0), 0, senhaAtualizada);
+    if (resultado.tamanhoIncorreto) {
+        msgSenhaNova.style.display = 'inline-block';
+        msgSenhaNova.innerHTML = resultado.mensagemNovaSenha;
+        novaSenha.value = '';
+    }
 
-    alert(resp.message);
+    if (resultado.confirmacaoInvalida) {
+        msgConfirmSenha.style.display = 'inline-block';
+        msgConfirmSenha.innerHTML = 'As senhas não coincidem.';
+        confirmNovaSenha.value = '';
+    }
 
-    senhaAntiga.value = '';
-    novaSenha.value = '';
-    confirmNovaSenha.value = '';
-  } else {
-    console.log("Formulário inválido. Corrija os erros antes de enviar.");
-  }
+    if (resultado.valido) {
+        const senhaAtualizada = {
+            novaSenha: novaSenha.value
+        };
+
+        salvarBtn2.disabled = true;
+
+        const resp = await atualizarSenha(getUserId(0), 0, senhaAtualizada);
+
+        alert(resp.message);
+
+        senhaAntiga.value = '';
+        novaSenha.value = '';
+        confirmNovaSenha.value = '';
+        salvarBtn2.disabled = false;
+    } else {
+        console.log("Formulário inválido. Corrija os erros antes de enviar.");
+        salvarBtn2.disabled = false;
+    }
 });
 
 
+[senhaAntiga, novaSenha, confirmNovaSenha].forEach(input => {
+    input.addEventListener('input', () => {
+        msgSenhaAntiga.style.display = 'none';
+        msgSenhaNova.style.display = 'none';
+        msgConfirmSenha.style.display = 'none';
+    });
+});
 
 [senhaAntiga, novaSenha, confirmNovaSenha].forEach(input => {
   input.addEventListener('input', habilitarSalvar2);
@@ -380,13 +408,6 @@ document.querySelector('.plus-config').addEventListener('submit', async (e) => {
 function habilitarSalvar2() {
   salvarBtn2.disabled = false;
 }
-
-[senhaAntiga, novaSenha, confirmNovaSenha].forEach(input => {
-  input.addEventListener('input', () => {
-    msgSenhaAntiga.style.display = 'none';
-    msgConfirmSenha.style.display = 'none';
-  });
-});
 
 
 function habilitarSalvar3() {

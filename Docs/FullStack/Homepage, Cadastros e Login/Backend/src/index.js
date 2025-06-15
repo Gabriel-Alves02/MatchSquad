@@ -5,7 +5,7 @@ import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
 import { CadastrarConsultor, GetHabilidades, RecordMeetLog, GetHabConsultor, ConsultarMediaConsultor } from './controller/Consultor.js';
 import { RegistrarAgendamento, AlterarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepetido, CancelaAgendamento, ConfirmaAgendamento, ConcluiAgendamento } from './controller/PedidoAgendamento.js';
-import { GetCode, GetPrazo, GetName, GetBlockStatus, RefreshBlock, GetIfNickEmailIsValid, GetIfPFPJIsValid, LoadProfile, RefreshProfile, GoCloudImage, GoCloudCertificateImage, WipeCloud, GetPassword, EndUser, RefreshPassword, SubmitComplaint, GetReport, GetWorkRange } from './controller/SysFx.js';
+import { GetCode, GetPrazo, GetName, GetBlockStatus, RefreshBlock, GetIfNickEmailIsValid, GetIfPFPJIsValid, LoadProfile, RefreshProfile, GoCloudImage, GoCloudCertificateImage, WipeCloud, GetPassword, EndUser, RefreshPassword, SubmitComplaint, GetReport, GetWorkRange, GetEmail } from './controller/SysFx.js';
 import { EnviarEmailRemarcacao, ConfirmacaoEmail, ConfirmacaoEmailPosCadastro, SendAnnouncement } from './service/sendgrid.js';
 import { RegistrarReuniao } from './controller/RegistrarReuniao.js';
 import { ConsultarHistorico } from './controller/HistoricoConsultorias.js';
@@ -89,6 +89,7 @@ app.delete("/checks/perfil/:id/:usertype/limparImagens", WipeCloud );
 app.put("/checks/senha/:id/:usertype/refresh", RefreshPassword)
 
 app.get("/checks/:id/:usertype/senha", GetPassword);
+app.get("/checks/:id/:usertype/email", GetEmail);
 app.put("/checks/:id/:usertype/desativar", EndUser);
 
 app.get("/consultores/dashboard/totalAgendamentos/:id", QtdeConsultoriasAgendadas);
@@ -105,9 +106,6 @@ app.get('/ping', (request,response,next) => {
         message: "pong"
     });
 });
-
-
-//console.log("host: " + process.env.DB_HOST, "user: " + process.env.DB_USER,"password: " + process.env.DB_PASSWORD,"database: " + process.env.DB_NAME);
 
 const PORT = process.env.PORT || 8001;
 

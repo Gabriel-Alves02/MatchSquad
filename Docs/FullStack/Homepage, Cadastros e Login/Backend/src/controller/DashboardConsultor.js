@@ -14,7 +14,8 @@ export const QtdeConsultoriasAgendadas = async (request, response, next) => {
 
         const statusMap = {
             pendente: 0,
-            realizada: 0,
+            confirmada: 0,
+            concluida: 0,
             cancelada: 0,
             total: 0
         };
@@ -25,9 +26,10 @@ export const QtdeConsultoriasAgendadas = async (request, response, next) => {
 
         const resultadoFinal = [
             statusMap.pendente,
-            statusMap.realizada,
+            statusMap.confirmada,
+            statusMap.concluida,
             statusMap.cancelada,
-            (statusMap.pendente + statusMap.realizada + statusMap.cancelada)
+            (statusMap.pendente + statusMap.concluida + statusMap.cancelada)
         ];
 
         return response.status(200).json({

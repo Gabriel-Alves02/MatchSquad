@@ -121,7 +121,7 @@ export const Registrar = async (pedido) => {
         body: JSON.stringify(pedido)
     }).then((response) => {
         if (response.status >= 200 && response.status < 300) {
-            alert("Solicitação enviada com sucesso. Comunicaremos o consultos!");
+            alert("Solicitação enviada com sucesso. Comunicaremos o consultor!");
         }
         else {
             console.log(`Erro do servidor: ${response.status}`);
@@ -342,6 +342,7 @@ export async function enviarCodigo(id, usertype, email) {
 }
 
 export async function enviarCodigoPosCadastro (id, usertype, email) {
+
     try {
 
         const response = await fetch('http://localhost:8000/notifications/cadastrado', {
@@ -757,10 +758,32 @@ export const buscarSenha = async (id, usertype) => {
             return data;
         }
 
-        return { success: false, message: 'Erro: Não foi possivel fazer carregar a senha!' }
+        return { success: false, message: 'Erro: Não foi possivel carregar a senha!' }
 
     } catch (error) {
         console.error('Erro ao buscar senha:', error);
+        return { success: false, message: 'Erro de rede ou servidor.' };
+    }
+};
+
+export const buscarEmail = async (id, usertype) => {
+
+    try {
+        const response = await fetch(url_checks + `/${id}/${usertype}/email`, {
+            method: 'GET',
+            headers: { "Content-Type": "application/json" }
+        });
+
+        const data = await response.json();
+
+        if (data) {
+            return data.message;
+        }
+
+        return { success: false, message: 'Erro: Não foi possivel carregar o email!' }
+
+    } catch (error) {
+        console.error('Erro ao buscar email:', error);
         return { success: false, message: 'Erro de rede ou servidor.' };
     }
 };

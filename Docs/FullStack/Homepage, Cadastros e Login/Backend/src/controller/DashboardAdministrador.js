@@ -79,7 +79,7 @@ export const MediasAvaliacaoConsultores = async (request, response, next) => {
             FROM
                 Reuniao
             WHERE
-                status_situacao = 'realizada' AND avaliacao IS NOT NULL AND avaliacao <> 0
+                status_situacao = 'concluida' AND avaliacao IS NOT NULL AND avaliacao <> 0
             GROUP BY
                 idConsultor;`
         );
@@ -138,17 +138,17 @@ export const TopConsultoresPorReunioesRealizadas = async (request, response, nex
             `SELECT
                 C.nome as nome_consultor,
                 C.idConsultor as id,
-                COUNT(R.idReuniao) as total_reunioes_realizadas
+                COUNT(R.idReuniao) as total_reunioes_concluidas
             FROM
                 Consultor C
             JOIN
                 Reuniao R ON C.idConsultor = R.idConsultor
             WHERE
-                R.status_situacao = 'realizada'
+                R.status_situacao = 'concluida'
             GROUP BY
                 C.idConsultor, C.nome
             ORDER BY
-                total_reunioes_realizadas DESC
+                total_reunioes_concluidas DESC
             LIMIT 5;`
         );
 
@@ -157,7 +157,7 @@ export const TopConsultoresPorReunioesRealizadas = async (request, response, nex
 
         rows.forEach(row => {
             nomesConsultores.push(`(${row.id})` + row.nome_consultor);
-            quantidadeReunioes.push(row.total_reunioes_realizadas);
+            quantidadeReunioes.push(row.total_reunioes_concluidas);
         });
 
         return response.status(200).json({

@@ -31,6 +31,25 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     allConsultorias = fetchedConsultorias.reuniao;
+
+    const hoje = new Date();
+    for (const consultoria of allConsultorias) {
+        const [horas, minutos] = consultoria.horario.split(':').map(Number);
+        let agendamentoDataHora = new Date(consultoria.data);
+        agendamentoDataHora.setHours(horas, minutos, 0, 0);
+
+        if (agendamentoDataHora <= hoje && consultoria.status_situacao !== 'concluida') {
+            try {
+                await concluirReuniao(consultoria.idReuniao);
+                consultoria.status_situacao = 'concluida';
+                console.log(`Agendamento ${consultoria.idReuniao} marcado como 'concluida'.`);
+            } catch (error) {
+                console.error(`Erro ao forçar conclusão do agendamento ${consultoria.idReuniao}:`, error);
+            }
+        }
+    }
+
+
     displayedConsultorias = [...allConsultorias];
 
     renderizarConsultorias(displayedConsultorias);
