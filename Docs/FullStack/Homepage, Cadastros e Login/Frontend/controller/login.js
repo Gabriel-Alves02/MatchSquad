@@ -1,4 +1,4 @@
-import { getUser, getUserConsultor, userType, buscarCodigo, buscarSenha, temBloqueio, enviarCodigo, verificado, getAdmin } from "../service/AJAX.js";
+import { getUser, getUserConsultor, userType, buscarCodigo, buscarSenha, temBloqueio, enviarCodigo, enviarCodigoPosCadastro, verificado, getAdmin } from "../service/AJAX.js";
 import { getUserId } from "./SysFx.js";
 
 const form = document.getElementById('loginForm');
@@ -37,6 +37,7 @@ form.addEventListener('submit', async (event) => {
 
             if (block.message === 1) {
                 alert('Novos usuários ou usuários desativados, precisam realizar confirmação de código solicitada')
+                //await enviarCodigoPosCadastro(idConsultor, 0);
                 do {
                     codigoBanco = await buscarCodigo(idConsultor, '0');
                     codigo = Number(window.prompt("Codigo de confirmação enviado no email:"));
@@ -86,6 +87,7 @@ form.addEventListener('submit', async (event) => {
             }
 
             if (block.message === 1) {
+                //await enviarCodigoPosCadastro(idConsultor, 0);
                 alert('Novos usuários ou usuários excluídos, precisam realizar confirmação de código!')
                 do {
                     codigoBanco = await buscarCodigo(idCliente, '1');

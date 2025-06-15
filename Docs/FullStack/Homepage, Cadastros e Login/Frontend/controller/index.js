@@ -10,6 +10,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         let html = "";
 
         consultores.forEach((consultor) => {
+
+            let bioDescr = consultor.bio;
+            if (bioDescr === null || bioDescr.length > 50) {
+                bioDescr = 'Abra meu portfólio para saber mais.';
+            }
+
             html += `
                 <div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
@@ -19,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                             <h5 class="card-title">${consultor.nome}</h5>
                             <details class="card-text">
                                 <summary>${consultor.habilidades}</summary>
-                                <span>${consultor.bio}</span>
+                                <span>${bioDescr}</span>
                             </details>
                         </div>
                     </div>
