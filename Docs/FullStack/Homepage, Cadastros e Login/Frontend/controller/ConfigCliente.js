@@ -109,7 +109,7 @@ document.getElementById('excluir-conta').addEventListener('click', async (e) => 
 
   e.preventDefault();
 
-  deactivateUser(getUserId(1), 1);
+  deactivateUser (getUserId(1), 1);
 
 });
 
