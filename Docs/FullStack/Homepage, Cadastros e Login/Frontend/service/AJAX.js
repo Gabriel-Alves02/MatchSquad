@@ -121,7 +121,7 @@ export const Registrar = async (pedido) => {
         body: JSON.stringify(pedido)
     }).then((response) => {
         if (response.status >= 200 && response.status < 300) {
-            alert("Solicitação enviada com sucesso. Comunicaremos o consultor!");
+            alert("Solicitação enviada com sucesso. Comunicaremos o consultor, você receberá um e-mail com a confirmação do agendamento, e também poderá consultar também via plataforma.");
         }
         else {
             console.log(`Erro do servidor: ${response.status}`);

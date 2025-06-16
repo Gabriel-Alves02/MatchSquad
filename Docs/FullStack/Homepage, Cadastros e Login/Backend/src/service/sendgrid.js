@@ -38,8 +38,8 @@ export async function EnviarEmailRemarcacao(req, res) {
     };
 
     try {
-        //await sgMail.send(msg);
-        //await sgMail.send(msg2);
+        await sgMail.send(msg);
+        await sgMail.send(msg2);
         console.log("E-mail enviado com sucesso!", msg);
         console.log("E-mail enviado com sucesso!", msg2);
         res.status(200).json({ success: true, message: "E-mail enviado com sucesso" });
@@ -103,7 +103,7 @@ export async function ConfirmacaoEmail(req, res) {
             };
 
             console.log("MSG DO E-mail!", msg);
-            //await sgMail.send(msg);
+            await sgMail.send(msg);
 
             return res.status(200).json({ success: true, message: "CAIU NO RETURN do nickname-senha" });
 
@@ -152,7 +152,7 @@ export async function ConfirmacaoEmail(req, res) {
                     html: `<p>Para o usuário de nickname ${user[0].nickname}. Copie o código de segurança abaixo como senha. <br><br> ${user[0].senha}<br><br> <strong>Não se esqueça de alterar a senha em configurações posteriormente, por questões de segurança!</strong></p>`,
                 };
 
-                //await sgMail.send(msg);
+                await sgMail.send(msg);
 
                 console.log("MSG DO E-mail!", msg);
 
@@ -179,7 +179,7 @@ export async function ConfirmacaoEmail(req, res) {
                     html: `<p>Para o usuário de nickname ${user[0].nickname}. Copie o código de segurança abaixo como senha. <br><br> ${newNum}<br><br> <strong>Não se esqueça de alterar a senha em configurações posteriormente, por questões de segurança!</strong></p>`,
                 };
 
-                //await sgMail.send(msg);
+                await sgMail.send(msg);
 
                 console.log("MSG DO E-mail!", msg);
 
@@ -260,7 +260,7 @@ export async function ConfirmacaoEmailPosCadastro (req, res) {
                 html: `<p>Para o usuário de nickname ${user[0].nickname} e senha ${user[0].senha}. Copie o código de segurança a seguir ${newNum}</p>.`,
             };
 
-            //await sgMail.send(msg);
+            await sgMail.send(msg);
 
             console.log("MSG DO E-mail!", msg);
 
@@ -288,7 +288,7 @@ export async function ConfirmacaoEmailPosCadastro (req, res) {
                 html: `<p>Para o usuário de nickname ${user[0].nickname} e senha ${user[0].senha}. Copie o código de segurança a seguir ${newNum}</p>.`,
             };
 
-            //await sgMail.send(msg);
+            await sgMail.send(msg);
 
             console.log("MSG DO E-mail!", msg);
 
@@ -316,7 +316,7 @@ export async function EnviarCancelamentoAgendamento(Emails, Assunto, Data) {
     };
 
     try {
-        //await sgMail.send(msg);
+        await sgMail.send(msg);
         console.log("E-mail de cancelamento enviado com sucesso!", msg);
 
     } catch (error) {
@@ -406,7 +406,7 @@ export async function SendAnnouncement(req, res) {
         console.log("MSG clientes", msg);
 
         try {
-            //await sgMail.send(msg);
+            await sgMail.send(msg);
             return res.status(200).json({ success: true, message: "E-mails enviados aos clientes com sucesso!" });
         } catch (error) {
             console.error("Erro ao enviar e-mail:", error.response?.body || error);
@@ -430,7 +430,7 @@ export async function SendAnnouncement(req, res) {
         console.log("MSG consultores", msg);
 
         try {
-            //await sgMail.send(msg);
+            await sgMail.send(msg);
             return res.status(200).json({ success: true, message: "E-mails enviados aos consultores com sucesso!" });
         } catch (error) {
             console.error("Erro ao enviar e-mail:", error.response?.body || error);
@@ -457,7 +457,7 @@ export async function SendAnnouncement(req, res) {
         console.log("MSG clientes e consultores", msg);
 
         try {
-            //await sgMail.send(msg);
+            await sgMail.send(msg);
             return res.status(200).json({ success: true, message: "E-mails enviados aos consultores com sucesso!" });
         } catch (error) {
             console.error("Erro ao enviar e-mail:", error.response?.body || error);
@@ -481,7 +481,7 @@ export async function SendAnnouncement(req, res) {
         console.log("MSG especifico", msg);
 
         try {
-            //await sgMail.send(msg);
+            await sgMail.send(msg);
             return res.status(200).json({ success: true, message: "E-mails enviados aos consultores com sucesso!" });
         } catch (error) {
             console.error("Erro ao enviar e-mail:", error.response?.body || error);
