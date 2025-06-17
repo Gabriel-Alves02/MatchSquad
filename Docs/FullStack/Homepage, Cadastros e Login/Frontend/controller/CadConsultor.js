@@ -222,40 +222,6 @@ async function cadastrarUsuario() {
 
 }
 
-async function handleCepInput() {
-    let cep = cepInput.value.replace(/\D/g, '');
-    limparErro('cep');
-
-    enderecoInput.value = '';
-    bairroInput.value = '';
-    cidadeInput.value = '';
-
-    if (cep.length === 8) {
-        try {
-            const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-            const data = await response.json();
-
-            if (data.erro) {
-                console.log("CEP não encontrado ou inválido.");
-                msgcep.style.display = 'inline-block';
-                cepInput.value = '';
-                msgcep.innerHTML = 'CEP não encontrado ou inválido.';
-                return;
-            }
-
-            enderecoInput.value = data.logradouro;
-            bairroInput.value = data.bairro;
-            cidadeInput.value = data.localidade;
-            numeroInput.focus();
-        } catch (error) {
-            console.error("Erro ao buscar CEP:", error);
-            msgcep.style.display = 'inline-block';
-            msgcep.innerHTML = 'Erro ao buscar CEP. Tente novamente.';
-            cepInput.value = '';
-        }
-    }
-}
-
 function aplicarMascaraTelefone(input) {
     input.addEventListener('input', function (e) {
         let value = e.target.value.replace(/\D/g, '');
@@ -460,4 +426,39 @@ function aplicarMascaraCpf(input) {
 
         e.target.value = formattedValue;
     });
+}
+
+async function handleCepInput() {
+    let cep = cepInput.value.replace(/\D/g, '');
+    limparErro('cep');
+
+    enderecoInput.value = '';
+    bairroInput.value = '';
+    cidadeInput.value = '';
+
+    if (cep.length === 8) {
+        try {
+            const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+            const data = await response.json();
+
+            if (data.erro) {
+                console.log("CEP não encontrado ou inválido.");
+                msgcep.style.display = 'inline-block';
+                cepInput.value = '';
+                msgcep.innerHTML = 'CEP não encontrado ou inválido.';
+                return;
+            }
+
+            enderecoInput.value = data.logradouro;
+            bairroInput.value = data.bairro;
+
+            cidadeInput.value = `${data.localidade}-${data.uf}`;
+            numeroInput.focus();
+        } catch (error) {
+            console.error("Erro ao buscar CEP:", error);
+            msgcep.style.display = 'inline-block';
+            msgcep.innerHTML = 'Erro ao buscar CEP. Tente novamente.';
+            cepInput.value = '';
+        }
+    }
 }

@@ -80,6 +80,8 @@ export const CadastrarConsultor = async (request, response, next) => {
 
         const valorBloqueio = 1;
 
+        let divCidadeEstado = cidade.split("-");
+
         const valoresConsultor = [
             nome,
             cpf,
@@ -92,14 +94,15 @@ export const CadastrarConsultor = async (request, response, next) => {
             (modalidade === 'presencial' || modalidade === 'presencial_e_online') ? numero : null,
             (modalidade === 'presencial' || modalidade === 'presencial_e_online') ? bairro : null,
             (modalidade === 'presencial' || modalidade === 'presencial_e_online') ? complemento : null,
-            (modalidade === 'presencial' || modalidade === 'presencial_e_online') ? cidade : null,
+            (modalidade === 'presencial' || modalidade === 'presencial_e_online') ? divCidadeEstado[0] : null,
+            (modalidade === 'presencial' || modalidade === 'presencial_e_online') ? divCidadeEstado[1] : null,
             valorBloqueio
         ];
 
         const [consultorResult] = await connection.query(
             `INSERT INTO Consultor
-             (nome, cpf, email, telefone, idLogin, modalidadeTrab, cep, endereco, numeroCasa, bairro, complemento, cidade, bloqueio)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+             (nome, cpf, email, telefone, idLogin, modalidadeTrab, cep, endereco, numeroCasa, bairro, complemento, cidade, estado, bloqueio)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
             valoresConsultor
         );
 

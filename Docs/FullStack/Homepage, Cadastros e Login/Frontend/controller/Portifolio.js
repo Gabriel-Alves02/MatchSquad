@@ -139,6 +139,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     info = await carregarInfoPerfil(idValid, 0);
 
+    console.log('Info carregada:', info);
+
     let urlImagemPerfil = info.urlImagemPerfil;
 
     let userHabilidades = await habilidadesPortifolio(idValid);
@@ -163,8 +165,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 cepFormatado = (info.cep).substring(0, 5) + '-' + (info.cep).substring(5, 8);
             }
 
-            endereco.innerHTML = ` ${info.endereco}, ${info.numeroCasa}<br>
-                        ${info.bairro}, ${info.cidade} (${cepFormatado})`;
+            endereco.innerHTML = ` ${info.endereco}, ${info.numeroCasa} <br> ${info.bairro}, ${info.cidade} - ${info.estado}`;
         }
 
         const localStorageUrl = localStorage.getItem('profilePicUrl');

@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../assets/style.css">
-    <link rel="stylesheet" href="../assets/style2.css">
+
 
     <script src="../../controller/ConsultaUsuariosDenunciados.js" type="module"></script>
 
@@ -22,7 +22,6 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a href="MenuAdministrador.html"><img class="navbar-brand" src="../assets/Logo.png" height="54.73px"></a>
-        <br><br><br>
         <div class="ml-auto">
             <a href="MenuAdministrador.html" class="btn btn-outline-primary mr-2">Voltar</a>
             <a href="Login.html" class="btn btn-outline-danger" onclick="localStorage.clear()">Logout</a>
@@ -30,11 +29,8 @@
     </nav>
 
     <div class="container">
-        <h1 style="margin-top: 20px;">
-            Gerenciamento de Denúncias
-        </h1>
-        <br>
-        <div class="historic-input-group d-flex">
+        <h1 style="margin-top: 20px;" class="mb-3"> Gerenciamento de Denúncias </h1>
+        <div class="historic-input-group d-flex mb-4">
             <select class="form-select me-2" id="filtrosDenuncias">
                 <option value="gravidade">Gravidade</option>
                 <option value="denunciante">Denunciante</option>
@@ -42,11 +38,9 @@
                 <option value="denunciado">Denunciado</option>
                 <option value="status">Status</option>
             </select>
-
             <input class="form-control" id="searchBarDenuncias" type="search" placeholder="Pesquisar usuários">
         </div>
     </div>
-
 
     <div class="container">
         <div class="table-responsive">
@@ -64,12 +58,12 @@
                         <th>Ações</th>
                     </tr>
                 </thead>
-
                 <tbody id="tabelaDenuncias">
                 </tbody>
             </table>
         </div>
     </div>
+
 
     <div class="modal fade" id="descricaoModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">

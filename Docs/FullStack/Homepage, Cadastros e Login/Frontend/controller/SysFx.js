@@ -17,6 +17,7 @@ export async function deactivateUser(id, usertype) {
   let resp = confirm('Tem certeza que deseja desativar sua conta na nossa plataforma?')
 
   if (resp) {
+    alert('Você receberá um e-mail para reativação, para caso queira retornar futuramente. Caso não receba, verifique sua caixa de spam ou lixo eletrônico.');
     const test = await buscarEmail(id, usertype);
     await enviarCodigoPosCadastro('-1', '-1', test.toString());
     await desativarUsuario(id, usertype);

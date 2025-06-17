@@ -198,7 +198,7 @@ export async function ConfirmacaoEmail(req, res) {
 
 }
 
-export async function ConfirmacaoEmailPosCadastro (req, res) {
+export async function ConfirmacaoEmailPosCadastro(req, res) {
 
     const usuario = req.body;
 
@@ -245,7 +245,7 @@ export async function ConfirmacaoEmailPosCadastro (req, res) {
             );
 
             await connection.query(`UPDATE Login SET codigoVerificacao = ? WHERE idLogin = ?;`, [newNum, logMail[0].idLogin]);
-            
+
             await connection.commit();
 
             const [user] = await connection.query(
@@ -273,7 +273,7 @@ export async function ConfirmacaoEmailPosCadastro (req, res) {
             );
 
             await connection.query(`UPDATE Login SET codigoVerificacao = ? WHERE idLogin = ?;`, [newNum, logMail[0].idLogin]);
-            
+
             await connection.commit();
 
             const [user] = await connection.query(
@@ -471,8 +471,12 @@ export async function SendAnnouncement(req, res) {
             return res.status(201).json({ success: false, message: "Sem email singular para o envio" });
         }
 
+        const destinatarios = Array.isArray(pack.emailEspecifico)
+            ? pack.emailEspecifico
+            : pack.emailEspecifico.split(',').map(email => email.trim());
+
         const msg = {
-            to: pack.emailEspecifico,
+            to: destinatarios,
             from: "matchsquad.brazil@gmail.com",
             subject: `${pack.assunto}`,
             text: `${pack.corpo}`

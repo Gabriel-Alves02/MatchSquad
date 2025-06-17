@@ -268,7 +268,7 @@ export const GetIfNickEmailIsValid = async (request, response) => {
 
 export const GetIfPFPJIsValid = async (request, response) => {
   try {
-    const documento  = request.body;
+    const documento = request.body;
 
     const [rows] = await pool.query(
       `
@@ -316,13 +316,14 @@ export const LoadProfile = async (request, response, next) => {
                     c.horarioFim,
                     c.prazoMinReag,
                     c.bio,
-                    c.modalidadeTrab,  -- Adicionado
-                    c.cep,             -- Adicionado
-                    c.endereco,        -- Adicionado
-                    c.numeroCasa,      -- Adicionado
-                    c.bairro,          -- Adicionado
-                    c.complemento,     -- Adicionado
-                    c.cidade,          -- Adicionado
+                    c.modalidadeTrab,  
+                    c.cep,             
+                    c.endereco,        
+                    c.numeroCasa,      
+                    c.bairro,          
+                    c.complemento,     
+                    c.cidade,
+                    c.estado,       
                     GROUP_CONCAT(h.nomeHabilidade SEPARATOR ', ') AS habilidades
                 FROM
                     Consultor c
@@ -357,13 +358,14 @@ export const LoadProfile = async (request, response, next) => {
                     c.horarioFim,
                     c.prazoMinReag,
                     c.bio,
-                    c.modalidadeTrab,   -- <--- ATENÇÃO AQUI: Nome da coluna no DB
+                    c.modalidadeTrab,
                     c.cep,
                     c.endereco,
-                    c.numeroCasa,       -- <--- ATENÇÃO AQUI: Nome da coluna no DB
+                    c.numeroCasa,
                     c.bairro,
                     c.complemento,
                     c.cidade,
+                    c.estado,
                     GROUP_CONCAT(ce.urlCertificado SEPARATOR ',') AS urlsCertificados
                 FROM
                     Consultor c
@@ -857,6 +859,60 @@ export const GetEmail = async (request, response, next) => {
     });
   }
 };
+
+export const GetBan = async (request, response, next) => {
+
+  try {
+
+    const user = request.body;
+
+    let resp;
+
+    const [searchConsultor] = await pool.query(
+      `SELECT idConsultor FROM Consultor WHERE email = ?;`, [user.email]
+    );
+
+    if (searchConsultor.length > 0) {
+      [resp] = await pool.query(
+        `SELECT bloqueio FROM Consultor WHERE idConsultor = ?;`, [searchConsultor[0].idConsultor]
+      );
+      return response.status(200).json({
+        success: true,
+        status: resp[0].bloqueio
+      });
+
+    }
+
+    const [searchCliente] = await pool.query(
+      `SELECT idCliente FROM Cliente WHERE email = ?;`, [user.email]
+    );
+
+    if (searchCliente.length > 0) {
+      [resp] = await pool.query(
+        `SELECT bloqueio FROM Cliente WHERE idCliente = ?;`, [searchCliente[0].idCliente]
+      );
+      return response.status(200).json({
+        success: true,
+        status: resp[0].bloqueio
+      });
+
+    }
+
+    return response.status(201).json({
+      success: false,
+      status: 9
+    });
+
+  } catch (error) {
+    console.error('Erro na busca do bloqueio deste email:', error);
+
+    return response.status(500).json({
+      success: false,
+      message: "Erro interno do servidor"
+    });
+  }
+};
+
 
 export const EndUser = async (request, response, next) => {
 

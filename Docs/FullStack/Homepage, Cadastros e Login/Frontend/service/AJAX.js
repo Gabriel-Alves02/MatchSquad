@@ -957,6 +957,29 @@ export const buscarMediaConsultor = async (id) => {
     }
 };
 
+export const buscarBanStatus = async (email) => {
+
+    try {
+        const response = await fetch(url_checks + `/email/banStatus`, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({"email": email })
+        });
+
+        const data = await response.json();
+
+        if (data) {
+            return data;
+        }
+
+        return { success: false, message: 'Erro: Não foi possivel buscar status de ban' }
+
+    } catch (error) {
+        console.error('Erro ao buscar ban:', error);
+        return { success: false, message: 'Erro de rede ou servidor.' };
+    }
+};
+
 
 export const comunicarGeral = async (opt, objEmail) => {
 

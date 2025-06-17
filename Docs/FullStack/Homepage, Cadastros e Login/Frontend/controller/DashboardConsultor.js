@@ -15,8 +15,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     const dadosAvaliacao = infoHistAval.data.slice(0, -1);
     const mediaAvaliacao = infoHistAval.data[infoHistAval.data.length - 1];
 
-    const max = infoStatus.data[3];
-    const suggestedMax = Math.ceil(max / 5) * 5;
+    const totalMax = infoStatus.data[4];
+    const suggestedMax = Math.ceil(totalMax) + 1;
+
 
     const dadosBackend =
     {
@@ -62,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         scales: {
                             y: {
                                 beginAtZero: true,
-                                suggestedMax: suggestedMax,
+                                max: suggestedMax,
                                 ticks: {
                                     callback: function (value) {
                                         if (Number.isInteger(value)) {
@@ -134,6 +135,13 @@ document.addEventListener('DOMContentLoaded', async function () {
                             x: {
                                 grid: {
                                     display: false
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Consultorias',
+                                    font: {
+                                        size: 14
+                                    }
                                 }
                             }
                         },
@@ -143,7 +151,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                                 text: `Variação da Avaliação (Média: ${mediaAvaliacao})`
                             },
                             legend: {
-                                display: true 
+                                display: true
                             },
                             datalabels: {
                                 display: true,

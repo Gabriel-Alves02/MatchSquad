@@ -102,21 +102,17 @@ function renderizarTabelaDenuncias(denunciasFiltradas) {
     }
 
     html = denunciasFiltradas.map(denuncia => {
-
-
         let btnAcoes =
             `
-                        <div class="d-flex flex-wrap justify-content-center gap-2">
-                            <button class="btn btn-outline-primary btn-sm contact-btn" data-id="${denuncia.idDenuncia}">Contato</button>
-                            <button class="btn btn-outline-primary btn-sm done-btn" data-id="${denuncia.idDenuncia}">Resolvido</button>
-                            <button class="btn btn-danger btn-sm ban-btn">Banir</button>
-                        </div>
-            `;
+        <div class="d-flex flex-nowrap justify-content-center gap-1">
+            <button class="btn btn-outline-primary btn-sm contact-btn" data-id="${denuncia.idDenuncia}">Contato</button>
+            <button class="btn btn-outline-primary btn-sm done-btn" data-id="${denuncia.idDenuncia}">Resolvido</button>
+            <button class="btn btn-danger btn-sm ban-btn">Banir</button>
+        </div>
+        `;
 
-
-        const previewDescricao = denuncia.descricao.length > 50 ?
-            `${denuncia.descricao.substring(0, 50)}...` :
-            denuncia.descricao;
+        const previewDescricao = denuncia.descricao.length > 10 ?
+            `${denuncia.descricao.substring(0, 10)}...` : denuncia.descricao;
 
         if (denuncia.status === 'resolvido') {
             return `
@@ -129,8 +125,9 @@ function renderizarTabelaDenuncias(denunciasFiltradas) {
                 <td>${denuncia.sentido === 0 ? denuncia.nome_cliente : denuncia.nome_consultor}</td>
                 <td>
                     <div class="descricao-cell" data-id="${denuncia.idDenuncia}">
-                        <span class="preview-descricao d-block mb-2">${previewDescricao}&ensp;
-                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#descricaoModal">Expandir</button>
+                        <span class="preview-descricao">
+                            ${previewDescricao}&ensp;
+                            <button class="btn btn-outline-primary btn-sm expand-btn" data-bs-toggle="modal" data-bs-target="#descricaoModal">Expandir</button>
                         </span>
                     </div>
                 </td>
@@ -149,8 +146,9 @@ function renderizarTabelaDenuncias(denunciasFiltradas) {
                 <td>${denuncia.sentido === 0 ? denuncia.nome_cliente : denuncia.nome_consultor}</td>
                 <td>
                     <div class="descricao-cell" data-id="${denuncia.idDenuncia}">
-                        <span class="preview-descricao d-block mb-2">${previewDescricao}&ensp;
-                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#descricaoModal">Expandir</button>
+                        <span class="preview-descricao">
+                            ${previewDescricao}&ensp;
+                            <button class="btn btn-outline-primary btn-sm expand-btn" data-bs-toggle="modal" data-bs-target="#descricaoModal">Expandir</button>
                         </span>
                     </div>
                 </td>

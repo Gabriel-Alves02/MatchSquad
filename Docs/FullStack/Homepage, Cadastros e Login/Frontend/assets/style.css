@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
     height: 100%;
 }
 
@@ -261,15 +262,19 @@ a:active {
     text-align: justify;
     border: 1px solid #1573E5;
 }
+
 .card-title {
     font-weight: bold;
 }
+
 .card p {
     margin-bottom: 10px;
 }
+
 .card button {
     margin-top: 10px;
 }
+
 .btn-disabled {
     pointer-events: none;
     background-color: #ccc;
@@ -389,4 +394,75 @@ a:active {
     canvas {
         max-height: 250px;
     }
+}
+
+
+.historic-input-group {
+    margin-top: 20px;
+    /* Espaçamento entre o título e a searchBar */
+    margin-bottom: 30px;
+    /* Espaçamento entre a searchBar e a tabela */
+    /* Outros estilos existentes para o grupo de input */
+}
+
+/* Opcional: ajustar a margem do h1 se necessário */
+.container h1 {
+    margin-bottom: 15px;
+    /* Ajuste se o margin-top de 20px no h1 for herdado ou precisar de ajuste */
+}
+
+/* Outros estilos para a tabela se precisar de mais espaçamento */
+.container .table-responsive {
+    margin-top: 20px;
+    /* Garante que a tabela tenha um espaçamento superior se a div da searchbar não tiver mb o suficiente */
+}
+
+
+/* Para a coluna de Descrição */
+.table-responsive table td:nth-child(7) {
+    /* Seleciona a 7ª coluna (Descrição) */
+    white-space: nowrap;
+    /* Impede a quebra de linha do conteúdo */
+    overflow: hidden;
+    /* Esconde o conteúdo que transborda */
+    text-overflow: ellipsis;
+    /* Adiciona "..." ao final do texto que transbordar */
+    max-width: 200px;
+    /* Defina uma largura máxima para a coluna de descrição */
+    vertical-align: middle;
+    /* Alinha verticalmente o conteúdo no meio da célula */
+}
+
+.table-responsive table td:nth-child(7) .preview-descricao {
+    display: inline;
+    /* Garante que o span se comporte inline */
+}
+
+.table-responsive table td:nth-child(7) .expand-btn {
+    flex-shrink: 0;
+    /* Impede que o botão encolha */
+}
+
+/* Para a coluna de Ações */
+.table-responsive table td:nth-child(9) {
+    /* Seleciona a 9ª coluna (Ações) */
+    white-space: nowrap;
+    /* Impede a quebra de linha dos botões */
+    vertical-align: middle;
+    /* Alinha verticalmente os botões no meio da célula */
+}
+
+/* Ajustes gerais para as células da tabela para melhorar o alinhamento vertical */
+.table-responsive table td,
+.table-responsive table th {
+    vertical-align: middle;
+}
+
+/* Opcional: Se a tabela ainda estiver muito apertada, você pode ajustar o padding das células */
+.table-responsive table td,
+.table-responsive table th {
+    padding: .75rem;
+    /* Padding padrão do Bootstrap */
+    /* Você pode ajustar este valor para um padding menor se precisar de mais espaço: */
+    /* padding: .5rem; */
 }

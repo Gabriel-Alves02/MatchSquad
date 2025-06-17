@@ -5,7 +5,7 @@ import { Login } from './controller/LoginBackend.js';
 import { UserType } from './controller/LoginBackend.js';
 import { CadastrarConsultor, GetHabilidades, RecordMeetLog, GetHabConsultor, ConsultarMediaConsultor } from './controller/Consultor.js';
 import { RegistrarAgendamento, AlterarAgendamento, BuscarAgenda, BuscarSolicitacoes, AgendamentoRepetido, CancelaAgendamento, ConfirmaAgendamento, ConcluiAgendamento } from './controller/PedidoAgendamento.js';
-import { GetCode, GetPrazo, GetName, GetBlockStatus, RefreshBlock, GetIfNickEmailIsValid, GetIfPFPJIsValid, LoadProfile, RefreshProfile, GoCloudImage, GoCloudCertificateImage, WipeCloud, GetPassword, EndUser, RefreshPassword, SubmitComplaint, GetReport, GetWorkRange, GetEmail } from './controller/SysFx.js';
+import { GetCode, GetPrazo, GetName, GetBlockStatus, RefreshBlock, GetIfNickEmailIsValid, GetIfPFPJIsValid, LoadProfile, RefreshProfile, GoCloudImage, GoCloudCertificateImage, WipeCloud, GetPassword, EndUser, RefreshPassword, SubmitComplaint, GetReport, GetWorkRange, GetEmail, GetBan } from './controller/SysFx.js';
 import { EnviarEmailRemarcacao, ConfirmacaoEmail, ConfirmacaoEmailPosCadastro, SendAnnouncement } from './service/sendgrid.js';
 import { RegistrarReuniao } from './controller/RegistrarReuniao.js';
 import { ConsultarHistorico } from './controller/HistoricoConsultorias.js';
@@ -34,6 +34,7 @@ app.use(express.json()); // exp interpreta txt por padrão, aux p/ o body ser li
 app.post('/clientes/cadCliente', CadastrarCliente);
 app.post('/clientes/cadConsultor', CadastrarConsultor);
 app.post('/checks', UserType );
+app.post("/checks/email/banStatus", GetBan);
 app.post('/checks/:id/:usertype/denuncia', SubmitComplaint );
 app.post('/clientes/login', Login);
 app.post('/consultores/login', Login);
@@ -91,7 +92,6 @@ app.put("/checks/senha/:id/:usertype/refresh", RefreshPassword)
 app.get("/checks/:id/:usertype/senha", GetPassword);
 app.get("/checks/:id/:usertype/email", GetEmail);
 app.put("/checks/:id/:usertype/desativar", EndUser);
-
 app.get("/consultores/dashboard/totalAgendamentos/:id", QtdeConsultoriasAgendadas);
 app.get("/consultores/dashboard/demandaDias/:id", DiasSemanaConsultoriaDetalhado);
 app.get("/consultores/dashboard/historicoAvaliacao/:id", HistoricoAvaliacaoConsultor);

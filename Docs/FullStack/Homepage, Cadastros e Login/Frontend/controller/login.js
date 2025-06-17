@@ -1,4 +1,4 @@
-import { getUser, getUserConsultor, userType, buscarCodigo, buscarSenha, temBloqueio, enviarCodigo, enviarCodigoPosCadastro, verificado, getAdmin } from "../service/AJAX.js";
+import { getUser, getUserConsultor, userType, buscarCodigo, buscarSenha, temBloqueio, enviarCodigo, buscarBanStatus, verificado, getAdmin } from "../service/AJAX.js";
 import { getUserId } from "./SysFx.js";
 
 const form = document.getElementById('loginForm');
@@ -136,20 +136,46 @@ form.addEventListener('submit', async (event) => {
 
 const modalSenha = document.getElementById('modal-dialog');
 
-modalSenha.addEventListener('submit', (event) => {
+modalSenha.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     let modalBody = document.getElementById('modal-body');
     let email = document.getElementById('email').value
 
 
-    modalBody.innerHTML = `
-        <div class="text-center">
-            <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
-            <p class="lead">Enviado email contendo o nickname e código para recuperação de acesso no ${email}. Consulte a caixa de entrada ou spam, e use este código como senha para logar na próxima vez =)</p>
-        </div>
-    `;
+    const infoBan = await buscarBanStatus(email);
 
-    enviarCodigo('-1', '-1', email);
+    if (infoBan) {
+        if (infoBan.status === 9) {
+            modalBody.innerHTML = `
+                <div class="text-center">
+                    <p class="lead">Este email não esta cadastrado em nossa plataforma. Tente novamente. </p>
+                </div>
+            `;
+        }
+
+        else if (infoBan.status === -1) {
+            modalBody.innerHTML = `
+                <div class="text-center">
+                    <p class="lead">Você se encontra banido da nossa plataforma por não seguir com os termos de uso. </p>
+                </div>
+            `;
+        }
+
+        else if (infoBan.status === 1 || infoBan.status === 0) {
+            modalBody.innerHTML = `
+                <div class="text-center">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                    <p class="lead">Enviado email contendo o nickname e código para recuperação de acesso no ${email}. Consulte a caixa de entrada ou spam, e use este código como senha para logar na próxima vez =)</p>
+                </div>
+            `;
+
+            enviarCodigo('-1', '-1', email);
+        }
+
+    } else {
+        console.log('Erro interno. Entre em contato com o suporte da plataforma');
+    }
+
 
 });
