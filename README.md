@@ -46,22 +46,18 @@ As dores dos usuários que serão trabalhadas estão embasadas nas seguintes dif
 
 # Serviços e APIs
 
-![image](https://github.com/user-attachments/assets/a37a6f30-aa51-4fa2-b49f-5f079e00648c)
-
-Ou subistituir por:
-
 ![image](https://github.com/user-attachments/assets/ad13acd4-73ae-4ba1-9752-39b3e24d93cd)
 
 # Diagramas:
 
 # Casos de Uso:
 
-![image](https://github.com/user-attachments/assets/25365920-2820-4d89-b8d1-2396c8be12a0)
+![image](https://github.com/user-attachments/assets/1b784c05-b68b-4116-8d5f-56208897301e)
 
 ### Diagrama Entidade Relacionamento
 
-![image](https://github.com/user-attachments/assets/dc821c16-4bd4-4a80-bc95-68831da0e964)
+![image](https://github.com/user-attachments/assets/7f21bd7b-0a45-4a16-bf11-540076455ddd)
 
 ### Modelo Lógico
 
-![image](https://github.com/user-attachments/assets/cb416d7d-1569-4176-87e8-1decd7497e45)
+![image](https://github.com/user-attachments/assets/e7314542-1e68-4135-ad26-28918cd02ece)
