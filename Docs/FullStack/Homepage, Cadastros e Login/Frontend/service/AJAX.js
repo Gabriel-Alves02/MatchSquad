@@ -1167,11 +1167,12 @@ export async function concluirReuniao(idReuniao) {
     }
 }
 
-export async function confirmarReuniao(idReuniao) {
+export async function confirmarReuniao(idReuniao, type) {
     try {
         const response = await fetch(url_checks + `/agenda/${idReuniao}/confirma`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" }
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(type)
         }).then((response) => {
             if (response.status == 200) {
                 console.log("Status da reunião alterado com sucesso!");

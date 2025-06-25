@@ -343,11 +343,34 @@ export async function EnviarConfirmacaoAgendamento(
     else
         hora = `<li><strong>Horário:</strong> ${Horario}</li>`;
 
-    const msg = {
-        to: Emails,
-        from: "matchsquad.brazil@gmail.com",
-        subject: `Matchsquad - Agendamento confirmado: ${Assunto}!`,
-        html: `
+    let msg;
+
+    if (JitsiLink === null) {
+        msg = {
+            to: Emails,
+            from: "matchsquad.brazil@gmail.com",
+            subject: `Matchsquad - Agendamento confirmado: ${Assunto}!`,
+            html: `
+            <p><strong>Olá!</strong></p>
+            <p>A sua consultoria de <strong>${NomeConsultor}</strong> está confirmada!</p>
+            <p><strong>Detalhes da Reunião:</strong></p>
+            <ul>
+                <li><strong>Assunto:</strong> ${Assunto}</li>
+                <li><strong>Data:</strong> ${Data}</li>
+                ${hora}
+            </ul>
+            <p>Qualquer dúvida, estamos à disposição.</p>
+            <p>Atenciosamente,<br>
+            A equipe Matchsquad</p>
+        `
+        };
+    }
+    else {
+        msg = {
+            to: Emails,
+            from: "matchsquad.brazil@gmail.com",
+            subject: `Matchsquad - Agendamento confirmado: ${Assunto}!`,
+            html: `
             <p><strong>Olá!</strong></p>
             <p>A sua consultoria de <strong>${NomeConsultor}</strong> está confirmada!</p>
             <p><strong>Detalhes da Reunião:</strong></p>
@@ -362,7 +385,9 @@ export async function EnviarConfirmacaoAgendamento(
             <p>Atenciosamente,<br>
             A equipe Matchsquad</p>
         `
-    };
+        };
+    }
+
 
     try {
         await sgMail.send(msg);

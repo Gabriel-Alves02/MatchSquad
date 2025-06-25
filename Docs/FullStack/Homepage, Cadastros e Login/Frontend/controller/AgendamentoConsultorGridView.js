@@ -212,7 +212,14 @@ document.addEventListener('click', async function (event) {
                 case 'confirmar':
                     let result = confirm(`Deseja confirmar mesmo este agendamento?`);
                     if (result) {
-                        await confirmarReuniao(currentConsultoriaId);
+                        let type;
+                        if (consultoria.tipo == 'online') {
+                            type = 0;
+                        }
+                        else {
+                            type = 1;
+                        }
+                        await confirmarReuniao(currentConsultoriaId, type);
                         alert("Agendamento confirmado com sucesso!");
                         window.location.reload();
                     }

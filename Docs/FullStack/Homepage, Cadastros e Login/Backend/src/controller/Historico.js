@@ -75,6 +75,7 @@ export const LoadHistory = async (request, response, next) => {
                 re.solucoes, 
                 re.infoSolicitada,
                 r.avaliacao,
+                r.tipo,
                 r.comentario,
                 r.link
             FROM 

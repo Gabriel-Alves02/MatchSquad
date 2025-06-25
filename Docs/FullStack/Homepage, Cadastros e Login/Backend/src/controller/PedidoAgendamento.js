@@ -279,6 +279,7 @@ export const ConfirmaAgendamento = async (request, response) => {
     try {
         connection = await pool.getConnection();
         const { id } = request.params;
+        const { type } = request.body;
 
         if (!id) {
             return response.status(400).json({
@@ -289,7 +290,14 @@ export const ConfirmaAgendamento = async (request, response) => {
 
         await connection.beginTransaction();
 
-        const jitsiLink = gerarUrlReuniao();
+        let jitsiLink;
+
+        if (type === 0) {
+            jitsiLink = gerarUrlReuniao();
+        }
+        else {
+            jitsiLink = null;
+        }
 
 
         const [updateResult] = await connection.query(
