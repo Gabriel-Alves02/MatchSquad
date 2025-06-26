@@ -1,68 +1,125 @@
-CREATE TABLE Login (
-  idLogin INT AUTO_INCREMENT PRIMARY KEY,
-  nickname VARCHAR(255) NOT NULL UNIQUE,
-  senha VARCHAR(255) NOT NULL -- Senhas NUNCA devem ser armazenadas em texto puro.
+CREATE DATABASE matchbase;
+USE matchbase;
+
+CREATE TABLE login (
+    idLogin INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    nickname VARCHAR(255) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    tipo TINYINT,
+    codigoVerificacao INTEGER
 );
 
-CREATE TABLE Habilidade (
-  idHabilidade INT AUTO_INCREMENT PRIMARY KEY,
-  nomeHabilidade VARCHAR(255) NOT NULL UNIQUE
+CREATE TABLE cliente (
+    idCliente INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    telefone VARCHAR(255),
+    cpf_cnpj VARCHAR(255) NOT NULL UNIQUE,
+    obs TEXT,
+    redeSocial TEXT,
+    urlImagemPerfil VARCHAR(500),
+    bio TEXT,
+    bloqueio TINYINT NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    idLogin INTEGER NOT NULL,
+    FOREIGN KEY (idLogin) REFERENCES login(idLogin)
 );
 
-CREATE TABLE Cliente (
-  idCliente INT AUTO_INCREMENT PRIMARY KEY,
-  nome VARCHAR(255) NOT NULL,
-  cpf_cnpj VARCHAR(255) UNIQUE NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  telefone VARCHAR(255),
-  obs TEXT,
-  idLogin INT,
-  FOREIGN KEY (idLogin) REFERENCES Login(idLogin) -- Se houver uma tabela Login
+CREATE TABLE consultor (
+    idConsultor INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    obs TEXT,
+    cpf VARCHAR(255) NOT NULL UNIQUE,
+    nome VARCHAR(255),
+    email VARCHAR(255) NOT NULL UNIQUE,
+    telefone VARCHAR(255),
+    redeSocial TEXT,
+    bloqueio TINYINT NOT NULL,
+    urlImagemPerfil VARCHAR(500),
+    bio TEXT,
+    valorHora DECIMAL(10,2),
+    horarioInicio TIME,
+    horarioFim TIME,
+    mediaAvaliacao DECIMAL(2,1),
+    prazoMinReag TINYINT NOT NULL,
+    modalidadeTrab ENUM("online", "presencial", "online e presencial") NOT NULL,
+    cep VARCHAR(255),
+    endereco TEXT,
+    numero INTEGER,
+    bairro TEXT,
+    complemento TEXT,
+    cidade TEXT,
+    uf TEXT,
+    idLogin INTEGER NOT NULL,
+    FOREIGN KEY (idLogin) REFERENCES login(idLogin)
 );
 
-CREATE TABLE Consultor (
-  idConsultor INT AUTO_INCREMENT PRIMARY KEY,
-  nome VARCHAR(255) NOT NULL,
-  cpf VARCHAR(255) UNIQUE NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  telefone VARCHAR(255),
-  obs TEXT,
-  bio TEXT,
-  redeSocial VARCHAR(255),  -- Ou TEXT se precisar de mais espaço
-  precoConsultoria DECIMAL(10, 2), -- Ajuste a precisão e escala se necessário
-  idLogin INT,
-  idHabilidade INT,
-  FOREIGN KEY (idLogin) REFERENCES Login(idLogin),        -- Chave estrangeira para Login
-  FOREIGN KEY (idHabilidade) REFERENCES Habilidade(idHabilidade) -- Chave estrangeira para Habilidade
+CREATE TABLE administrador (
+    idAdmin INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    endereco VARCHAR(255),
+    cnpj VARCHAR(255),
+    cep VARCHAR(255),
+    idLogin INTEGER NOT NULL,
+    FOREIGN KEY (idLogin) REFERENCES login(idLogin)
 );
 
-CREATE TABLE Consultor_Habilidades (
-  idConsultor INT NOT NULL,
-  idHabilidade INT NOT NULL,
-  PRIMARY KEY (idHabilidade, idConsultor),
-  FOREIGN KEY (idConsultor) REFERENCES Consultor(idConsultor),
-  FOREIGN KEY (idHabilidade) REFERENCES Habilidade(idHabilidade)
+CREATE TABLE habilidade (
+    idHabilidade INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    nomeHabilidade VARCHAR(255)
 );
 
+CREATE TABLE consultor_habilidade (
+    idConsultor INTEGER NOT NULL,
+    idHabilidade INTEGER NOT NULL,
+    FOREIGN KEY idConsultor REFERENCES consultor(idConsultor),
+    FOREIGN KEY idHabilidade REFERENCES habilidade(idHabilidade),
+    PRIMARY KEY (idConsultor, idHabilidade)
+);
 
+CREATE TABLE certificados (
+    idCertificado INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    urlCertificado TEXT,
+    descricao TEXT,
+    idConsultor INTEGER NOT NULL,
+    FOREIGN KEY idConsultor REFERENCES consultor(idConsultor)
+);
 
-INSERT INTO Login(nickname,senha) VALUES ('Al97','@ale#321');
-INSERT INTO Login(nickname,senha) VALUES ('Gab','12345');
+CREATE TABLE reuniao (
+    idReuniao INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    data DATE NOT NULL,
+    horario TIME NOT NULL,
+    periodo ENUM("manhã", "tarde"),
+    avaliacao TINYINT,
+    comentario TEXT,
+    status_situacao ENUM("pendente", "concluída", "cancelada", "confirmada") NOT NULL,
+    infoAdiantada MEDIUMTEXT,
+    idConsultor INTEGER NOT NULL,
+    idCliente INTEGER NOT NULL,
+    FOREIGN KEY idConsultor REFERENCES consultor(idConsultor),
+    FOREIGN KEY idCliente REFERENCES CLIENTE(idCliente)
+);
+
+CREATE TABLE registro (
+    idRegistro INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    assunto TEXT,
+    solucoes TEXT,
+    infoSolicitada TEXT,
+    idReuniao INTEGER NOT NULL,
+    FOREIGN KEY idReuniao REFERENCES reuniao(idReuniao)
+);
+
+CREATE TABLE denuncia (
+    idDenuncia INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    descricao TEXT NOT NULL,
+    gravidade TINYINT,
+    sentido TINYINT,
+    dataDenuncia DATE,
+    status ENUM("pendente", "em análise", "resolvido"),
+    obs TEXT,
+    idDenunciante INTEGER NOT NULL,
+    idDenunciado INTEGER NOT NULL
+);
 
 INSERT INTO Habilidade(nomeHabilidade) VALUES ('Finanças');
-
-INSERT INTO Consultor(nome,cpf,email,telefone,obs,bio,redeSocial,precoConsultoria,chavePix,idLogin)
- VALUES ('Gab','999.000.999-00','gab@bol.com','(19) 5555-1234','Este campo é para notacao do ADM-Ms','estudante fatec','x.om/gab',440.50,'gab@bol.com',2);
-
-INSERT INTO Cliente(nome,cpf_cnpj,email,telefone,obs,idLogin)
- VALUES ('Alex','111.222.333-44','al@gmail.com','(15) 3232-1231','Empreendedor de batatas',1);
-
-INSERT INTO Consultor_Habilidades (idConsultor,idHabilidade) VALUES (3,1);
-INSERT INTO Consultor_Habilidades (idConsultor,idHabilidade) VALUES (3,2);
-
-
-SELECT * FROM Consultor_Habilidades;
-SELECT * FROM Consultor;
-SELECT * FROM Habilidade;
-SELECT * FROM Login;
-SELECT * FROM Cliente;
+INSERT INTO Habilidade(nomeHabilidade) VALUES ('TI');
+INSERT INTO Habilidade(nomeHabilidade) VALUES ('Generalista');
+INSERT INTO Habilidade(nomeHabilidade) VALUES ('Guru');
+INSERT INTO Habilidade(nomeHabilidade) VALUES ('Gestão');
