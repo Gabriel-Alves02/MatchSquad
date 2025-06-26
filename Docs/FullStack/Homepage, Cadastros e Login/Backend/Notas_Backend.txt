@@ -118,8 +118,8 @@ CREATE TABLE denuncia (
     idDenunciado INTEGER NOT NULL
 );
 
-INSERT INTO Habilidade(nomeHabilidade) VALUES ('Finanças');
-INSERT INTO Habilidade(nomeHabilidade) VALUES ('TI');
-INSERT INTO Habilidade(nomeHabilidade) VALUES ('Generalista');
-INSERT INTO Habilidade(nomeHabilidade) VALUES ('Guru');
-INSERT INTO Habilidade(nomeHabilidade) VALUES ('Gestão');
+INSERT INTO habilidade(nomeHabilidade) VALUES ('Finanças');
+INSERT INTO habilidade(nomeHabilidade) VALUES ('TI');
+INSERT INTO habilidade(nomeHabilidade) VALUES ('Generalista');
+INSERT INTO habilidade(nomeHabilidade) VALUES ('Guru');
+INSERT INTO habilidade(nomeHabilidade) VALUES ('Gestão');
