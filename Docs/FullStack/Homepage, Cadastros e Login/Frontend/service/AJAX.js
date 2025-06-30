@@ -1172,7 +1172,7 @@ export async function confirmarReuniao(idReuniao, type) {
         const response = await fetch(url_checks + `/agenda/${idReuniao}/confirma`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(type)
+            body: JSON.stringify({ type: type })
         }).then((response) => {
             if (response.status == 200) {
                 console.log("Status da reunião alterado com sucesso!");
